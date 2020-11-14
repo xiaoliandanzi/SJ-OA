@@ -113,14 +113,14 @@
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                    		 <p class="sysTitle">active4j-oa演示系统</p>
+                    		 <p class="sysTitle">双井智慧办公系统</p>
                         </div>
                     </li>
                     
                      <li>
                         <a id="tabItem" class="J_menuItem" href="console" data-index="console">
                             <i class="fa fa-home"></i>
-                            <span class="nav-label">首页</span>
+                            <span class="nav-label">门户首页</span>
                         </a>
                     </li>
                     
@@ -174,11 +174,11 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="dropdown hidden-xs">
-                            <a class="right-sidebar-toggle" aria-expanded="false">
-                                <i class="fa fa-tasks"></i>门户管理
-                            </a>
-                        </li>
+                        <%--<li class="dropdown hidden-xs">--%>
+                            <%--<a class="right-sidebar-toggle" aria-expanded="false">--%>
+                                <%--<i class="fa fa-tasks"></i>门户管理--%>
+                            <%--</a>--%>
+                        <%--</li>--%>
                         <!-- <li class="hidden-xs">
                            <a href="index_v1.html" class="J_menuItem" data-index="0"><i class="fa fa-cart-arrow-down"></i> 主题</a>
                         </li> -->
