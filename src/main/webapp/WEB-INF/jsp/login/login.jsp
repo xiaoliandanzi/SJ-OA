@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>active4j-oa演示系统</title>
+    <title>双井智慧办公系统</title>
     <meta name="keywords" content="active4j-oa演示系统">
     <meta name="description" content="active4j-oa演示系统">
     <link rel="shortcut icon" href="static/bootstrap/image/favicon.ico"> 
