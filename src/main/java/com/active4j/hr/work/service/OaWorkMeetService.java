@@ -15,7 +15,7 @@ public interface OaWorkMeetService extends IService<OaWorkMeetEntity> {
 	
 	/**
 	 * 是否生成日程的会议保存方法  编辑
-	 * @param oaWorkMeetEntity
+	 * @param
 	 * @param partIn
 	 */
 	public void saveOrUpdate(OaWorkMeetEntity tmp, boolean partIn, boolean isTip);
