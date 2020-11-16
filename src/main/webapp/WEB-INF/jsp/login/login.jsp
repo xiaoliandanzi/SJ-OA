@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>active4j-oa演示系统</title>
+    <title>双井智慧办公系统</title>
     <meta name="keywords" content="active4j-oa演示系统">
     <meta name="description" content="active4j-oa演示系统">
     <link rel="shortcut icon" href="static/bootstrap/image/favicon.ico"> 
@@ -27,7 +27,7 @@
             <h3>双井智慧办公系统</h3>
             <form class="form-horizontal m-t" id="signupForm" action="login" method="post">
                 <div class="form-group">
-                    <input type="text" name="userName" id="userName" value="admin" class="form-control" placeholder="用户名" required="">
+                    <input type="text" name="userName" id="userName" value="zxf" class="form-control" placeholder="用户名" required="">
                 </div>
                 <div class="form-group">
                     <input type="password" name="password" id="password" value="123456" class="form-control" placeholder="密码" required="">

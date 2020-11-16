@@ -1,12 +1,11 @@
 package com.active4j.hr.core.web.tag;
 
-import java.io.IOException;
+import com.active4j.hr.core.util.oConvertUtils;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
-
-import com.active4j.hr.core.util.oConvertUtils;
+import java.io.IOException;
 
 
 /**
@@ -41,7 +40,7 @@ public class BaseTag extends TagSupport {
 			sb.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
 			sb.append("<meta name=\"renderer\" content=\"webkit\">");
 			sb.append("<meta http-equiv=\"Cache-Control\" content=\"no-siteapp\" />");
-			sb.append("<title>active4j-oa演示系统</title>");
+			sb.append("<title>双井智慧办公系统</title>");
 			sb.append("<meta name=\"keywords\" content=\"active4j-oa演示系统\">");
 			sb.append("<meta name=\"description\" content=\"active4j-oa演示系统\">");
 			sb.append("<!--[if lt IE 9]><meta http-equiv=\"refresh\" content=\"0;ie.html\" /><![endif]-->");

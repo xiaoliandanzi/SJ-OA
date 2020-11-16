@@ -1,24 +1,7 @@
 package com.active4j.hr.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.active4j.hr.system.dao.SysUserDao;
-import com.active4j.hr.system.entity.SysDeptEntity;
-import com.active4j.hr.system.entity.SysFunctionEntity;
-import com.active4j.hr.system.entity.SysRoleEntity;
-import com.active4j.hr.system.entity.SysUserEntity;
-import com.active4j.hr.system.entity.SysUserRoleEntity;
+import com.active4j.hr.system.entity.*;
 import com.active4j.hr.system.model.ActiveUser;
 import com.active4j.hr.system.model.MenuModel;
 import com.active4j.hr.system.model.SysUserModel;
@@ -29,6 +12,13 @@ import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.system.util.SystemUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -329,7 +319,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 					}
 					
 					menuString.append("</li>");
-				}
+				}/**/
 				menuString.append(" </ul>");
 			}
 			menuString.append("</li>");
