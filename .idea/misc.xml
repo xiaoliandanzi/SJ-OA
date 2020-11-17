@@ -5,7 +5,7 @@
       <usages-collector id="statistics.spring.boot.mvc.usages">
         <counts>
           <entry key="DefaultRequestNavigator.fromCode" value="1" />
-          <entry key="RestClientRequestRunnerNavigator.fromCode" value="2" />
+          <entry key="RestClientRequestRunnerNavigator.fromCode" value="5" />
         </counts>
       </usages-collector>
     </session>
