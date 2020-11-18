@@ -142,7 +142,7 @@ public class CarManageController extends BaseController {
      */
     @RequestMapping("/addorupdate")
     public ModelAndView addorupdate(OaWorkMeetRoomEntity oaWorkMeetRoomEntity, HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("oa/work/meetroom/meetroom");
+        ModelAndView view = new ModelAndView("car/carAdd");
 
         if(StringUtils.isNotEmpty(oaWorkMeetRoomEntity.getId())) {
             oaWorkMeetRoomEntity = oaWorkMeetRoomService.getById(oaWorkMeetRoomEntity.getId());

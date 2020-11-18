@@ -137,7 +137,7 @@
     </div>
     <div class="col-sm-4">
         <h3>
-            双井图片
+            双井图库
         </h3>
         <div class="ibox-content">
 
