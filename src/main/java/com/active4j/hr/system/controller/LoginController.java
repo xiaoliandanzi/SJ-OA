@@ -138,18 +138,18 @@ public class LoginController {
 				return j;
 			}
 
-			if (StringUtils.isEmpty(randCode)) {
-				j.setSuccess(false);
-				j.setMsg("验证码不能为空");
-				return j;
-			}
+//			if (StringUtils.isEmpty(randCode)) {
+//				j.setSuccess(false);
+//				j.setMsg("验证码不能为空");
+//				return j;
+//			}
 
-			// 验证码的校验
-			if (!StringUtils.equalsIgnoreCase(randCode, ShiroUtils.getSessionValue(GlobalConstant.SESSION_KEY_OF_RAND_CODE))) {
-				j.setSuccess(false);
-				j.setMsg("验证码填写错误");
-				return j;
-			}
+//			// 验证码的校验
+//			if (!StringUtils.equalsIgnoreCase(randCode, ShiroUtils.getSessionValue(GlobalConstant.SESSION_KEY_OF_RAND_CODE))) {
+//				j.setSuccess(false);
+//				j.setMsg("验证码填写错误");
+//				return j;
+//			}
 
 			UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
 			ShiroUtils.getSubject().login(token);

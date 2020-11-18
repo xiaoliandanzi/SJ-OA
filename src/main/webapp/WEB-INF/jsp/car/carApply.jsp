@@ -24,9 +24,9 @@
 </div>
 
 <!-- 脚本部分 -->
-<t:datagrid actionUrl="car/apply/datagrid" tableContentId="carBooksTable" searchGroupId="searchGroupId" fit="true" caption="会议室预定" name="woaWorkMeetRoomBooksList" pageSize="20" sortName="createDate" sortOrder="desc">
+<t:datagrid actionUrl="car/apply/datagrid" tableContentId="carBooksTable" searchGroupId="searchGroupId" fit="true" caption="用车申请" name="woaWorkCarBooksList" pageSize="20" sortName="createDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="meetRoomId" label="会议室名称" width="100" query="true" queryId="meetRoomId" replace="${lstRooms }"></t:dgCol>
+    <t:dgCol name="meetRoomId" label="车辆名称" width="100" query="true" queryId="meetRoomId" replace="${lstRooms }"></t:dgCol>
     <t:dgCol name="userName" label="预定人" width="80"></t:dgCol>
     <t:dgCol name="bookDate" label="预定日期" width="100" datefmt="yyyy-MM-dd" query="true" defval="${nowStrDate }" datePlugin="laydate"></t:dgCol>
     <t:dgCol name="startDate" label="开始时间" width="80" datefmt="HH:mm"></t:dgCol>
