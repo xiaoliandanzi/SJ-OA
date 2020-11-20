@@ -94,6 +94,12 @@ public class GlobalConstant {
 	public static final String OA_OFFICALSEAL_STATUS_NORMAL = "1"; //正常
 	public static final String OA_OFFICALSEAL_STATUS_STOP = "0"; //停用
 
+	/***
+	 * OA REQUISITIONED STATICAL
+	 */
+	public static final String OA_REQUISITIONED_ITEM_STATUS_NORMAL = "1"; // 归还
+	public static final String OA_REQUISITIONED_ITEM_STATUS_ABNORMAL = "0"; // 未归还
+
 	 /**
 	  * OA 工作中心   日程状态
 	  */

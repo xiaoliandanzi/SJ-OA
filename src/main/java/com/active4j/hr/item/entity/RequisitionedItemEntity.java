@@ -1,4 +1,4 @@
-package com.active4j.hr.officalSeal.entity;
+package com.active4j.hr.item.entity;
 
 import com.active4j.hr.common.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -7,35 +7,33 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
  *
  * @Auther: jinxin
- * @Date: 2020/11/20/9:50
+ * @Date: 2020/11/20/14:46
  * @Description:
  */
-@TableName("OA_OFFICAL_SEAL")
+@TableName("OA_ITEM_REQUISITIONED")
 @Getter
 @Setter
-public class OaOfficalSealEntity extends BaseEntity {
+public class RequisitionedItemEntity extends BaseEntity {
+    private static final long serialVersionUID = -2638790434373815072L;
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1906861960116263816L;
+    @TableField("ITEM_NAME")
+    private String itemName;
 
-    @TableField("NUMBER")
-    @NotEmpty(message = "公章编号不能为空")
-    private String number;
+    @TableField("ITEM_ID")
+    private String itemID;
+
+    @TableField("ITEM_QUANTITY")
+    private int itemQuantity;
 
     @TableField("STATUS")
     @NotEmpty(message = "状态不能为空")
     private String status;
-
-    @TableField("NAME")
-    @NotEmpty(message = "公章名称不能为空")
-    private int name;
 
     @TableField("MEMO")
     private String memo;

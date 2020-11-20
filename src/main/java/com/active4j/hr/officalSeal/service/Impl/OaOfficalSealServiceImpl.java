@@ -1,8 +1,5 @@
 package com.active4j.hr.officalSeal.service.Impl;
 
-import com.active4j.hr.car.dao.OaCarDao;
-import com.active4j.hr.car.entity.OaCarEntity;
-import com.active4j.hr.car.service.OaCarService;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.officalSeal.dao.OaOfficalSealDao;
 import com.active4j.hr.officalSeal.entity.OaOfficalSealEntity;
