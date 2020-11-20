@@ -23,19 +23,25 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">公章编号*：</label>
                             <div class="col-sm-8">
-                                <input id="name" name="name" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${meet.name }">
+                                <input id="sealId" name="sealId" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${meat.id }">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">公章名称：</label>
                             <div class="col-sm-8">
-                                <input id="persons" name="persons" type="digits" class="form-control" required="" value="${meet.persons }">
+                                <input id="name" name="name" type="text" class="form-control" required="" value="${seal.name }">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">公章用途：</label>
+                            <div class="col-sm-8">
+                                <input id="purpose" name="purpose" type="text" class="form-control" required="" value="${seal.purpose }">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">状态：</label>
                             <div class="col-sm-8">
-                                <t:dictSelect name="status" type="select" typeGroupCode="oaworkmeet" defaultVal="${meet.status}"></t:dictSelect>
+                                <t:dictSelect name="status" type="select" typeGroupCode="oaworkmeet" defaultVal="${seal.status}"></t:dictSelect>
                             </div>
                         </div>
                         <div class="form-group">
