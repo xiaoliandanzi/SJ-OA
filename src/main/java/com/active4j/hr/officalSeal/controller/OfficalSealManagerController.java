@@ -30,4 +30,5 @@ public class OfficalSealManagerController extends BaseController {
         ModelAndView view = new ModelAndView("officalSeal/officalSealManager");
         return view;
     }
+
 }

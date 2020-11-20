@@ -87,7 +87,13 @@ public class GlobalConstant {
 	 */
 	public static final String OA_CAR_STATUS_NORMAL = "1"; //正常
 	public static final String OA_CAR_STATUS_STOP = "0"; //停用
-	 
+
+	/***
+	 * OA OFFICALSEAL
+	 */
+	public static final String OA_OFFICALSEAL_STATUS_NORMAL = "1"; //正常
+	public static final String OA_OFFICALSEAL_STATUS_STOP = "0"; //停用
+
 	 /**
 	  * OA 工作中心   日程状态
 	  */
