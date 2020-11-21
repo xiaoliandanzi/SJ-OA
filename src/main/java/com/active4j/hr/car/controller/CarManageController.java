@@ -1,6 +1,8 @@
 package com.active4j.hr.car.controller;
 
 import com.active4j.hr.base.controller.BaseController;
+import com.active4j.hr.car.entity.OaCarEntity;
+import com.active4j.hr.car.service.OaCarService;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
@@ -42,6 +44,9 @@ import java.util.List;
 public class CarManageController extends BaseController {
 
     @Autowired
+    private OaCarService oaCarService;
+
+    @Autowired
     private OaWorkMeetRoomService oaWorkMeetRoomService;
 
     @Autowired
@@ -58,20 +63,21 @@ public class CarManageController extends BaseController {
         return view;
     }
 
+
     /**
      * 查询数据
      *
-     * @param oaWorkMeetRoomEntity
+     * @param oaCarEntity
      * @param request
      * @param response
      * @param dataGrid
      */
     @RequestMapping("/datagrid")
-    public void datagrid(OaWorkMeetRoomEntity oaWorkMeetRoomEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+    public void datagrid(OaCarEntity oaCarEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
         // 拼接查询条件
-        QueryWrapper<OaWorkMeetRoomEntity> queryWrapper = QueryUtils.installQueryWrapper(oaWorkMeetRoomEntity, request.getParameterMap(), dataGrid);
+        QueryWrapper<OaCarEntity> queryWrapper = QueryUtils.installQueryWrapper(oaCarEntity, request.getParameterMap(), dataGrid);
         // 执行查询
-        IPage<OaWorkMeetRoomEntity> lstResult = oaWorkMeetRoomService.page(new Page<OaWorkMeetRoomEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+        IPage<OaCarEntity> lstResult = oaCarService.page(new Page<OaCarEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
 
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
@@ -79,34 +85,40 @@ public class CarManageController extends BaseController {
 
     /**
      * 保存方法
-     * @param oaWorkMeetRoomEntity
+     * @param oaCarEntity
      * @param request
      * @return
      */
     @RequestMapping("/save")
     @ResponseBody
-    public AjaxJson save(OaWorkMeetRoomEntity oaWorkMeetRoomEntity, HttpServletRequest request) {
+    public AjaxJson save(OaCarEntity oaCarEntity, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try{
-            if(StringUtils.isEmpty(oaWorkMeetRoomEntity.getName())) {
+            if(StringUtils.isEmpty(oaCarEntity.getCarId())) {
                 j.setSuccess(false);
-                j.setMsg("名称不能为空!");
+                j.setMsg("车牌号不能为空!");
                 return j;
             }
 
-            if(StringUtils.isEmpty(oaWorkMeetRoomEntity.getId())) {
+            if(StringUtils.isEmpty(oaCarEntity.getName())) {
+                j.setSuccess(false);
+                j.setMsg("车辆名称不能为空!");
+                return j;
+            }
+
+            if(StringUtils.isEmpty(oaCarEntity.getId())) {
                 //新增方法
-                oaWorkMeetRoomService.save(oaWorkMeetRoomEntity);
+                oaCarService.save(oaCarEntity);
             }else {
                 //编辑方法
-                OaWorkMeetRoomEntity tmp = oaWorkMeetRoomService.getById(oaWorkMeetRoomEntity.getId());
-                MyBeanUtils.copyBeanNotNull2Bean(oaWorkMeetRoomEntity, tmp);
-                oaWorkMeetRoomService.saveOrUpdate(tmp);
+                OaCarEntity tmp = oaCarService.getById(oaCarEntity.getId());
+                MyBeanUtils.copyBeanNotNull2Bean(oaCarEntity, tmp);
+                oaCarService.saveOrUpdate(tmp);
             }
         }catch(Exception e) {
             j.setSuccess(false);
             j.setMsg(GlobalConstant.Err_Msg_All);
-            log.error("保存会议室失败，错误信息:{}", e);
+            log.error("保存车辆失败，错误信息:{}", e);
         }
 
         return j;
@@ -114,58 +126,59 @@ public class CarManageController extends BaseController {
 
     /**
      * 删除
-     * @param oaWorkMeetRoomEntity
+     * @param oaCarEntity
      * @param request
      * @return
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public AjaxJson delete(OaWorkMeetRoomEntity oaWorkMeetRoomEntity, HttpServletRequest request) {
+    public AjaxJson delete(OaCarEntity oaCarEntity, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try{
-            if(StringUtils.isNotEmpty(oaWorkMeetRoomEntity.getId())) {
-                oaWorkMeetRoomService.removeById(oaWorkMeetRoomEntity.getId());
+            if(StringUtils.isNotEmpty(oaCarEntity.getId())) {
+                oaCarService.removeById(oaCarEntity.getId());
             }
         }catch(Exception e) {
             j.setSuccess(false);
             j.setMsg(GlobalConstant.Err_Msg_All);
-            log.error("删除会议室失败，错误信息:{}", e);
+            log.error("删除车辆失败，错误信息:{}", e);
         }
         return j;
     }
 
     /**
      * 跳转到新增编辑页面
-     * @param oaWorkMeetRoomEntity
+     * @param oaCarEntity
      * @param request
      * @return
      */
     @RequestMapping("/addorupdate")
-    public ModelAndView addorupdate(OaWorkMeetRoomEntity oaWorkMeetRoomEntity, HttpServletRequest request) {
+    public ModelAndView addorupdate(OaCarEntity oaCarEntity, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("car/carAdd");
 
-        if(StringUtils.isNotEmpty(oaWorkMeetRoomEntity.getId())) {
-            oaWorkMeetRoomEntity = oaWorkMeetRoomService.getById(oaWorkMeetRoomEntity.getId());
-            view.addObject("meet", oaWorkMeetRoomEntity);
+        if(StringUtils.isNotEmpty(oaCarEntity.getId())) {
+            oaCarEntity = oaCarService.getById(oaCarEntity.getId());
+            view.addObject("car", oaCarEntity);
         }
 
         return view;
     }
 
     /**
-     * 预定会议室
-     * @param oaWorkMeetRoomEntity
+     * 预定车辆
+     * @param oaCarEntity
      * @param request
      * @return
      */
     @RequestMapping("/bookview")
-    public ModelAndView bookview(OaWorkMeetRoomEntity oaWorkMeetRoomEntity, String currentDate, HttpServletRequest request) {
+    public ModelAndView bookview(OaCarEntity oaCarEntity, String currentDate, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("oa/work/meetroom/roombooks");
 
-        if(StringUtils.isNotEmpty(oaWorkMeetRoomEntity.getId())) {
-            oaWorkMeetRoomEntity = oaWorkMeetRoomService.getById(oaWorkMeetRoomEntity.getId());
-            view.addObject("meetRoomName", oaWorkMeetRoomEntity.getName());
-            view.addObject("meetRoomId", oaWorkMeetRoomEntity.getId());
+        if(StringUtils.isNotEmpty(oaCarEntity.getId())) {
+            oaCarEntity = oaCarService.getById(oaCarEntity.getId());
+            view.addObject("carId", oaCarEntity.getCarId());
+            view.addObject("carName", oaCarEntity.getName());
+            view.addObject("id", oaCarEntity.getId());
             if(StringUtils.isNotEmpty(currentDate)) {
                 Date bookDate = DateUtils.str2Date(currentDate, DateUtils.SDF_YYYY_MM_DD);
                 view.addObject("bookDate", bookDate);

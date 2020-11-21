@@ -16,7 +16,7 @@ import java.util.List;
  * @version 1.0
  * @date 2020/11/19 上午12:57
  */
-@Service("oaCarServiceImpl")
+@Service("oaCarService")
 @Transactional
 public class OaCarServiceImpl extends ServiceImpl<OaCarDao, OaCarEntity> implements OaCarService {
 
