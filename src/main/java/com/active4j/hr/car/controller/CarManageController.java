@@ -1,7 +1,10 @@
 package com.active4j.hr.car.controller;
 
 import com.active4j.hr.base.controller.BaseController;
+import com.active4j.hr.car.domain.OaBookCarDomain;
+import com.active4j.hr.car.entity.OaCarBooksEntity;
 import com.active4j.hr.car.entity.OaCarEntity;
+import com.active4j.hr.car.service.OaCarBooksService;
 import com.active4j.hr.car.service.OaCarService;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
@@ -10,11 +13,6 @@ import com.active4j.hr.core.query.QueryUtils;
 import com.active4j.hr.core.util.DateUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
-import com.active4j.hr.work.domain.OaWorkBookRoomDomain;
-import com.active4j.hr.work.entity.OaWorkMeetRoomBooksEntity;
-import com.active4j.hr.work.entity.OaWorkMeetRoomEntity;
-import com.active4j.hr.work.service.OaWorkMeetRoomBooksService;
-import com.active4j.hr.work.service.OaWorkMeetRoomService;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -29,9 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author xfzhang
@@ -45,12 +41,9 @@ public class CarManageController extends BaseController {
 
     @Autowired
     private OaCarService oaCarService;
-
     @Autowired
-    private OaWorkMeetRoomService oaWorkMeetRoomService;
+    private OaCarBooksService oaCarBooksService;
 
-    @Autowired
-    private OaWorkMeetRoomBooksService oaWorkMeetRoomBooksService;
 
 
     /**
@@ -172,7 +165,7 @@ public class CarManageController extends BaseController {
      */
     @RequestMapping("/bookview")
     public ModelAndView bookview(OaCarEntity oaCarEntity, String currentDate, HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("oa/work/meetroom/roombooks");
+        ModelAndView view = new ModelAndView("car/carBooks");
 
         if(StringUtils.isNotEmpty(oaCarEntity.getId())) {
             oaCarEntity = oaCarService.getById(oaCarEntity.getId());
@@ -189,25 +182,27 @@ public class CarManageController extends BaseController {
     }
 
     /**
-     * 预定会议室
-     * @param oaWorkMeetRoomEntity
+     * 查看车辆预定情况
+     *
+     * @param oaCarEntity
      * @param request
      * @return
      */
     @RequestMapping("/view")
-    public ModelAndView view(OaWorkMeetRoomEntity oaWorkMeetRoomEntity, HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("oa/work/meetroom/viewbooks");
+    public ModelAndView view(OaCarEntity oaCarEntity, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView("car/viewBooks");
         view.addObject("lstBooks", "-1");
-        if(StringUtils.isNotEmpty(oaWorkMeetRoomEntity.getId())) {
-            oaWorkMeetRoomEntity = oaWorkMeetRoomService.getById(oaWorkMeetRoomEntity.getId());
-            view.addObject("roomName", oaWorkMeetRoomEntity.getName());
-            view.addObject("roomId", oaWorkMeetRoomEntity.getId());
+        if(StringUtils.isNotEmpty(oaCarEntity.getId())) {
+            oaCarEntity = oaCarService.getById(oaCarEntity.getId());
+            view.addObject("carName", oaCarEntity.getName());
+            view.addObject("id", oaCarEntity.getId());
+            //view.addObject("carId", oaCarEntity.getCarId());
 
-            List<OaWorkMeetRoomBooksEntity> lstBooks = oaWorkMeetRoomBooksService.findMeetBooks(oaWorkMeetRoomEntity);
-            List<OaWorkBookRoomDomain> lstBookDoamins = new ArrayList<OaWorkBookRoomDomain>();
+            List<OaCarBooksEntity> lstBooks = oaCarBooksService.findCarBooks(oaCarEntity);
+            List<OaBookCarDomain> lstBookDoamins = new ArrayList<OaBookCarDomain>();
             if(null != lstBooks && lstBooks.size() > 0) {
-                for(OaWorkMeetRoomBooksEntity book : lstBooks) {
-                    OaWorkBookRoomDomain domain = new OaWorkBookRoomDomain();
+                for(OaCarBooksEntity book : lstBooks) {
+                    OaBookCarDomain domain = new OaBookCarDomain();
                     domain.setId(book.getId());
                     domain.setTitle("预定人:" + book.getCreateName());
                     String startTime = DateUtils.date2Str(book.getStartDate(), DateUtils.SDF_HHMM);
@@ -221,9 +216,48 @@ public class CarManageController extends BaseController {
         }
 
         //查询可用的会议室
-        List<OaWorkMeetRoomEntity> lstRooms = oaWorkMeetRoomService.findNormalMeetRoom();
-        view.addObject("lstRooms", lstRooms);
+        List<OaCarEntity> lstCars = oaCarService.findNormalCar();
+        view.addObject("lstCars", lstCars);
 
         return view;
+    }
+
+    @RequestMapping("/getCarView")
+    @ResponseBody
+    public AjaxJson getCarView(OaCarEntity oaCarEntity, HttpServletRequest request) {
+        AjaxJson j = new AjaxJson();
+        try{
+            Map<String, Object> map = new HashMap<String, Object>();
+
+            if(StringUtils.isNotEmpty(oaCarEntity.getId())) {
+                oaCarEntity = oaCarService.getById(oaCarEntity.getId());
+                map.put("carName", oaCarEntity.getName());
+
+                List<OaCarBooksEntity> lstBooks = oaCarBooksService.findCarBooks(oaCarEntity);
+                List<OaBookCarDomain> lstBookDoamins = new ArrayList<OaBookCarDomain>();
+                if(null != lstBooks && lstBooks.size() > 0) {
+                    for(OaCarBooksEntity book : lstBooks) {
+                        OaBookCarDomain domain = new OaBookCarDomain();
+                        domain.setId(book.getId());
+                        domain.setTitle("预定人:" + book.getCreateName());
+                        String startTime = DateUtils.date2Str(book.getStartDate(), DateUtils.SDF_HHMM);
+                        String endTime = DateUtils.date2Str(book.getEndDate(), DateUtils.SDF_HHMM);
+                        domain.setStart(book.getStrBookDate() + " " + startTime);
+                        domain.setEnd(book.getStrBookDate() + " " + endTime);
+                        lstBookDoamins.add(domain);
+                    }
+                }
+                map.put("lstBooks", lstBookDoamins);
+            }
+
+            j.setAttributes(map);
+
+        }catch(Exception e) {
+            j.setSuccess(false);
+            j.setMsg(GlobalConstant.Err_Msg_All);
+            log.error("查询车辆预定失败，错误信息:{}", e);
+        }
+
+        return j;
     }
 }

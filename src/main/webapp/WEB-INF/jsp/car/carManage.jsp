@@ -49,7 +49,7 @@
     <t:dgToolBar url="car/manage/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>
     <t:dgToolBar url="car/manage/addorupdate" type="edit" width="40%" height="70%"></t:dgToolBar>
     <t:dgToolBar url="car/manage/addorupdate" type="view" width="40%" height="70%"></t:dgToolBar>
-    <t:dgToolBar label="预定" icon="fa fa-cog" url="car/manage/bookview" type="pop" width="50%" height="70%"></t:dgToolBar>
+    <%--<t:dgToolBar label="预定" icon="fa fa-cog" url="car/manage/bookview" type="pop" width="50%" height="70%"></t:dgToolBar>--%>
     <t:dgToolBar label="查看预定" icon="fa fa-list-alt" url="car/manage/view" type="pop" width="80%" height="95%"></t:dgToolBar>
 </t:datagrid>
 </body>
