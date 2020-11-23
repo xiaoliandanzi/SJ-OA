@@ -196,7 +196,7 @@ public class CarManageController extends BaseController {
             oaCarEntity = oaCarService.getById(oaCarEntity.getId());
             view.addObject("carName", oaCarEntity.getName());
             view.addObject("id", oaCarEntity.getId());
-            //view.addObject("carId", oaCarEntity.getCarId());
+            view.addObject("carId", oaCarEntity.getCarId());
 
             List<OaCarBooksEntity> lstBooks = oaCarBooksService.findCarBooks(oaCarEntity);
             List<OaBookCarDomain> lstBookDoamins = new ArrayList<OaBookCarDomain>();
@@ -232,6 +232,7 @@ public class CarManageController extends BaseController {
             if(StringUtils.isNotEmpty(oaCarEntity.getId())) {
                 oaCarEntity = oaCarService.getById(oaCarEntity.getId());
                 map.put("carName", oaCarEntity.getName());
+                map.put("carId", oaCarEntity.getCarId());
 
                 List<OaCarBooksEntity> lstBooks = oaCarBooksService.findCarBooks(oaCarEntity);
                 List<OaBookCarDomain> lstBookDoamins = new ArrayList<OaBookCarDomain>();

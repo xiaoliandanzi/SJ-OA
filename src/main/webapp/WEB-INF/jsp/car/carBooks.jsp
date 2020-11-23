@@ -20,9 +20,9 @@
                 <div class="ibox-content">
                     <t:formvalid action="car/carBooks/save">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">车辆名称*：</label>
+                            <label class="col-sm-2 control-label">车辆*：</label>
                             <div class="col-sm-8">
-                                <p class="form-control-static">${carName }</p>
+                                <p class="form-control-static">${carName } ${carId }</p>
                                 <input type="hidden" name="id" id="id" value="${id }">
                             </div>
                         </div>

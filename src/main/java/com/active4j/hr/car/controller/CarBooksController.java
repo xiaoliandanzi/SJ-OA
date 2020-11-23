@@ -52,10 +52,10 @@ public class CarBooksController extends BaseController {
 
         ModelAndView view = new ModelAndView("car/carBooksList");
         List<OaCarEntity> lstRooms = oaCarService.findNormalCar();
-        view.addObject("lstCars", ListUtils.listToReplaceStr(lstRooms, "name", "Id"));
+        view.addObject("lstCars", ListUtils.listToReplaceStr(lstRooms, "name", "carId", "Id"));
 
         String nowStrDate = DateUtils.date2Str(DateUtils.SDF_YYYY_MM_DD);
-        //view.addObject("nowStrDate", nowStrDate);
+        view.addObject("nowStrDate", nowStrDate);
 
         return view;
     }

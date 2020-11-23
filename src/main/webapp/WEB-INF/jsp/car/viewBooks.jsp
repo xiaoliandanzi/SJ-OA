@@ -19,12 +19,12 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5 id="carNameTitle">车辆预定信息(${carName })</h5>
+                    <h5 id="carNameTitle">车辆预定信息(${carName } ${carId })</h5>
                 </div>
                 <div class="ibox-content">
                     <p>
                         <c:forEach items="${lstCars }" var="r">
-                            <button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="goCar('${r.id }');">&nbsp;${r.name }&nbsp;</button>
+                            <button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="goCar('${r.id }');">&nbsp;${r.name } ${r.carId }&nbsp;</button>
                         </c:forEach>
                         <input type="hidden" id="id" name="id" value="${id }">
                     </p>
@@ -85,8 +85,9 @@
                 $("#calendar").fullCalendar("removeEvents");
 
                 var carName = o.attributes.carName;
+                var carId = o.attributes.carId;
                 $("#carNameTitle").empty();
-                $("#carNameTitle").append("车辆预定信息("+carName+")");
+                $("#carNameTitle").append("车辆预定信息("+carName+" " + carId + ")");
 
                 var lstBooks = o.attributes.lstBooks;
                 for(var i = 0; i < lstBooks.length; i++) {
