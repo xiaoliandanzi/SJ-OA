@@ -27,7 +27,7 @@ public class OaOfficalSealEntity extends BaseEntity {
 
     @TableField("SEALID")
     @NotEmpty(message = "公章编号不能为空")
-    private String id;
+    private String sealid;
 
     @TableField("STATUS")
     @NotEmpty(message = "状态不能为空")

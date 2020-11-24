@@ -19,15 +19,15 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <t:formvalid action="officalSeal/manager/save">
-                        <input type="hidden" name="id" id="id" value="${car.id }">
+                        <input type="hidden" name="id" id="id" value="${seal.id }">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">公章编号*：</label>
                             <div class="col-sm-8">
-                                <input id="sealId" name="sealId" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${seal.number }">
+                                <input id="sealId" name="sealId" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${seal.id }">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">车辆名称*：</label>
+                            <label class="col-sm-3 control-label">公章名称*：</label>
                             <div class="col-sm-8">
                                 <input id="name" name="name" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${seal.name }">
                             </div>
