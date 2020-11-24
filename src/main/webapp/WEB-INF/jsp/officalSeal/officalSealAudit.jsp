@@ -17,7 +17,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12">
-            公章审核
+            公章审批
         </div>
     </div>
 </div>

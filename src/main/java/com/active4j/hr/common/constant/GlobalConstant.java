@@ -95,6 +95,13 @@ public class GlobalConstant {
 	public static final String OA_OFFICALSEAL_STATUS_STOP = "0"; //停用
 
 	/***
+	 * OA OFFICALSEAL REUTURN
+	 */
+	public static final String OA_OFFICALSEAL_RETURN_NORMAL = "1"; //归还
+	public static final String OA_OFFICALSEAL_RETURN_ABNORMAL = "0"; //未归还
+
+
+	/***
 	 * OA REQUISITIONED STATICAL
 	 */
 	public static final String OA_REQUISITIONED_ITEM_STATUS_NORMAL = "1"; // 归还

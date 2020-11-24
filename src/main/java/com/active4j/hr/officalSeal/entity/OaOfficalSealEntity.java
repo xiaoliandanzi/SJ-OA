@@ -35,7 +35,7 @@ public class OaOfficalSealEntity extends BaseEntity {
 
     @TableField("NAME")
     @NotEmpty(message = "公章名称不能为空")
-    private int name;
+    private String name;
 
     @TableField("MEMO")
     private String memo;
