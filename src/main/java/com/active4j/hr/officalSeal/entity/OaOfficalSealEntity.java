@@ -25,9 +25,9 @@ public class OaOfficalSealEntity extends BaseEntity {
      */
     private static final long serialVersionUID = 1906861960116263816L;
 
-    @TableField("NUMBER")
+    @TableField("SEALID")
     @NotEmpty(message = "公章编号不能为空")
-    private String number;
+    private String id;
 
     @TableField("STATUS")
     @NotEmpty(message = "状态不能为空")

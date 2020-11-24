@@ -1,6 +1,5 @@
 package com.active4j.hr.officalSeal.service.Impl;
 
-import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.officalSeal.dao.OaOfficalSealBookDao;
 import com.active4j.hr.officalSeal.entity.OaOfficalSealBookEntity;
 import com.active4j.hr.officalSeal.entity.OaOfficalSealEntity;
@@ -26,9 +25,19 @@ public class OaOfficalSealBookServiceImpl  extends ServiceImpl<OaOfficalSealBook
     /*
      * 查看公章预定
      * */
-    public List<OaOfficalSealBookEntity> findNormalCar(){
+    public List<OaOfficalSealBookEntity> findSealBooks(OaOfficalSealEntity oaOfficalSealEntity){
         QueryWrapper<OaOfficalSealBookEntity> queryWrapper = new QueryWrapper<OaOfficalSealBookEntity>();
-        queryWrapper.eq("STATUS", GlobalConstant.OA_OFFICALSEAL_RETURN_NORMAL);
+        queryWrapper.eq("SEAL_ID", oaOfficalSealEntity.getId());
+
+        return this.list(queryWrapper);
+
+    }
+
+    public List<OaOfficalSealBookEntity> findSealBooks(String sealId, String strDate) {
+        QueryWrapper<OaOfficalSealBookEntity> queryWrapper = new QueryWrapper<OaOfficalSealBookEntity>();
+        queryWrapper.eq("SEAL_ID", sealId);
+        queryWrapper.eq("STR_BOOK_DATE", strDate);
+
         return this.list(queryWrapper);
     }
 }

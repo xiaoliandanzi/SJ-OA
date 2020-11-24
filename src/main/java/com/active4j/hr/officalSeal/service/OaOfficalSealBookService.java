@@ -14,5 +14,8 @@ import java.util.List;
  * @Description:
  */
 public interface OaOfficalSealBookService extends IService<OaOfficalSealBookEntity> {
-    public List<OaOfficalSealBookEntity> findNormalCar();
+
+    public List<OaOfficalSealBookEntity> findSealBooks(OaOfficalSealEntity oaOfficalSealEntity);
+
+    public List<OaOfficalSealBookEntity> findSealBooks(String carId, String strDate);
 }

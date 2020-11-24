@@ -1,5 +1,6 @@
 package com.active4j.hr.officalSeal.service.Impl;
 
+import com.active4j.hr.car.entity.OaCarEntity;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.officalSeal.dao.OaOfficalSealDao;
 import com.active4j.hr.officalSeal.entity.OaOfficalSealEntity;
@@ -25,7 +26,7 @@ public class OaOfficalSealServiceImpl extends ServiceImpl<OaOfficalSealDao, OaOf
     /*
      * 查看可用公章
      * */
-    public List<OaOfficalSealEntity> findNormalCar(){
+    public List<OaOfficalSealEntity> findNormalSeal(){
         QueryWrapper<OaOfficalSealEntity> queryWrapper = new QueryWrapper<OaOfficalSealEntity>();
         queryWrapper.eq("STATUS", GlobalConstant.OA_OFFICALSEAL_STATUS_NORMAL);
         return this.list(queryWrapper);
