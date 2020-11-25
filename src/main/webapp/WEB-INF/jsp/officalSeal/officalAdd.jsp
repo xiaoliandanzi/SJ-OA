@@ -23,7 +23,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">公章编号*：</label>
                             <div class="col-sm-8">
-                                <input id="sealId" name="sealId" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${seal.id }">
+                                <input id="sealid" name="sealid" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${seal.sealid }">
                             </div>
                         </div>
                         <div class="form-group">
@@ -35,7 +35,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">状态：</label>
                             <div class="col-sm-8">
-                                <t:dictSelect name="status" type="select" typeGroupCode="oacarstatus" defaultVal="${seal.status}"></t:dictSelect>
+                                <t:dictSelect name="status" type="select" typeGroupCode="oaofficalsealstatus" defaultVal="${seal.status}"></t:dictSelect>
                             </div>
                         </div>
                         <div class="form-group">

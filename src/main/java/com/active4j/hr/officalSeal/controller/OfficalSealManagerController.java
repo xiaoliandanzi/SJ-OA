@@ -1,9 +1,6 @@
 package com.active4j.hr.officalSeal.controller;
 
 import com.active4j.hr.base.controller.BaseController;
-import com.active4j.hr.car.domain.OaBookCarDomain;
-import com.active4j.hr.car.entity.OaCarBooksEntity;
-import com.active4j.hr.car.entity.OaCarEntity;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
@@ -92,7 +89,7 @@ public class OfficalSealManagerController extends BaseController {
     public AjaxJson save(OaOfficalSealEntity oaOfficalSealEntity, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try{
-            if(StringUtils.isEmpty(oaOfficalSealEntity.getId())) {
+            if(StringUtils.isEmpty(oaOfficalSealEntity.getSealid())) {
                 j.setSuccess(false);
                 j.setMsg("公章编号不能为空!");
                 return j;
@@ -133,8 +130,8 @@ public class OfficalSealManagerController extends BaseController {
     public AjaxJson delete(OaOfficalSealEntity oaOfficalSealEntity, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try{
-            if(StringUtils.isNotEmpty(oaOfficalSealEntity.getId())) {
-                oaOfficalSealService.removeById(oaOfficalSealEntity.getId());
+            if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealid())) {
+                oaOfficalSealService.removeById(oaOfficalSealEntity.getSealid());
             }
         }catch(Exception e) {
             j.setSuccess(false);
@@ -154,8 +151,8 @@ public class OfficalSealManagerController extends BaseController {
     public ModelAndView addorupdate(OaOfficalSealEntity oaOfficalSealEntity, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("officalSeal/officalAdd");
 
-        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getId())) {
-            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getId());
+        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealid())) {
+            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getSealid());
             view.addObject("seal", oaOfficalSealEntity);
         }
 
@@ -172,9 +169,9 @@ public class OfficalSealManagerController extends BaseController {
     public ModelAndView bookview(OaOfficalSealEntity oaOfficalSealEntity, String currentDate, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("officalSeal/sealBooks");
 
-        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getId())) {
-            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getId());
-            view.addObject("sealId", oaOfficalSealEntity.getId());
+        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealid())) {
+            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getSealid());
+            view.addObject("sealId", oaOfficalSealEntity.getSealid());
             view.addObject("sealName", oaOfficalSealEntity.getName());
             view.addObject("sealName", oaOfficalSealEntity.getName());
             view.addObject("id", oaOfficalSealEntity.getId());
@@ -198,17 +195,17 @@ public class OfficalSealManagerController extends BaseController {
     public ModelAndView view(OaOfficalSealEntity oaOfficalSealEntity, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("officalSeal/viewBooks");
         view.addObject("lstBooks", "-1");
-        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getId())) {
-            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getId());
+        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealid())) {
+            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getSealid());
             view.addObject("sealName", oaOfficalSealEntity.getName());
-            view.addObject("id", oaOfficalSealEntity.getId());
+            view.addObject("sealId", oaOfficalSealEntity.getSealid());
 
             List<OaOfficalSealBookEntity> lstBooks = oaOfficalSealBookService.findSealBooks(oaOfficalSealEntity);
             List<OaBookSealDomain> lstBookDoamins = new ArrayList<OaBookSealDomain>();
             if(null != lstBooks && lstBooks.size() > 0) {
                 for(OaOfficalSealBookEntity book : lstBooks) {
                     OaBookSealDomain domain = new OaBookSealDomain();
-                    domain.setId(book.getId());
+                    domain.setId(book.getSealId());
                     domain.setTitle("借用人:" + book.getCreateName());
                     String startTime = DateUtils.date2Str(book.getStartDate(), DateUtils.SDF_HHMM);
                     String endTime = DateUtils.date2Str(book.getEndDate(), DateUtils.SDF_HHMM);
@@ -234,17 +231,17 @@ public class OfficalSealManagerController extends BaseController {
         try{
             Map<String, Object> map = new HashMap<String, Object>();
 
-            if(StringUtils.isNotEmpty(oaOfficalSealEntity.getId())) {
-                oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getId());
+            if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealid())) {
+                oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getSealid());
                 map.put("sealName", oaOfficalSealEntity.getName());
-                map.put("sealId", oaOfficalSealEntity.getId());
+                map.put("sealId", oaOfficalSealEntity.getSealid());
 
                 List<OaOfficalSealBookEntity> lstBooks = oaOfficalSealBookService.findSealBooks(oaOfficalSealEntity);
                 List<OaBookSealDomain> lstBookDoamins = new ArrayList<OaBookSealDomain>();
                 if(null != lstBooks && lstBooks.size() > 0) {
                     for(OaOfficalSealBookEntity book : lstBooks) {
                         OaBookSealDomain domain = new OaBookSealDomain();
-                        domain.setId(book.getId());
+                        domain.setId(book.getSealId());
                         domain.setTitle("借用人:" + book.getCreateName());
                         String startTime = DateUtils.date2Str(book.getStartDate(), DateUtils.SDF_HHMM);
                         String endTime = DateUtils.date2Str(book.getEndDate(), DateUtils.SDF_HHMM);
