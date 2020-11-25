@@ -130,8 +130,8 @@ public class OfficalSealManagerController extends BaseController {
     public AjaxJson delete(OaOfficalSealEntity oaOfficalSealEntity, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try{
-            if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealid())) {
-                oaOfficalSealService.removeById(oaOfficalSealEntity.getSealid());
+            if(StringUtils.isNotEmpty(oaOfficalSealEntity.getId())) {
+                oaOfficalSealService.removeById(oaOfficalSealEntity.getId());
             }
         }catch(Exception e) {
             j.setSuccess(false);
@@ -151,8 +151,8 @@ public class OfficalSealManagerController extends BaseController {
     public ModelAndView addorupdate(OaOfficalSealEntity oaOfficalSealEntity, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("officalSeal/officalAdd");
 
-        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealid())) {
-            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getSealid());
+        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getId())) {
+            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getId());
             view.addObject("seal", oaOfficalSealEntity);
         }
 

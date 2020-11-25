@@ -40,9 +40,9 @@
     <t:dgCol name="opt" label="操作" ></t:dgCol>
     <t:dgDelOpt label="删除" url="officalSeal/manager/delete?id={id}"/>
     <t:dgToolBar url="officalSeal/manager/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>
-    <t:dgToolBar label="归还" icon="fa fa-list-alt" url="officalSeal/manager/return" type="pop" width="80%" height="95%"></t:dgToolBar>
     <t:dgToolBar url="officalSeal/manager/addorupdate" type="edit" width="40%" height="70%"></t:dgToolBar>
     <t:dgToolBar url="officalSeal/manager/addorupdate" type="view" width="40%" height="70%"></t:dgToolBar>
+    <t:dgToolBar label="归还" icon="fa fa-list-alt" url="officalSeal/manager/return" type="pop" width="80%" height="95%"></t:dgToolBar>
 </t:datagrid>
 </body>
 
