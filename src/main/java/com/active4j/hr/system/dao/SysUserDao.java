@@ -17,7 +17,7 @@ public interface SysUserDao extends BaseMapper<SysUserEntity>{
 	 * @description
 	 *  	根据用户ID 获取用户下属ID
 	 * @return List<String>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月3日 下午4:35:50
 	 */
 	public List<String> getUnderUserIds(List<String> roleIds);

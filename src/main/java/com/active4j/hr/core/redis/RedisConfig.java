@@ -11,7 +11,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * @description 
 		  redis 配置类
  * @time  2019年12月17日 下午4:41:31
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @Configuration

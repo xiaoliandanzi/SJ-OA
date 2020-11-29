@@ -15,7 +15,7 @@ import lombok.Setter;
  * @title OaWorkMeetRoomBooksEntity.java
  * @description 会议预定管理
  * @time 2020年4月6日 上午10:04:56
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @TableName("OA_WORK_MEET_ROOM_BOOKS")

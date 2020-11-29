@@ -15,7 +15,7 @@ import com.active4j.hr.core.beanutil.ApplicationContextUtil;
  * @title TaskAssigneeRoleNameListener.java
  * @description 根据角色名称确定的审批人
  * @time 2020年4月23日 下午9:20:46
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 public class TaskAssigneeRoleNameListener implements TaskListener {

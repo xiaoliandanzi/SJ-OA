@@ -14,7 +14,7 @@ import lombok.Setter;
  * @description 
 		  任务评价
  * @time  2020年4月7日 下午3:16:41
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @TableName("OA_WORK_TASK_COMMENTS")

@@ -48,7 +48,7 @@ import lombok.extern.slf4j.Slf4j;
  * @title ModelEditorJsonRestResource.java
  * @description 流程设计器
  * @time 2020年4月16日 下午1:34:41
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @RestController

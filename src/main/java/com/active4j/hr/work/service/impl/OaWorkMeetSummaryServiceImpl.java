@@ -16,7 +16,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  * @description 
 		  工作中心 会议
  * @time  2020年4月3日 下午2:24:38
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @Service("oaWorkMeetSummaryService")
@@ -28,7 +28,7 @@ public class OaWorkMeetSummaryServiceImpl extends ServiceImpl<OaWorkMeetSummaryD
 	 * @description
 	 *  	根据会议 获取会议纪要
 	 * @return OaWorkMeetSummaryEntity
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月7日 上午9:57:35
 	 */
 	public OaWorkMeetSummaryEntity findMeetSummary(OaWorkMeetEntity oaWorkMeetEntity) {

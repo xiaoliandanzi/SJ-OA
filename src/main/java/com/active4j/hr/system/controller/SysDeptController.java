@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
  * @description 
 		  系统管理  部门管理
  * @time  2020年1月29日 下午4:10:09
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @Controller
@@ -126,7 +126,7 @@ public class SysDeptController {
 	 * @description
 	 *  	部门保存
 	 * @return AjaxJson
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年2月1日 下午7:08:22
 	 */
 	@RequestMapping("/save")
@@ -218,7 +218,7 @@ public class SysDeptController {
 	 * @description
 	 *  	部门下人员列表
 	 * @return void
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年2月1日 下午7:15:33
 	 */
 	@RequestMapping("/userDatagrid")

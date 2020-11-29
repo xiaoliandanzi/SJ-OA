@@ -26,7 +26,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
  * @description 
 		  系统消息管理
  * @time  2020年4月3日 上午10:53:32
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @Controller
@@ -41,7 +41,7 @@ public class SysMessageController extends BaseController {
 	 * @description
 	 *  	列表显示
 	 * @return ModelAndView
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月3日 上午10:53:54
 	 */
 	@RequestMapping("/list")

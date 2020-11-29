@@ -11,7 +11,7 @@ import lombok.Setter;
  * @description 
 		  线程池参数维护
  * @time  2019年12月4日 下午4:18:45
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 

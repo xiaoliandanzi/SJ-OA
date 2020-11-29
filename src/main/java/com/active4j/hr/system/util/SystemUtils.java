@@ -127,7 +127,7 @@ public class SystemUtils {
 	 * 
 	 * @description 获取角色的树形结构
 	 * @return String
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月20日 下午2:39:11
 	 */
 	public static String getRoleTree(Set<String> lstRoleIds) {
@@ -149,7 +149,7 @@ public class SystemUtils {
 	 * @description
 	 *  	角色树形结构的拼接
 	 * @return void
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月20日 下午2:51:00
 	 */
 	private static void roleContact(List<SysRoleEntity> lstParents, StringBuffer sb, Set<String> lstRoleIds) {

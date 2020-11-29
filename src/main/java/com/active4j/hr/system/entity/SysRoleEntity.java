@@ -13,7 +13,7 @@ import lombok.Setter;
  * @description 
 		  系统管理  角色管理
  * @time  2020年1月15日 上午10:57:08
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @TableName("sys_role")

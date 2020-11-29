@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
  * @description 
 		  系统管理  角色管理
  * @time  2020年2月1日 下午7:44:11
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @Controller
@@ -246,7 +246,7 @@ public class SysRoleController extends BaseController {
 	 * @description
 	 *  	获取菜单下按钮
 	 * @return AjaxJson
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年2月2日 下午4:31:33
 	 */
 	@RequestMapping("/getOperationListForFunction")

@@ -13,7 +13,7 @@ import lombok.Setter;
  * @title OaWorkMeetEntity.java
  * @description 会议管理实体
  * @time 2020年4月7日 上午9:13:34
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @TableName("OA_WORK_MEET")

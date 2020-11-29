@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  * @description 
 		  工作中心 日报管理
  * @time  2020年4月3日 下午2:24:38
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @Service("oaWorkDialyService")
@@ -27,7 +27,7 @@ public class OaWorkDailyServiceImpl extends ServiceImpl<OaWorkDailyDao, OaWorkDa
 	 * @description
 	 *  	根据用户ID  时间获取日报
 	 * @return OaWorkDailyEntity
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月4日 下午9:19:33
 	 */
 	public OaWorkDailyEntity getOaWorkDaily(String userId, String strDate) {

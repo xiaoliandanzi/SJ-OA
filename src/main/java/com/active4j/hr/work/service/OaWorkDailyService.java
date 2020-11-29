@@ -10,7 +10,7 @@ public interface OaWorkDailyService extends IService<OaWorkDailyEntity> {
 	 * @description
 	 *  	根据用户ID  时间获取日报
 	 * @return OaWorkDailyEntity
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月4日 下午9:19:33
 	 */
 	public OaWorkDailyEntity getOaWorkDaily(String userId, String strDate);

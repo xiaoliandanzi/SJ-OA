@@ -16,7 +16,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 /**
  * @title WorkflowService.java
  * @time  2020年4月17日 下午3:08:44
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 public interface WorkflowService {
@@ -223,7 +223,7 @@ public interface WorkflowService {
 	 * @description
 	 *  	分页查询 用户代办组任务
 	 * @return IPage<WorkflowBaseEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月28日 上午10:45:43
 	 */
 	public IPage<WorkflowBaseEntity> findGroupTaskStrsByUserName(IPage<WorkflowBaseEntity> page,WorkflowBaseEntity base, String startTime, String endTime, String userName);
@@ -233,7 +233,7 @@ public interface WorkflowService {
 	 * @description
 	 *  	查询用户代办组任务，拾取任务
 	 * @return List<String>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月28日 上午10:47:20
 	 */
 	public List<String> findGroupTaskIdByBusinessKey(String businessKey, String userName);

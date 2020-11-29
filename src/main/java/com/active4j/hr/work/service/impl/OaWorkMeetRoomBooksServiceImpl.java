@@ -18,7 +18,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  * @description 
 		  工作中心 会议室类型
  * @time  2020年4月3日 下午2:24:38
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @Service("oaWorkMeetRoomBooksService")
@@ -39,7 +39,7 @@ public class OaWorkMeetRoomBooksServiceImpl extends ServiceImpl<OaWorkMeetRoomBo
 	
 	/**
 	 * @return List<OaWorkMeetRoomBooksEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月6日 上午10:50:34
 	 */
 	public List<OaWorkMeetRoomBooksEntity> findMeetBooks(String roomId, String strDate) {

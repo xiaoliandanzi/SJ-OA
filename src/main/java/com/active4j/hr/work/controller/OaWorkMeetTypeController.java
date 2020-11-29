@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  * @description 
 		  工作中心  会议类型
  * @time  2020年4月6日 上午9:42:03
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @Controller

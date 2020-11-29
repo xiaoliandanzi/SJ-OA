@@ -353,7 +353,7 @@ public class FlowContractApprovalController extends BaseController {
 	 * @description
 	 *  	删除业务数据
 	 * @return AjaxJson
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月23日 下午1:14:48
 	 */
 	@RequestMapping("/del")

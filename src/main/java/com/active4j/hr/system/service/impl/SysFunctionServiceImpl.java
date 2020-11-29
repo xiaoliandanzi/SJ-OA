@@ -37,7 +37,7 @@ public class SysFunctionServiceImpl extends ServiceImpl<SysFunctionDao, SysFunct
 	 * @description
 	 *  	查询顶级菜单
 	 * @return List<SysFunctionEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月19日 上午9:29:21
 	 */
 	public List<SysFunctionEntity> getParentFunctions() {
@@ -58,7 +58,7 @@ public class SysFunctionServiceImpl extends ServiceImpl<SysFunctionDao, SysFunct
 	 * @params
 	 *      菜单ID
 	 * @return List<SysFunctionEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月19日 上午10:05:02
 	 */
 	public List<SysFunctionEntity> getChildFunctionsByParentId(String functionId) {
@@ -101,7 +101,7 @@ public class SysFunctionServiceImpl extends ServiceImpl<SysFunctionDao, SysFunct
 	 * @description
 	 *  	构建树形表格显示的菜单
 	 * @return List<TSFunctionTreeData>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月16日 下午9:43:23
 	 */
 	public List<TSFunctionTreeData> getTreeFunctionList() {

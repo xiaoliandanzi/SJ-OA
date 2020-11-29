@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
  * @description 
 		  系统共用线程池 配置
  * @time  2019年12月4日 下午4:24:02
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 
@@ -34,7 +34,7 @@ public class ThreadPoolConfig {
 	 * @description
 	 *  	线程池的初始化  采用spring线程池   二选一
 	 * @return ThreadPoolTaskExecutor
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2019年12月4日 下午5:00:52
 	 */
 	@Bean
@@ -62,7 +62,7 @@ public class ThreadPoolConfig {
 	 * @description
 	 *  	特别说明 加上这个bean是因为集成activiti时，启用@EnableScheduling注解会报错，系统存在两个taskExecutor，所以特别指定这一个
 	 * @return TaskExecutor
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月14日 下午9:48:08
 	 */
 	@Primary
@@ -75,7 +75,7 @@ public class ThreadPoolConfig {
 	 * @description
 	 *  	线程池的初始化  jdk方式  二选一
 	 * @return ThreadPoolExecutor
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2019年12月4日 下午5:01:14
 	 */
 //	@Bean

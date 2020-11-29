@@ -13,7 +13,7 @@ import lombok.Setter;
  * @description 
 		  系统管理  菜单管理
  * @time  2020年1月15日 上午11:09:16
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @TableName("sys_function")

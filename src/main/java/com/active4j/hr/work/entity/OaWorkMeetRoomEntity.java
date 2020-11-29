@@ -14,7 +14,7 @@ import lombok.Setter;
  * @description 
 		  会议室管理
  * @time  2020年4月6日 上午10:00:33
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @TableName("OA_WORK_MEET_ROOM")

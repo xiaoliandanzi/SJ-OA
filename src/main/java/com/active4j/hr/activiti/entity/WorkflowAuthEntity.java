@@ -11,7 +11,7 @@ import lombok.Setter;
  * @title WorkflowAuthEntity.java
  * @description 工作流权限
  * @time 2020年4月20日 下午1:27:08
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @TableName("wf_workflow_auth")

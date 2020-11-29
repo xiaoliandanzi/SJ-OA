@@ -13,7 +13,7 @@ import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
  * @title ActivitiUtils.java
  * @description TODO
  * @time 2020年4月26日 下午2:42:54
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 public class ActivitiUtils {

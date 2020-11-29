@@ -44,7 +44,7 @@ import lombok.extern.slf4j.Slf4j;
  * @description 
 		  系统管理  用户管理
  * @time  2020年1月23日 下午11:42:03
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @Controller
@@ -83,7 +83,7 @@ public class SysUserController extends BaseController {
 	 * @description
 	 *  	表格数据显示
 	 * @return void
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月25日 下午9:46:12
 	 */
 	@RequestMapping("/datagrid")
@@ -104,7 +104,7 @@ public class SysUserController extends BaseController {
 	 * @description
 	 *  	新增或编辑跳转
 	 * @return ModelAndView
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月28日 下午3:48:35
 	 */
 	@RequestMapping("/addorupdate")
@@ -222,7 +222,7 @@ public class SysUserController extends BaseController {
 	 * @description
 	 *  	跳转到修改密码页面
 	 * @return ModelAndView
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月29日 下午1:13:10
 	 */
 	@RequestMapping("/changepwd")
@@ -288,7 +288,7 @@ public class SysUserController extends BaseController {
 	 * @description
 	 *  	锁定用户
 	 * @return AjaxJson
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月29日 下午1:58:16
 	 */
 	@RequestMapping("/lock")
@@ -320,7 +320,7 @@ public class SysUserController extends BaseController {
 	 * @description
 	 *  	解锁用户
 	 * @return AjaxJson
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月29日 下午1:58:16
 	 */
 	@RequestMapping("/unlock")

@@ -11,7 +11,7 @@ import lombok.Setter;
  * @title OaWorkTargetExcuteEntity.java
  * @description 目标执行
  * @time 2020年4月8日 下午2:56:08
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @TableName("OA_WORK_TARGET_EXCUTE")

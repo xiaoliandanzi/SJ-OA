@@ -6,7 +6,7 @@ package com.active4j.hr.activiti.util;
  * @description 
 		  工作流常量
  * @time  2020年4月23日 下午8:46:03
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 public class WorkflowConstant {

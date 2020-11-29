@@ -16,7 +16,7 @@ public interface OaWorkMeetRoomBooksService extends IService<OaWorkMeetRoomBooks
 	/**
 	 * 
 	 * @return List<OaWorkMeetRoomBooksEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月6日 上午10:50:34
 	 */
 	public List<OaWorkMeetRoomBooksEntity> findMeetBooks(String roomId, String strDate);

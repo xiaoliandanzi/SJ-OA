@@ -48,7 +48,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 	 * @description
 	 *  	根据角色的名称 查询用户
 	 * @return List<SysUserEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月23日 下午9:05:35
 	 */
 	public List<SysUserEntity> findUserByRoleName(String roleName){
@@ -77,7 +77,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 	 * @description
 	 *  	获取所有父级角色
 	 * @return List<SysRoleEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年2月1日 下午8:04:09
 	 */
 	public List<SysRoleEntity> getParentRoles() {
@@ -97,7 +97,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 	 * @params
 	 *      角色ID
 	 * @return List<SysRoleEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年2月1日 下午8:04:09
 	 */
 	public List<SysRoleEntity> getChildRolesByParentId(String roleId) {
@@ -114,7 +114,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 	 * @description
 	 *  	构建树形菜单显示的表格
 	 * @return List<TSRoleTreeData>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年2月1日 下午7:59:46
 	 */
 	public List<TSRoleTreeData> getTreeRoleList(){
@@ -135,7 +135,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 	 * @description
 	 *  	删除角色
 	 * @return void
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年2月1日 下午8:52:23
 	 */
 	public void deleteMenu(SysRoleEntity role) {
@@ -151,7 +151,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 	 * @description
 	 *  	根据角色 获取菜单信息
 	 * @return List<SysRoleFunctionEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年2月1日 下午9:11:16
 	 */
 	public List<SysRoleFunctionEntity> getRoleFunctionList(SysRoleEntity role){
@@ -236,7 +236,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 	 * @description
 	 *  	获取配置了权限的按钮集合
 	 * @return Set<String>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年2月2日 下午4:39:23
 	 */
 	public Set<String> getOperationCodesByRoleIdAndFunctionId(String roleId, String functionId){
@@ -263,7 +263,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 	 * @description
 	 *  	获取有权限菜单
 	 * @return SysRoleFunctionEntity
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年2月2日 下午4:49:43
 	 */
 	public SysRoleFunctionEntity getRoleFunctionByRoleIdAndFunctionId(String roleId, String functionId) {

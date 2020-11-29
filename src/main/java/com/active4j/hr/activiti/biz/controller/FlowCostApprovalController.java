@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
  * @description 
 		  费用审批
  * @time  2020年4月22日 下午4:52:41
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @Controller
@@ -300,7 +300,7 @@ public class FlowCostApprovalController extends BaseController {
 	 * @description
 	 *  	删除业务数据
 	 * @return AjaxJson
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月23日 下午1:14:48
 	 */
 	@RequestMapping("/del")

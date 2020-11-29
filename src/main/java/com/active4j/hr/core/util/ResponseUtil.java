@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
  * @title ResponseUtil.java
  * @description 输出响应工具类
  * @time 2020年1月27日 下午9:15:02
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @Slf4j
@@ -52,7 +52,7 @@ public class ResponseUtil {
 	 * @description
 	 *  	将表格数据输出到前端
 	 * @return void
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月27日 下午11:34:48
 	 */
 	public static <T> void writeJson(HttpServletResponse response, DataGrid dataGrid, IPage<T> lstResult) {

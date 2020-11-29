@@ -14,7 +14,7 @@ import lombok.Setter;
  * @description 
 		  系统管理 用户实体
  * @time  2020年1月15日 上午10:33:20
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @TableName("sys_user")

@@ -13,7 +13,7 @@ import lombok.Setter;
  * @title SysMessageEntity.java
  * @description 系统消息实体
  * @time 2020年4月3日 上午10:48:55
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 

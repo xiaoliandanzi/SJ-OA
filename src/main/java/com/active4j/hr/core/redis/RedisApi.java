@@ -14,7 +14,7 @@ import org.springframework.util.CollectionUtils;
  * @title RedisUtil.java
  * @description redis工具类
  * @time 2019年12月17日 下午5:00:05
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @Component

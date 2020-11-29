@@ -11,7 +11,7 @@ public interface OaWorkMeetSummaryService extends IService<OaWorkMeetSummaryEnti
 	 * @description
 	 *  	根据会议 获取会议纪要
 	 * @return OaWorkMeetSummaryEntity
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月7日 上午9:57:35
 	 */
 	public OaWorkMeetSummaryEntity findMeetSummary(OaWorkMeetEntity oaWorkMeetEntity);

@@ -12,7 +12,7 @@ import lombok.Setter;
  * @description 
 		  费用审批
  * @time  2020年4月22日 下午3:44:49
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @TableName("flow_cost_approval")

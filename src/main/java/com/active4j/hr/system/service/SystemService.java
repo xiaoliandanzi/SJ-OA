@@ -13,7 +13,7 @@ public interface SystemService {
 	 * @description
 	 *  	初始化数据字典数据
 	 * @return void
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月16日 上午11:17:55
 	 */
 	public void initDic();

@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * @title LoginController.java
  * @time  2020年1月15日 下午2:06:06
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @Controller
@@ -35,7 +35,7 @@ public class LoginController {
 	 * @description
 	 *  	跳转到项目首页
 	 * @return String
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月15日 下午10:25:13
 	 */
 	@RequestMapping(value = "/console", method = RequestMethod.GET)
@@ -48,7 +48,7 @@ public class LoginController {
 	 * @description
 	 *  	跳转到项目首页
 	 * @return String
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月15日 下午10:25:13
 	 */
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -61,7 +61,7 @@ public class LoginController {
 	 * @description
 	 *  	跳转到项目首页
 	 * @return String
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月15日 下午10:25:13
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -74,7 +74,7 @@ public class LoginController {
 	 * @description
 	 *  	跳转到403
 	 * @return String
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月15日 下午10:25:13
 	 */
 	@RequestMapping(value = "/403", method = RequestMethod.GET)
@@ -88,7 +88,7 @@ public class LoginController {
 	 * @description
 	 *  	跳转登录页面
 	 * @return String
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月15日 下午2:09:06
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)

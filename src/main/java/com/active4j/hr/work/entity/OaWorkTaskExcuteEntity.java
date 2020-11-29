@@ -14,7 +14,7 @@ import lombok.Setter;
  * @description 
 		  工作任务执行记录
  * @time  2020年4月7日 下午3:17:32
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @TableName("OA_WORK_TASK_EXCUTE")

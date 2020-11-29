@@ -14,7 +14,7 @@ import com.active4j.hr.system.service.SysUserService;
  * @title WorkflowTaskUtil.java
  * @description 工作流审批 关于审批人的工具类
  * @time 2020年4月23日 下午8:55:23
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 public class WorkflowTaskUtil {
@@ -29,7 +29,7 @@ public class WorkflowTaskUtil {
 	 * @description
 	 *  	查询申请人的部门经理
 	 * @return List<String>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月23日 下午9:29:33
 	 */
 	public static List<String> getDepartManagerByApplyName(String applyName) {
@@ -52,7 +52,7 @@ public class WorkflowTaskUtil {
 	 * @description
 	 *  	TODO
 	 * @return List<String>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月23日 下午9:29:50
 	 */
 	public static List<String> getApprovalUserByRoleName(String roleName) {

@@ -13,7 +13,7 @@ import lombok.Setter;
  * @title WorkflowFormEntity.java
  * @description 表单
  * @time 2020年4月18日 下午9:51:04
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @TableName("wf_flow_form")

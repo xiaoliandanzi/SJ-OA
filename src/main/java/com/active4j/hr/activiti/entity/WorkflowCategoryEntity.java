@@ -13,7 +13,7 @@ import lombok.Setter;
  * @title WorkflowCategoryEntity.java
  * @description 工作流 类别
  * @time 2020年4月16日 下午2:38:27
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @TableName("wf_category")

@@ -12,7 +12,7 @@ import lombok.Setter;
  * @description 
 		  redis属性加载器    集成shiro时使用
  * @time  2019年12月17日 下午2:58:24
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @ConfigurationProperties(prefix="spring.redis")

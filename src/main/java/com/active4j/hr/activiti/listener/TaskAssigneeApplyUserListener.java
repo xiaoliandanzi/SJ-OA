@@ -12,7 +12,7 @@ import com.active4j.hr.core.beanutil.ApplicationContextUtil;
  * @title TaskAssigneeApplyUserListener.java
  * @description 申请人
  * @time 2020年4月23日 下午8:39:25
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 public class TaskAssigneeApplyUserListener implements TaskListener {

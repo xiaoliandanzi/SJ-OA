@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @title WebMVCConfig.java
  * @description webmvc相关配置 解决swagger页面404
  * @time 2019年12月31日 上午10:28:46
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @Configuration

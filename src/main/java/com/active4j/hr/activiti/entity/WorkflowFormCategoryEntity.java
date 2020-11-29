@@ -13,7 +13,7 @@ import lombok.Setter;
  * @title WorkflowFormCategory.java
  * @description 表单类别
  * @time 2020年4月18日 下午3:44:27
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @TableName("wf_form_category")

@@ -16,7 +16,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  * @description 
 		  系统消息管理
  * @time  2020年4月3日 上午10:52:54
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @Service("sysMessageService")

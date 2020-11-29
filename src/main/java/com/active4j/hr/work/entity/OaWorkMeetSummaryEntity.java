@@ -13,7 +13,7 @@ import lombok.Setter;
  * @title OaWorkMeetSummaryEntity.java
  * @description 会议纪要实体
  * @time 2020年4月7日 上午9:26:56
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @TableName("OA_WORK_MEET_SUMMARY")

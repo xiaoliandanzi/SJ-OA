@@ -4,7 +4,7 @@ package com.active4j.hr.activiti.util;
  * @title BpmsActivityTypeEnum.java
  * @description 流程图绘制枚举类
  * @time 2020年4月24日 下午9:56:49
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 public enum BpmsActivityTypeEnum {

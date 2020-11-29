@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  * @description 
 		全局异常管理
  * @time 2019年12月11日 下午5:09:21
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @ControllerAdvice
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
 	 * @description
 	 *  	实体字段校验  校验不通过抛出异常
 	 * @return void
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2019年12月11日 下午5:25:57
 	 */
 	@ExceptionHandler(BindException.class)

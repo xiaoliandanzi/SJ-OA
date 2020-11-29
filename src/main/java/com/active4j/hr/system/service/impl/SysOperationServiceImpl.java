@@ -26,7 +26,7 @@ public class SysOperationServiceImpl extends ServiceImpl<SysOperationDao, SysOpe
 	 * @description
 	 *  	根据菜单ID 获取该菜单下的按钮
 	 * @return List<SysOperationEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年2月2日 下午4:34:37
 	 */
 	public List<SysOperationEntity> getOperationsByFunctionId(String functionId) {

@@ -13,7 +13,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
  * @title FastJson2JsonRedisSerializer.java
  * @description 利用fastjson实现redis序列号
  * @time 2019年12月17日 下午4:57:27
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {

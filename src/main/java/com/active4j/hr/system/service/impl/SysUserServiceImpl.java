@@ -46,7 +46,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	 * @description
 	 *  	根据用户ID获取用户所在部门 注意是部门
 	 * @return SysDeptEntity
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月8日 下午9:03:57
 	 */
 	public SysDeptEntity getUserDepart(String userId) {
@@ -94,7 +94,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	 * @description
 	 *  	根据部门获取用户
 	 * @return List<SysUserEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月7日 上午10:52:54
 	 */
 	public List<SysUserEntity> findUsersByDept(SysDeptEntity sysDeptEntity) {
@@ -151,7 +151,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	 * @description
 	 *  	菜单权限
 	 * @return Set<String>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年2月2日 下午10:34:33
 	 */
 	private Set<String> getAuthMenus(List<SysFunctionEntity> lstMenus, List<String> lstBtns) {
@@ -179,7 +179,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	 * @description
 	 *  	角色权限
 	 * @return Set<String>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年2月2日 下午10:39:27
 	 */
 	public Set<String> getAuthRoles(List<SysRoleEntity> lstRoles) {
@@ -333,7 +333,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	 * @description
 	 *  	用户的保存
 	 * @return void
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月28日 下午10:19:49
 	 */
 	public void saveUser(SysUserEntity user, String[] roleIds) {
@@ -371,7 +371,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	 * @description
 	 *  	获取当前用户的下属用户ID
 	 * @return List<String>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月3日 下午4:22:41
 	 */
 	public List<String> getUnderUserIds(String userId) {
@@ -394,7 +394,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	 * @params
 	 *      userId  用户ID
 	 * @return List<SysRoleEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月28日 下午11:40:01
 	 */
 	public List<SysRoleEntity> getUserRoleByUserId(String userId){
@@ -416,7 +416,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	 * @description
 	 *  	编辑用户
 	 * @return void
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月29日 上午12:26:43
 	 */
 	public void saveOrUpdateUser(SysUserEntity user, String[] roleIds) {

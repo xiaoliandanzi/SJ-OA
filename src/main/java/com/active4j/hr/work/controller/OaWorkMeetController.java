@@ -40,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
  * @title OaWorkMeetController.java
  * @description 会议管理
  * @time 2020年4月7日 上午9:07:03
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @Controller
@@ -64,7 +64,7 @@ public class OaWorkMeetController extends BaseController {
 	 * 
 	 * @description 列表显示
 	 * @return ModelAndView
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月7日 上午9:07:54
 	 */
 	@RequestMapping("/list")

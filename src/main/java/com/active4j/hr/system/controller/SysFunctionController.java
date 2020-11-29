@@ -40,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
  * @description 
 		  系统管理  菜单管理
  * @time  2020年1月16日 下午4:37:26
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @Controller
@@ -98,7 +98,7 @@ public class SysFunctionController extends BaseController{
 	 * @description
 	 *  	按钮表格的显示
 	 * @return void
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月19日 下午3:09:45
 	 */
 	@RequestMapping("/opdategrid")
@@ -264,7 +264,7 @@ public class SysFunctionController extends BaseController{
 	 * @description
 	 *  	跳转到新增编辑按钮页面
 	 * @return ModelAndView
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月29日 下午2:52:09
 	 */
 	@RequestMapping("/addorupdateop")

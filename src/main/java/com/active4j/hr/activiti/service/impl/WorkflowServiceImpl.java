@@ -59,7 +59,7 @@ import lombok.extern.slf4j.Slf4j;
  * @title WorkflowServiceImpl.java
  * @description 工作流 核心
  * @time 2020年4月17日 下午3:08:58
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @Service("workflowService")
@@ -757,7 +757,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 	 * @description
 	 *  	分页查询 用户代办组任务
 	 * @return IPage<WorkflowBaseEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月28日 上午10:45:43
 	 */
 	public IPage<WorkflowBaseEntity> findGroupTaskStrsByUserName(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String userName){
@@ -769,7 +769,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 	 * @description
 	 *  	查询用户代办组任务，拾取任务
 	 * @return List<String>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月28日 上午10:47:20
 	 */
 	public List<String> findGroupTaskIdByBusinessKey(String businessKey, String userName){

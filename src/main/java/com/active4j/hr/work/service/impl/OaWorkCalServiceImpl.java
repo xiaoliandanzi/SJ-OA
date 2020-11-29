@@ -18,7 +18,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  * @description 
 		  工作中心 日程管理
  * @time  2020年4月3日 下午2:24:38
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @Service("oaWorkCalService")
@@ -30,7 +30,7 @@ public class OaWorkCalServiceImpl extends ServiceImpl<OaWorkCalDao, OaWorkSchedu
 	 * @description
 	 *  	根据用户ID 获取日程
 	 * @return List<OaWorkScheduleEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月7日 下午1:31:11
 	 */
 	public List<OaWorkScheduleEntity> getOaWorkScheduleByUserId(String userId){
@@ -52,7 +52,7 @@ public class OaWorkCalServiceImpl extends ServiceImpl<OaWorkCalDao, OaWorkSchedu
 	 * @description
 	 *  	根据用户ID 获取日程
 	 * @return List<OaWorkScheduleEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月7日 下午1:31:11
 	 */
 	public List<OaWorkScheduleEntity> getOaWorkScheduleByUserId(String userId, Date startDate, Date endDate) {
@@ -69,7 +69,7 @@ public class OaWorkCalServiceImpl extends ServiceImpl<OaWorkCalDao, OaWorkSchedu
 	 * @description
 	 *  	根据用户ID 获取日程
 	 * @return List<OaWorkScheduleEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月7日 下午1:31:11
 	 */
 	public List<OaWorkScheduleEntity> getOaWorkScheduleByUserId(Object[] ids, Date startDate, Date endDate) {

@@ -17,7 +17,7 @@ public interface SysUserService extends IService<SysUserEntity> {
 	 * @description
 	 *  	根据用户ID获取用户所在部门 注意是部门
 	 * @return SysDeptEntity
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月8日 下午9:03:57
 	 */
 	public SysDeptEntity getUserDepart(String userId);
@@ -27,7 +27,7 @@ public interface SysUserService extends IService<SysUserEntity> {
 	 * @description
 	 *  	获取当前用户的下属用户ID
 	 * @return List<String>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月3日 下午4:22:41
 	 */
 	public List<String> getUnderUserIds(String userId);
@@ -44,7 +44,7 @@ public interface SysUserService extends IService<SysUserEntity> {
 	 * @description
 	 *  	根据部门获取用户
 	 * @return List<SysUserEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月7日 上午10:52:54
 	 */
 	public List<SysUserEntity> findUsersByDept(SysDeptEntity sysDeptEntity);
@@ -75,7 +75,7 @@ public interface SysUserService extends IService<SysUserEntity> {
 	 * @description
 	 *  	用户的保存
 	 * @return void
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月28日 下午10:19:49
 	 */
 	public void saveUser(SysUserEntity user, String[] roleIds);
@@ -87,7 +87,7 @@ public interface SysUserService extends IService<SysUserEntity> {
 	 * @params
 	 *      userId  用户ID
 	 * @return List<SysRoleEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月28日 下午11:40:01
 	 */
 	public List<SysRoleEntity> getUserRoleByUserId(String userId);
@@ -97,7 +97,7 @@ public interface SysUserService extends IService<SysUserEntity> {
 	 * @description
 	 *  	编辑用户
 	 * @return void
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月29日 上午12:26:43
 	 */
 	public void saveOrUpdateUser(SysUserEntity user, String[] roleIds);

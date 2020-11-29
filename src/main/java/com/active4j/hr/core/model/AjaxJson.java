@@ -28,7 +28,7 @@ public class AjaxJson {
 	 * @description
 	 *  	转换为json字符串
 	 * @return String
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2019年12月11日 下午5:29:56
 	 */
 	public String toJsonStr() {

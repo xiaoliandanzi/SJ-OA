@@ -15,7 +15,7 @@ import lombok.Setter;
  * @title BaseActivitiEntity.java
  * @description 流程业务实体 基础实体表
  * @time 2020年4月22日 下午1:16:23
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @TableName("wf_base")

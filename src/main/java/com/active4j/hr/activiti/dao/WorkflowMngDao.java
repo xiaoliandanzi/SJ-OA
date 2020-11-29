@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @description 
 		  流程
  * @time  2020年4月16日 下午2:55:37
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 public interface WorkflowMngDao extends BaseMapper<WorkflowMngEntity>{

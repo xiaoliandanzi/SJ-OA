@@ -13,7 +13,7 @@ public interface OaWorkCalService extends IService<OaWorkScheduleEntity> {
 	 * @description
 	 *  	根据用户ID 获取日程
 	 * @return List<OaWorkScheduleEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月7日 下午1:31:11
 	 */
 	public List<OaWorkScheduleEntity> getOaWorkScheduleByUserId(String userId);
@@ -26,7 +26,7 @@ public interface OaWorkCalService extends IService<OaWorkScheduleEntity> {
 	 * @description
 	 *  	根据用户ID 获取日程
 	 * @return List<OaWorkScheduleEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月7日 下午1:31:11
 	 */
 	public List<OaWorkScheduleEntity> getOaWorkScheduleByUserId(String userId, Date startDate, Date endDate);
@@ -36,7 +36,7 @@ public interface OaWorkCalService extends IService<OaWorkScheduleEntity> {
 	 * @description
 	 *  	根据用户ID 获取日程
 	 * @return List<OaWorkScheduleEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月7日 下午1:31:11
 	 */
 	public List<OaWorkScheduleEntity> getOaWorkScheduleByUserId(Object[] ids, Date startDate, Date endDate);

@@ -14,7 +14,7 @@ import lombok.Setter;
  * @description 
 		  工作中心 会议类型
  * @time  2020年4月6日 上午9:18:56
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 @TableName("OA_WORK_MEET_TYPE")

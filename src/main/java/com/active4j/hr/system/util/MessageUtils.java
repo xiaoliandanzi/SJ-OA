@@ -13,7 +13,7 @@ import com.active4j.hr.system.service.SysMessageService;
  * @description 
 		  系统消息发送 工具类
  * @time  2020年4月3日 下午12:14:54
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
 */
 public class MessageUtils {
@@ -25,7 +25,7 @@ public class MessageUtils {
 	 * @description
 	 *  	放系统消息
 	 * @return void
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年4月4日 下午9:37:41
 	 */
 	public static void SendSysMessage(String userId, String content) {

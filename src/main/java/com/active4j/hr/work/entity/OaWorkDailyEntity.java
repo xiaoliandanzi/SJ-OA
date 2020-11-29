@@ -17,7 +17,7 @@ import lombok.Setter;
  * @title OaWorkDailyEntity.java
  * @description 工作中心 日报
  * @time 2020年4月3日 下午1:55:31
- * @author 麻木神
+ * @author xfzhang
  * @version 1.0
  */
 @TableName("oa_work_daily")

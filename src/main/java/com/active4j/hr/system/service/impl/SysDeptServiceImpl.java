@@ -34,7 +34,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptDao, SysDeptEntity> i
 	 * 
 	 * @description 获取所有顶级部门
 	 * @return List<SysDeptEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月28日 下午3:13:14
 	 */
 	public List<SysDeptEntity> getParentDepts() {
@@ -50,7 +50,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptDao, SysDeptEntity> i
 	/**
 	 * @description 根据部门ID 获取子部门
 	 * @return List<SysDeptEntity>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月28日 下午3:35:12
 	 */
 	public List<SysDeptEntity> getChildDeptsByDeptId(String deptId) {
@@ -67,7 +67,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptDao, SysDeptEntity> i
 	 * 
 	 * @description 表格的树形显示
 	 * @return List<TSDepartTreeData>
-	 * @author 麻木神
+	 * @author xfzhang
 	 * @time 2020年1月29日 下午4:15:50
 	 */
 	public List<TSDepartTreeData> getTreeDepartList() {
