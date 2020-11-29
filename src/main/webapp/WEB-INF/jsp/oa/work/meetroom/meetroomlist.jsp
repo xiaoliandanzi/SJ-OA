@@ -31,8 +31,8 @@
 		<t:dgCol name="status" label="状态" width="80" dictionary="oaworkmeet" display="zeroOrOne"></t:dgCol>
 		<t:dgCol name="opt" label="操作" ></t:dgCol>
 		<t:dgDelOpt label="删除" url="oa/work/meetRoom/delete?id={id}"/>
-		<t:dgToolBar url="oa/work/meetRoom/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>
-		<t:dgToolBar url="oa/work/meetRoom/addorupdate" type="edit" width="40%" height="70%"></t:dgToolBar>
+		<t:dgToolBar url="oa/work/meetRoom/addorupdate" type="add" operationCode="oa:meetroom:add" width="40%" height="70%"></t:dgToolBar>
+		<t:dgToolBar url="oa/work/meetRoom/addorupdate" type="edit" operationCode="oa:meetroom:edit" width="40%" height="70%"></t:dgToolBar>
 		<t:dgToolBar url="oa/work/meetRoom/addorupdate" type="view" width="40%" height="70%"></t:dgToolBar>
 		<t:dgToolBar label="预定" icon="fa fa-cog" url="oa/work/meetRoom/bookview" type="pop" width="50%" height="70%"></t:dgToolBar>
 		<t:dgToolBar label="查看预定" icon="fa fa-list-alt" url="oa/work/meetRoom/view" type="pop" width="80%" height="95%"></t:dgToolBar>

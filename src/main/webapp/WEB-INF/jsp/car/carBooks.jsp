@@ -49,6 +49,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">用车事由*：</label>
+                            <div class="col-sm-8">
+                                <textarea id="reason" name="reason" class="form-control" >${car.reason}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">目的地(途经地)*：</label>
+                            <div class="col-sm-8">
+                                <textarea id="site" name="site" class="form-control" >${car.site}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">备注：</label>
                             <div class="col-sm-8">
                                 <textarea id="memo" name="memo" class="form-control" >${car.memo}</textarea>

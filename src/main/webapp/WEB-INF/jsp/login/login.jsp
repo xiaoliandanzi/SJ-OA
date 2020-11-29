@@ -32,12 +32,12 @@
                 <div class="form-group">
                     <input type="password" name="password" id="password" value="123456" class="form-control" placeholder="密码" required="">
                 </div>
-<%--                <div class="form-group">--%>
-<%--                    <input id="randCode" name="randCode" type="text" class="form-control" placeholder="验证码" required="" style="width: 60%">--%>
-<%--                    <div style="float: right; margin-top: -3.4rem;">--%>
-<%--                         <img id="randCodeImage" src="" />--%>
-<%--                    </div>--%>
-<%--                </div>--%>
+                <%--<div class="form-group">--%>
+                    <%--<input id="randCode" name="randCode" type="text" class="form-control" placeholder="验证码" required="" style="width: 60%">--%>
+                    <%--<div style="float: right; margin-top: -3.4rem;">--%>
+                         <%--<img id="randCodeImage" src="" />--%>
+                    <%--</div>--%>
+                <%--</div>--%>
                 <button type="button" class="btn btn-primary block full-width m-b" onclick="doSubmit()">登 录</button>
                 
                 <%--<p class="text-muted text-center"> <a href="https://github.com/yunchaoyun/active4j-oa">github</a> | <a href="https://gitee.com/active4j/active4j-oa">码云</a>--%>
