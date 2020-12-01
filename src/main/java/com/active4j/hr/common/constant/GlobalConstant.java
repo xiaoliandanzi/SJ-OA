@@ -83,6 +83,12 @@ public class GlobalConstant {
 	 public static final String OA_WORK_MEET_ROOM_STATUS_STOP = "0"; //停用
 
 	/***
+	 * ITEM Requisition
+	 */
+	public static final String ITEM_REQUISITION_STATUS_NORMAL = "1"; //正常
+	public static final String ITEM_REQUISITION_STATUS_STOP = "0"; //停用
+
+	/***
 	 * OA CAR
 	 */
 	public static final String OA_CAR_STATUS_NORMAL = "1"; //正常

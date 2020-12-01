@@ -14,7 +14,7 @@
                         <%--<span class="label label-success pull-right">月</span>--%>
                         <h3>12345案件统计</h3>
                     </div>
-                    <div class="ibox-content">
+                    <div class="ibox-content" >
                         <%--<h1 class="no-margins">40 886,200</h1>--%>
                         <%--<div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i>--%>
                         <%--</div>--%>
@@ -43,6 +43,7 @@
                         <h3>文件处理</h3>
                     </div>
                     <div class="ibox-content">
+
                         <%--<h1 class="no-margins">106,120</h1>--%>
                         <%--<div class="stat-percent font-bold text-navy">44% <i class="fa fa-level-up"></i>--%>
                         <%--</div>--%>
@@ -110,21 +111,21 @@
             <div class="ibox-content">
             </div>
             <%--<ol>--%>
-                <%--<li>开箱即用，节省开发时间，提高开发效率</li>--%>
-                <%--<li>代码全部开源，持续更新，共同维护</li>--%>
-                <%--<li>支持分布式部署，session统一由redis进行管理</li>--%>
-                <%--<li>基于SpringBoot，简化了大量项目配置和maven依赖，让您更专注于业务开发</li>--%>
-                <%--<li>使用分层设计，分为dao，service，Controller，view层，层次清楚，低耦合，高内聚</li>--%>
-                <%--<li>提供了诸多的UI组件</li>--%>
-                <%--<li>友好的代码结构及注释，便于阅读及二次开发</li>--%>
-                <%--<li>灵活的权限控制, 整合shiro，可控制到页面或按钮，满足绝大部分的权限需求,优化权限注解方便权限配置</li>--%>
-                <%--<li>日志记录采用aop(LogAop类)方式，可对用户所有操作进行记录</li>--%>
-                <%--<li>引入quartz定时任务，可动态完成任务的添加、修改、删除、暂停、恢复及日志查看等功能</li>--%>
-                <%--<li>数据统计报表：丰富的报表统计功能</li>--%>
-                <%--<li>集成jsp页面，采用标准JSTL标签库对常用组件进行封装，便于将传统项目过度到springboot</li>--%>
-                <%--<li>组件库丰富，对常用页面组件进行了代码封装，提高开发效率</li>--%>
-                <%--<li>前端页面简洁优美，支持移动端</li>--%>
-                <%--<li>更多……</li>--%>
+            <a href="/car/manage/datagrid"><li>开箱即用，节省开发时间，提高开发效率</li></a>
+                <a href="//www.baidu.com"><li onclick="next()">代码全部开源，持续更新，共同维护</li></a>
+            <a href="javascript:search()"><li >支持分布式部署，session统一由redis进行管理</li></a>
+                <a url="oa/work/meetRoom/bookview" type="pop"><li>基于SpringBoot，简化了大量项目配置和maven依赖，让您更专注于业务开发</li></a>
+                <li>使用分层设计，分为dao，service，Controller，view层，层次清楚，低耦合，高内聚</li>
+                <li>提供了诸多的UI组件</li>
+                <li>友好的代码结构及注释，便于阅读及二次开发</li>
+                <li>灵活的权限控制, 整合shiro，可控制到页面或按钮，满足绝大部分的权限需求,优化权限注解方便权限配置</li>
+                <li>日志记录采用aop(LogAop类)方式，可对用户所有操作进行记录</li>
+                <li>引入quartz定时任务，可动态完成任务的添加、修改、删除、暂停、恢复及日志查看等功能</li>
+                <li>数据统计报表：丰富的报表统计功能</li>
+                <li>集成jsp页面，采用标准JSTL标签库对常用组件进行封装，便于将传统项目过度到springboot</li>
+                <li>组件库丰富，对常用页面组件进行了代码封装，提高开发效率</li>
+                <li>前端页面简洁优美，支持移动端</li>
+                <li>更多……</li>
             <%--</ol>--%>
         </div>
     </div>
@@ -211,7 +212,17 @@
     <%--</div>--%>
 </div>
 </body>
-
-
+<script type="text/javascript">
+    function search()
+    { $.ajax({
+        type:"post",
+        dataType:"text",
+        data:{"id":0},
+        url:'/car/manage/list'//目标地址
+    })
+    }
+</script>
 </html>
+
+
 
