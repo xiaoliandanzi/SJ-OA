@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,20 +21,17 @@ import java.util.Date;
 public class BorrowedItemEntity extends BaseEntity {
     private static final long serialVersionUID = -126521290616619135L;
 
-    @TableField("ITEM_NAME")
-    @NotEmpty(message = "物品名称不能为空")
-    private String itemName;
+    @TableField("NAME")
+    private String name;
 
-    @TableField("ITEM_ID")
-    @NotEmpty(message = "物品ID不能为空")
-    private String itemID;
+    @TableField("TYPE")
+    private String type;
 
-    @TableField("ITEM_QUANTITY")
-    @NotEmpty(message = "物品数量不能为空")
-    private int itemQuantity;
+    @TableField("BOARD")
+    private String board;
 
-    @TableField("ITEM_OUT_OF_STORE")
-    private int itemOutOfStore;
+    @TableField("QUANTITY")
+    private int quantity;
 
     @TableField("STATUS")
     @NotEmpty(message = "状态不能为空")

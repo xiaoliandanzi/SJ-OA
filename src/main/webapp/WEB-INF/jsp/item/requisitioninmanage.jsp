@@ -43,7 +43,7 @@
     <t:dgCol name="name" label="种类" width="100"></t:dgCol>
     <t:dgCol name="name" label="品牌" width="100"></t:dgCol>
     <t:dgCol name="quantity" label="数量" width="80"></t:dgCol>
-    <t:dgCol name="status" label="状态" width="80" dictionary="oaitemrequisitionstatus" display="zeroOrOne"></t:dgCol>
+    <t:dgCol name="status" label="状态" width="80" dictionary="itemstatus" display="zeroOrOne"></t:dgCol>
     <t:dgCol name="memo" label="备注" width="80"></t:dgCol>
     <t:dgCol name="opt" label="操作" ></t:dgCol>
     <t:dgDelOpt label="删除" url="item/manage/requisition/delete?id={id}"/>

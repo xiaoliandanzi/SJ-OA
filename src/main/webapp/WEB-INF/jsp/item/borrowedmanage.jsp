@@ -30,7 +30,7 @@
             </div>
             <div class="ibox">
                 <div class="ibox-content">
-                    <div id="borrowedManageTable" class="jqGrid_wrapper"></div>
+                    <div id="itemBorrowedTable" class="jqGrid_wrapper"></div>
                 </div>
             </div>
         </div>
@@ -38,19 +38,18 @@
 </div>
 
 <!-- 脚本部分 -->
-<t:datagrid actionUrl="car/manage/datagrid" tableContentId="borrowedManageTable" searchGroupId="searchGroupId" fit="true" caption="车辆管理" name="carManageList" pageSize="20" sortName="createDate" sortOrder="desc">
+<t:datagrid actionUrl="item/manage/borrowed/datagrid" tableContentId="itemBorrowedTable" searchGroupId="searchGroupId" fit="true" caption="借用物品管理" name="borrowedManageList" pageSize="20" sortName="createDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="carId" label="车牌号" width="100"></t:dgCol>
-    <t:dgCol name="name" label="汽车名称" width="100"></t:dgCol>
-    <t:dgCol name="persons" label="载人数" width="80"></t:dgCol>
-    <t:dgCol name="status" label="状态" width="80" dictionary="oacarstatus" display="zeroOrOne"></t:dgCol>
+    <t:dgCol name="name" label="种类" width="100"></t:dgCol>
+    <t:dgCol name="name" label="品牌" width="100"></t:dgCol>
+    <t:dgCol name="quantity" label="数量" width="80"></t:dgCol>
+    <t:dgCol name="status" label="状态" width="80" dictionary="itemstatus" display="zeroOrOne"></t:dgCol>
+    <t:dgCol name="memo" label="备注" width="80"></t:dgCol>
     <t:dgCol name="opt" label="操作" ></t:dgCol>
-    <t:dgDelOpt label="删除" url="car/manage/delete?id={id}"/>
-    <t:dgToolBar url="car/manage/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>
-    <t:dgToolBar url="car/manage/addorupdate" type="edit" width="40%" height="70%"></t:dgToolBar>
-    <t:dgToolBar url="car/manage/addorupdate" type="view" width="40%" height="70%"></t:dgToolBar>
-    <t:dgToolBar label="预定" icon="fa fa-cog" url="car/manage/bookview" type="pop" width="50%" height="70%"></t:dgToolBar>
-    <t:dgToolBar label="查看预定" icon="fa fa-list-alt" url="car/manage/view" type="pop" width="80%" height="95%"></t:dgToolBar>
+    <t:dgDelOpt label="删除" url="item/manage/borrowed/delete?id={id}"/>
+    <t:dgToolBar url="item/manage/borrowed/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>
+    <t:dgToolBar url="item/manage/borrowed/addorupdate" type="edit" width="40%" height="70%"></t:dgToolBar>
+    <%--<t:dgToolBar url="item/manage/requisition/addorupdate" type="view" width="40%" height="70%"></t:dgToolBar>--%>
 </t:datagrid>
 </body>
 
