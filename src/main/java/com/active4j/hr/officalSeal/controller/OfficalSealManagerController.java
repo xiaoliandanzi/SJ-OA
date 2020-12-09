@@ -89,7 +89,7 @@ public class OfficalSealManagerController extends BaseController {
     public AjaxJson save(OaOfficalSealEntity oaOfficalSealEntity, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try{
-            if(StringUtils.isEmpty(oaOfficalSealEntity.getSealid())) {
+            if(StringUtils.isEmpty(oaOfficalSealEntity.getSealId())) {
                 j.setSuccess(false);
                 j.setMsg("公章编号不能为空!");
                 return j;
@@ -169,9 +169,9 @@ public class OfficalSealManagerController extends BaseController {
     public ModelAndView bookview(OaOfficalSealEntity oaOfficalSealEntity, String currentDate, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("officalSeal/sealBooks");
 
-        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealid())) {
-            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getSealid());
-            view.addObject("sealId", oaOfficalSealEntity.getSealid());
+        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealId())) {
+            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getSealId());
+            view.addObject("sealId", oaOfficalSealEntity.getSealId());
             view.addObject("sealName", oaOfficalSealEntity.getName());
             view.addObject("sealName", oaOfficalSealEntity.getName());
             view.addObject("id", oaOfficalSealEntity.getId());
@@ -195,10 +195,10 @@ public class OfficalSealManagerController extends BaseController {
     public ModelAndView view(OaOfficalSealEntity oaOfficalSealEntity, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("officalSeal/viewBooks");
         view.addObject("lstBooks", "-1");
-        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealid())) {
-            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getSealid());
+        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealId())) {
+            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getSealId());
             view.addObject("sealName", oaOfficalSealEntity.getName());
-            view.addObject("sealId", oaOfficalSealEntity.getSealid());
+            view.addObject("sealId", oaOfficalSealEntity.getSealId());
 
             List<OaOfficalSealBookEntity> lstBooks = oaOfficalSealBookService.findSealBooks(oaOfficalSealEntity);
             List<OaBookSealDomain> lstBookDoamins = new ArrayList<OaBookSealDomain>();
@@ -231,10 +231,10 @@ public class OfficalSealManagerController extends BaseController {
         try{
             Map<String, Object> map = new HashMap<String, Object>();
 
-            if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealid())) {
-                oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getSealid());
+            if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealId())) {
+                oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getSealId());
                 map.put("sealName", oaOfficalSealEntity.getName());
-                map.put("sealId", oaOfficalSealEntity.getSealid());
+                map.put("sealId", oaOfficalSealEntity.getSealId());
 
                 List<OaOfficalSealBookEntity> lstBooks = oaOfficalSealBookService.findSealBooks(oaOfficalSealEntity);
                 List<OaBookSealDomain> lstBookDoamins = new ArrayList<OaBookSealDomain>();

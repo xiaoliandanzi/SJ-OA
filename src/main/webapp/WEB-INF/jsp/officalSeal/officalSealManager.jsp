@@ -31,7 +31,7 @@
 </div>
 
 <!-- 脚本部分 -->
-<t:datagrid actionUrl="officalSeal/manager/datagrid" tableContentId="officalSealManagerTable" searchGroupId="searchGroupId" fit="true" caption="公章管理" name="woaWorkMeetRoomList" pageSize="20" sortName="createDate" sortOrder="desc">
+<t:datagrid actionUrl="officalSeal/manager/datagrid" tableContentId="officalSealManagerTable" searchGroupId="searchGroupId" fit="true" caption="公章管理" name="officalSealList" pageSize="20" sortName="createDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="sealid" label="公章编号" width="100"></t:dgCol>
     <t:dgCol name="name" label="公章名称" width="80"></t:dgCol>

@@ -201,7 +201,7 @@ public class CarManageController extends BaseController {
             List<OaCarBooksEntity> lstBooks = oaCarBooksService.findCarBooks(oaCarEntity);
             List<OaBookCarDomain> lstBookDoamins = new ArrayList<OaBookCarDomain>();
             if(null != lstBooks && lstBooks.size() > 0) {
-                for(OaCarBooksEntity book : lstBooks) {
+                    for(OaCarBooksEntity book : lstBooks) {
                     OaBookCarDomain domain = new OaBookCarDomain();
                     domain.setId(book.getId());
                     domain.setTitle("预定人:" + book.getCreateName());
