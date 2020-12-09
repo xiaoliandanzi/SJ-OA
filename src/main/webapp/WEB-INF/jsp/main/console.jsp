@@ -111,12 +111,12 @@
             <div class="ibox-content">
             </div>
             <%--<ol>--%>
-            <a href="/car/manage/datagrid"><li>开箱即用，节省开发时间，提高开发效率</li></a>
+            <a href="car/manage/show"><li>开箱即用，节省开发时间，提高开发效率</li></a>
                 <a href="//www.baidu.com"><li onclick="next()">代码全部开源，持续更新，共同维护</li></a>
             <a href="javascript:search()"><li >支持分布式部署，session统一由redis进行管理</li></a>
                 <a url="oa/work/meetRoom/bookview" type="pop"><li>基于SpringBoot，简化了大量项目配置和maven依赖，让您更专注于业务开发</li></a>
                 <li>使用分层设计，分为dao，service，Controller，view层，层次清楚，低耦合，高内聚</li>
-                <li>提供了诸多的UI组件</li>
+            <a href="wf/flow/center/list"><li>提供了诸多的UI组件</li></a>
                 <li>友好的代码结构及注释，便于阅读及二次开发</li>
                 <li>灵活的权限控制, 整合shiro，可控制到页面或按钮，满足绝大部分的权限需求,优化权限注解方便权限配置</li>
                 <li>日志记录采用aop(LogAop类)方式，可对用户所有操作进行记录</li>

@@ -27,10 +27,29 @@
                             </div>
                         </div>
                         <div class="form-group">
+                                <label class="col-sm-2 control-label">乘车人数:</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="" class="form-control">
+                                </div>
+                                <label class="col-sm-2 control-label">乘车人:</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="" class="form-control">
+                                </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label m-b">开始时间：</label>
-                            <div class="col-sm-4 m-b">
+                            <div class="col-sm-3 m-b">
                                 <div class="input-group clockpicker" data-autoclose="true">
-                                    <input type="text" class="form-control" name="startDate" value='<fmt:formatDate value="${car.startDate }" type="time" pattern="HH:mm"/>'>
+                                    <input type="text" class="form-control" name="startDate" value='<fmt:formatDate value="${car.startDate }" type="time" pattern="YYYY-MM-DD"/>'>
+                                    <span class="input-group-addon">
+			                                   <span class="fa fa-clock-o"></span>
+			                            </span>
+                                </div>
+                            </div>
+                            <label class="col-sm-2 control-label m-b">还车时间：</label>
+                            <div class="col-sm-3 m-b">
+                                <div class="input-group clockpicker" data-autoclose="true">
+                                    <input type="text" class="form-control" name="endDate" value='<fmt:formatDate value="${car.endDate }" type="time" pattern="YYYY-MM-DD"/>'>
                                     <span class="input-group-addon">
 			                                   <span class="fa fa-clock-o"></span>
 			                            </span>
@@ -38,15 +57,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label m-b">结束时间：</label>
-                            <div class="col-sm-4 m-b">
-                                <div class="input-group clockpicker" data-autoclose="true">
-                                    <input type="text" class="form-control" name="endDate" value='<fmt:formatDate value="${car.endDate }" type="time" pattern="HH:mm"/>'>
-                                    <span class="input-group-addon">
-			                                   <span class="fa fa-clock-o"></span>
-			                            </span>
-                                </div>
-                            </div>
+
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">用车事由*：</label>
@@ -73,25 +84,25 @@
     </div>
 </div>
 </body>
-<%--<script type="text/javascript">
+<script type="text/javascript">
 
     $(function() {
         laydate({
-            elem : "#bookDate",
+            elem : "#startDate",
             event : "focus",
             istime : false,
             format : 'YYYY-MM-DD'
         });
-
-
+        laydate({
+            elem : "#endDate",
+            event : "focus",
+            istime : false,
+            format : 'YYYY-MM-DD'
+        });
         $('.clockpicker').clockpicker();
 
     });
-
-
-
-
-</script>--%>
+</script>
 </html>
 
 
