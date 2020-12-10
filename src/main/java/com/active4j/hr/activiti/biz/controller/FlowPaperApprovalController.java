@@ -1,6 +1,5 @@
 package com.active4j.hr.activiti.biz.controller;
 
-import com.active4j.hr.activiti.biz.entity.FlowCarApprovalEntity;
 import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowPaperApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
@@ -165,12 +164,11 @@ public class FlowPaperApprovalController extends BaseController {
         return j;
     }
 
-
     /**
      * 保存方法
-     * @param workflowCategoryEntity
+     * @param
      * @param optType  0 : 保存草稿   1:直接申请
-     * @param flowId   流程管理中心ID
+     * @param
      * @param request
      * @return
      */
@@ -245,6 +243,7 @@ public class FlowPaperApprovalController extends BaseController {
             }
 
             if(StringUtils.equals(optType, "1")) {
+                flowPaperApprovalEntity.setApplyStatus(0);
                 //直接申请流程
                 if(StringUtils.isBlank(workflowBaseEntity.getId())) {
                     workflowBaseEntity.setApplyDate(DateUtils.getDate());
@@ -255,7 +254,7 @@ public class FlowPaperApprovalController extends BaseController {
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
                     workflowBaseEntity.setStatus("1"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
                     //保存业务数据
-                    flowPaperApprovalService.saveNewCar(workflowBaseEntity, flowPaperApprovalEntity);
+                    flowPaperApprovalService.saveNewPaper(workflowBaseEntity, flowPaperApprovalEntity);
 
                     //启动流程
                     //赋值流程变量
@@ -289,8 +288,8 @@ public class FlowPaperApprovalController extends BaseController {
                     workflowBaseEntity.setWorkflowId(workflow.getId());
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
                     workflowBaseEntity.setStatus("0"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
-
-                    flowPaperApprovalService.saveNewCar(workflowBaseEntity, flowPaperApprovalEntity);
+                    flowPaperApprovalEntity.setApplyStatus(3); //文件状态 3：草稿中
+                    flowPaperApprovalService.saveNewPaper(workflowBaseEntity, flowPaperApprovalEntity);
                 }else {
                     WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
                     MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);

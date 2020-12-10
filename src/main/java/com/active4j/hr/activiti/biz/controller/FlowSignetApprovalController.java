@@ -61,7 +61,7 @@ public class FlowSignetApprovalController extends BaseController {
 	 * 跳转到表单页面
 	 * @param request
 	 * @param id  流程中心的ID
-	 * @param businessId 业务ID
+	 * @param  业务ID
 	 * @return
 	 */
 	@RequestMapping("/go")

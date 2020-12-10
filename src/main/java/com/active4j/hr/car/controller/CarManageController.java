@@ -71,7 +71,18 @@ public class CarManageController extends BaseController {
         QueryWrapper<OaCarEntity> queryWrapper = QueryUtils.installQueryWrapper(oaCarEntity, request.getParameterMap(), dataGrid);
         // 执行查询
         IPage<OaCarEntity> lstResult = oaCarService.page(new Page<OaCarEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
-
+//        List<OaCarEntity> newList = new ArrayList<>();
+//        long total = lstResult.getTotal();
+//        if (total > 0) {
+//            for(OaCarEntity entity : lstResult.getRecords()){
+//                if (entity.getPersons() != 5){
+//                    newList.add(entity);
+//                    total++;
+//                }
+//            }
+//        }
+//        lstResult.setRecords(newList);
+//        lstResult.setTotal(total);
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
     }

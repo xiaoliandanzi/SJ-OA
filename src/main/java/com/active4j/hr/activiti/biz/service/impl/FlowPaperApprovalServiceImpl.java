@@ -22,7 +22,7 @@ public class FlowPaperApprovalServiceImpl extends ServiceImpl<FlowPaperApprovalD
     @Autowired
     private WorkflowBaseService workflowBaseService;
 
-    public void saveNewCar(WorkflowBaseEntity workflowBaseEntity, FlowPaperApprovalEntity flowPaperApprovalEntity) {
+    public void saveNewPaper(WorkflowBaseEntity workflowBaseEntity, FlowPaperApprovalEntity flowPaperApprovalEntity) {
 
         this.save(flowPaperApprovalEntity);
 

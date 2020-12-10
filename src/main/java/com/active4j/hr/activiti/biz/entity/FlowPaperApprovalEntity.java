@@ -79,4 +79,10 @@ public class FlowPaperApprovalEntity extends BaseEntity {
     @TableField("TITLE")
     private String title;
 
+    /**
+     * 审批状态 0:审批中 1：审批完成 2：驳回 3:草稿状态
+     */
+    @TableField("APPLYSTATUS")
+    private Integer applyStatus;
+
 }
