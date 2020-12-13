@@ -13,6 +13,8 @@ import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
+import com.active4j.hr.system.model.SysUserModel;
+import com.active4j.hr.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
@@ -49,6 +51,8 @@ public class FlowPaperApprovalController extends BaseController {
 
     @Autowired
     private WorkflowService workflowService;
+    @Autowired
+    private SysUserService sysUserService;
 
     /**
      * 跳转到表单页面
@@ -121,6 +125,13 @@ public class FlowPaperApprovalController extends BaseController {
             view.addObject("biz", biz);
         }
 
+        //获取当前用户id
+        String userId = ShiroUtils.getSessionUserId();
+        //获取当前用户个人资料
+        SysUserModel user = sysUserService.getInfoByUserId(userId);
+        view.addObject("dept", user.getDeptName());
+        view.addObject("userName", user.getUserName());
+
         view.addObject("workflowId", workflowId);
         return view;
     }
@@ -174,16 +185,11 @@ public class FlowPaperApprovalController extends BaseController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public AjaxJson save(WorkflowBaseEntity workflowBaseEntity, FlowPaperApprovalEntity flowPaperApprovalEntity, String optType, HttpServletRequest request) {
+    public AjaxJson save(WorkflowBaseEntity workflowBaseEntity, FlowPaperApprovalEntity flowPaperApprovalEntity,
+                         String optType, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try {
             if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
-                return j;
-            }
-
-            if(null == flowPaperApprovalEntity.getDraftMan()) {
-                j.setSuccess(false);
-                j.setMsg("起草人为空");
                 return j;
             }
 
@@ -235,12 +241,19 @@ public class FlowPaperApprovalController extends BaseController {
                 return j;
             }
 
+            if(null == flowPaperApprovalEntity.getAttachment()) {
+                j.setSuccess(false);
+                j.setMsg("上传文件不能为空!");
+                return j;
+            }
+
             WorkflowMngEntity workflow = workflowMngService.getById(workflowBaseEntity.getWorkflowId());
             if(null == workflow) {
                 j.setSuccess(false);
                 j.setMsg("参数错误，系统中没有该流程");
                 return j;
             }
+
 
             if(StringUtils.equals(optType, "1")) {
                 flowPaperApprovalEntity.setApplyStatus(0);

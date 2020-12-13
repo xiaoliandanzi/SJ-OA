@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <div class="form-group">
     <label class="col-sm-3 control-label">申请编号：</label>
     <div class="col-sm-5">
@@ -19,9 +20,13 @@
     </div>
 </div>
 <div class="form-group">
+    <label class="col-sm-3 control-label">科室：</label>
+    <p class="form-control-static">${dept}</p>
+</div>
+<div class="form-group">
     <label class="col-sm-3 control-label">起草人：</label>
     <div class="col-sm-5">
-        <input id="draftMan" name="draftMan" minlength="1" type="text" class="form-control" required="" value="${biz.draftMan }">
+        <input id="draftMan" name="draftMan"  type="text" class="form-control" required="" readonly value="${userName }">
     </div>
 </div>
 <div class="form-group">
@@ -45,9 +50,12 @@
 </div>
 <div class="form-group">
     <label class="col-sm-3 control-label">发文日期：</label>
-    <div class="col-sm-5">
-        <input class="laydate-icon form-control layer-date" id="paperDate" name="paperDate" value='<fmt:formatDate value="${biz.paperDate }" type="date" pattern="yyyy-MM-dd"/>'>
+    <div class="col-sm-8">
+        <input id="paperDate" name="paperDate" type="text" class="laydate-icon form-control layer-date" value='<fmt:formatDate value="${biz.paperDate }" type="date" pattern="yyyy-MM-dd"/>'>
     </div>
+    <%--<div class="col-sm-5">
+        <input class="laydate-icon form-control layer-date" id="paperDate" name="paperDate" value='<fmt:formatDate value="${biz.paperDate }" type="date" pattern="yyyy-MM-dd"/>'>
+    </div>--%>
 </div>
 <div class="form-group">
     <label class="col-sm-3 control-label">发文文号：</label>
@@ -73,6 +81,17 @@
         <input id="paperAbstract" name="paperAbstract" minlength="1" type="text" class="form-control" required="" value="${biz.paperAbstract }">
     </div>
 </div>
+
+<div class="form-group">
+    <label class="col-sm-3 control-label m-b">附件:</label>
+    <div class="col-sm-2">
+        <div id="filePicker">上传附件</div>
+    </div>
+    <div class="col-sm-4">
+        <div id="fileList" class="uploader-list"></div>
+    </div>
+</div>
+
 <div class="form-group">
     <label class="col-sm-3 control-label">备注：</label>
     <div class="col-sm-5">

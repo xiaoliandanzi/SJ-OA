@@ -68,6 +68,12 @@ public class FlowPaperApprovalEntity extends BaseEntity {
     private String paperAbstract;
 
     /**
+     * 附件
+     */
+    @TableField("ATTACHMENT")
+    private String attachment;
+
+    /**
      * 备注
      */
     @TableField("COMMIT")
