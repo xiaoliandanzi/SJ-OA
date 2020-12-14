@@ -18,20 +18,28 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <t:formvalid action="car/carBooks/save">
+                    <t:formvalid action="officalSeal/officalSealBooks/save">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">车辆*：</label>
+                            <label class="col-sm-2 control-label">公章*：</label>
                             <div class="col-sm-8">
-                                <p class="form-control-static">${carName } ${carId }</p>
+                                <p class="form-control-static">${sealName } ${sealId }</p>
                                 <input type="hidden" name="id" id="id" value="${id }">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">乘车人数:</label>
+                            <label class="col-sm-2 control-label">科室:</label>
                             <div class="col-sm-3">
                                 <input type="text" name="" class="form-control">
                             </div>
-                            <label class="col-sm-2 control-label">乘车人:</label>
+                            <label class="col-sm-2 control-label">借用人:</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="" class="form-control">
+                            </div>
+                            <label class="col-sm-2 control-label">内容:</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="" class="form-control">
+                            </div>
+                            <label class="col-sm-2 control-label">主送单位:</label>
                             <div class="col-sm-3">
                                 <input type="text" name="" class="form-control">
                             </div>
@@ -46,7 +54,7 @@
 			                            </span>
                                 </div>
                             </div>
-                            <label class="col-sm-2 control-label m-b">还车时间：</label>
+                            <label class="col-sm-2 control-label m-b">归还时间：</label>
                             <div class="col-sm-3 m-b">
                                 <div class="input-group clockpicker" data-autoclose="true">
                                     <input type="text" class="form-control" name="endDate" value='<fmt:formatDate value="${car.endDate }" type="time" pattern="YYYY-MM-DD"/>'>
@@ -60,21 +68,9 @@
 
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">用车事由*：</label>
-                            <div class="col-sm-8">
-                                <textarea id="reason" name="reason" class="form-control" >${car.reason}</textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">目的地(途经地)*：</label>
-                            <div class="col-sm-8">
-                                <textarea id="site" name="site" class="form-control" >${car.site}</textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-2 control-label">备注：</label>
                             <div class="col-sm-8">
-                                <textarea id="memo" name="memo" class="form-control" >${car.memo}</textarea>
+                                <textarea id="memo" name="memo" class="form-control" >${seal.memo}</textarea>
                             </div>
                         </div>
                     </t:formvalid>

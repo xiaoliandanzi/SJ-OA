@@ -37,7 +37,7 @@ import java.util.List;
  * @Description:
  */
 @Controller
-@RequestMapping("/officalSeal/officalSealBooks")
+@RequestMapping("officalSeal/officalSealBooks")
 @Slf4j
 public class officalSealBookController  extends BaseController {
     @Autowired

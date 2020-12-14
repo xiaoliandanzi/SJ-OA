@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public class OfficalSealReturnController extends BaseController {
     @RequestMapping("/show")
     public ModelAndView show(HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("officalSeal/officalSealReturn");
+        ModelAndView view = new ModelAndView("officalSeal/officalSealReturnRecord");
         return view;
     }
 }

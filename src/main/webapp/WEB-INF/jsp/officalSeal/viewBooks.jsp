@@ -19,12 +19,12 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5 id="carNameTitle">车辆预定信息(${carName } ${carId })</h5>
+                    <h5 id="sealNameTitle">车辆预定信息(${sealName } ${sealId })</h5>
                 </div>
                 <div class="ibox-content">
                     <p>
-                        <c:forEach items="${lstCars }" var="r">
-                            <button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="goCar('${r.id }');">&nbsp;${r.name } ${r.carId }&nbsp;</button>
+                        <c:forEach items="${lstSeals }" var="r">
+                            <button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="goSeal('${r.id }');">&nbsp;${r.name } ${r.sealId }&nbsp;</button>
                         </c:forEach>
                         <input type="hidden" id="id" name="id" value="${id }">
                     </p>
@@ -48,10 +48,10 @@
             dayClick: function (date, allDay, jsEvent, view){
                 var currentDate = new Date(date).QHformat('yyyy-MM-dd');
                 var id = $("#id").val();
-                var url = 'car/manage/bookview?id=' + id + '&currentDate=' + currentDate;
+                var url = 'officalSeal/manager/bookview?id=' + id + '&currentDate=' + currentDate;
                 parent.layer.open({
                     type : 2,
-                    title : '预定车辆',
+                    title : '借用公章',
                     shadeClose : true,
                     shade : 0.8,
                     area : [ '50%', '70%' ],
@@ -68,7 +68,7 @@
 
                     },
                     end: function() {
-                        goCar(id);
+                        goSeal(id);
                     }
                 });
             },
@@ -76,18 +76,18 @@
         });
     });
 
-    function goCar(id) {
+    function goSeal(id) {
 
         $("#id").val(id);
 
-        $.post("car/manage/getCarView",{id:id}, function(o){
+        $.post("officalSeal/manager/getCarView",{id:id}, function(o){
             if(o.success) {
                 $("#calendar").fullCalendar("removeEvents");
 
-                var carName = o.attributes.carName;
-                var carId = o.attributes.carId;
+                var sealName = o.attributes.sealName;
+                var sealId = o.attributes.sealId;
                 $("#carNameTitle").empty();
-                $("#carNameTitle").append("车辆预定信息("+carName+" " + carId + ")");
+                $("#carNameTitle").append("车辆预定信息("+sealName+" " + sealId + ")");
 
                 var lstBooks = o.attributes.lstBooks;
                 for(var i = 0; i < lstBooks.length; i++) {
