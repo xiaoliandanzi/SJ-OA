@@ -35,12 +35,6 @@
         </div>
     </div>
 
-    <%@include file="/WEB-INF/jsp/flow/include/apphis.jsp" %>
-
-    <c:if test="${show == '1' }">
-        <%@include file="/WEB-INF/jsp/flow/include/inputapp.jsp" %>
-    </c:if>
-
 </div>
 </body>
 

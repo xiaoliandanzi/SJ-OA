@@ -38,10 +38,32 @@
     <t:dgCol name="paperCount" label="文件份数" width="80"></t:dgCol>
     <t:dgCol name="paperDate" label="发文日期" width="80"></t:dgCol>
     <t:dgCol name="title" label="文件标题" width="80"></t:dgCol>
-    <t:dgCol name="opt" label="操作" ></t:dgCol>
-    <t:dgDelOpt label="查看" url="paper/manage/paperview?id={id}"/>
+    <%--<t:dgCol name="opt" label="操作" ></t:dgCol>--%>
+    <t:dgToolBar url="paper/manage/addorupdate" type="view" width="70%"></t:dgToolBar>
+    <t:dgToolBar label="附件下载" icon="glyphicon glyphicon-resize-full" type="define" funName="doAttachment"></t:dgToolBar>
 </t:datagrid>
 </body>
+
+<script type="text/javascript">
+
+    function doAttachment() {
+        var rowId = $('#paperManageList').jqGrid('getGridParam','selrow');
+        var rowData = $('#paperManageList').jqGrid('getRowData',rowId);
+
+        if(!rowId) {
+            qhAlert('请选择文件后再下载！');
+            return;
+        }
+
+        if(!rowData.attachment) {
+            qhAlert('该文件附件还未上传附件！');
+            return;
+        }
+
+        location.href = "func/upload/download?id=" + rowData.attachment;
+    };
+
+</script>
 
 </html>
 
