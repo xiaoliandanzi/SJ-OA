@@ -38,8 +38,8 @@
 <%--toto--%>
 <div class="form-group">
     <label class="col-sm-3 control-label">公开选择：</label>
-    <div class="col-sm-5">
-        <input id="paperPublic" name="paperPublic" type="number" class="form-control" required="" value="${biz.paperPublic }">
+    <div class="col-sm-8">
+        <t:dictSelect name="paperPublic" type="select" typeGroupCode="paperpublicstatus" defaultVal="${biz.paperPublic}"></t:dictSelect>
     </div>
 </div>
 <div class="form-group">
@@ -81,16 +81,28 @@
         <input id="paperAbstract" name="paperAbstract" minlength="1" type="text" class="form-control" required="" value="${biz.paperAbstract }">
     </div>
 </div>
-
-<div class="form-group">
-    <label class="col-sm-3 control-label m-b">附件:</label>
-    <div class="col-sm-2">
-        <div id="filePicker">上传附件</div>
+<c:if test="${empty biz.id }">
+    <div class="form-group">
+        <label class="col-sm-3 control-label m-b">附件:</label>
+        <div class="col-sm-2">
+            <div id="filePicker">上传附件</div>
+        </div>
+        <div class="col-sm-4">
+            <div id="fileList" class="uploader-list"></div>
+        </div>
     </div>
-    <div class="col-sm-4">
-        <div id="fileList" class="uploader-list"></div>
+</c:if>
+<c:if test="${not empty biz.id }">
+    <div class="form-group">
+        <label class="col-sm-3 control-label m-b">附件:</label>
+        <div class="col-sm-2">
+            <div id="filePicker">上传附件</div>
+        </div>
+        <div class="col-sm-4">
+            <div id="fileList" class="uploader-list">${attachment}</div>
+        </div>
     </div>
-</div>
+</c:if>
 
 <div class="form-group">
     <label class="col-sm-3 control-label">备注：</label>

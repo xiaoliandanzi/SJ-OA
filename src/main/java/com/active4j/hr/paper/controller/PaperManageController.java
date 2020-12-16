@@ -74,6 +74,7 @@ public class PaperManageController extends BaseController {
             }
             lstResult.setTotal(total);
             lstResult.setRecords(newList);
+
         }
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
