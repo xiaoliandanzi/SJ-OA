@@ -35,6 +35,9 @@
                             <div class="col-sm-3">
                                 <input type="text" name="" class="form-control">
                             </div>
+                        </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">内容:</label>
                             <div class="col-sm-3">
                                 <input type="text" name="" class="form-control">
@@ -48,16 +51,16 @@
                             <label class="col-sm-2 control-label m-b">开始时间：</label>
                             <div class="col-sm-3 m-b">
                                 <div class="input-group clockpicker" data-autoclose="true">
-                                    <input type="text" class="form-control" name="startDate" value='<fmt:formatDate value="${car.startDate }" type="time" pattern="YYYY-MM-DD"/>'>
+                                    <input type="text" class="form-control" name="startDate" value='<fmt:formatDate value="${seal.startDate }" type="time" pattern="YYYY-MM-DD"/>'>
                                     <span class="input-group-addon">
 			                                   <span class="fa fa-clock-o"></span>
 			                            </span>
                                 </div>
-                            </div>
+                              </div>
                             <label class="col-sm-2 control-label m-b">归还时间：</label>
                             <div class="col-sm-3 m-b">
                                 <div class="input-group clockpicker" data-autoclose="true">
-                                    <input type="text" class="form-control" name="endDate" value='<fmt:formatDate value="${car.endDate }" type="time" pattern="YYYY-MM-DD"/>'>
+                                    <input type="text" class="form-control" name="endDate" value='<fmt:formatDate value="${seal.endDate }" type="time" pattern="YYYY-MM-DD"/>'>
                                     <span class="input-group-addon">
 			                                   <span class="fa fa-clock-o"></span>
 			                            </span>

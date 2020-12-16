@@ -53,8 +53,8 @@ public class officalSealBookController  extends BaseController {
     public ModelAndView list(HttpServletRequest request) {
 
         ModelAndView view = new ModelAndView("officalSeal/officalBooksList");
-        List<OaOfficalSealEntity> lstRooms = oaOfficalSealService.findNormalSeal();
-        view.addObject("lstOfficalSeal", ListUtils.listToReplaceStr(lstRooms, "name", "sealId", "Id"));
+        List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findNormalSeal();
+        view.addObject("lstOfficalSeal", ListUtils.listToReplaceStr(lstSeals, "name", "sealId", "Id"));
 
         String nowStrDate = DateUtils.date2Str(DateUtils.SDF_YYYY_MM_DD);
         view.addObject("nowStrDate", nowStrDate);
@@ -88,7 +88,7 @@ public class officalSealBookController  extends BaseController {
      */
     @RequestMapping("/addorupdate")
     public ModelAndView addorupdate(OaOfficalSealBookEntity oaOfficalSealBookEntity, HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("officalSeal/officalBooks");
+        ModelAndView view = new ModelAndView("flow/sealapproval/apply");
 
         //查询可用的会议室
         List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findNormalSeal();

@@ -42,10 +42,8 @@
     <t:dgToolBar url="officalSeal/manager/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>
     <t:dgToolBar url="officalSeal/manager/addorupdate" type="edit" width="40%" height="70%"></t:dgToolBar>
     <t:dgToolBar url="officalSeal/manager/addorupdate" type="view" width="40%" height="70%"></t:dgToolBar>
-    <t:dgToolBar type="print" width="40%" height="70%"></t:dgToolBar>
-<%--    <t:dgToolBar label="借用" icon="fa fa-cog" url="officalSeal/manager/bookview" type="pop" width="50%" height="70%"></t:dgToolBar>--%>
+<%--    <t:dgToolBar type="print" width="40%" height="70%"></t:dgToolBar>--%>
     <t:dgToolBar label="查看借用" icon="fa fa-list-alt" url="officalSeal/manager/view" type="pop" width="80%" height="95%"></t:dgToolBar>
-    <t:dgToolBar label="归还" icon="fa fa-list-alt" url="officalSeal/manager/return" type="pop" width="80%" height="95%"></t:dgToolBar>
 </t:datagrid>
 </body>
 

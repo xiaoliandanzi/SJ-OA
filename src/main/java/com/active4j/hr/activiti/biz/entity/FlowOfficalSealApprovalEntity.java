@@ -2,6 +2,9 @@ package com.active4j.hr.activiti.biz.entity;
 
 import com.active4j.hr.common.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
@@ -12,32 +15,41 @@ import java.util.Date;
  * @Date: 2020/12/14/23:55
  * @Description:
  */
+@Setter
+@Getter
+@TableName("flow_officalseal_approval")
 public class FlowOfficalSealApprovalEntity extends BaseEntity {
     private static final long serialVersionUID = 5559860786984311762L;
 
     /**
-     * 乘车人
+     * 科室
+     */
+    @TableField("DEPARTMENTNAME")
+    private String departmentName;
+
+    /**
+     * 借用人
      */
     @TableField("USERNAME")
     private String userName;
 
     /**
-     * 用车事由
+     * 主送单位
      */
-    @TableField("REASON")
-    private String reason ;
+    @TableField("USEUNIT")
+    private String useUnit;
 
     /**
-     * 乘车人数
+     * 内容
      */
-    @TableField("PERSON")
-    private Integer person;
+    @TableField("CONTENT")
+    private String content;
 
     /**
-     * 地点
+     * 备注
      */
-    @TableField("DESTINATION")
-    private String destination;
+    @TableField("COMMIT")
+    private String commit;
 
     /**
      * 开始日期
