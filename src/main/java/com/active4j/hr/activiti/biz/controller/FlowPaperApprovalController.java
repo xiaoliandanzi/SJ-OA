@@ -240,6 +240,11 @@ public class FlowPaperApprovalController extends BaseController {
                 j.setMsg("公开选择不能为空");
                 return j;
             }
+            if (flowPaperApprovalEntity.getPaperPublic() == 0) {
+                j.setSuccess(false);
+                j.setMsg("当前选择为不公开，请在线下完成申请");
+                return j;
+            }
 
             if(null == flowPaperApprovalEntity.getAttachment()) {
                 j.setSuccess(false);

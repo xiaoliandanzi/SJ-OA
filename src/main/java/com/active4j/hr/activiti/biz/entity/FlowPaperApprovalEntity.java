@@ -50,7 +50,7 @@ public class FlowPaperApprovalEntity extends BaseEntity {
     private String paperNumber;
 
     /**
-     * 公开选择
+     * 公开选择 0：不公开 1：主动公开 2：依申请公开
      */
     @TableField("PAPERPUBLIC")
     private Integer paperPublic;
