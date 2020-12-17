@@ -30,6 +30,16 @@ public class OaOfficalSealBookEntity extends BaseEntity {
     @TableField("USER_ID")
     private String userId;
 
+
+    @TableField("DEPARTMENT_NAME")
+    private String departmentName;
+
+    @TableField("USE_UNIT")
+    private String useUnit;
+
+    @TableField("CONTENT")
+    private String content;
+
     @TableField("BOOK_DATE")
     @QueryField(condition= QueryCondition.eq, queryColumn="BOOK_DATE")
     private Date bookDate;

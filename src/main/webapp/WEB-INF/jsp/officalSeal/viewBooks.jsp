@@ -19,7 +19,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5 id="sealNameTitle">车辆预定信息(${sealName } ${sealId })</h5>
+                    <h5 id="sealNameTitle">公章借用信息(${sealName } ${sealId })</h5>
                 </div>
                 <div class="ibox-content">
                     <p>

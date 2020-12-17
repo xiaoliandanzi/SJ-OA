@@ -54,7 +54,7 @@ public class officalSealBookController  extends BaseController {
 
         ModelAndView view = new ModelAndView("officalSeal/officalBooksList");
         List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findNormalSeal();
-        view.addObject("lstOfficalSeal", ListUtils.listToReplaceStr(lstSeals, "name", "sealId", "Id"));
+        view.addObject("lstSeals", ListUtils.listToReplaceStr(lstSeals, "name", "sealId"));
 
         String nowStrDate = DateUtils.date2Str(DateUtils.SDF_YYYY_MM_DD);
         view.addObject("nowStrDate", nowStrDate);
@@ -88,7 +88,7 @@ public class officalSealBookController  extends BaseController {
      */
     @RequestMapping("/addorupdate")
     public ModelAndView addorupdate(OaOfficalSealBookEntity oaOfficalSealBookEntity, HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("flow/sealapproval/apply");
+        ModelAndView view = new ModelAndView("officalSeal/officalSealApply");
 
         //查询可用的会议室
         List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findNormalSeal();
@@ -119,6 +119,24 @@ public class officalSealBookController  extends BaseController {
             oaOfficalSealBookEntity.setUserName(ShiroUtils.getSessionUser().getRealName());
             oaOfficalSealBookEntity.setUserId(ShiroUtils.getSessionUserId());
 
+            if(null == oaOfficalSealBookEntity.getDepartmentName()) {
+                j.setSuccess(false);
+                j.setMsg("使用科室不能为空");
+                return j;
+            }
+
+            if(null == oaOfficalSealBookEntity.getUseUnit()) {
+                j.setSuccess(false);
+                j.setMsg("主送单位不能为空");
+                return j;
+            }
+
+            if(null == oaOfficalSealBookEntity.getContent()) {
+                j.setSuccess(false);
+                j.setMsg("内容不能为空");
+                return j;
+            }
+
             if(null == oaOfficalSealBookEntity.getBookDate()) {
                 j.setSuccess(false);
                 j.setMsg("预定日期不能为空");
@@ -134,7 +152,7 @@ public class officalSealBookController  extends BaseController {
             //日期赋值
             oaOfficalSealBookEntity.setStrBookDate(DateUtils.date2Str(oaOfficalSealBookEntity.getBookDate(), DateUtils.SDF_YYYY_MM_DD));
 
-            //时间的校验，预定的车辆，时间不能重合
+            //时间的校验，借用公章，时间不能重合
             List<OaOfficalSealBookEntity> lstSeals = oaOfficalSealBookService.findSealBooks(id, oaOfficalSealBookEntity.getStrBookDate());
             if(null != lstSeals && lstSeals.size() > 0) {
                 for(OaOfficalSealBookEntity bookSeal : lstSeals) {
