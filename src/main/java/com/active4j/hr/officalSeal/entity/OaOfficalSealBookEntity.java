@@ -30,7 +30,6 @@ public class OaOfficalSealBookEntity extends BaseEntity {
     @TableField("USER_ID")
     private String userId;
 
-
     @TableField("DEPARTMENT_NAME")
     private String departmentName;
 

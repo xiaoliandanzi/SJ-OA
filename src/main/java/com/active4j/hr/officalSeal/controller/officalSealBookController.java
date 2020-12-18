@@ -54,7 +54,7 @@ public class officalSealBookController  extends BaseController {
 
         ModelAndView view = new ModelAndView("officalSeal/officalBooksList");
         List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findNormalSeal();
-        view.addObject("lstSeals", ListUtils.listToReplaceStr(lstSeals, "name", "sealId"));
+        view.addObject("lstSeals", ListUtils.listToReplaceStr(lstSeals, "name", "id"));
 
         String nowStrDate = DateUtils.date2Str(DateUtils.SDF_YYYY_MM_DD);
         view.addObject("nowStrDate", nowStrDate);

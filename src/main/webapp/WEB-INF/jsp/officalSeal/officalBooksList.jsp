@@ -33,7 +33,7 @@
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="officalSeal/officalSealBooks/datagrid" tableContentId="officalSealBooksTable" searchGroupId="searchGroupId" fit="true" caption="公章借用" name="officalSealBooksList" pageSize="20" sortName="createDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="Id" label="公章" width="100" query="true" queryId="id" replace="${lstSeals }"></t:dgCol>
+    <t:dgCol name="sealId" label="公章名称" width="100" query="true" queryId="id" replace="${lstSeals }"></t:dgCol>
     <t:dgCol name="userName" label="借用人" width="80"></t:dgCol>
     <t:dgCol name="departmentName" label="科室" width="80"></t:dgCol>
     <t:dgCol name="useUnit" label="主送单位" width="80"></t:dgCol>
