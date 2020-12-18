@@ -130,7 +130,7 @@ public class FlowPaperApprovalController extends BaseController {
         //获取当前用户个人资料
         SysUserModel user = sysUserService.getInfoByUserId(userId);
         view.addObject("dept", user.getDeptName());
-        view.addObject("userName", user.getUserName());
+        view.addObject("userName", user.getRealName());
 
         view.addObject("workflowId", workflowId);
         return view;

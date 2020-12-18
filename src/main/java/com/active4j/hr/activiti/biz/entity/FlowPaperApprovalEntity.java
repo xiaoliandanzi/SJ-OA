@@ -1,6 +1,8 @@
 package com.active4j.hr.activiti.biz.entity;
 
 import com.active4j.hr.common.entity.BaseEntity;
+import com.active4j.hr.core.annotation.QueryField;
+import com.active4j.hr.core.query.QueryCondition;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
@@ -26,9 +28,17 @@ public class FlowPaperApprovalEntity extends BaseEntity {
     private String draftMan;
 
     /**
+     * 科室
+     */
+    @TableField("DEPT")
+    @QueryField(queryColumn="DEPT", condition=QueryCondition.eq)
+    private String dept;
+
+    /**
      * 保密级别
      */
     @TableField("SECRETLEVEL")
+    @QueryField(queryColumn="SECRETLEVEL", condition=QueryCondition.eq)
     private String secretLevel;
 
     /**
@@ -41,12 +51,14 @@ public class FlowPaperApprovalEntity extends BaseEntity {
      * 发文日期
      */
     @TableField("PAPERDATE")
+    @QueryField(queryColumn="PAPERDATE", condition=QueryCondition.range)
     private Date paperDate;
 
     /**
      * 发文文号
      */
     @TableField("PAPERNUMBER")
+    @QueryField(queryColumn="PAPERNUMBER", condition=QueryCondition.eq)
     private String paperNumber;
 
     /**
@@ -83,6 +95,7 @@ public class FlowPaperApprovalEntity extends BaseEntity {
      * 标题
      */
     @TableField("TITLE")
+    @QueryField(queryColumn="TITLE", condition=QueryCondition.like)
     private String title;
 
     /**

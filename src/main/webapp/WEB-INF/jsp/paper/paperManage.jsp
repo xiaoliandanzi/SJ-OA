@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,select2,jqgrid"></t:base>
+    <t:base type="default,select2,jqgrid,datetimePicker,laydate"></t:base>
 </head>
 <body class="gray-bg">
 <!-- 页面部分 -->
@@ -33,11 +33,13 @@
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="paper/manage/datagrid" tableContentId="paperManageTable" searchGroupId="searchGroupId" fit="true" caption="文件列表" name="paperManageList" pageSize="20" sortName="createDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="paperNumber" label="发文文号" width="100"></t:dgCol>
-    <t:dgCol name="secretLevel" label="保密级别" width="100"></t:dgCol>
-    <t:dgCol name="paperCount" label="文件份数" width="80"></t:dgCol>
-    <t:dgCol name="paperDate" label="发文日期" width="80"></t:dgCol>
-    <t:dgCol name="title" label="文件标题" width="80"></t:dgCol>
+    <t:dgCol name="paperNumber" label="发文文号" width="60" query="true"></t:dgCol>
+    <t:dgCol name="secretLevel" label="保密级别" width="60" query="true"></t:dgCol>
+    <t:dgCol name="title" label="文件标题" width="120" query="true"></t:dgCol>
+    <t:dgCol name="dept" label="所属科室" width="60" query="true"></t:dgCol>
+    <t:dgCol name="paperCount" label="文件份数" width="40"></t:dgCol>
+    <t:dgCol name="paperDate" label="发文日期" width="60" datefmt="yyyy-MM-dd" query="true" queryModel="group" datePlugin="laydate"></t:dgCol>
+    <t:dgCol name="attachment" label="附件" hidden="true"></t:dgCol>
     <%--<t:dgCol name="opt" label="操作" ></t:dgCol>--%>
     <t:dgToolBar url="paper/manage/addorupdate" type="view" width="70%"></t:dgToolBar>
     <t:dgToolBar label="附件下载" icon="glyphicon glyphicon-resize-full" type="define" funName="doAttachment"></t:dgToolBar>
@@ -45,6 +47,11 @@
 </body>
 
 <script type="text/javascript">
+
+    $(function(){
+        laydate({elem:"#paperDate_begin",event:"focus",istime: true, format: 'YYYY-MM-DD'});
+        laydate({elem:"#paperDate_end",event:"focus",istime: true, format: 'YYYY-MM-DD'});
+    });
 
     function doAttachment() {
         var rowId = $('#paperManageList').jqGrid('getGridParam','selrow');
@@ -54,6 +61,8 @@
             qhAlert('请选择文件后再下载！');
             return;
         }
+
+        console.info(rowData);
 
         if(!rowData.attachment) {
             qhAlert('该文件附件还未上传附件！');

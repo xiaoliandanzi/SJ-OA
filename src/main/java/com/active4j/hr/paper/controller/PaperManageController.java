@@ -64,13 +64,14 @@ public class PaperManageController extends BaseController {
         // 执行查询
         IPage<FlowPaperApprovalEntity> lstResult = oaPaperService.page(new Page<FlowPaperApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
         long total = lstResult.getTotal();
+        long tempTotal = 0;
         List<FlowPaperApprovalEntity> newList = new ArrayList<>();
         if (total > 0) {
             for(FlowPaperApprovalEntity entity : lstResult.getRecords()) {
                 //只显示不为草稿状态的文件
                 if (entity.getApplyStatus() != 3) {
                     newList.add(entity);
-                    total++;
+                    tempTotal++;
                 }
                 /*WorkflowBaseEntity workflowBaseEntity = workflowBaseService.getById(entity.getId());
                 if (workflowBaseEntity != null && workflowBaseEntity.getStatus().equalsIgnoreCase("3")) {
@@ -78,7 +79,7 @@ public class PaperManageController extends BaseController {
                     total++;
                 }*/
             }
-            lstResult.setTotal(total);
+            lstResult.setTotal(tempTotal);
             lstResult.setRecords(newList);
 
         }
