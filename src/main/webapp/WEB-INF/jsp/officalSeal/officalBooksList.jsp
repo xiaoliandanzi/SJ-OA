@@ -42,6 +42,7 @@
     <t:dgCol name="startDate" label="开始时间" width="80" datefmt="HH:mm"></t:dgCol>
     <t:dgCol name="endDate" label="结束时间" width="80" datefmt="HH:mm"></t:dgCol>
     <t:dgCol name="memo" label="备注" width="80"></t:dgCol>
+    <t:dgCol name="applyStatus" label="状态" width="80"></t:dgCol>
 
     <t:dgToolBar url="officalSeal/officalSealBooks/addorupdate" type="add" width="50%" height="70%"></t:dgToolBar>
     <t:dgToolBar url="officalSeal/officalSealBooks/addorupdate" type="edit" width="50%" height="70%"></t:dgToolBar>

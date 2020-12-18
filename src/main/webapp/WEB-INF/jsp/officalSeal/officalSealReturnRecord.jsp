@@ -10,16 +10,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,jqgrid,laydate"></t:base>
+    <t:base type="default,select2,jqgrid"></t:base>
 </head>
 <body class="gray-bg">
 <!-- 页面部分 -->
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12">
-            借用记录
+            <div class="row">
+                <div class="col-sm-12" id="searchGroupId">
+                </div>
+            </div>
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div id="officalSealRecordTable" class="jqGrid_wrapper"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- 脚本部分 -->
+<t:datagrid actionUrl="officalSeal/return/datagrid" tableContentId="officalSealRecordTable" searchGroupId="searchGroupId" fit="true" caption="公章借用记录" name="sealsRecordList" pageSize="20" sortName="createDate" sortOrder="desc">
+    <t:dgCol name="sealId" label="公章名称" width="100" queryId="id" replace="${lstSeals }"></t:dgCol>
+    <t:dgCol name="userName" label="借用人" width="80"></t:dgCol>
+    <t:dgCol name="departmentName" label="科室" width="80"></t:dgCol>
+    <t:dgCol name="useUnit" label="主送单位" width="80"></t:dgCol>
+    <t:dgCol name="content" label="内容" width="80"></t:dgCol>
+    <t:dgCol name="bookDate" label="预定日期" width="100" datefmt="yyyy-MM-dd" defval="${nowStrDate }" datePlugin="laydate"></t:dgCol>
+    <t:dgCol name="startDate" label="开始时间" width="80" datefmt="HH:mm"></t:dgCol>
+    <t:dgCol name="endDate" label="结束时间" width="80" datefmt="HH:mm"></t:dgCol>
+    <t:dgCol name="memo" label="备注" width="80"></t:dgCol>
+    <t:dgCol name="applyStatus" label="状态" width="60" dictionary="seal_approval_status"></t:dgCol>
+    <t:dgToolBar url="officalSeal/return/check" type="view" width="50%" height="70%"></t:dgToolBar>
+    <t:dgToolBar  type="refresh" ></t:dgToolBar>
+</t:datagrid>
 </body>
 </html>

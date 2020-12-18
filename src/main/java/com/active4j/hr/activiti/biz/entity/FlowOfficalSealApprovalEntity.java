@@ -62,4 +62,10 @@ public class FlowOfficalSealApprovalEntity extends BaseEntity {
      */
     @TableField("END_DAY")
     private Date endDay;
+
+    /**
+     * 审批状态 0:审批中 1：审批完成 2：驳回
+     */
+    @TableField("APPLY_STATUS")
+    private Integer applyStatus;
 }

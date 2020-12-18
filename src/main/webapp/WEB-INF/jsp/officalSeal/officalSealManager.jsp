@@ -41,7 +41,7 @@
     <t:dgDelOpt label="删除" url="officalSeal/manager/delete?id={id}"/>
     <t:dgToolBar url="officalSeal/manager/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>
     <t:dgToolBar url="officalSeal/manager/addorupdate" type="edit" width="40%" height="70%"></t:dgToolBar>
-    <t:dgToolBar url="officalSeal/manager/addorupdate" type="view" width="40%" height="70%"></t:dgToolBar>
+    <t:dgToolBar url="officalSeal/manager/check" type="view" width="40%" height="70%"></t:dgToolBar>
 <%--    <t:dgToolBar type="print" width="40%" height="70%"></t:dgToolBar>--%>
     <t:dgToolBar label="查看借用" icon="fa fa-list-alt" url="officalSeal/manager/view" type="pop" width="80%" height="95%"></t:dgToolBar>
 </t:datagrid>

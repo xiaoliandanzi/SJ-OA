@@ -160,6 +160,25 @@ public class OfficalSealManagerController extends BaseController {
     }
 
     /**
+     * 跳转到新增编辑页面
+     * @param oaOfficalSealEntity
+     * @param request
+     * @return
+     */
+    @RequestMapping("/check")
+    public ModelAndView check(OaOfficalSealEntity oaOfficalSealEntity, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView("officalSeal/officalSealCheck");
+
+        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getId())) {
+            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getId());
+            view.addObject("seal", oaOfficalSealEntity);
+        }
+
+        return view;
+    }
+
+
+    /**
      * 借用公章
      * @param oaOfficalSealEntity
      * @param request
@@ -195,17 +214,17 @@ public class OfficalSealManagerController extends BaseController {
     public ModelAndView view(OaOfficalSealEntity oaOfficalSealEntity, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("officalSeal/viewBooks");
         view.addObject("lstBooks", "-1");
-        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealId())) {
-            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getSealId());
+        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getId())) {
+            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getId());
             view.addObject("sealName", oaOfficalSealEntity.getName());
-            view.addObject("sealId", oaOfficalSealEntity.getSealId());
+            view.addObject("sealId", oaOfficalSealEntity.getId());
 
             List<OaOfficalSealBookEntity> lstBooks = oaOfficalSealBookService.findSealBooks(oaOfficalSealEntity);
             List<OaBookSealDomain> lstBookDoamins = new ArrayList<OaBookSealDomain>();
             if(null != lstBooks && lstBooks.size() > 0) {
                 for(OaOfficalSealBookEntity book : lstBooks) {
                     OaBookSealDomain domain = new OaBookSealDomain();
-                    domain.setId(book.getSealId());
+                    domain.setId(book.getId());
                     domain.setTitle("借用人:" + book.getCreateName());
                     String startTime = DateUtils.date2Str(book.getStartDate(), DateUtils.SDF_HHMM);
                     String endTime = DateUtils.date2Str(book.getEndDate(), DateUtils.SDF_HHMM);
@@ -231,8 +250,8 @@ public class OfficalSealManagerController extends BaseController {
         try{
             Map<String, Object> map = new HashMap<String, Object>();
 
-            if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealId())) {
-                oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getSealId());
+            if(StringUtils.isNotEmpty(oaOfficalSealEntity.getId())) {
+                oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getId());
                 map.put("sealName", oaOfficalSealEntity.getName());
                 map.put("sealId", oaOfficalSealEntity.getSealId());
 
@@ -241,7 +260,7 @@ public class OfficalSealManagerController extends BaseController {
                 if(null != lstBooks && lstBooks.size() > 0) {
                     for(OaOfficalSealBookEntity book : lstBooks) {
                         OaBookSealDomain domain = new OaBookSealDomain();
-                        domain.setId(book.getSealId());
+                        domain.setId(book.getId());
                         domain.setTitle("借用人:" + book.getCreateName());
                         String startTime = DateUtils.date2Str(book.getStartDate(), DateUtils.SDF_HHMM);
                         String endTime = DateUtils.date2Str(book.getEndDate(), DateUtils.SDF_HHMM);

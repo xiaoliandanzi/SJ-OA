@@ -80,14 +80,14 @@
 
         $("#id").val(id);
 
-        $.post("officalSeal/manager/getCarView",{id:id}, function(o){
+        $.post("officalSeal/manager/getSealView",{id:id}, function(o){
             if(o.success) {
                 $("#calendar").fullCalendar("removeEvents");
 
                 var sealName = o.attributes.sealName;
                 var sealId = o.attributes.sealId;
                 $("#carNameTitle").empty();
-                $("#carNameTitle").append("车辆预定信息("+sealName+" " + sealId + ")");
+                $("#carNameTitle").append("公章借用信息("+sealName+" " + sealId + ")");
 
                 var lstBooks = o.attributes.lstBooks;
                 for(var i = 0; i < lstBooks.length; i++) {
