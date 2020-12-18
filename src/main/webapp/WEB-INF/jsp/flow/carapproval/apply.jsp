@@ -11,6 +11,12 @@
 <html>
 <head>
     <t:base type="default,laydate,icheck"></t:base>
+    <script type="text/javascript">
+        $(function() {
+            laydate({elem:"#startDay",event:"focus",istime: false, format: 'YYYY-MM-DD'});
+            laydate({elem:"#endDay",event:"focus",istime: false, format: 'YYYY-MM-DD'});
+        });
+    </script>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">

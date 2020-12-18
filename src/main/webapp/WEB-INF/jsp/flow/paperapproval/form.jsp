@@ -35,7 +35,6 @@
         <input id="paperCount" name="paperCount" type="number" class="form-control" required="" value="${biz.paperCount }">
     </div>
 </div>
-<%--toto--%>
 <div class="form-group">
     <label class="col-sm-3 control-label">公开选择：</label>
     <div class="col-sm-8">

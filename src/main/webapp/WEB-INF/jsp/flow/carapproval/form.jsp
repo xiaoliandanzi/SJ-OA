@@ -19,6 +19,18 @@
     </div>
 </div>
 <div class="form-group">
+    <label class="col-sm-3 control-label">所申车辆：</label>
+    <%--<div class="col-sm-8">
+        <div class="input-group">
+            <t:choose url="oa/hr/recruit/plan/selectNeed" hiddenName="needJobIds" hiddenValue="${needIds }" textValue="${needJobs }" textName="needJobs" width="80%" height="80%" hiddenId="needJobIds" textId="needJobs"></t:choose>
+        </div>
+    </div>--%>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">用车单位：</label>
+    <p class="form-control-static">${dept}</p>
+</div>
+<div class="form-group">
     <label class="col-sm-3 control-label">乘车人：</label>
     <div class="col-sm-5">
         <input id="userName" name="userName" minlength="1" type="text" class="form-control" required="" value="${biz.userName }">

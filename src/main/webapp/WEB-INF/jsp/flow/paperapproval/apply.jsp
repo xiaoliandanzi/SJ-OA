@@ -203,7 +203,9 @@
             // 内部根据当前运行是创建，可能是input元素，也可能是flash.
             pick : {
                 id : '#filePicker'
-            }
+            },
+
+            fileSizeLimit: 5 * 1024 * 1024
 
         });
 

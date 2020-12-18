@@ -13,6 +13,8 @@ import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
+import com.active4j.hr.system.model.SysUserModel;
+import com.active4j.hr.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
@@ -49,6 +51,9 @@ public class FlowCarApprovalController extends BaseController {
 
     @Autowired
     private WorkflowService workflowService;
+
+    @Autowired
+    private SysUserService sysUserService;
 
     /**
      * 跳转到表单页面
@@ -120,6 +125,12 @@ public class FlowCarApprovalController extends BaseController {
             FlowCarApprovalEntity biz = flowCarApprovalService.getById(base.getBusinessId());
             view.addObject("biz", biz);
         }
+
+        //获取当前用户id
+        String userId = ShiroUtils.getSessionUserId();
+        //获取当前用户个人资料
+        SysUserModel user = sysUserService.getInfoByUserId(userId);
+        view.addObject("dept", user.getDeptName());
 
         view.addObject("workflowId", workflowId);
         return view;

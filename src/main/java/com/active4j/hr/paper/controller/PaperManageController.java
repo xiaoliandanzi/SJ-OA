@@ -1,7 +1,7 @@
 package com.active4j.hr.paper.controller;
 
 import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
-import com.active4j.hr.activiti.service.WorkflowService;
+import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.core.query.QueryUtils;
 import com.active4j.hr.core.util.ResponseUtil;
@@ -35,7 +35,8 @@ public class PaperManageController extends BaseController {
     @Autowired
     private OaPaperService oaPaperService;
     @Autowired
-    private WorkflowService workflowService;
+    private WorkflowBaseService workflowBaseService;
+
 
     /**
      * 车辆管理列表
@@ -71,6 +72,11 @@ public class PaperManageController extends BaseController {
                     newList.add(entity);
                     total++;
                 }
+                /*WorkflowBaseEntity workflowBaseEntity = workflowBaseService.getById(entity.getId());
+                if (workflowBaseEntity != null && workflowBaseEntity.getStatus().equalsIgnoreCase("3")) {
+                    newList.add(entity);
+                    total++;
+                }*/
             }
             lstResult.setTotal(total);
             lstResult.setRecords(newList);
