@@ -37,9 +37,8 @@
     <t:dgCol name="departmentName" label="科室" width="80"></t:dgCol>
     <t:dgCol name="useUnit" label="主送单位" width="80"></t:dgCol>
     <t:dgCol name="content" label="内容" width="80"></t:dgCol>
-    <t:dgCol name="bookDate" label="预定日期" width="100" datefmt="yyyy-MM-dd" defval="${nowStrDate }" datePlugin="laydate"></t:dgCol>
-    <t:dgCol name="startDate" label="开始时间" width="80" datefmt="HH:mm"></t:dgCol>
-    <t:dgCol name="endDate" label="结束时间" width="80" datefmt="HH:mm"></t:dgCol>
+    <t:dgCol name="startDay" label="开始时间" width="80" datefmt="HH:mm"></t:dgCol>
+    <t:dgCol name="endDay" label="结束时间" width="80" datefmt="HH:mm"></t:dgCol>
     <t:dgCol name="memo" label="备注" width="80"></t:dgCol>
     <t:dgCol name="applyStatus" label="状态" width="60" dictionary="seal_approval_status"></t:dgCol>
     <t:dgToolBar url="officalSeal/return/check" type="view" width="50%" height="70%"></t:dgToolBar>
