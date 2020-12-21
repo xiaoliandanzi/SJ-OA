@@ -16,6 +16,10 @@ import com.active4j.hr.core.util.DateUtils;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.impl.identity.Authentication;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
@@ -53,6 +57,11 @@ public class FlowPaperApprovalController extends BaseController {
     private WorkflowService workflowService;
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private RuntimeService runtimeService;
+
+    @Autowired
+    private TaskService taskService;
 
     /**
      * 跳转到表单页面
@@ -147,7 +156,7 @@ public class FlowPaperApprovalController extends BaseController {
      */
     @RequestMapping("/doApprove")
     @ResponseBody
-    public AjaxJson doApprove(String id, String taskId, String comment, HttpServletRequest request){
+    public AjaxJson doApprove(String id, String taskId, String comment, String result, HttpServletRequest request){
         AjaxJson j = new AjaxJson();
 
         try{
@@ -163,8 +172,18 @@ public class FlowPaperApprovalController extends BaseController {
             }
 
             Map<String, Object> map = new HashMap<String, Object>();
-            workflowService.saveSubmitTask(taskId, id, comment, map);
+            //workflowService.saveSubmitTask(taskId, id, comment, map);
 
+            if(StringUtils.equals("N", result)) {
+                map.put("flag", "N");
+                workflowService.saveBackTask(taskId, id, comment, map);
+            }else if(StringUtils.equals("Y", result)){
+                map.put("flag", "Y");
+
+                saveSubmitTask(taskId, id, comment, map);
+            }else {
+                saveSubmitTask(taskId, id, comment, map);
+            }
 
         }catch(Exception e) {
             j.setSuccess(false);
@@ -174,6 +193,57 @@ public class FlowPaperApprovalController extends BaseController {
 
         return j;
     }
+
+    private void saveSubmitTask(String taskId, String businessKey, String comments, Map<String, Object> variables) {
+        // 使用任务ID，查询任务对象，获取流程流程实例ID
+        Task task = taskService.createTaskQuery()//
+                .taskId(taskId)// 使用任务ID查询
+                .singleResult();
+
+        // 获取流程实例ID
+        String processInstanceId = task.getProcessInstanceId();
+
+        /**
+         * 注意：添加批注的时候，由于Activiti底层代码是使用： String userId =
+         * Authentication.getAuthenticatedUserId(); CommentEntity comment = new
+         * CommentEntity(); comment.setUserId(userId);
+         * 所有需要从Session中获取当前登录人，作为该任务的办理人（审核人），对应act_hi_comment表中的User_ID的字段，不过不添加审核人，该字段为null
+         * 所以要求，添加配置执行使用Authentication.setAuthenticatedUserId();添加当前任务的审核人
+         */
+        Authentication.setAuthenticatedUserId(ShiroUtils.getSessionUserName());
+        taskService.addComment(taskId, processInstanceId, comments);
+
+        // 使用任务ID，完成当前人的个人任务，同时流程变量
+        taskService.complete(taskId, variables, true);
+
+        /**
+         * 在完成任务之后，判断流程是否结束 如果流程结束了，更新请假单表的状态从1变成2（审核中-->审核完成）
+         */
+        WorkflowBaseEntity workflowBaseEntity = workflowBaseService.getById(businessKey);
+        if (null != workflowBaseEntity) {
+
+            ProcessInstance pi = runtimeService.createProcessInstanceQuery()//
+                    .processInstanceId(processInstanceId)// 使用流程实例ID查询
+                    .singleResult();
+            // 流程结束了
+            if (pi == null) {
+                // 更新请假单表的状态从2变成3（审核中-->审核完成）
+                workflowBaseEntity.setStatus("3");
+                FlowPaperApprovalEntity flowPaperApprovalEntity = flowPaperApprovalService.getById(workflowBaseEntity.getBusinessId());
+                flowPaperApprovalEntity.setApplyStatus(1);
+                flowPaperApprovalService.saveOrUpdate(flowPaperApprovalEntity);
+            } else {
+                workflowBaseEntity.setStatus("2");
+                FlowPaperApprovalEntity flowPaperApprovalEntity = flowPaperApprovalService.getById(workflowBaseEntity.getBusinessId());
+                flowPaperApprovalEntity.setApplyStatus(0);
+                flowPaperApprovalService.saveOrUpdate(flowPaperApprovalEntity);
+            }
+            workflowBaseService.saveOrUpdate(workflowBaseEntity);
+            log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
+        }
+    }
+
+
 
     /**
      * 保存方法
@@ -325,6 +395,100 @@ public class FlowPaperApprovalController extends BaseController {
             j.setMsg("申请流程保存失败，错误信息:" + e.getMessage());
             log.error("发文审批流程保存失败，错误信息:{}", e);
         }
+
+        return j;
+    }
+
+    /**
+     * 被打回 重新提交方法
+     *
+     */
+    @RequestMapping("/reSubmit")
+    @ResponseBody
+    public AjaxJson reSubmit(WorkflowBaseEntity workflowBaseEntity, FlowPaperApprovalEntity flowPaperApprovalEntity, String taskId, HttpServletRequest request) {
+        AjaxJson j = new AjaxJson();
+        try{
+
+            if(null == flowPaperApprovalEntity.getPaperArea()) {
+                j.setSuccess(false);
+                j.setMsg("发放范围为空");
+                return j;
+            }
+
+            if(null == flowPaperApprovalEntity.getTitle()) {
+                j.setSuccess(false);
+                j.setMsg("文件标题为空");
+                return j;
+            }
+
+            if(null == flowPaperApprovalEntity.getPaperCount()) {
+                j.setSuccess(false);
+                j.setMsg("文件份数为空");
+                return j;
+            }
+
+            if(null == flowPaperApprovalEntity.getPaperAbstract()) {
+                j.setSuccess(false);
+                j.setMsg("内容摘要为空");
+                return j;
+            }
+
+            if(null == flowPaperApprovalEntity.getSecretLevel()) {
+                j.setSuccess(false);
+                j.setMsg("保密级别不能为空");
+                return j;
+            }
+
+            if(null == flowPaperApprovalEntity.getPaperDate()) {
+                j.setSuccess(false);
+                j.setMsg("发文日期不能为空");
+                return j;
+            }
+
+            if(null == flowPaperApprovalEntity.getPaperNumber()) {
+                j.setSuccess(false);
+                j.setMsg("发文文号不能为空");
+                return j;
+            }
+
+            if(flowPaperApprovalEntity.getPaperPublic() < 0) {
+                j.setSuccess(false);
+                j.setMsg("公开选择不能为空");
+                return j;
+            }
+            if (flowPaperApprovalEntity.getPaperPublic() == 0) {
+                j.setSuccess(false);
+                j.setMsg("当前选择为不公开，请在线下完成申请");
+                return j;
+            }
+
+            if(null == flowPaperApprovalEntity.getAttachment()) {
+                j.setSuccess(false);
+                j.setMsg("上传文件不能为空!");
+                return j;
+            }
+
+            WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
+            MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
+
+            FlowPaperApprovalEntity biz = flowPaperApprovalService.getById(base.getBusinessId());
+            biz.setAttachment(flowPaperApprovalEntity.getAttachment());
+            biz.setCommit(flowPaperApprovalEntity.getCommit());
+            biz.setPaperArea(flowPaperApprovalEntity.getPaperArea());
+            //已申请
+            base.setStatus("1");
+            flowPaperApprovalService.saveUpdate(base, biz);
+
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            workflowService.saveSubmitTask(taskId, base.getId(), "重新提交", map);
+
+        }catch(Exception e) {
+            j.setSuccess(false);
+            j.setMsg("重新提交失败,错误信息:" + e.getMessage());
+            log.error("重新提交失败,错误信息:{}", e);
+        }
+
 
         return j;
     }

@@ -8,6 +8,4 @@ public interface WorkflowBaseService extends IService<WorkflowBaseEntity> {
 	
 	
 	public AjaxJson validWorkflowBase(WorkflowBaseEntity workflowBaseEntity, AjaxJson j);
-	
-
 }

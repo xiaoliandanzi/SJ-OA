@@ -1,7 +1,6 @@
 package com.active4j.hr.paper.controller;
 
 import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
-import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.core.query.QueryUtils;
 import com.active4j.hr.core.util.ResponseUtil;
@@ -34,8 +33,6 @@ public class PaperManageController extends BaseController {
 
     @Autowired
     private OaPaperService oaPaperService;
-    @Autowired
-    private WorkflowBaseService workflowBaseService;
 
 
     /**
@@ -68,8 +65,8 @@ public class PaperManageController extends BaseController {
         List<FlowPaperApprovalEntity> newList = new ArrayList<>();
         if (total > 0) {
             for(FlowPaperApprovalEntity entity : lstResult.getRecords()) {
-                //只显示不为草稿状态的文件
-                if (entity.getApplyStatus() != 3) {
+                //只显示审批完成的文件
+                if (entity.getApplyStatus() == 1) {
                     newList.add(entity);
                     tempTotal++;
                 }
@@ -99,7 +96,7 @@ public class PaperManageController extends BaseController {
 
         if(StringUtils.isNotEmpty(flowPaperApprovalEntity.getId())) {
             flowPaperApprovalEntity = oaPaperService.getById(flowPaperApprovalEntity.getId());
-            view.addObject("base", flowPaperApprovalEntity);
+            view.addObject("biz", flowPaperApprovalEntity);
         }
 
         return view;
