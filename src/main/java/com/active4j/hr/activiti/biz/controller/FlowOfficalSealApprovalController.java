@@ -13,6 +13,9 @@ import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
+import com.active4j.hr.officalSeal.entity.OaOfficalSealEntity;
+import com.active4j.hr.officalSeal.service.OaOfficalSealBookService;
+import com.active4j.hr.officalSeal.service.OaOfficalSealService;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
@@ -51,6 +54,12 @@ public class FlowOfficalSealApprovalController  extends BaseController {
     @Autowired
     private WorkflowService workflowService;
 
+    @Autowired
+    private OaOfficalSealService oaOfficalSealService;
+
+    @Autowired
+    private OaOfficalSealBookService oaOfficalSealBookService;
+
     /**
      * 跳转到表单页面
      * @param request
@@ -61,6 +70,10 @@ public class FlowOfficalSealApprovalController  extends BaseController {
     @RequestMapping("/go")
     public ModelAndView go(String formId, String type, String workflowId, String id, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("flow/sealapproval/apply");
+
+        //查询可用的公章
+        List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findNormalSeal();
+        view.addObject("lstSeals", lstSeals);
 
         if(StringUtils.isEmpty(formId)) {
             view = new ModelAndView("system/common/warning");
@@ -181,6 +194,18 @@ public class FlowOfficalSealApprovalController  extends BaseController {
         AjaxJson j = new AjaxJson();
         try {
             if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
+                return j;
+            }
+
+            if(null == flowOfficalSealApprovalEntity.getSealName()) {
+                j.setSuccess(false);
+                j.setMsg("公章名不能为空");
+                return j;
+            }
+
+            if(null == flowOfficalSealApprovalEntity.getBookDay()) {
+                j.setSuccess(false);
+                j.setMsg("申请借用日期不能为空");
                 return j;
             }
 

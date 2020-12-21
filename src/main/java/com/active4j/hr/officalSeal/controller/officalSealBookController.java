@@ -90,7 +90,7 @@ public class officalSealBookController  extends BaseController {
     public ModelAndView addorupdate(OaOfficalSealBookEntity oaOfficalSealBookEntity, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("officalSeal/officalSealApply");
 
-        //查询可用的会议室
+        //查询可用的公章
         List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findNormalSeal();
         view.addObject("lstSeals", lstSeals);
 

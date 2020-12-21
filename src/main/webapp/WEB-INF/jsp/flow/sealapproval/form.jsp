@@ -19,6 +19,22 @@
     </div>
 </div>
 <div class="form-group">
+    <label class="col-sm-3 control-label">公章名称*：</label>
+    <div class="col-sm-5">
+        <select name="sealName" class="form-control" required="">
+            <c:forEach items="${lstSeals }" var="c">
+                <option value="${c.id}" selected="selected">${c.name }</option>
+            </c:forEach>
+        </select>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label m-b">借用日期：</label>
+    <div class="col-sm-5">
+        <input class="laydate-icon form-control layer-date" id="bookDay" name="bookDay" required="" value='<fmt:formatDate value="${biz.bookDay }" type="date" pattern="yyyy-MM-dd"/>'>
+    </div>
+</div>
+<div class="form-group">
     <label class="col-sm-3 control-label">开始日期：</label>
     <div class="col-sm-5">
         <input class="laydate-icon form-control layer-date" id="startDay" name="startDay" value='<fmt:formatDate value="${biz.startDay }" type="date" pattern="yyyy-MM-dd"/>'>

@@ -1,6 +1,8 @@
 package com.active4j.hr.activiti.biz.entity;
 
 import com.active4j.hr.common.entity.BaseEntity;
+import com.active4j.hr.core.annotation.QueryField;
+import com.active4j.hr.core.query.QueryCondition;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
@@ -20,6 +22,20 @@ import java.util.Date;
 @TableName("flow_officalseal_approval")
 public class FlowOfficalSealApprovalEntity extends BaseEntity {
     private static final long serialVersionUID = 5559860786984311762L;
+
+    /**
+     * 公章名
+     */
+    @TableField("SEALNAME")
+    private String sealName;
+
+
+    /**
+     * 借用日期
+     */
+    @TableField("BOOKDATE")
+    @QueryField(condition= QueryCondition.eq, queryColumn="BOOKDATE")
+    private Date bookDay;
 
     /**
      * 科室
