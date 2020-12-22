@@ -7,7 +7,10 @@ package com.active4j.hr.common.constant;
  *
  */
 public class SysConstant {
-	
+
+	//数据字典-信息发布类型
+	public static final String DIC_MESSAGE_TYPE = "messageType";
+
 	//数据字典-数据查看权限
 	public static final String DIC_ROLE_DATAFITLE = "datafilter";
 	
