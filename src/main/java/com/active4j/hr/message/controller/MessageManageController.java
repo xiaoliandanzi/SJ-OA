@@ -1,13 +1,11 @@
 package com.active4j.hr.message.controller;
 
 import com.active4j.hr.activiti.biz.entity.FlowMessageApprovalEntity;
-import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.core.query.QueryUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.message.service.OaMessageService;
-import com.active4j.hr.paper.service.OaPaperService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -51,7 +49,7 @@ public class MessageManageController extends BaseController {
     /**
      * 查询数据
      *
-     * @param flowPaperApprovalEntity
+     * @param flowMessageApprovalEntity
      * @param request
      * @param response
      * @param dataGrid

@@ -43,9 +43,9 @@ public class FlowMessageApprovalEntity extends BaseEntity {
     /**
      * 发布时间
      */
-    @TableField("PUBLICDATE")
-    @QueryField(queryColumn="PUBLICDATE", condition=QueryCondition.range)
-    private Date publicDate;
+    @TableField("PUBLICTIME")
+    @QueryField(queryColumn="PUBLICTIME", condition=QueryCondition.range)
+    private Date publicTime;
 
     /**
      * 内容

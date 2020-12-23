@@ -31,7 +31,7 @@
 </div>
 
 <!-- 脚本部分 -->
-<t:datagrid actionUrl="meassage/manage/datagrid" tableContentId="messageManageTable" searchGroupId="searchGroupId" fit="true" caption="信息列表" name="messageManageList" pageSize="20" sortName="createDate" sortOrder="desc">
+<t:datagrid actionUrl="message/manage/datagrid" tableContentId="messageManageTable" searchGroupId="searchGroupId" fit="true" caption="信息列表" name="messageManageList" pageSize="20" sortName="createDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="messageType" label="信息类型" width="60" query="true"></t:dgCol>
     <t:dgCol name="title" label="标题" width="120" query="true"></t:dgCol>
