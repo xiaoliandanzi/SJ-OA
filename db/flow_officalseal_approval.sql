@@ -38,8 +38,3 @@ CREATE TABLE `flow_officalseal_approval` (
   `APPLY_STATUS` int DEFAULT '0' COMMENT '审核状态',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of flow_officalseal_approval
--- ----------------------------
-INSERT INTO `flow_officalseal_approval` VALUES ('478654aeeaaba3758caa6d76c98e35a7', '0', 'hello', '2020-12-18 17:38:32', null, null, '2020-12-18 00:00:00', '2020-12-18 00:00:00', '科室1', 'jinxin', '科室2', '审批', 'test', '-1');
