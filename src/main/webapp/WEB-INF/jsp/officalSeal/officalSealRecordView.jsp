@@ -40,7 +40,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">审批状态：</label>
-                        <p class="form-control-static">${seal.applyStatus }</p>
+                        <p class="form-control-static">${seal.applyStatus } </p>
                     </div>
 
                 </div>

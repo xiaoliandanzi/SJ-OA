@@ -23,19 +23,6 @@ import java.util.Date;
 public class FlowOfficalSealApprovalEntity extends BaseEntity {
     private static final long serialVersionUID = 5559860786984311762L;
 
-    /**
-     * 公章名
-     */
-    @TableField("SEALNAME")
-    private String sealName;
-
-
-    /**
-     * 借用日期
-     */
-    @TableField("BOOKDATE")
-    @QueryField(condition= QueryCondition.eq, queryColumn="BOOKDATE")
-    private Date bookDay;
 
     /**
      * 科室

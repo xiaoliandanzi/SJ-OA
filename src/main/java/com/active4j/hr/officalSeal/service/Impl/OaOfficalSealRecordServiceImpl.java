@@ -16,5 +16,5 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("oaOfficalSealRecordService")
 @Transactional
-public class OaOfficalSealRecordImpl extends ServiceImpl<OaOfficalSealRecordDao, FlowOfficalSealApprovalEntity> implements OaOfficalSealRecordService {
+public class OaOfficalSealRecordServiceImpl extends ServiceImpl<OaOfficalSealRecordDao, FlowOfficalSealApprovalEntity> implements OaOfficalSealRecordService {
 }

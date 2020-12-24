@@ -28,7 +28,6 @@
                         <%@include file="/WEB-INF/jsp/flow/sealapproval/form.jsp" %>
                         <div class="form-group" style="margin-top: 30px;">
                             <div class="col-sm-4 col-sm-offset-3">
-                                <button class="btn btn-primary" type="button" onclick="doBtnSaveDraftAction();">保存草稿</button>
                                 <button class="btn btn-primary" type="button" onclick="doBtnSaveApplyAction();">发起申请</button>
                             </div>
                         </div>

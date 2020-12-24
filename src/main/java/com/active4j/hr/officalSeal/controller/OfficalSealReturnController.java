@@ -1,13 +1,18 @@
 package com.active4j.hr.officalSeal.controller;
 
+import com.active4j.hr.activiti.biz.entity.FlowMessageApprovalEntity;
 import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
 import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
+import com.active4j.hr.activiti.biz.service.FlowOfficalSealApprovalService;
 import com.active4j.hr.activiti.service.WorkflowService;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.core.query.QueryUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.officalSeal.service.OaOfficalSealRecordService;
+import com.active4j.hr.work.entity.OaWorkMeetEntity;
+import com.active4j.hr.work.entity.OaWorkMeetRoomEntity;
+import com.active4j.hr.work.entity.OaWorkMeetTypeEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -37,6 +42,11 @@ public class OfficalSealReturnController extends BaseController {
 
     @Autowired
     private OaOfficalSealRecordService oaOfficalSealRecordService;
+
+    @Autowired
+    private FlowOfficalSealApprovalService flowOfficalSealApprovalService;
+
+
     @Autowired
     private WorkflowService workflowService;
 
@@ -61,7 +71,24 @@ public class OfficalSealReturnController extends BaseController {
         // 拼接查询条件
         QueryWrapper<FlowOfficalSealApprovalEntity> queryWrapper = QueryUtils.installQueryWrapper(flowOfficalSealApprovalEntity, request.getParameterMap(), dataGrid);
         // 执行查询
-        IPage<FlowOfficalSealApprovalEntity> lstResult = oaOfficalSealRecordService.page(new Page<FlowOfficalSealApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+        IPage<FlowOfficalSealApprovalEntity> lstResult = flowOfficalSealApprovalService.page(new Page<FlowOfficalSealApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+
+        long total = lstResult.getTotal();
+        long tempTotal = 0;
+        List<FlowOfficalSealApprovalEntity> newList = new ArrayList<>();
+        if (total > 0) {
+            for(FlowOfficalSealApprovalEntity entity : lstResult.getRecords()) {
+                //只显示审批完成的公章申请
+                if (entity.getApplyStatus() == 1) {
+                    newList.add(entity);
+                    tempTotal++;
+                }
+            }
+            lstResult.setTotal(tempTotal);
+            lstResult.setRecords(newList);
+
+        }
+
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
     }
@@ -73,14 +100,33 @@ public class OfficalSealReturnController extends BaseController {
      * @return
      */
     @RequestMapping("/check")
-    public ModelAndView paperView(FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity, HttpServletRequest request) {
+    public ModelAndView sealCheck(FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("officalSeal/officalSealRecordView");
 
         if(StringUtils.isNotEmpty(flowOfficalSealApprovalEntity.getId())) {
-            flowOfficalSealApprovalEntity = oaOfficalSealRecordService.getById(flowOfficalSealApprovalEntity.getId());
+            flowOfficalSealApprovalEntity = flowOfficalSealApprovalService.getById(flowOfficalSealApprovalEntity.getId());
             view.addObject("seal", flowOfficalSealApprovalEntity);
         }
 
         return view;
     }
+//
+//    /**
+//     * 跳转到新增编辑页面
+//     * @param flowOfficalSealApprovalEntity
+//     * @param request
+//     * @return
+//     */
+//    @RequestMapping("/check")
+//    public ModelAndView check(FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity, HttpServletRequest request) {
+//        ModelAndView view = new ModelAndView("officalSeal/officalSealRecordView");
+//
+//
+//        if(StringUtils.isNotEmpty(flowOfficalSealApprovalEntity.getId())) {
+//            flowOfficalSealApprovalEntity = flowOfficalSealApprovalService.getById(flowOfficalSealApprovalEntity.getId());
+//            view.addObject("seal", flowOfficalSealApprovalEntity);
+//        }
+//
+//        return view;
+//    }
 }

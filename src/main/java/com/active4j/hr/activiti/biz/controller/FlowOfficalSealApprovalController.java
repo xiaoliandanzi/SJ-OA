@@ -1,7 +1,9 @@
 package com.active4j.hr.activiti.biz.controller;
 
 import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
+import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowOfficalSealApprovalService;
+import com.active4j.hr.activiti.biz.service.FlowPaperApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
 import com.active4j.hr.activiti.entity.WorkflowMngEntity;
 import com.active4j.hr.activiti.service.WorkflowBaseService;
@@ -17,6 +19,10 @@ import com.active4j.hr.officalSeal.entity.OaOfficalSealEntity;
 import com.active4j.hr.officalSeal.service.OaOfficalSealBookService;
 import com.active4j.hr.officalSeal.service.OaOfficalSealService;
 import lombok.extern.slf4j.Slf4j;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.impl.identity.Authentication;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
@@ -58,7 +64,14 @@ public class FlowOfficalSealApprovalController  extends BaseController {
     private OaOfficalSealService oaOfficalSealService;
 
     @Autowired
-    private OaOfficalSealBookService oaOfficalSealBookService;
+    private FlowPaperApprovalService flowPaperApprovalService;
+
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private RuntimeService runtimeService;
+
 
     /**
      * 跳转到表单页面
@@ -151,7 +164,7 @@ public class FlowOfficalSealApprovalController  extends BaseController {
      */
     @RequestMapping("/doApprove")
     @ResponseBody
-    public AjaxJson doApprove(String id, String taskId, String comment, HttpServletRequest request){
+    public AjaxJson doApprove(String id, String taskId, String comment,String result, HttpServletRequest request){
         AjaxJson j = new AjaxJson();
 
         try{
@@ -167,7 +180,18 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             }
 
             Map<String, Object> map = new HashMap<String, Object>();
-            workflowService.saveSubmitTask(taskId, id, comment, map);
+//            workflowService.saveSubmitTask(taskId, id, comment, map);
+
+            if(StringUtils.equals("N", result)) {
+                map.put("flag", "N");
+                workflowService.saveBackTask(taskId, id, comment, map);
+            }else if(StringUtils.equals("Y", result)){
+                map.put("flag", "Y");
+
+                saveSubmitTask(taskId, id, comment, map);
+            }else {
+                saveSubmitTask(taskId, id, comment, map);
+            }
 
 
         }catch(Exception e) {
@@ -179,6 +203,54 @@ public class FlowOfficalSealApprovalController  extends BaseController {
         return j;
     }
 
+    private void saveSubmitTask(String taskId, String businessKey, String comments, Map<String, Object> variables) {
+        // 使用任务ID，查询任务对象，获取流程流程实例ID
+        Task task = taskService.createTaskQuery()//
+                .taskId(taskId)// 使用任务ID查询
+                .singleResult();
+
+        // 获取流程实例ID
+        String processInstanceId = task.getProcessInstanceId();
+
+        /**
+         * 注意：添加批注的时候，由于Activiti底层代码是使用： String userId =
+         * Authentication.getAuthenticatedUserId(); CommentEntity comment = new
+         * CommentEntity(); comment.setUserId(userId);
+         * 所有需要从Session中获取当前登录人，作为该任务的办理人（审核人），对应act_hi_comment表中的User_ID的字段，不过不添加审核人，该字段为null
+         * 所以要求，添加配置执行使用Authentication.setAuthenticatedUserId();添加当前任务的审核人
+         */
+        Authentication.setAuthenticatedUserId(ShiroUtils.getSessionUserName());
+        taskService.addComment(taskId, processInstanceId, comments);
+
+        // 使用任务ID，完成当前人的个人任务，同时流程变量
+        taskService.complete(taskId, variables, true);
+
+        /**
+         * 在完成任务之后，判断流程是否结束 如果流程结束了，更新请假单表的状态从1变成2（审核中-->审核完成）
+         */
+        WorkflowBaseEntity workflowBaseEntity = workflowBaseService.getById(businessKey);
+        if (null != workflowBaseEntity) {
+
+            ProcessInstance pi = runtimeService.createProcessInstanceQuery()//
+                    .processInstanceId(processInstanceId)// 使用流程实例ID查询
+                    .singleResult();
+            // 流程结束了
+            if (pi == null) {
+                // 更新请假单表的状态从2变成3（审核中-->审核完成）
+                workflowBaseEntity.setStatus("3");
+                FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity = flowOfficalSealApprovalService.getById(workflowBaseEntity.getBusinessId());
+                flowOfficalSealApprovalEntity.setApplyStatus(1);
+                flowOfficalSealApprovalService.saveOrUpdate(flowOfficalSealApprovalEntity);
+            } else {
+                workflowBaseEntity.setStatus("2");
+                FlowPaperApprovalEntity flowPaperApprovalEntity = flowPaperApprovalService.getById(workflowBaseEntity.getBusinessId());
+                flowPaperApprovalEntity.setApplyStatus(0);
+                flowPaperApprovalService.saveOrUpdate(flowPaperApprovalEntity);
+            }
+            workflowBaseService.saveOrUpdate(workflowBaseEntity);
+            log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
+        }
+    }
 
     /**
      * 保存方法
@@ -194,18 +266,6 @@ public class FlowOfficalSealApprovalController  extends BaseController {
         AjaxJson j = new AjaxJson();
         try {
             if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
-                return j;
-            }
-
-            if(null == flowOfficalSealApprovalEntity.getSealName()) {
-                j.setSuccess(false);
-                j.setMsg("公章名不能为空");
-                return j;
-            }
-
-            if(null == flowOfficalSealApprovalEntity.getBookDay()) {
-                j.setSuccess(false);
-                j.setMsg("申请借用日期不能为空");
                 return j;
             }
 

@@ -13,19 +13,9 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-3 control-label">名称：</label>
+    <label class="col-sm-3 control-label">申请流程名称：</label>
     <div class="col-sm-5">
         <input id="name" name="name" minlength="2" type="text" class="form-control" required="" value="${base.name }">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-sm-3 control-label">公章名称*：</label>
-    <div class="col-sm-5">
-        <select name="sealName" class="form-control" required="" value="${biz.sealName }">
-            <c:forEach items="${lstSeals }" var="c">
-                <option value="${c.id}" selected="selected">${c.name }</option>
-            </c:forEach>
-        </select>
     </div>
 </div>
 <%--<div class="form-group">--%>
@@ -34,12 +24,6 @@
 <%--        <input class="laydate-icon form-control layer-date" id="bookDay" name="bookDay" required="" value='<fmt:formatDate value="${biz.bookDay }" type="date" pattern="yyyy-MM-dd"/>'>--%>
 <%--    </div>--%>
 <%--</div>--%>
-<div class="form-group">
-    <label class="col-sm-3 control-label">借用日期：</label>
-    <div class="col-sm-5">
-        <input class="laydate-icon form-control layer-date" id="bookDay" name="bookDay" value='<fmt:formatDate value="${biz.bookDay }" type="date" pattern="yyyy-MM-dd"/>'>
-    </div>
-</div>
 <div class="form-group">
     <label class="col-sm-3 control-label">开始日期：</label>
     <div class="col-sm-5">
