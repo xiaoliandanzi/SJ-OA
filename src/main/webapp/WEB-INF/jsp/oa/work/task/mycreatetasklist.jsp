@@ -49,10 +49,10 @@
 	<!-- 脚本部分 -->
 	<t:datagrid actionUrl="oa/work/task/mycreatetaskdatagrid" tableContentId="oaWorkMyCreateTaskListTable" searchGroupId="searchGroupId" fit="true" caption="我创建的任务列表" name="oaWorkMyCreateTaskList" pageSize="20" sortName="createDate" sortOrder="desc" load="true" loadFun="init();">
 		<t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-		<t:dgCol name="title" label="任务标题" width="120" query="true" inputCol="4"></t:dgCol>
+		<t:dgCol name="title" label="任务" width="120" query="true" inputCol="4"></t:dgCol>
 		<t:dgCol name="appointUserName" label="任务分配人" width="70"></t:dgCol>
 		<t:dgCol name="userName" label="任务责任人" width="70"></t:dgCol>
-		<t:dgCol name="monitorUserName" label="任务监控人" width="70"></t:dgCol>
+		<%--<t:dgCol name="monitorUserName" label="任务监控人" width="70"></t:dgCol>--%>
 		<t:dgCol name="status" label="状态" width="60" dictionary="oataskstatus" display="status"></t:dgCol>
 		<t:dgCol name="progress" label="进度" width="60" display="percent"></t:dgCol>
 		<t:dgToolBar url="oa/work/task/addorupdate" type="add" width="60%" height="90%"></t:dgToolBar>

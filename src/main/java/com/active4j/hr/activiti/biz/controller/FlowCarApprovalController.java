@@ -129,7 +129,7 @@ public class FlowCarApprovalController extends BaseController {
         //获取当前用户id
         String userId = ShiroUtils.getSessionUserId();
         //获取当前用户个人资料
-        SysUserModel user = sysUserService.getInfoByUserId(userId);
+        SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
         view.addObject("dept", user.getDeptName());
 
         view.addObject("workflowId", workflowId);

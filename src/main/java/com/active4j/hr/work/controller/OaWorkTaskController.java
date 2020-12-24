@@ -390,11 +390,11 @@ public class OaWorkTaskController extends BaseController {
 				return j;
 			}
 			
-			if(StringUtils.isEmpty(oaWorkTaskEntity.getMonitorUserId())) {
-				j.setMsg("任务监控人不能为空");
-				j.setSuccess(false);
-				return j;
-			}
+//			if(StringUtils.isEmpty(oaWorkTaskEntity.getMonitorUserId())) {
+//				j.setMsg("任务监控人不能为空");
+//				j.setSuccess(false);
+//				return j;
+//			}
 			
 			if(StringUtils.isEmpty(oaWorkTaskEntity.getUserId())) {
 				j.setMsg("任务责任人不能为空");

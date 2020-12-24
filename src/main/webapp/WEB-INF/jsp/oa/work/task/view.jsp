@@ -65,10 +65,10 @@
 												<dd id="userName">
 													${task.userName }
 												</dd>
-												<dt>任务监控人：</dt>
+												<%--<dt>任务监控人：</dt>
 												<dd id="monitorUserName">
 													${task.monitorUserName }
-												</dd>
+												</dd>--%>
 											</dl>
 										</div>
 										<div class="col-sm-6">

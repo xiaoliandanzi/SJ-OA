@@ -1,7 +1,5 @@
 package com.active4j.hr.system.service;
 
-import java.util.List;
-
 import com.active4j.hr.system.entity.SysDeptEntity;
 import com.active4j.hr.system.entity.SysFunctionEntity;
 import com.active4j.hr.system.entity.SysRoleEntity;
@@ -9,6 +7,8 @@ import com.active4j.hr.system.entity.SysUserEntity;
 import com.active4j.hr.system.model.ActiveUser;
 import com.active4j.hr.system.model.SysUserModel;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 public interface SysUserService extends IService<SysUserEntity> {
 	
@@ -111,7 +111,7 @@ public interface SysUserService extends IService<SysUserEntity> {
 	 * @author guyp
 	 * @time 2020年2月8日 下午12:36:47
 	 */
-	public SysUserModel getInfoByUserId(String userId);
+	public List<SysUserModel> getInfoByUserId(String userId);
 	
 	/**
 	 * 

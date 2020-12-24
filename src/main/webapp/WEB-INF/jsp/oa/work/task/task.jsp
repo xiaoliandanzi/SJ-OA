@@ -19,17 +19,17 @@
                                     <input id="title" name="title" type="text" class="form-control" required="" value="${task.title }">
                                 </div>
                             </div>
-                            <div class="form-group">
-								<label class="col-sm-3 control-label">上级任务：</label>
-								<div class="col-sm-8">
-									<select class="form-control" name="parentTaskId" id="parentTaskId">
-										<option value=""></option>
-										<c:forEach items="${lstTasks }" var="t">
-											<option value="${t.id}" <c:if test="${t.id == task.parentTaskId }">selected='selected'</c:if>>${t.title }</option>
-										</c:forEach>
-									</select>
-								</div>
-							</div>
+                            <%--<div class="form-group">--%>
+								<%--<label class="col-sm-3 control-label">上级任务：</label>--%>
+								<%--<div class="col-sm-8">--%>
+									<%--<select class="form-control" name="parentTaskId" id="parentTaskId">--%>
+										<%--<option value=""></option>--%>
+										<%--<c:forEach items="${lstTasks }" var="t">--%>
+											<%--<option value="${t.id}" <c:if test="${t.id == task.parentTaskId }">selected='selected'</c:if>>${t.title }</option>--%>
+										<%--</c:forEach>--%>
+									<%--</select>--%>
+								<%--</div>--%>
+							<%--</div>--%>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">分配人：</label>
                                 <div class="col-sm-8">
@@ -46,14 +46,14 @@
                                 	</div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">监控人：</label>
-                                <div class="col-sm-8">
-                                	<div class="input-group">
-                                		<t:choose url="common/selectUsers" hiddenName="monitorUserId" hiddenValue="${monitorUserId }" textValue="${monitorUserName }" textName="monitorUserName" hiddenId="monitorUserId" textId="monitorUserName"></t:choose>
-                                	</div>
-                                </div>
-                            </div>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-sm-3 control-label">监控人：</label>--%>
+                                <%--<div class="col-sm-8">--%>
+                                	<%--<div class="input-group">--%>
+                                		<%--<t:choose url="common/selectUsers" hiddenName="monitorUserId" hiddenValue="${monitorUserId }" textValue="${monitorUserName }" textName="monitorUserName" hiddenId="monitorUserId" textId="monitorUserName"></t:choose>--%>
+                                	<%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                             <div class="form-group">
 								<label class="col-sm-3 control-label m-b">任务时间 从：</label>
 								<div class="col-sm-4 m-b">
@@ -64,6 +64,22 @@
 								<label class="col-sm-3 control-label m-b">到：</label>
 								<div class="col-sm-4 m-b">
 									<input class="laydate-icon form-control layer-date" id="endTime" name="endTime"  value='<fmt:formatDate value="${task.endTime }" type="both" pattern="yyyy-MM-dd HH:mm"/>'>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">联系人：</label>
+								<div class="col-sm-5">
+									<div class="input-group">
+										<input id="contractName" name="contractName" minlength="2" type="text" class="form-control" required="" value="${task.contractName }">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">联系电话：</label>
+								<div class="col-sm-5">
+									<div class="input-group">
+										<input id="contractPhone" name="contractPhone" minlength="2" type="text" class="form-control" required="" value="${task.contractPhone }">
+									</div>
 								</div>
 							</div>
                             <div class="form-group">

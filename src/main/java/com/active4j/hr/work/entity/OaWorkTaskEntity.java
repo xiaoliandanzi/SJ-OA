@@ -1,15 +1,14 @@
 package com.active4j.hr.work.entity;
 
-import java.util.Date;
-
 import com.active4j.hr.common.entity.BaseEntity;
 import com.active4j.hr.core.annotation.QueryField;
 import com.active4j.hr.core.query.QueryCondition;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 
 /**
  * @title OaWorkTaskEntity.java
@@ -50,6 +49,12 @@ public class OaWorkTaskEntity extends BaseEntity {
 
 	@TableField("USER_NAME")
 	private String userName;
+
+	@TableField("CONTRACT_NAME")
+	private String contractName;
+
+	@TableField("CONTRACT_PHONE")
+	private String contractPhone;
 
 	// 任务监控人
 	@TableField("MONITOR_USER_ID")

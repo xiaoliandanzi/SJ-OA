@@ -1,14 +1,13 @@
 package com.active4j.hr.system.dao;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.active4j.hr.system.entity.SysFunctionEntity;
 import com.active4j.hr.system.entity.SysRoleEntity;
 import com.active4j.hr.system.entity.SysUserEntity;
 import com.active4j.hr.system.model.SysUserModel;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SysUserDao extends BaseMapper<SysUserEntity>{
 	
@@ -70,5 +69,5 @@ public interface SysUserDao extends BaseMapper<SysUserEntity>{
 	 * @author guyp
 	 * @time 2020年2月8日 下午12:38:09
 	 */
-	public SysUserModel findInfoByUserId(@Param("userId") String userId);
+	public List<SysUserModel> findInfoByUserId(@Param("userId") String userId);
 }

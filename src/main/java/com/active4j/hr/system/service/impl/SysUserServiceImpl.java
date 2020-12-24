@@ -121,7 +121,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		/**
 		 * 可见菜单跟权限的赋值
 		 */
-		List<SysFunctionEntity> lstMenus = this.findMenuByUserId(user.getId());
+		//List<SysFunctionEntity> lstMenus = this.findMenuByUserId(user.getId());
+		List<SysFunctionEntity> lstMenus = getListMenus(this.findMenuByUserId(user.getId()));
 		
 		//查询用户角色
 		List<SysRoleEntity> lstRoles = this.baseMapper.findRolesByUserId(user.getId());
@@ -144,6 +145,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		activeUser.setPermissions(getAuthMenus(lstMenus, lstBtns));
 		
 		return activeUser;
+	}
+
+	private List<SysFunctionEntity> getListMenus(List<SysFunctionEntity> tempList) {
+		HashMap<String, SysFunctionEntity> entityMap = new HashMap<>();
+		for (SysFunctionEntity entity : tempList) {
+			String key = entity.getParentId()+entity.getName();
+			entityMap.put(key, entity);
+		}
+		List<SysFunctionEntity> entityList = new ArrayList<>();
+		for(SysFunctionEntity entity : entityMap.values()) {
+			entityList.add(entity);
+		}
+		return entityList;
 	}
 	
 	/**
@@ -449,7 +463,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	 * @author guyp
 	 * @time 2020年2月8日 下午12:36:47
 	 */
-	public SysUserModel getInfoByUserId(String userId) {
+	public List<SysUserModel> getInfoByUserId(String userId) {
 		return this.baseMapper.findInfoByUserId(userId);
 	}
 

@@ -357,8 +357,19 @@ public class SysUserController extends BaseController {
 		//获取当前用户id
 		String userId = ShiroUtils.getSessionUserId();
 		//获取当前用户个人资料
-		SysUserModel user = sysUserService.getInfoByUserId(userId);
-		view.addObject("user", user);
+		List<SysUserModel> userList = sysUserService.getInfoByUserId(userId);
+		if (userList.size() == 1){
+			view.addObject("user", userList.get(0));
+		} else {
+			SysUserModel user = userList.get(0);
+			StringBuilder sb = new StringBuilder();
+			for (SysUserModel model : userList){
+				sb.append(model.getRoleName()).append(" ");
+			}
+			user.setRoleName(sb.toString());
+			view.addObject("user", user);
+		}
+
 		
 		return view;
 	}
