@@ -20,7 +20,7 @@ public class WorkflowConstant {
 	public static final String Str_Admin = "admin";
 	
 	//部门经理称呼
-	public static final String Str_Dept_Manager = "经理";
+	public static final String Str_Dept_Manager = "科室负责人";
 	
 	//任务节点类型
 	public static final String STR_TASK_NAME_APPROVE = "审批";

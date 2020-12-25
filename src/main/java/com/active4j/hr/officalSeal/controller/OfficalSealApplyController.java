@@ -65,7 +65,7 @@ public class OfficalSealApplyController {
 
 
         for (WorkflowMngEntity workflowMngEntity : lstWorkflows) {
-            if (workflowMngEntity.getName().equals("公章管理008")) {
+            if (workflowMngEntity.getName().equals("双井公章申请")) {
                 WorkflowFormEntity form = workflowFormService.getById(workflowMngEntity.getFormId());
                 view = new ModelAndView("redirect:" + form.getPath() +
                         "?formId=" + workflowMngEntity.getFormId()

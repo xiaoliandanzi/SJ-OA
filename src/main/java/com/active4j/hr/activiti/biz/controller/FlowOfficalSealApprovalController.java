@@ -18,6 +18,8 @@ import com.active4j.hr.core.util.DateUtils;
 import com.active4j.hr.officalSeal.entity.OaOfficalSealEntity;
 import com.active4j.hr.officalSeal.service.OaOfficalSealBookService;
 import com.active4j.hr.officalSeal.service.OaOfficalSealService;
+import com.active4j.hr.system.model.SysUserModel;
+import com.active4j.hr.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -72,12 +74,14 @@ public class FlowOfficalSealApprovalController  extends BaseController {
     @Autowired
     private RuntimeService runtimeService;
 
+    @Autowired
+    private SysUserService sysUserService;
+
 
     /**
      * 跳转到表单页面
      * @param request
      * @param id  流程中心的ID
-     * @param  业务ID
      * @return
      */
     @RequestMapping("/go")
@@ -148,6 +152,13 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
             view.addObject("biz", biz);
         }
+
+        //获取当前用户id
+        String userId = ShiroUtils.getSessionUserId();
+        //获取当前用户个人资料
+        SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
+        view.addObject("dept", user.getDeptName());
+        view.addObject("userName", user.getRealName());
 
         view.addObject("workflowId", workflowId);
         return view;
@@ -269,6 +280,18 @@ public class FlowOfficalSealApprovalController  extends BaseController {
                 return j;
             }
 
+            if(null == flowOfficalSealApprovalEntity.getUseUnit()) {
+                j.setSuccess(false);
+                j.setMsg("主送单位不能为空");
+                return j;
+            }
+
+            if(null == flowOfficalSealApprovalEntity.getDepartmentName()) {
+                j.setSuccess(false);
+                j.setMsg("科室不能为空");
+                return j;
+            }
+
             if(null == flowOfficalSealApprovalEntity.getStartDay()) {
                 j.setSuccess(false);
                 j.setMsg("开始日期不能为空");
@@ -358,6 +381,70 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             j.setMsg("申请流程保存失败，错误信息:" + e.getMessage());
             log.error("申请用章审批流程保存失败，错误信息:{}", e);
         }
+
+        return j;
+    }
+
+    /**
+     * 被打回 重新提交方法
+     *
+     */
+    @RequestMapping("/reSubmit")
+    @ResponseBody
+    public AjaxJson reSubmit(WorkflowBaseEntity workflowBaseEntity, FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity, String taskId, HttpServletRequest request) {
+        AjaxJson j = new AjaxJson();
+        try{
+            if(null == flowOfficalSealApprovalEntity.getUseUnit()) {
+                j.setSuccess(false);
+                j.setMsg("主送单位不能为空");
+                return j;
+            }
+
+            if(null == flowOfficalSealApprovalEntity.getDepartmentName()) {
+                j.setSuccess(false);
+                j.setMsg("科室不能为空");
+                return j;
+            }
+
+            if(null == flowOfficalSealApprovalEntity.getStartDay()) {
+                j.setSuccess(false);
+                j.setMsg("开始日期不能为空");
+                return j;
+            }
+
+            if(null == flowOfficalSealApprovalEntity.getEndDay()) {
+                j.setSuccess(false);
+                j.setMsg("结束日期不能为空");
+                return j;
+            }
+
+            if(StringUtils.isBlank(flowOfficalSealApprovalEntity.getContent())) {
+                j.setSuccess(false);
+                j.setMsg("内容不能为空");
+                return j;
+            }
+
+            WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
+            MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
+
+            FlowPaperApprovalEntity biz = flowPaperApprovalService.getById(base.getBusinessId());
+            biz.setAttachment(flowOfficalSealApprovalEntity.getDepartmentName());
+            biz.setCommit(flowOfficalSealApprovalEntity.getCommit());
+            biz.setPaperArea(flowOfficalSealApprovalEntity.getUseUnit());
+            //已申请
+            base.setStatus("1");
+            flowPaperApprovalService.saveUpdate(base, biz);
+
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            workflowService.saveSubmitTask(taskId, base.getId(), "重新提交", map);
+
+        }catch(Exception e) {
+            j.setSuccess(false);
+            j.setMsg("重新提交失败,错误信息:" + e.getMessage());
+            log.error("重新提交失败,错误信息:{}", e);
+        }
+
 
         return j;
     }
