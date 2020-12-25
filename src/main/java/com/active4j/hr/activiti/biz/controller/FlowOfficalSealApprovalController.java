@@ -254,9 +254,9 @@ public class FlowOfficalSealApprovalController  extends BaseController {
                 flowOfficalSealApprovalService.saveOrUpdate(flowOfficalSealApprovalEntity);
             } else {
                 workflowBaseEntity.setStatus("2");
-                FlowPaperApprovalEntity flowPaperApprovalEntity = flowPaperApprovalService.getById(workflowBaseEntity.getBusinessId());
-                flowPaperApprovalEntity.setApplyStatus(0);
-                flowPaperApprovalService.saveOrUpdate(flowPaperApprovalEntity);
+                FlowOfficalSealApprovalEntity flowOfficalSealAfpprovalEntity = flowOfficalSealApprovalService.getById(workflowBaseEntity.getBusinessId());
+                flowOfficalSealAfpprovalEntity.setApplyStatus(0);
+                flowOfficalSealApprovalService.saveOrUpdate(flowOfficalSealAfpprovalEntity);
             }
             workflowBaseService.saveOrUpdate(workflowBaseEntity);
             log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
