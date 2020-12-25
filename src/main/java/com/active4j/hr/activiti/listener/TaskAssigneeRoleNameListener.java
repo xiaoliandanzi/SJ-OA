@@ -1,15 +1,17 @@
 package com.active4j.hr.activiti.listener;
 
-import java.util.List;
-
+import com.active4j.hr.activiti.util.WorkflowConstant;
+import com.active4j.hr.activiti.util.WorkflowTaskUtil;
+import com.active4j.hr.core.beanutil.ApplicationContextUtil;
+import com.active4j.hr.system.service.SysDeptService;
+import com.active4j.hr.system.service.SysUserService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.active4j.hr.activiti.util.WorkflowConstant;
-import com.active4j.hr.activiti.util.WorkflowTaskUtil;
-import com.active4j.hr.core.beanutil.ApplicationContextUtil;
+import java.util.List;
 
 /**
  * @title TaskAssigneeRoleNameListener.java
@@ -19,6 +21,11 @@ import com.active4j.hr.core.beanutil.ApplicationContextUtil;
  * @version 1.0
  */
 public class TaskAssigneeRoleNameListener implements TaskListener {
+
+	@Autowired
+	private SysUserService sysUserService;
+	@Autowired
+	private SysDeptService sysDeptService;
 
 	/**
 	 * 
@@ -38,7 +45,12 @@ public class TaskAssigneeRoleNameListener implements TaskListener {
 		}else if(StringUtils.contains(taskName, WorkflowConstant.STR_TASK_NAME_HANDLE)) {
 			roleName = StringUtils.substringBefore(taskName, WorkflowConstant.STR_TASK_NAME_HANDLE);
 		}
-		
+
+		if(taskName.equalsIgnoreCase("主管领导审批")){
+			String applyName = (String)delegateTask.getVariable("applyName");
+			roleName=WorkflowTaskUtil.getLeaderDept(applyName);
+		}
+
 		List<String> lstUsers = WorkflowTaskUtil.getApprovalUserByRoleName(roleName);
 		
 		if(null == lstUsers || lstUsers.size() <= 0) {
