@@ -66,6 +66,8 @@
 						qhTipSuccess(d.msg);
 						//操作结束，刷新表格
 						reloadTable('groupWaitTask');
+					} else {
+						qhTipWarning(d.msg);
 					}
 				}); 
 				

@@ -22,7 +22,12 @@ public class GlobalConstant {
 	 * 错误提示 联系管理员
 	 */
 	public static String ERROR_MSG = "操作失败，请联系管理员";
-	
+
+	/**
+	 * 承接失败，该任务已经被他人承接
+	 */
+	public static String ERROR_GET_TASK = "承接失败，该任务已经被他人承接";
+
 	/**
 	 * 用户
 	 */

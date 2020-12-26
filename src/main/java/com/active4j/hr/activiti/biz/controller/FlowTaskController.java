@@ -381,7 +381,7 @@ public class FlowTaskController extends BaseController {
 			
 		}catch(Exception e) {
 			j.setSuccess(false);
-			j.setMsg(GlobalConstant.ERROR_MSG);
+			j.setMsg(GlobalConstant.ERROR_GET_TASK);
 			log.error("承接审批任务保存失败，错误信息:{}", e);
 		}
 		
