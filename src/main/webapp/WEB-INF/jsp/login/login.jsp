@@ -27,7 +27,7 @@
             <h3>双井智慧办公系统</h3>
             <form class="form-horizontal m-t" id="signupForm" action="login" method="post">
                 <div class="form-group">
-                    <input type="text" name="userName" id="userName" value="zxf" class="form-control" placeholder="用户名" required="">
+                    <input type="text" name="userName" id="userName" value="suming" class="form-control" placeholder="用户名" required="">
                 </div>
                 <div class="form-group">
                     <input type="password" name="password" id="password" value="123456" class="form-control" placeholder="密码" required="">

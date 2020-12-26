@@ -1,11 +1,13 @@
 package com.active4j.hr.paper.controller;
 
+import com.active4j.hr.activiti.entity.WorkflowCategoryEntity;
 import com.active4j.hr.activiti.entity.WorkflowFormEntity;
 import com.active4j.hr.activiti.entity.WorkflowMngEntity;
 import com.active4j.hr.activiti.service.WorkflowCategoryService;
 import com.active4j.hr.activiti.service.WorkflowFormService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.core.shiro.ShiroUtils;
+import com.active4j.hr.core.util.ListUtils;
 import com.active4j.hr.system.entity.SysRoleEntity;
 import com.active4j.hr.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -74,6 +76,44 @@ public class PaperApplyController {
         }
         view = new ModelAndView("system/common/warning");
         view.addObject("message", "系统不存在当前表单");
+        return view;
+    }
+
+    @RequestMapping("/myapply")
+    public ModelAndView myApply(HttpServletRequest request) {
+        ModelAndView view = new ModelAndView("flow/task/waittasklist");
+
+        // 获取流程类别数据
+        List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
+
+        List<WorkflowCategoryEntity> result = new ArrayList<>();
+        for (WorkflowCategoryEntity entity : lstCatogorys) {
+            if (entity.getName().equalsIgnoreCase("发文申请")) {
+                result.add(entity);
+            }
+        }
+
+        view.addObject("categoryReplace", ListUtils.listToReplaceStr(result, "name", "id"));
+
+        return view;
+    }
+
+    @RequestMapping("/mycarry")
+    public ModelAndView mycarry(HttpServletRequest req) {
+        ModelAndView view = new ModelAndView("flow/task/groupwaittasklist");
+
+        // 获取流程类别数据
+        List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
+
+        List<WorkflowCategoryEntity> result = new ArrayList<>();
+        for (WorkflowCategoryEntity entity : lstCatogorys) {
+            if (entity.getName().equalsIgnoreCase("发文申请")) {
+                result.add(entity);
+            }
+        }
+
+        view.addObject("categoryReplace", ListUtils.listToReplaceStr(result, "name", "id"));
+
         return view;
     }
 }

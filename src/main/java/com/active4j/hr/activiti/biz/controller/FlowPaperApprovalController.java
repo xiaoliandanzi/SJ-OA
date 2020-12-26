@@ -271,7 +271,19 @@ public class FlowPaperApprovalController extends BaseController {
                          String optType, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try {
-            if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
+            /*if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
+                return j;
+            }*/
+
+            if(StringUtils.isBlank(workflowBaseEntity.getWorkflowId())) {
+                j.setSuccess(false);
+                j.setMsg("流程参数不能为空");
+                return j;
+            }
+
+            if(StringUtils.isBlank(workflowBaseEntity.getLevel())) {
+                j.setSuccess(false);
+                j.setMsg("流程紧急程度不能为空");
                 return j;
             }
 
@@ -353,6 +365,7 @@ public class FlowPaperApprovalController extends BaseController {
                     workflowBaseEntity.setWorkflowId(workflow.getId());
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
                     workflowBaseEntity.setStatus("1"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
+                    workflowBaseEntity.setName("发文申请-"+flowPaperApprovalEntity.getTitle());
                     //保存业务数据
                     flowPaperApprovalService.saveNewPaper(workflowBaseEntity, flowPaperApprovalEntity);
 
@@ -389,6 +402,7 @@ public class FlowPaperApprovalController extends BaseController {
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
                     workflowBaseEntity.setStatus("0"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
                     flowPaperApprovalEntity.setApplyStatus(3); //文件状态 3：草稿中
+                    workflowBaseEntity.setName("发文申请-"+flowPaperApprovalEntity.getTitle());
                     flowPaperApprovalService.saveNewPaper(workflowBaseEntity, flowPaperApprovalEntity);
                 }else {
                     WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
