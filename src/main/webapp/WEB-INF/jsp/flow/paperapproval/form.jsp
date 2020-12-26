@@ -10,21 +10,21 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">申请编号：</label>
     <div class="col-sm-3">
-        <input id="projectNo" name="projectNo" minlength="2" type="text" class="form-control" required="" value="${base.projectNo }">
+        <input id="projectNo" name="projectNo" minlength="2" type="text" class="form-control" readonly required="" value="${base.projectNo }">
     </div>
     <label class="col-sm-2 control-label">名称：</label>
     <div class="col-sm-3">
-        <input id="name" name="name" minlength="2" type="text" class="form-control" required="" value="${base.name }">
+        <input id="name" name="name" minlength="2" type="text" class="form-control" required="" readonly value="${base.name }">
     </div>
 </div>
 <div class="form-group">
     <label class="col-sm-2 control-label">科室：</label>
     <div class="col-sm-3">
-        <input id="dept" name="dept"  type="text" class="form-control" required="" readonly value="${dept }">
+        <input id="dept" name="dept"  type="text" class="form-control" required="" readonly value="${biz.dept }">
     </div>
     <label class="col-sm-2 control-label">起草人：</label>
     <div class="col-sm-3">
-        <input id="draftMan" name="draftMan"  type="text" class="form-control" required="" readonly value="${userName }">
+        <input id="draftMan" name="draftMan"  type="text" class="form-control" required="" readonly value="${biz.draftMan }">
     </div>
 </div>
 <div class="form-group">

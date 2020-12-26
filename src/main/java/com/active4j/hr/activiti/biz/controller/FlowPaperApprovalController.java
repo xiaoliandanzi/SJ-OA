@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -132,14 +133,25 @@ public class FlowPaperApprovalController extends BaseController {
 
             FlowPaperApprovalEntity biz = flowPaperApprovalService.getById(base.getBusinessId());
             view.addObject("biz", biz);
-        }
+        } else {
+            FlowPaperApprovalEntity biz = new FlowPaperApprovalEntity();
+            //获取当前用户id
+            String userId = ShiroUtils.getSessionUserId();
+            //获取当前用户个人资料
+            SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
 
-        //获取当前用户id
-        String userId = ShiroUtils.getSessionUserId();
-        //获取当前用户个人资料
-        SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
-        view.addObject("dept", user.getDeptName());
-        view.addObject("userName", user.getRealName());
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
+            WorkflowBaseEntity base = new WorkflowBaseEntity();
+            base.setProjectNo(String.format("%s-%s", user.getUserName(), DateUtils.date2Str(DateUtils.getNow(), sdf)));
+            base.setName("发文申请");
+
+            view.addObject("base", base);
+
+            biz.setDraftMan(user.getRealName());
+            biz.setDept(user.getDeptName());
+            view.addObject("biz", biz);
+        }
 
         view.addObject("workflowId", workflowId);
         return view;
