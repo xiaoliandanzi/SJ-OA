@@ -18,18 +18,30 @@
         <input id="name" name="name" minlength="2" type="text" class="form-control" required="" value="${base.name }">
     </div>
 </div>
+<%--<div class="form-group">--%>
+<%--    <label class="col-sm-3 control-label ">开始日期：</label>--%>
+<%--    <div class="col-sm-5">--%>
+<%--        <input class="laydate-icon form-control layer-date" id="startDay" name="startDay" value='<fmt:formatDate value="${biz.startDay }" type="date" pattern="yyyy-MM-dd HH:mm:ss"/>'>--%>
+<%--    </div>--%>
+<%--</div>--%>
 <div class="form-group">
-    <label class="col-sm-3 control-label ">开始日期：</label>
-    <div class="col-sm-5">
-        <input class="laydate-icon form-control layer-date" id="startDay" name="startDay" value='<fmt:formatDate value="${biz.startDay }" type="date" pattern="yyyy-MM-dd HH:mm:ss"/>'>
+    <label class="col-sm-3 control-label m-b">开始日期：</label>
+    <div class="col-sm-4 m-b">
+        <input class="laydate-icon form-control layer-date" id="startDay" name="startDay"  value='<fmt:formatDate value="${biz.startDay }" type="both" pattern="yyyy-MM-dd HH:mm"/>'>
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-3 control-label">结束日期：</label>
-    <div class="col-sm-5">
-        <input class="laydate-icon form-control layer-date" id="endDay" name="endDay" value='<fmt:formatDate value="${biz.endDay }" type="date" pattern="yyyy-MM-dd HH:mm:ss"/>'>
+    <label class="col-sm-3 control-label m-b">开始日期：</label>
+    <div class="col-sm-4 m-b">
+        <input class="laydate-icon form-control layer-date" id="endDay" name="endDay"  value='<fmt:formatDate value="${biz.endDay }" type="both" pattern="yyyy-MM-dd HH:mm"/>'>
     </div>
 </div>
+<%--<div class="form-group">--%>
+<%--    <label class="col-sm-3 control-label">结束日期：</label>--%>
+<%--    <div class="col-sm-5">--%>
+<%--        <input class="laydate-icon form-control layer-date" id="endDay" name="endDay" value='<fmt:formatDate value="${biz.endDay }" type="date" pattern="yyyy-MM-dd HH:mm:ss"/>'>--%>
+<%--    </div>--%>
+<%--</div>--%>
 <div class="form-group">
     <label class="col-sm-3 control-label">科室：</label>
     <div class="col-sm-5">

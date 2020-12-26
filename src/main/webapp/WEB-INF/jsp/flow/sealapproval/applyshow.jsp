@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,laydate,icheck"></t:base>
+    <t:base type="default,laydate,icheck,summernote"></t:base>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -64,14 +64,14 @@
         laydate({
             elem : "#startDay",
             event : "focus",
-            istime : false,
-            format : 'YYYY-MM-DD'
+            istime : true,
+            format : 'YYYY-MM-DD hh:mm'
         });
         laydate({
             elem : "#endDay",
             event : "focus",
-            istime : false,
-            format : 'YYYY-MM-DD'
+            istime : true,
+            format : 'YYYY-MM-DD hh:mm'
         });
 
         //让页面管理表单的字段不可编辑
