@@ -6,9 +6,12 @@ import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowOfficalSealApprovalService;
 import com.active4j.hr.activiti.service.WorkflowService;
 import com.active4j.hr.base.controller.BaseController;
+import com.active4j.hr.common.constant.GlobalConstant;
+import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.query.QueryUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
+import com.active4j.hr.officalSeal.entity.OaOfficalSealEntity;
 import com.active4j.hr.officalSeal.service.OaOfficalSealRecordService;
 import com.active4j.hr.work.entity.OaWorkMeetEntity;
 import com.active4j.hr.work.entity.OaWorkMeetRoomEntity;
@@ -21,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -110,23 +114,25 @@ public class OfficalSealReturnController extends BaseController {
 
         return view;
     }
-//
-//    /**
-//     * 跳转到新增编辑页面
-//     * @param flowOfficalSealApprovalEntity
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping("/check")
-//    public ModelAndView check(FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity, HttpServletRequest request) {
-//        ModelAndView view = new ModelAndView("officalSeal/officalSealRecordView");
-//
-//
-//        if(StringUtils.isNotEmpty(flowOfficalSealApprovalEntity.getId())) {
-//            flowOfficalSealApprovalEntity = flowOfficalSealApprovalService.getById(flowOfficalSealApprovalEntity.getId());
-//            view.addObject("seal", flowOfficalSealApprovalEntity);
-//        }
-//
-//        return view;
-//    }
+    /**
+     * 删除
+     * @param flowOfficalSealApprovalEntity
+     * @param request
+     * @return
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public AjaxJson delete(FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity, HttpServletRequest request) {
+        AjaxJson j = new AjaxJson();
+        try{
+            if(StringUtils.isNotEmpty(flowOfficalSealApprovalEntity.getId())) {
+                flowOfficalSealApprovalService.removeById(flowOfficalSealApprovalEntity.getId());
+            }
+        }catch(Exception e) {
+            j.setSuccess(false);
+            j.setMsg(GlobalConstant.Err_Msg_All);
+            log.error("删除公章借用记录失败，错误信息:{}", e);
+        }
+        return j;
+    }
 }

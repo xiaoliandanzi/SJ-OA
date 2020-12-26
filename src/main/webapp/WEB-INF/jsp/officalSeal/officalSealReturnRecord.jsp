@@ -39,8 +39,10 @@
     <t:dgCol name="content" label="内容" width="80"></t:dgCol>
     <t:dgCol name="startDay" label="开始时间" width="80" datefmt="yyyy-MM-dd"></t:dgCol>
     <t:dgCol name="endDay" label="结束时间" width="80" datefmt="yyyy-MM-dd"></t:dgCol>
-<%--    <t:dgCol name="applyStatus" label="状态" width="60" dictionary="seal_approval_status"></t:dgCol>--%>
+    <t:dgCol name="applyStatus" label="状态" width="60" dictionary="seal_approval_status"></t:dgCol>
     <t:dgCol name="memo" label="备注" width="80"></t:dgCol>
+<%--    <t:dgCol name="opt" label="操作" ></t:dgCol>--%>
+<%--    <t:dgDelOpt label="删除" url="officalSeal/return/delete?id={id}"/>--%>
     <t:dgToolBar url="officalSeal/return/check" type="view" width="50%" height="70%"></t:dgToolBar>
     <t:dgToolBar  type="refresh" ></t:dgToolBar>
 </t:datagrid>

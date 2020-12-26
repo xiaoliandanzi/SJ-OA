@@ -1,12 +1,23 @@
 package com.active4j.hr.officalSeal.controller;
 
+import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
+import com.active4j.hr.activiti.entity.WorkflowCategoryEntity;
+import com.active4j.hr.activiti.service.WorkflowCategoryService;
 import com.active4j.hr.base.controller.BaseController;
+import com.active4j.hr.common.constant.GlobalConstant;
+import com.active4j.hr.core.model.AjaxJson;
+import com.active4j.hr.core.util.ListUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,8 +31,10 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class OfficalSealAuditController extends BaseController {
 
+    @Autowired
+    private WorkflowCategoryService workflowCategoryService;
+
     /**
-     *
      * @param request
      * @return
      */
@@ -30,5 +43,53 @@ public class OfficalSealAuditController extends BaseController {
         ModelAndView view = new ModelAndView("officalSeal/officalSealAudit");
         return view;
     }
+
+    /**
+     * 跳转到待审批公章页面
+     *
+     * @param req
+     * @return
+     */
+    @RequestMapping("/list")
+    public ModelAndView list(HttpServletRequest req) {
+        ModelAndView view = new ModelAndView("officalSeal/officalSealAudit");
+
+        // 获取流程类别数据
+        List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
+        List<WorkflowCategoryEntity> lstSeal = new ArrayList<WorkflowCategoryEntity>();
+        int size = lstCatogorys.size();
+        for (int i = size - 1; i >= 0; i--) {
+            WorkflowCategoryEntity catogorys = lstCatogorys.get(i);
+            if (catogorys.getName().equals("双井公章审批")){
+                lstSeal.add(catogorys);
+            }
+        }
+        view.addObject("categoryReplace", ListUtils.listToReplaceStr(lstSeal, "name", "id"));
+
+        return view;
+    }
+
+    /**
+     * 删除
+     * @param workflowCategoryEntity
+     * @param request
+     * @return
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public AjaxJson delete(WorkflowCategoryEntity workflowCategoryEntity, HttpServletRequest request) {
+        AjaxJson j = new AjaxJson();
+        try{
+            if(StringUtils.isNotEmpty(workflowCategoryEntity.getId())) {
+                workflowCategoryService.removeById(workflowCategoryEntity.getId());
+            }
+        }catch(Exception e) {
+            j.setSuccess(false);
+            j.setMsg(GlobalConstant.Err_Msg_All);
+            log.error("删除公章审批记录失败，错误信息:{}", e);
+        }
+        return j;
+    }
+
 }
 
