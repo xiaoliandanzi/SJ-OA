@@ -25,6 +25,7 @@ public class FlowMessageApprovalEntity extends BaseEntity {
      * 发布人
      */
     @TableField("PUBLICMAN")
+    @QueryField(queryColumn="PUBLICMAN", condition=QueryCondition.like)
     private String publicMan;
 
     /**
@@ -76,5 +77,7 @@ public class FlowMessageApprovalEntity extends BaseEntity {
      * 信息类型 1:公示文件 2：通知公告 3:媒体聚焦
      */
     @TableField("MESSAGETYPE")
+    @QueryField(queryColumn="MESSAGETYPE", condition=QueryCondition.eq)
     private Integer messageType;
+
 }

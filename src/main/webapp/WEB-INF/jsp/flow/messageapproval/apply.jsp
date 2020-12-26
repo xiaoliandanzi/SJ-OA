@@ -11,12 +11,12 @@
 <html>
 <head>
     <t:base type="default,laydate,icheck,prettyfile,webuploader"></t:base>
-    <script type="text/javascript">
-        $(function() {
-            laydate({elem:"#publicTime",event:"focus",istime: false, format: 'YYYY-MM-DD HH:mm'});
-        });
+    <%--<script type="text/javascript">--%>
+        <%--$(function() {--%>
+            <%--laydate({elem:"#publicTime",event:"focus",istime: false, format: 'YYYY-MM-DD HH:mm'});--%>
+        <%--});--%>
 
-    </script>
+    <%--</script>--%>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">

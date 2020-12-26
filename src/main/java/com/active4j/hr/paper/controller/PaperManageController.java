@@ -36,7 +36,7 @@ public class PaperManageController extends BaseController {
 
 
     /**
-     * 车辆管理列表
+     * 发文管理列表
      * @return
      */
     @RequestMapping("/show")
@@ -92,7 +92,7 @@ public class PaperManageController extends BaseController {
      */
     @RequestMapping("/addorupdate")
     public ModelAndView paperView(FlowPaperApprovalEntity flowPaperApprovalEntity, HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("paper/paperView");
+        ModelAndView view = new ModelAndView("message/messageView");
 
         if(StringUtils.isNotEmpty(flowPaperApprovalEntity.getId())) {
             flowPaperApprovalEntity = oaPaperService.getById(flowPaperApprovalEntity.getId());

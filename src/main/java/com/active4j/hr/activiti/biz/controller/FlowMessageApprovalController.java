@@ -244,6 +244,7 @@ public class FlowMessageApprovalController extends BaseController {
                 // 更新请假单表的状态从2变成3（审核中-->审核完成）
                 workflowBaseEntity.setStatus("3");
                 FlowMessageApprovalEntity flowMessageApprovalEntity = flowMessageApprovalService.getById(workflowBaseEntity.getBusinessId());
+                flowMessageApprovalEntity.setPublicTime(DateUtils.getDate());
                 flowMessageApprovalEntity.setApplyStatus(1);
                 flowMessageApprovalService.saveOrUpdate(flowMessageApprovalEntity);
             } else {
@@ -256,8 +257,6 @@ public class FlowMessageApprovalController extends BaseController {
             log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
         }
     }
-
-
 
     /**
      * 保存方法
@@ -273,9 +272,9 @@ public class FlowMessageApprovalController extends BaseController {
                          String optType, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try {
-            if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
-                return j;
-            }
+//            if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
+//                return j;
+//            }
 
             if(null == flowMessageApprovalEntity.getTitle()) {
                 j.setSuccess(false);
@@ -320,6 +319,7 @@ public class FlowMessageApprovalController extends BaseController {
                     workflowBaseEntity.setWorkflowId(workflow.getId());
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
                     workflowBaseEntity.setStatus("1"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
+                    workflowBaseEntity.setName("信息发布-"+flowMessageApprovalEntity.getTitle());
                     //保存业务数据
                     flowMessageApprovalService.saveNewPaper(workflowBaseEntity, flowMessageApprovalEntity);
 
@@ -356,6 +356,7 @@ public class FlowMessageApprovalController extends BaseController {
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
                     workflowBaseEntity.setStatus("0"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
                     flowMessageApprovalEntity.setApplyStatus(3); //文件状态 3：草稿中
+                    workflowBaseEntity.setName("信息发布-"+flowMessageApprovalEntity.getTitle());
                     flowMessageApprovalService.saveNewPaper(workflowBaseEntity, flowMessageApprovalEntity);
                 }else {
                     WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());

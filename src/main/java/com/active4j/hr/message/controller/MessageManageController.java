@@ -2,10 +2,13 @@ package com.active4j.hr.message.controller;
 
 import com.active4j.hr.activiti.biz.entity.FlowMessageApprovalEntity;
 import com.active4j.hr.base.controller.BaseController;
+import com.active4j.hr.common.constant.SysConstant;
 import com.active4j.hr.core.query.QueryUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.message.service.OaMessageService;
+import com.active4j.hr.system.entity.SysDicValueEntity;
+import com.active4j.hr.system.util.SystemUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -77,6 +80,16 @@ public class MessageManageController extends BaseController {
         }
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
+    }
+
+    private String getMessageTypeName(int messageType) {
+        List<SysDicValueEntity> types = SystemUtils.getDictionaryLst(SysConstant.DIC_MESSAGE_TYPE);
+        for (SysDicValueEntity entity : types) {
+            if (String.valueOf(messageType).equalsIgnoreCase(entity.getValue())) {
+                return entity.getLabel();
+            }
+        }
+        return String.valueOf(messageType);
     }
 
     /**

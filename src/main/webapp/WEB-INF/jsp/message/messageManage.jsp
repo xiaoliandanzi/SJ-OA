@@ -33,7 +33,7 @@
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="message/manage/datagrid" tableContentId="messageManageTable" searchGroupId="searchGroupId" fit="true" caption="信息列表" name="messageManageList" pageSize="20" sortName="createDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="messageType" label="信息类型" width="60" query="true"></t:dgCol>
+    <t:dgCol name="messageType" dictionary="messagetypes" label="信息类型" width="60" query="true"></t:dgCol>
     <t:dgCol name="title" label="标题" width="120" query="true"></t:dgCol>
     <t:dgCol name="publicTime" label="发文日期" width="60" datefmt="yyyy-MM-dd HH:mm" query="true" queryModel="group" datePlugin="laydate"></t:dgCol>
     <t:dgCol name="publicMan" label="发布人" width="60" query="true"></t:dgCol>
@@ -48,7 +48,8 @@
 <script type="text/javascript">
 
     $(function(){
-        laydate({elem:"#message",event:"focus",istime: true, format: 'YYYY-MM-DD HH:mm'});
+        laydate({elem:"#publicTime_begin",event:"focus",istime: true, format: 'YYYY-MM-DD'});
+        laydate({elem:"#publicTime_end",event:"focus",istime: true, format: 'YYYY-MM-DD'});
     });
 
     function doAttachment() {
