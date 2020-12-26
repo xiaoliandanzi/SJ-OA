@@ -18,22 +18,16 @@
         <input id="name" name="name" minlength="2" type="text" class="form-control" required="" value="${base.name }">
     </div>
 </div>
-<%--<div class="form-group">--%>
-<%--    <label class="col-sm-3 control-labe">借用日期：</label>--%>
-<%--    <div class="col-sm-5">--%>
-<%--        <input class="laydate-icon form-control layer-date" id="bookDay" name="bookDay" required="" value='<fmt:formatDate value="${biz.bookDay }" type="date" pattern="yyyy-MM-dd"/>'>--%>
-<%--    </div>--%>
-<%--</div>--%>
 <div class="form-group">
-    <label class="col-sm-3 control-label">开始日期：</label>
+    <label class="col-sm-3 control-label ">开始日期：</label>
     <div class="col-sm-5">
-        <input class="laydate-icon form-control layer-date" id="startDay" name="startDay" value='<fmt:formatDate value="${biz.startDay }" type="date" pattern="yyyy-MM-dd"/>'>
+        <input class="laydate-icon form-control layer-date" id="startDay" name="startDay" value='<fmt:formatDate value="${biz.startDay }" type="date" pattern="yyyy-MM-dd HH:mm:ss"/>'>
     </div>
 </div>
 <div class="form-group">
     <label class="col-sm-3 control-label">结束日期：</label>
     <div class="col-sm-5">
-        <input class="laydate-icon form-control layer-date" id="endDay" name="endDay" value='<fmt:formatDate value="${biz.endDay }" type="date" pattern="yyyy-MM-dd"/>'>
+        <input class="laydate-icon form-control layer-date" id="endDay" name="endDay" value='<fmt:formatDate value="${biz.endDay }" type="date" pattern="yyyy-MM-dd HH:mm:ss"/>'>
     </div>
 </div>
 <div class="form-group">

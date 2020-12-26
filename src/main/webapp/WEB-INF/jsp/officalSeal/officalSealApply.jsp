@@ -33,7 +33,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label m-b">借用日期：</label>
                             <div class="col-sm-4 m-b">
-                                <input class="laydate-icon form-control layer-date" id="bookDate" name="bookDate" required="" value='<fmt:formatDate value="${seal.bookDate }" type="date" pattern="yyyy-MM-dd"/>'>
+                                <input class="laydate-icon form-control layer-date" id="bookDate" name="bookDate" required="" value='<fmt:formatDate value="${seal.bookDate }" type="date" pattern="yyyy-MM-dd-HH-mm"/>'>
                             </div>
                         </div>
                         <div class="form-group">

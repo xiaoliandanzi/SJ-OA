@@ -4,11 +4,17 @@ import com.active4j.hr.activiti.biz.entity.FlowMessageApprovalEntity;
 import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
 import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowOfficalSealApprovalService;
+import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
+import com.active4j.hr.activiti.entity.WorkflowCategoryEntity;
+import com.active4j.hr.activiti.service.WorkflowCategoryService;
 import com.active4j.hr.activiti.service.WorkflowService;
+import com.active4j.hr.activiti.util.WorkflowConstant;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.query.QueryUtils;
+import com.active4j.hr.core.shiro.ShiroUtils;
+import com.active4j.hr.core.util.ListUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.officalSeal.entity.OaOfficalSealEntity;
@@ -54,6 +60,8 @@ public class OfficalSealReturnController extends BaseController {
     @Autowired
     private WorkflowService workflowService;
 
+    @Autowired
+    private WorkflowCategoryService workflowCategoryService;
 
     @RequestMapping("/show")
     public ModelAndView show(HttpServletRequest request) {
@@ -81,7 +89,7 @@ public class OfficalSealReturnController extends BaseController {
         long tempTotal = 0;
         List<FlowOfficalSealApprovalEntity> newList = new ArrayList<>();
         if (total > 0) {
-            for(FlowOfficalSealApprovalEntity entity : lstResult.getRecords()) {
+            for (FlowOfficalSealApprovalEntity entity : lstResult.getRecords()) {
                 //只显示审批完成的公章申请
                 if (entity.getApplyStatus() == 1) {
                     newList.add(entity);
@@ -99,6 +107,7 @@ public class OfficalSealReturnController extends BaseController {
 
     /**
      * 跳转到新增编辑页面
+     *
      * @param flowOfficalSealApprovalEntity
      * @param request
      * @return
@@ -107,15 +116,17 @@ public class OfficalSealReturnController extends BaseController {
     public ModelAndView sealCheck(FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("officalSeal/officalSealRecordView");
 
-        if(StringUtils.isNotEmpty(flowOfficalSealApprovalEntity.getId())) {
+        if (StringUtils.isNotEmpty(flowOfficalSealApprovalEntity.getId())) {
             flowOfficalSealApprovalEntity = flowOfficalSealApprovalService.getById(flowOfficalSealApprovalEntity.getId());
             view.addObject("seal", flowOfficalSealApprovalEntity);
         }
 
         return view;
     }
+
     /**
      * 删除
+     *
      * @param flowOfficalSealApprovalEntity
      * @param request
      * @return
@@ -124,15 +135,69 @@ public class OfficalSealReturnController extends BaseController {
     @ResponseBody
     public AjaxJson delete(FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
-        try{
-            if(StringUtils.isNotEmpty(flowOfficalSealApprovalEntity.getId())) {
+        try {
+            if (StringUtils.isNotEmpty(flowOfficalSealApprovalEntity.getId())) {
                 flowOfficalSealApprovalService.removeById(flowOfficalSealApprovalEntity.getId());
             }
-        }catch(Exception e) {
+        } catch (Exception e) {
             j.setSuccess(false);
             j.setMsg(GlobalConstant.Err_Msg_All);
             log.error("删除公章借用记录失败，错误信息:{}", e);
         }
         return j;
     }
+
+    /**
+     * 跳转到已审批流程页面
+     *
+     * @param req
+     * @return
+     */
+    @RequestMapping("/finishlist")
+    public ModelAndView finishlist(HttpServletRequest req) {
+        ModelAndView view = new ModelAndView("officalSeal/officalSealFinishtasklist");
+
+        // 获取流程类别数据
+        List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
+        int size = lstCatogorys.size();
+        for (int i = 0; i < size; i++) {
+            if(!lstCatogorys.get(i).getName().equals("双井公章审批")){
+                lstCatogorys.remove(i);
+            }
+        }
+        view.addObject("categoryReplace", ListUtils.listToReplaceStr(lstCatogorys, "name", "id"));
+
+        return view;
+    }
+
+    /**
+     * 查询数据  -- 我的已办审批
+     * @param user
+     * @param request
+     * @param response
+     * @param dataGrid
+     */
+    @RequestMapping("/datagridFinish")
+    public void datagridFinish(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        String startTime = request.getParameter("applyDate_begin");
+        String endTime = request.getParameter("applyDate_end");
+        if (startTime == null || startTime=="") {
+            startTime = "2000-01-01";
+        }
+
+        if (endTime == null || endTime == "") {
+            endTime = "2099-12-31";
+        }
+        // 执行查询
+        IPage<WorkflowBaseEntity> lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
+        long size = lstResult.getTotal();
+        for (long i = size - 1; i >= 0; --i) {
+            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("双井公章申请")){
+                lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
+            }
+        }
+        // 输出结果
+        ResponseUtil.writeJson(response, dataGrid, lstResult);
+    }
+
 }

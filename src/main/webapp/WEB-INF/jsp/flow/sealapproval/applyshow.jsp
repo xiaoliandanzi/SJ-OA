@@ -41,10 +41,24 @@
         <%@include file="/WEB-INF/jsp/flow/include/inputapp.jsp" %>
     </c:if>
 
+    <div class="form-group" style="margin-top: 30px;">
+        <div class="col-sm-4 col-sm-offset-3">
+            <button type="button"  class="btn btn-primary" onclick="printIt()">打印</button>
+        </div>
+    </div>
+
 </div>
 </body>
 
 <script type="text/javascript">
+
+    var printIt = function(){
+        if (confirm('确定打印吗？')) {
+            //wb.execwb(6,6)   ;
+            window.print();//update by liuguocheng
+
+        }
+    }
     //时间控件初始化
     $(function() {
         laydate({
