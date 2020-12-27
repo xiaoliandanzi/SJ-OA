@@ -92,7 +92,6 @@ public class FlowTaskController extends BaseController {
 		// 获取流程类别数据
 		List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
 		view.addObject("categoryReplace", ListUtils.listToReplaceStr(lstCatogorys, "name", "id"));
-				
 		return view;
 	}
 	

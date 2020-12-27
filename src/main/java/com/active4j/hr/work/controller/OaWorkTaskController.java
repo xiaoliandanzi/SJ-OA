@@ -1,22 +1,5 @@
 package com.active4j.hr.work.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
@@ -25,6 +8,7 @@ import com.active4j.hr.core.query.QueryUtils;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
 import com.active4j.hr.core.util.ResponseUtil;
+import com.active4j.hr.core.util.StringUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.system.model.ActiveUser;
 import com.active4j.hr.work.domain.OaWorkTaskStatusDomain;
@@ -37,8 +21,17 @@ import com.active4j.hr.work.service.OaWorkTaskService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * @title OaWorkTaskController.java
@@ -444,7 +437,7 @@ public class OaWorkTaskController extends BaseController {
 	
 	/**
 	 * 查看执行
-	 * @param oaWorkPlanEntity
+	 * @param oaWorkTaskEntity
 	 * @param request
 	 * @return
 	 */
@@ -515,7 +508,7 @@ public class OaWorkTaskController extends BaseController {
 	
 	/**
 	 * 任务状态的修改
-	 * @param oaWorkTargetEntity
+	 * @param oaWorkTaskEntity
 	 * @param request
 	 * @return
 	 */
@@ -559,7 +552,7 @@ public class OaWorkTaskController extends BaseController {
 	
 	/**
 	 * 保存任务回复
-	 * @param req
+	 * @param
 	 * @return
 	 */
 	@RequestMapping("/saveComments")
@@ -646,7 +639,7 @@ public class OaWorkTaskController extends BaseController {
 	
 	/**
 	 * 保存任务回复
-	 * @param req
+	 * @param
 	 * @return
 	 */
 	@RequestMapping("/saveExcute")
@@ -669,7 +662,8 @@ public class OaWorkTaskController extends BaseController {
 			
 			
 			ActiveUser user = ShiroUtils.getSessionUser();
-			oaWorkTaskExcuteEntity.setUserHeadImg(user.getHeadImgUrl());
+			oaWorkTaskExcuteEntity.setUserHeadImg(
+					StringUtil.isEmpty(user.getHeadImgUrl()) ? "" : user.getHeadImgUrl());
 			oaWorkTaskExcuteEntity.setUserId(user.getId());
 			oaWorkTaskExcuteEntity.setUserName(user.getRealName());
 			oaWorkTaskExcuteEntity.setOaWorkTaskId(taskId);

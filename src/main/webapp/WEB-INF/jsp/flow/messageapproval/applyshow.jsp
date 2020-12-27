@@ -28,6 +28,7 @@
                         <input type="hidden" name="workflowId" id="workflowId" value="${workflowId }">
                         <input type="hidden" name="optType" id="optType">
                         <input type="hidden" name="id" id="id" value="${base.id }">
+                        <input type="hidden" name="attachment" id="attachment" value="${biz.attachment }">
                         <%@include file="/WEB-INF/jsp/flow/messageapproval/form.jsp" %>
                     </form>
                 </div>
@@ -53,6 +54,16 @@
         $("#commonForm textarea").attr("disabled", "disabled");
 
     });
+
+    function doBtnDownloadFile() {
+        var att = document.getElementById("attachment").value;
+        if(!att) {
+            qhAlert('该文件附件还未上传附件！');
+            return;
+        }
+
+        location.href = "func/upload/download?id=" + att;
+    };
 
 </script>
 </html>

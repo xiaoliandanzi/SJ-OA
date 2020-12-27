@@ -26,6 +26,7 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="commonForm">
+                        <input type="hidden" name="attachment" id="attachment" value="${biz.attachment }">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">信息类型：</label>
                             <div class="col-sm-8">
@@ -57,6 +58,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-3 control-label m-b">附件：</label>
+                            <div class="col-sm-8">
+                                <button class="btn btn-primary" type="button" onclick="doBtnDownloadFile();">下载附件</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-3 control-label">紧急程度：</label>
                             <div class="col-sm-8">
                                 <c:choose>
@@ -78,5 +85,16 @@
 </div>
 </body>
 
+<script type="text/javascript">
+    function doBtnDownloadFile() {
+        var att = document.getElementById("attachment").value;
+        if(!att) {
+            qhAlert('该文件附件还未上传附件！');
+            return;
+        }
+
+        location.href = "func/upload/download?id=" + att;
+    };
+</script>
 
 </html>

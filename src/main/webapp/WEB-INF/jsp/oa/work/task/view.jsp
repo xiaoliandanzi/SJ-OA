@@ -28,9 +28,10 @@
 									<div class="col-sm-12">
 										<div class="m-b-md">
 											<input type="hidden" id="id" name="id" value="${task.id }">
+											<input type="hidden" id="attachment" name="attachment" value="${task.attachment }">
 											<h2>${task.title }</h2>
 										</div>
-										<div class="col-sm-5">
+										<div class="col-sm-3">
 											<dl class="dl-horizontal">
 												<dt>状态：</dt>
 												<dd id="statusSpan">
@@ -105,6 +106,9 @@
 												</button>
 												<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="addExcuteAction();">
 													<i class="fa fa-tasks"></i>&nbsp;任务跟踪
+												</button>
+												<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="doBtnDownloadFile();">
+													<i class="fa fa-tasks"></i>&nbsp;下载附件
 												</button>
 											</p>
 										</div>
@@ -410,6 +414,16 @@
 			}
 		});
 	}
+
+    function doBtnDownloadFile() {
+        var att = document.getElementById("attachment").value;
+        if(!att) {
+            qhAlert('该文件附件还未上传附件！');
+            return;
+        }
+
+        location.href = "func/upload/download?id=" + att;
+    };
 	
 	//获取执行内容
 	function getExcute(id) {

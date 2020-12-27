@@ -36,6 +36,10 @@ public class OaWorkTaskEntity extends BaseEntity {
 	@TableField("CONTENT")
 	private String content;
 
+	// 附件
+	@TableField("ATTACHMENT")
+	private String attachment;
+
 	// 任务分配人
 	@TableField("APPOINT_USER_ID")
 	private String appointUserId;
