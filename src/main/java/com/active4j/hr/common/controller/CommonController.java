@@ -136,7 +136,144 @@ public class CommonController extends BaseController {
 		
 		return view;
 	}
-	
+
+	@RequestMapping("/selectDeptManagers")
+	public ModelAndView selectDeptManagers(HttpServletRequest req) {
+		ModelAndView view = new ModelAndView("system/common/selectusers");
+
+
+		String userTreeStr = getCompanyOfManagers(null);
+		view.addObject("userTreeStr", userTreeStr);
+
+		return view;
+	}
+
+	private String getCompanyOfManagers(Set<String> lstUserIds) {
+		//先查询顶级部门
+		List<SysDeptEntity> lstDeparts = sysDeptService.getParentDepts();
+
+		//拼接字符串
+		StringBuffer sb = new StringBuffer();
+		sb = sb.append("[");
+		depManagerContact(lstDeparts, sb, lstUserIds);
+
+		sb = sb.append("]");
+
+		return sb.toString();
+	}
+
+	private void depManagerContact(List<SysDeptEntity> lstDeparts, StringBuffer sb, Set<String> lstUserIds) {
+		if(null != lstDeparts && lstDeparts.size() > 0) {
+			for(int i = 0; i < lstDeparts.size(); i++) {
+				SysDeptEntity depart = lstDeparts.get(i);
+				//查询所有组织架构
+				sb = sb.append("{").append("icon:").append("\"fa fa-sitemap\"").append(",").append("type:").append("\"C\"").append(",").append("text:").append("\"").append(depart.getName()).append("\",").append("id:").append("\"").append(depart.getId()).append("\"");
+				List<SysDeptEntity> lstTmp = sysDeptService.getChildDeptsByDeptId(depart.getId());
+				if(null != lstTmp && lstTmp.size() > 0) {
+					//根据type过滤数据
+					if(lstTmp.size() > 0) {
+						sb = sb.append(", nodes: [");
+						depManagerContact(lstTmp, sb, lstUserIds);
+						List<SysUserEntity> lstUsertemp = sysUserService.findUsersByDept(depart);
+						if(null != lstUsertemp && lstUsertemp.size() > 0) {
+							List<SysUserEntity> lstUsers = getManagerList(lstUsertemp, depart);
+							sb = sb.append(",");
+							for(int m = 0; m < lstUsers.size(); m++) {
+								SysUserEntity user = lstUsers.get(m);
+								if(m == lstUsers.size() - 1) {
+									if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
+										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("}");
+									}else {
+										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("}");
+									}
+
+								}else {
+									if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
+										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("},");
+									}else {
+										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("},");
+									}
+
+								}
+							}
+						}
+						sb.append("]");
+					}else {
+						List<SysUserEntity> lstUsers = sysUserService.findUsersByDept(depart);
+						if(null != lstUsers && lstUsers.size() > 0) {
+							sb = sb.append(", nodes:[");
+							for(int m = 0; m < lstUsers.size(); m++) {
+								SysUserEntity user = lstUsers.get(m);
+								if(m == lstUsers.size() - 1) {
+									if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
+										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("}");
+									}else {
+										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("}");
+									}
+
+								}else {
+									if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
+										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("},");
+									}else {
+										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("},");
+									}
+
+								}
+							}
+							sb.append("]");
+						}
+					}
+				}else {
+					List<SysUserEntity> lstUsertmp = sysUserService.findUsersByDept(depart);
+					if(null != lstUsertmp && lstUsertmp.size() > 0) {
+						List<SysUserEntity> lstUsers = getManagerList(lstUsertmp,depart);
+						sb = sb.append(", nodes:[");
+						for(int m = 0; m < lstUsers.size(); m++) {
+							SysUserEntity user = lstUsers.get(m);
+							if(m == lstUsers.size() - 1) {
+								if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
+									sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("}");
+								}else {
+									sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("}");
+								}
+
+							}else {
+								if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
+									sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("},");
+								}else {
+									sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("},");
+								}
+
+							}
+						}
+						sb.append("]");
+					}
+
+				}
+
+				if(i == lstDeparts.size() - 1) {
+					sb = sb.append("}");
+				}else {
+					sb = sb.append("},");
+				}
+			}
+		}
+	}
+
+	private List<SysUserEntity> getManagerList(List<SysUserEntity> list, SysDeptEntity dept) {
+		List<SysUserEntity> result = new ArrayList<>();
+		for (SysUserEntity entity : list) {
+			List<SysRoleEntity> roles = sysUserService.getUserRoleByUserId(entity.getId());
+			for (SysRoleEntity role : roles) {
+				if ((dept.getName()+"科室负责人").equalsIgnoreCase(role.getRoleName())) {
+					result.add(entity);
+				}
+			}
+		}
+		return result;
+	}
+
+
 	public String getCompanyOfUser(Set<String> lstUserIds) {
 		//先查询顶级部门
 		List<SysDeptEntity> lstDeparts = sysDeptService.getParentDepts();

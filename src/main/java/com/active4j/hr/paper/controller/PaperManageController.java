@@ -3,9 +3,15 @@ package com.active4j.hr.paper.controller;
 import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.core.query.QueryUtils;
+import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.paper.service.OaPaperService;
+import com.active4j.hr.system.entity.SysDeptEntity;
+import com.active4j.hr.system.entity.SysRoleEntity;
+import com.active4j.hr.system.entity.SysUserEntity;
+import com.active4j.hr.system.service.SysDeptService;
+import com.active4j.hr.system.service.SysUserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -33,6 +39,10 @@ public class PaperManageController extends BaseController {
 
     @Autowired
     private OaPaperService oaPaperService;
+    @Autowired
+    private SysUserService sysUserService;
+    @Autowired
+    private SysDeptService sysDeptService;
 
 
     /**
@@ -63,18 +73,21 @@ public class PaperManageController extends BaseController {
         long total = lstResult.getTotal();
         long tempTotal = 0;
         List<FlowPaperApprovalEntity> newList = new ArrayList<>();
+
+        //获取当前用户id
+        String userId = ShiroUtils.getSessionUserId();
+        //获取当前用户个人资料
+        SysUserEntity user = sysUserService.getById(userId);
+
+        List<SysRoleEntity> roles = sysUserService.getUserRoleByUserId(userId);
+
         if (total > 0) {
             for(FlowPaperApprovalEntity entity : lstResult.getRecords()) {
-                //只显示审批完成的文件
-                if (entity.getApplyStatus() == 1) {
+                //本科室的文件
+                if (checkSameDept(entity, user, roles)) {
                     newList.add(entity);
                     tempTotal++;
                 }
-                /*WorkflowBaseEntity workflowBaseEntity = workflowBaseService.getById(entity.getId());
-                if (workflowBaseEntity != null && workflowBaseEntity.getStatus().equalsIgnoreCase("3")) {
-                    newList.add(entity);
-                    total++;
-                }*/
             }
             lstResult.setTotal(tempTotal);
             lstResult.setRecords(newList);
@@ -84,6 +97,62 @@ public class PaperManageController extends BaseController {
         ResponseUtil.writeJson(response, dataGrid, lstResult);
     }
 
+    private boolean checkSameDept(FlowPaperApprovalEntity entity, SysUserEntity user, List<SysRoleEntity> roles) {
+        try {
+
+            boolean isManager = false;
+            boolean isZhuguan = false;
+            boolean isZhuyao = false;
+            String leadDeptName = "";
+            String deptName = "";
+
+            for (SysRoleEntity role : roles) {
+                if (role.getRoleName().contains("科室负责人")){
+                    isManager = true;
+                    deptName = StringUtils.substringBefore(role.getRoleName(), "科室负责人");
+                }
+                if (role.getRoleName().contains("主管领导")){
+                    isZhuguan = true;
+                    leadDeptName = StringUtils.substringBefore(role.getRoleName(), "主管领导");
+                }
+                if (role.getRoleName().contains("主要领导")){
+                    isZhuyao = true;
+                }
+            }
+
+            if (isZhuyao) {
+                return true;
+            }
+
+            //发文信息
+            // 科室
+            SysUserEntity paperUser = sysUserService.getUserByUseName(entity.getCreateName());
+            if (paperUser == null) {
+                return false;
+            }
+            SysDeptEntity paperDept = sysDeptService.getById(paperUser.getDeptId());
+            // 几处
+            SysDeptEntity parentDept = sysDeptService.getById(paperDept.getParentId());
+
+            //判断主管领导
+            if (isZhuguan && parentDept.getName().contains(leadDeptName)) {
+                return true;
+            }
+
+            //判断科室负责人
+            if (isManager && paperDept.getName().contains(deptName)) {
+                return true;
+            }
+
+            //判断科员
+            return user.getId().equalsIgnoreCase(paperUser.getId());
+        }catch (Exception ex) {
+            log.error("checkSameDept", ex);
+        }
+        return false;
+    }
+
+
     /**
      * 跳转到新增编辑页面
      * @param flowPaperApprovalEntity
@@ -92,7 +161,7 @@ public class PaperManageController extends BaseController {
      */
     @RequestMapping("/addorupdate")
     public ModelAndView paperView(FlowPaperApprovalEntity flowPaperApprovalEntity, HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("message/messageView");
+        ModelAndView view = new ModelAndView("paper/paperView");
 
         if(StringUtils.isNotEmpty(flowPaperApprovalEntity.getId())) {
             flowPaperApprovalEntity = oaPaperService.getById(flowPaperApprovalEntity.getId());

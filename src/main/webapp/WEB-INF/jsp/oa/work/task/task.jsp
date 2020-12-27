@@ -42,7 +42,7 @@
                                 <label class="col-sm-3 control-label">责任人：</label>
                                 <div class="col-sm-8">
                                 	<div class="input-group">
-                                		<t:choose url="common/selectUsers" hiddenName="userId" hiddenValue="${userId }" textValue="${userName }" textName="userName" hiddenId="userId" textId="userName"></t:choose>
+                                		<t:choose url="common/selectDeptManagers" hiddenName="userId" hiddenValue="${userId }" textValue="${userName }" textName="userName" hiddenId="userId" textId="userName"></t:choose>
                                 	</div>
                                 </div>
                             </div>

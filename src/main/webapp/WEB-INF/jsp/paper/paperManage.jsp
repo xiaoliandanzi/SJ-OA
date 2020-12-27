@@ -34,9 +34,10 @@
 <t:datagrid actionUrl="paper/manage/datagrid" tableContentId="paperManageTable" searchGroupId="searchGroupId" fit="true" caption="文件列表" name="paperManageList" pageSize="20" sortName="createDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="paperNumber" label="发文文号" width="60" query="true"></t:dgCol>
-    <t:dgCol name="secretLevel" label="保密级别" width="60" query="true"></t:dgCol>
+    <t:dgCol name="secretLevel" label="保密级别" width="40" query="true"></t:dgCol>
     <t:dgCol name="title" label="文件标题" width="120" query="true"></t:dgCol>
     <t:dgCol name="dept" label="所属科室" width="60" query="true"></t:dgCol>
+    <t:dgCol name="draftMan" label="起草人" width="40" query="true"></t:dgCol>
     <t:dgCol name="paperCount" label="文件份数" width="40"></t:dgCol>
     <t:dgCol name="paperDate" label="发文日期" width="60" datefmt="yyyy-MM-dd" query="true" queryModel="group" datePlugin="laydate"></t:dgCol>
     <t:dgCol name="attachment" label="附件" hidden="true"></t:dgCol>
