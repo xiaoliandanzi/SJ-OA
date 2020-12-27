@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,9 +65,6 @@ public class FlowOfficalSealApprovalController  extends BaseController {
 
     @Autowired
     private OaOfficalSealService oaOfficalSealService;
-
-    @Autowired
-    private FlowPaperApprovalService flowPaperApprovalService;
 
     @Autowired
     private TaskService taskService;
@@ -150,6 +148,22 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             view.addObject("base", base);
 
             FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
+            view.addObject("biz", biz);
+        } else {
+            FlowOfficalSealApprovalEntity biz = new FlowOfficalSealApprovalEntity();
+            //获取当前用户id
+            String userId = ShiroUtils.getSessionUserId();
+            //获取当前用户个人资料
+            SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
+            WorkflowBaseEntity base = new WorkflowBaseEntity();
+            base.setProjectNo(String.format("%s-%s", user.getUserName(), DateUtils.date2Str(DateUtils.getNow(), sdf)));
+            base.setName("双井公章借用申请");
+            view.addObject("base", base);
+
+            biz.setUserName(user.getRealName());
+            biz.setDepartmentName(user.getDeptName());
             view.addObject("biz", biz);
         }
 
@@ -427,13 +441,13 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
             MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
 
-            FlowPaperApprovalEntity biz = flowPaperApprovalService.getById(base.getBusinessId());
-            biz.setAttachment(flowOfficalSealApprovalEntity.getDepartmentName());
+            FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
+            biz.setDepartmentName(flowOfficalSealApprovalEntity.getDepartmentName());
             biz.setCommit(flowOfficalSealApprovalEntity.getCommit());
-            biz.setPaperArea(flowOfficalSealApprovalEntity.getUseUnit());
+            biz.setUseUnit(flowOfficalSealApprovalEntity.getUseUnit());
             //已申请
             base.setStatus("1");
-            flowPaperApprovalService.saveUpdate(base, biz);
+            flowOfficalSealApprovalService.saveUpdate(base, biz);
 
 
             Map<String, Object> map = new HashMap<String, Object>();

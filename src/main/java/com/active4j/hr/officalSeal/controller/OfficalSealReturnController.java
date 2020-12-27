@@ -85,21 +85,21 @@ public class OfficalSealReturnController extends BaseController {
         // 执行查询
         IPage<FlowOfficalSealApprovalEntity> lstResult = flowOfficalSealApprovalService.page(new Page<FlowOfficalSealApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
 
-        long total = lstResult.getTotal();
-        long tempTotal = 0;
-        List<FlowOfficalSealApprovalEntity> newList = new ArrayList<>();
-        if (total > 0) {
-            for (FlowOfficalSealApprovalEntity entity : lstResult.getRecords()) {
-                //只显示审批完成的公章申请
-                if (entity.getApplyStatus() == 1) {
-                    newList.add(entity);
-                    tempTotal++;
-                }
-            }
-            lstResult.setTotal(tempTotal);
-            lstResult.setRecords(newList);
-
-        }
+//        long total = lstResult.getTotal();
+//        long tempTotal = 0;
+//        List<FlowOfficalSealApprovalEntity> newList = new ArrayList<>();
+//        if (total > 0) {
+//            for (FlowOfficalSealApprovalEntity entity : lstResult.getRecords()) {
+//                //只显示审批完成的公章申请
+//                if (entity.getApplyStatus() == 1) {
+//                    newList.add(entity);
+//                    tempTotal++;
+//                }
+//            }
+//            lstResult.setTotal(tempTotal);
+//            lstResult.setRecords(newList);
+//
+//        }
 
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);

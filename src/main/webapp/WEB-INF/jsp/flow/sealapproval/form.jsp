@@ -9,13 +9,13 @@
 <div class="form-group">
     <label class="col-sm-3 control-label">申请编号：</label>
     <div class="col-sm-5">
-        <input id="projectNo" name="projectNo" minlength="2" type="text" class="form-control" required="" value="${base.projectNo }">
+        <input id="projectNo" name="projectNo" minlength="2" type="text" class="form-control" readonly required="" value="${base.projectNo }">
     </div>
 </div>
 <div class="form-group">
     <label class="col-sm-3 control-label">申请流程名称：</label>
     <div class="col-sm-5">
-        <input id="name" name="name" minlength="2" type="text" class="form-control" required="" value="${base.name }">
+        <input id="name" name="name" minlength="2" type="text" class="form-control" readonly required="" value="${base.name }">
     </div>
 </div>
 <%--<div class="form-group">--%>
