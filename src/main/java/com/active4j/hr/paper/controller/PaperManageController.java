@@ -84,7 +84,7 @@ public class PaperManageController extends BaseController {
         if (total > 0) {
             for(FlowPaperApprovalEntity entity : lstResult.getRecords()) {
                 //本科室的文件
-                if (checkSameDept(entity, user, roles)) {
+                if (entity.getApplyStatus() == 1 && checkSameDept(entity, user, roles)) {
                     newList.add(entity);
                     tempTotal++;
                 }

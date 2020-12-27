@@ -85,7 +85,7 @@ public class MessageManageController extends BaseController {
         if (total > 0) {
             for(FlowMessageApprovalEntity entity : lstResult.getRecords()) {
                 //只显示审批完成的文件
-                if (checkSameDept(entity, user, roles)) {
+                if (entity.getApplyStatus() == 1 && checkSameDept(entity, user, roles)) {
                     newList.add(entity);
                     tempTotal++;
                 }
