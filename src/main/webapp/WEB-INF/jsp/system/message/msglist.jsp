@@ -32,7 +32,7 @@
 		<t:dgCol name="sendTime" label="发送时间" width="110"></t:dgCol>
 		<t:dgCol name="status" label="状态" width="90" dictionary="sysmsgread" display="zeroOrOne"></t:dgCol>
 		<t:dgCol name="opt" label="操作" ></t:dgCol>
-		<t:dgDelOpt label="删除" url="sys/message/del?delete&id={id}"/>
+		<t:dgDelOpt label="删除" url="sys/message/delete?id={id}"/>
 		<t:dgToolBar url="sys/message/addorupdate" type="view" width="60%" height="70%"></t:dgToolBar>
 		<t:dgToolBar type="refresh"></t:dgToolBar>
 	</t:datagrid>

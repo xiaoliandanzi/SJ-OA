@@ -11,6 +11,7 @@ import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.util.StringUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.system.model.ActiveUser;
+import com.active4j.hr.system.util.MessageUtils;
 import com.active4j.hr.work.domain.OaWorkTaskStatusDomain;
 import com.active4j.hr.work.entity.OaWorkTaskCommentsEntity;
 import com.active4j.hr.work.entity.OaWorkTaskEntity;
@@ -406,6 +407,8 @@ public class OaWorkTaskController extends BaseController {
 				oaWorkTaskEntity.setProgress(0);
 				
 				oaWorkTaskService.save(oaWorkTaskEntity);
+
+				MessageUtils.SendSysMessage(oaWorkTaskEntity.getUserId(), "你收到一条督办通知: " + oaWorkTaskEntity.getTitle());
 				
 			}else{
 				
@@ -423,8 +426,11 @@ public class OaWorkTaskController extends BaseController {
 				
 				MyBeanUtils.copyBeanNotNull2Bean(oaWorkTaskEntity, tmp);
 				
-				
 				oaWorkTaskService.saveOrUpdate(tmp);
+
+				MessageUtils.SendSysMessage(oaWorkTaskEntity.getUserId(), "你收到一条督办通知的修改: " + oaWorkTaskEntity.getTitle());
+
+
 				
 			}
 		}catch(Exception e) {
