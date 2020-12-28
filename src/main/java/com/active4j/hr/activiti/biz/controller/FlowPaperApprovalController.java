@@ -311,6 +311,12 @@ public class FlowPaperApprovalController extends BaseController {
                 return j;
             }
 
+            if (flowPaperApprovalEntity.getPaperAbstract().length() > 1999) {
+                j.setSuccess(false);
+                j.setMsg("内容摘要过长，请以附件上传");
+                return j;
+            }
+
             if(null == flowPaperApprovalEntity.getSecretLevel()) {
                 j.setSuccess(false);
                 j.setMsg("保密级别不能为空");
@@ -353,7 +359,7 @@ public class FlowPaperApprovalController extends BaseController {
                 return j;
             }
 
-
+            workflowBaseEntity.setLevel("0");
             if(StringUtils.equals(optType, "1")) {
                 flowPaperApprovalEntity.setApplyStatus(0);
                 //直接申请流程

@@ -52,6 +52,7 @@ public class OaWorkTaskEntity extends BaseEntity {
 	private String userId;
 
 	@TableField("USER_NAME")
+	@QueryField(queryColumn="USER_NAME", condition=QueryCondition.like)
 	private String userName;
 
 	@TableField("CONTRACT_NAME")
@@ -59,6 +60,10 @@ public class OaWorkTaskEntity extends BaseEntity {
 
 	@TableField("CONTRACT_PHONE")
 	private String contractPhone;
+
+	@TableField("NUMBER")
+	@QueryField(queryColumn="NUMBER", condition=QueryCondition.like)
+	private String number;
 
 	// 任务监控人
 	@TableField("MONITOR_USER_ID")

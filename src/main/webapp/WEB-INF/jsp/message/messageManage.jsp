@@ -42,6 +42,7 @@
     <t:dgDelOpt label="删除" url="message/manage/delete?id={id}"/>
     <t:dgToolBar url="message/manage/addorupdate" type="view" width="70%"></t:dgToolBar>
     <t:dgToolBar label="附件下载" icon="glyphicon glyphicon-resize-full" type="define" funName="doAttachment"></t:dgToolBar>
+    <t:dgToolBar type="refresh" ></t:dgToolBar>
 </t:datagrid>
 </body>
 

@@ -2,7 +2,9 @@ package com.active4j.hr.message.controller;
 
 import com.active4j.hr.activiti.biz.entity.FlowMessageApprovalEntity;
 import com.active4j.hr.base.controller.BaseController;
+import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.common.constant.SysConstant;
+import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.query.QueryUtils;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.ResponseUtil;
@@ -23,6 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -179,6 +182,30 @@ public class MessageManageController extends BaseController {
         }
 
         return view;
+    }
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    public AjaxJson delete(FlowMessageApprovalEntity flowMessageApprovalEntity, HttpServletRequest request) {
+        AjaxJson j = new AjaxJson();
+        try{
+            if(StringUtils.isNotEmpty(flowMessageApprovalEntity.getId())) {
+                flowMessageApprovalEntity = oaMessageService.getById(flowMessageApprovalEntity.getId());
+                String userId =  ShiroUtils.getSessionUserId();
+                SysUserEntity user = sysUserService.getById(userId);
+                if(!StringUtils.equals(flowMessageApprovalEntity.getCreateName(), user.getUserName())) {
+                    j.setSuccess(false);
+                    j.setMsg("不是自己发布的信息不能删除");
+                    return j;
+                }
+                oaMessageService.removeById(flowMessageApprovalEntity.getId());
+            }
+        }catch(Exception e) {
+            j.setSuccess(false);
+            j.setMsg(GlobalConstant.Err_Msg_All);
+            log.error("删除失败，错误信息:{}", e);
+        }
+        return j;
     }
 
 }

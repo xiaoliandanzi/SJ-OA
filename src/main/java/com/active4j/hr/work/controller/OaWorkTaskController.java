@@ -325,6 +325,9 @@ public class OaWorkTaskController extends BaseController {
 		view.addObject("userName", userName);
 		view.addObject("monitorUserId", userId);
 		view.addObject("monitorUserName", userName);
+//		OaWorkTaskEntity entity = new OaWorkTaskEntity();
+//		entity.setContractName(userName);
+//		view.addObject("task", entity);
 		
 		//上级任务
 		List<OaWorkTaskEntity> lstTasks = oaWorkTaskService.findOaWorkTaskByUserId(userId);
@@ -366,6 +369,12 @@ public class OaWorkTaskController extends BaseController {
 	public AjaxJson save(OaWorkTaskEntity oaWorkTaskEntity, HttpServletRequest request) {
 		AjaxJson j = new AjaxJson();
 		try{
+
+			if(StringUtils.isEmpty(oaWorkTaskEntity.getNumber())){
+				j.setMsg("督办编号不能为空");
+				j.setSuccess(false);
+				return j;
+			}
 			if(StringUtils.isEmpty(oaWorkTaskEntity.getTitle())){
 				j.setMsg("任务标题不能为空");
 				j.setSuccess(false);
@@ -373,13 +382,18 @@ public class OaWorkTaskController extends BaseController {
 			}
 			
 			if(StringUtils.isEmpty(oaWorkTaskEntity.getContent())) {
-				j.setMsg("任务内容不能为空");
+				j.setMsg("督办内容不能为空");
 				j.setSuccess(false);
 				return j;
 			}
 			
-			if(StringUtils.isEmpty(oaWorkTaskEntity.getAppointUserId())) {
-				j.setMsg("任务分配人不能为空");
+			if(StringUtils.isEmpty(oaWorkTaskEntity.getContractName())) {
+				j.setMsg("联系人不能为空");
+				j.setSuccess(false);
+				return j;
+			}
+			if(StringUtils.isEmpty(oaWorkTaskEntity.getContractPhone())) {
+				j.setMsg("联系方式不能为空");
 				j.setSuccess(false);
 				return j;
 			}
@@ -401,7 +415,12 @@ public class OaWorkTaskController extends BaseController {
 				j.setSuccess(false);
 				return j;
 			}
-			
+
+			String userId = ShiroUtils.getSessionUserId();
+			String userName = ShiroUtils.getSessionUser().getRealName();
+			oaWorkTaskEntity.setAppointUserId(userId);
+			oaWorkTaskEntity.setAppointUserName(userName);
+
 			if(StringUtils.isEmpty(oaWorkTaskEntity.getId())) {
 				oaWorkTaskEntity.setStatus(GlobalConstant.OA_WORK_TASK_STATUS_NEW); //状态-新建
 				oaWorkTaskEntity.setProgress(0);

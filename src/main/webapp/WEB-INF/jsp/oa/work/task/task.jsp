@@ -11,15 +11,38 @@
 			<div class="col-sm-12">
 				<div class="ibox float-e-margins">
 					<div class="ibox-content">
-						<t:formvalid action="oa/work/task/save" beforeSubmit="setEditValue();">
+						<%--beforeSubmit="setEditValue();"--%>
+						<t:formvalid action="oa/work/task/save" >
 							<input type="hidden" name="id" id="id" value="${task.id }">
 							<input type="hidden" name="attachment" id="attachment" value="${task.attachment }">
 							<div class="form-group">
-                                <label class="col-sm-3 control-label">任务标题*：</label>
+								<label class="col-sm-3 control-label">督办编号：*</label>
+								<div class="col-sm-8">
+									<input id="number" name="number" type="text" class="form-control" required="" value="${task.number }">
+								</div>
+							</div>
+							<div class="form-group">
+                                <label class="col-sm-3 control-label">任务标题：*</label>
                                 <div class="col-sm-8">
                                     <input id="title" name="title" type="text" class="form-control" required="" value="${task.title }">
                                 </div>
                             </div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">联系人：*</label>
+								<div class="col-sm-5">
+									<div class="input-group">
+										<input readonly id="contractName" name="contractName" minlength="2" type="text" class="form-control" required="" value="${appointUserName }">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">联系电话：*</label>
+								<div class="col-sm-5">
+									<div class="input-group">
+										<input id="contractPhone" name="contractPhone" minlength="2" type="text" class="form-control" required="" value="${task.contractPhone }">
+									</div>
+								</div>
+							</div>
                             <%--<div class="form-group">--%>
 								<%--<label class="col-sm-3 control-label">上级任务：</label>--%>
 								<%--<div class="col-sm-8">--%>
@@ -31,16 +54,16 @@
 									<%--</select>--%>
 								<%--</div>--%>
 							<%--</div>--%>
-                            <div class="form-group">
+                            <%--<div class="form-group">
                                 <label class="col-sm-3 control-label">分配人：</label>
                                 <div class="col-sm-8">
                                 	<div class="input-group">
                                 		<t:choose url="common/selectUsers" hiddenName="appointUserId" hiddenValue="${appointUserId }" textValue="${appointUserName }" textName="appointUserName" hiddenId="appointUserId" textId="appointUserName"></t:choose>
                                 	</div>
                                 </div>
-                            </div>
+                            </div>--%>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">责任人：</label>
+                                <label class="col-sm-3 control-label">责任人：*</label>
                                 <div class="col-sm-8">
                                 	<div class="input-group">
                                 		<t:choose url="common/selectDeptManagers" hiddenName="userId" hiddenValue="${userId }" textValue="${userName }" textName="userName" hiddenId="userId" textId="userName"></t:choose>
@@ -56,36 +79,20 @@
                                 <%--</div>--%>
                             <%--</div>--%>
                             <div class="form-group">
-								<label class="col-sm-3 control-label m-b">任务时间 从：</label>
+								<label class="col-sm-3 control-label m-b">交办时间：*</label>
 								<div class="col-sm-4 m-b">
 									<input class="laydate-icon form-control layer-date" id="startTime" name="startTime"  value='<fmt:formatDate value="${task.startTime }" type="both" pattern="yyyy-MM-dd HH:mm"/>'>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label m-b">到：</label>
+								<label class="col-sm-3 control-label m-b">本次办结时限：*</label>
 								<div class="col-sm-4 m-b">
 									<input class="laydate-icon form-control layer-date" id="endTime" name="endTime"  value='<fmt:formatDate value="${task.endTime }" type="both" pattern="yyyy-MM-dd HH:mm"/>'>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">联系人：</label>
-								<div class="col-sm-5">
-									<div class="input-group">
-										<input id="contractName" name="contractName" minlength="2" type="text" class="form-control" required="" value="${task.contractName }">
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label">联系电话：</label>
-								<div class="col-sm-5">
-									<div class="input-group">
-										<input id="contractPhone" name="contractPhone" minlength="2" type="text" class="form-control" required="" value="${task.contractPhone }">
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label m-b">附件:</label>
-								<div class="col-sm-2">
+								<label class="col-sm-3 control-label m-b">附件:</label>
+								<div class="col-sm-4">
 									<div id="filePicker">上传附件</div>
 								</div>
 								<div class="col-sm-4">
@@ -93,11 +100,14 @@
 								</div>
 							</div>
                             <div class="form-group">
-								<label class="col-sm-3 control-label">任务内容：</label>
+								<label class="col-sm-3 control-label">督办内容：*</label>
 								<div class="col-sm-8">
+									<textarea rows=8 id="content" name="content" minlength="1" type="text" class="form-control" required="">${task.content }</textarea>
+								</div>
+								<%--<div class="col-sm-8">
 									<div id="summernote"></div>
 									<input type="hidden" name="content" id="content" value="">
-								</div>
+								</div>--%>
 							</div>
 						</t:formvalid>
                     </div>

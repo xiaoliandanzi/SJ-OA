@@ -288,6 +288,12 @@ public class FlowMessageApprovalController extends BaseController {
                 return j;
             }
 
+            if(flowMessageApprovalEntity.getContent().length() > 1999){
+                j.setSuccess(false);
+                j.setMsg("内容过长，请以附件上传");
+                return j;
+            }
+
             if(null == flowMessageApprovalEntity.getMessageType()) {
                 j.setSuccess(false);
                 j.setMsg("信息类型不能为空");
@@ -306,8 +312,7 @@ public class FlowMessageApprovalController extends BaseController {
                 j.setMsg("参数错误，系统中没有该流程");
                 return j;
             }
-
-
+            workflowBaseEntity.setLevel("0");
             if(StringUtils.equals(optType, "1")) {
                 flowMessageApprovalEntity.setApplyStatus(0);
                 //直接申请流程
