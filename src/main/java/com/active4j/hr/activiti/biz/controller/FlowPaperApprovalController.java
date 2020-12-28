@@ -274,6 +274,7 @@ public class FlowPaperApprovalController extends BaseController {
             /*if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
                 return j;
             }*/
+            workflowBaseEntity.setLevel("0");
 
             if(StringUtils.isBlank(workflowBaseEntity.getWorkflowId())) {
                 j.setSuccess(false);
@@ -359,7 +360,6 @@ public class FlowPaperApprovalController extends BaseController {
                 return j;
             }
 
-            workflowBaseEntity.setLevel("0");
             if(StringUtils.equals(optType, "1")) {
                 flowPaperApprovalEntity.setApplyStatus(0);
                 //直接申请流程

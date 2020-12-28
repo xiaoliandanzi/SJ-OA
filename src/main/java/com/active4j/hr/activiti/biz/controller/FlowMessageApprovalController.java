@@ -275,7 +275,7 @@ public class FlowMessageApprovalController extends BaseController {
 //            if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
 //                return j;
 //            }
-
+            workflowBaseEntity.setLevel("0");
             if(null == flowMessageApprovalEntity.getTitle()) {
                 j.setSuccess(false);
                 j.setMsg("标题为空");
@@ -312,7 +312,7 @@ public class FlowMessageApprovalController extends BaseController {
                 j.setMsg("参数错误，系统中没有该流程");
                 return j;
             }
-            workflowBaseEntity.setLevel("0");
+
             if(StringUtils.equals(optType, "1")) {
                 flowMessageApprovalEntity.setApplyStatus(0);
                 //直接申请流程

@@ -10,7 +10,7 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">申请编号：</label>
     <div class="col-sm-8">
-        <input id="projectNo" hidden="true" name="projectNo" minlength="2" type="text" class="form-control" readonly required="" value="${base.projectNo }">
+        <input id="projectNo" name="projectNo" minlength="2" type="text" class="form-control" readonly required="" value="${base.projectNo }">
     </div>
     <%--<label class="col-sm-2 control-label">名称：</label>
     <div class="col-sm-3">
