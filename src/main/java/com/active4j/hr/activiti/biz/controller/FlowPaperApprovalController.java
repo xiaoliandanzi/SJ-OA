@@ -148,6 +148,14 @@ public class FlowPaperApprovalController extends BaseController {
 
             view.addObject("base", base);
 
+
+         /*   SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
+            WorkflowBaseEntity base = new WorkflowBaseEntity();
+            base.setProjectNo(String.format("%s-%s", user.getUserName(), DateUtils.date2Str(DateUtils.getNow(), sdf)));
+            base.setName("发文申请");*/
+
+            view.addObject("base", base);
+
             biz.setDraftMan(user.getRealName());
             biz.setDept(user.getDeptName());
             view.addObject("biz", biz);
@@ -274,6 +282,7 @@ public class FlowPaperApprovalController extends BaseController {
             /*if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
                 return j;
             }*/
+            workflowBaseEntity.setLevel("0");
 
             if(StringUtils.isBlank(workflowBaseEntity.getWorkflowId())) {
                 j.setSuccess(false);
@@ -308,6 +317,12 @@ public class FlowPaperApprovalController extends BaseController {
             if(null == flowPaperApprovalEntity.getPaperAbstract()) {
                 j.setSuccess(false);
                 j.setMsg("内容摘要为空");
+                return j;
+            }
+
+            if (flowPaperApprovalEntity.getPaperAbstract().length() > 1999) {
+                j.setSuccess(false);
+                j.setMsg("内容摘要过长，请以附件上传");
                 return j;
             }
 
@@ -352,7 +367,6 @@ public class FlowPaperApprovalController extends BaseController {
                 j.setMsg("参数错误，系统中没有该流程");
                 return j;
             }
-
 
             if(StringUtils.equals(optType, "1")) {
                 flowPaperApprovalEntity.setApplyStatus(0);

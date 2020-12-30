@@ -145,6 +145,13 @@ public class FlowMessageApprovalController extends BaseController {
             base.setName("信息发布");
             view.addObject("base", base);
 
+
+         /*   SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
+            WorkflowBaseEntity base = new WorkflowBaseEntity();
+            base.setProjectNo(String.format("%s-%s", user.getUserName(), DateUtils.date2Str(DateUtils.getNow(), sdf)));
+            base.setName("信息发布");
+            view.addObject("base", base);*/
+
             FlowMessageApprovalEntity biz = new FlowMessageApprovalEntity();
             biz.setPublicMan(user.getRealName());
             biz.setDept(user.getDeptName());
@@ -276,6 +283,7 @@ public class FlowMessageApprovalController extends BaseController {
 //                return j;
 //            }
 
+            workflowBaseEntity.setLevel("0");
             if(null == flowMessageApprovalEntity.getTitle()) {
                 j.setSuccess(false);
                 j.setMsg("标题为空");
@@ -285,6 +293,12 @@ public class FlowMessageApprovalController extends BaseController {
             if(null == flowMessageApprovalEntity.getContent()) {
                 j.setSuccess(false);
                 j.setMsg("内容为空");
+                return j;
+            }
+
+            if(flowMessageApprovalEntity.getContent().length() > 1999){
+                j.setSuccess(false);
+                j.setMsg("内容过长，请以附件上传");
                 return j;
             }
 
@@ -306,7 +320,6 @@ public class FlowMessageApprovalController extends BaseController {
                 j.setMsg("参数错误，系统中没有该流程");
                 return j;
             }
-
 
             if(StringUtils.equals(optType, "1")) {
                 flowMessageApprovalEntity.setApplyStatus(0);

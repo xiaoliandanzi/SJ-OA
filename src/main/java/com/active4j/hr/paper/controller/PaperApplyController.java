@@ -1,15 +1,22 @@
 package com.active4j.hr.paper.controller;
 
+import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
 import com.active4j.hr.activiti.entity.WorkflowCategoryEntity;
 import com.active4j.hr.activiti.entity.WorkflowFormEntity;
 import com.active4j.hr.activiti.entity.WorkflowMngEntity;
 import com.active4j.hr.activiti.service.WorkflowCategoryService;
 import com.active4j.hr.activiti.service.WorkflowFormService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
+import com.active4j.hr.activiti.service.WorkflowService;
+import com.active4j.hr.activiti.util.WorkflowConstant;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.ListUtils;
+import com.active4j.hr.core.util.ResponseUtil;
+import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.system.entity.SysRoleEntity;
 import com.active4j.hr.system.service.SysUserService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,8 +52,10 @@ public class PaperApplyController {
     @Autowired
     private WorkflowFormService workflowFormService;
 
+    @Autowired
+    private WorkflowService workflowService;
+
     /**
-     *
      * @return
      */
     @RequestMapping("/go")
@@ -58,7 +68,7 @@ public class PaperApplyController {
         List<SysRoleEntity> lstRoles = sysUserService.getUserRoleByUserId(userId);
 
         List<String> roleIds = new ArrayList<String>();
-        if(null != lstRoles) {
+        if (null != lstRoles) {
             roleIds = lstRoles.stream().map(d -> d.getId()).collect(Collectors.toList());
         }
 
@@ -94,9 +104,43 @@ public class PaperApplyController {
         }
 
         view.addObject("categoryReplace", ListUtils.listToReplaceStr(result, "name", "id"));
-
         return view;
     }
+
+    @RequestMapping("/datagrid")
+    public void datagrid(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+
+        String startTime = request.getParameter("applyDate_begin");
+        String endTime = request.getParameter("applyDate_end");
+
+        // 执行查询
+        IPage<WorkflowBaseEntity> lstResult = workflowService.findTaskStrsByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
+
+        long total = lstResult.getTotal();
+        long tempTotal = 0;
+        List<WorkflowBaseEntity> newList = new ArrayList<>();
+        if (total > 0) {
+            for (WorkflowBaseEntity entity : lstResult.getRecords()) {
+                //只显示审批完成的文件
+                if (entity.getWorkFlowName().equalsIgnoreCase("发文申请")) {
+                    newList.add(entity);
+                    tempTotal++;
+                }
+            }
+            lstResult.setTotal(tempTotal);
+            lstResult.setRecords(newList);
+
+        }
+
+        // 输出结果
+        ResponseUtil.writeJson(response, dataGrid, lstResult);
+    }
+
+    /*@RequestMapping("/myapply")
+    public ModelAndView myApply(HttpServletRequest request) {
+        ModelAndView view = new ModelAndView("paper/waittasklist");
+        return view;
+    }*/
 
     @RequestMapping("/mycarry")
     public ModelAndView mycarry(HttpServletRequest req) {
