@@ -5,8 +5,10 @@ import com.active4j.hr.core.annotation.QueryField;
 import com.active4j.hr.core.query.QueryCondition;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -25,7 +27,7 @@ public class FlowMessageApprovalEntity extends BaseEntity {
      * 发布人
      */
     @TableField("PUBLICMAN")
-    @QueryField(queryColumn="PUBLICMAN", condition=QueryCondition.like)
+    @QueryField(queryColumn = "PUBLICMAN", condition = QueryCondition.like)
     private String publicMan;
 
     /**
@@ -38,14 +40,16 @@ public class FlowMessageApprovalEntity extends BaseEntity {
      * 科室
      */
     @TableField("DEPT")
-    @QueryField(queryColumn="DEPT", condition=QueryCondition.eq)
+    @QueryField(queryColumn = "DEPT", condition = QueryCondition.eq)
     private String dept;
 
     /**
      * 发布时间
      */
     @TableField("PUBLICTIME")
-    @QueryField(queryColumn="PUBLICTIME", condition=QueryCondition.range)
+    @QueryField(queryColumn = "PUBLICTIME", condition = QueryCondition.range)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date publicTime;
 
     /**
@@ -64,7 +68,7 @@ public class FlowMessageApprovalEntity extends BaseEntity {
      * 标题
      */
     @TableField("TITLE")
-    @QueryField(queryColumn="TITLE", condition=QueryCondition.like)
+    @QueryField(queryColumn = "TITLE", condition = QueryCondition.like)
     private String title;
 
     /**
@@ -77,7 +81,15 @@ public class FlowMessageApprovalEntity extends BaseEntity {
      * 信息类型 1:公示文件 2：通知公告 3:媒体聚焦
      */
     @TableField("MESSAGETYPE")
-    @QueryField(queryColumn="MESSAGETYPE", condition=QueryCondition.eq)
+    @QueryField(queryColumn = "MESSAGETYPE", condition = QueryCondition.eq)
     private Integer messageType;
+
+
+    /**
+     * 点击数
+     */
+    @TableField("COUNT")
+    private Integer count;
+
 
 }

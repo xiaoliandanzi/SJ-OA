@@ -162,6 +162,9 @@ div ul li a:hover {
 
 #font1 {
     font-size: 6px;
+    margin: 0;
+    padding: 0;
+    line-height: 20px;
 }
 
 #more {

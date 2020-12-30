@@ -55,19 +55,17 @@
         </ul>
     </div>
     <div id="boder1">
-        <ul>
-            <li id="cor1"><b>公示文件</b></li>
+        <ul id="gongshiwenjian">
+            <%--<li id="cor1"><b>公示文件</b></li>
             <li class="cor2"><a href="#" id="more">更多+</a></li>
-            <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>
-
+            <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>--%>
         </ul>
     </div>
     <div id="boder1">
-        <ul>
-            <li id="cor1"><b>媒体聚焦</b></li>
+        <ul id="meitijujiao">
+            <%--<li id="cor1"><b>媒体聚焦</b></li>
             <li class="cor2"><a href="#" id="more">更多+</a></li>
-            <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>
-
+            <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>--%>
         </ul>
     </div>
     <div id="boder1">
@@ -82,15 +80,13 @@
                          style="width: 150px;height:150px; float: left;z-index: 9999999"></div>
                 </div>
             </li>
-
         </ul>
     </div>
     <div id="boder1">
-        <ul>
-            <li id="cor1"><b>通知公告</b></li>
-            <li class="cor2"><a href="#" id="more">更多+</a></li>
-            <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>
-
+        <ul id="tongzhigonggao">
+            <%-- <li id="cor1"><b>通知公告</b></li>
+             <li class="cor2"><a href="#" id="more">更多+</a></li>
+             <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>--%>
         </ul>
     </div>
     <div id="boder1">
@@ -132,6 +128,53 @@
 </div>
 </body>
 <script type="text/javascript">
+    gongshi(1);
+    gongshi(2);
+    gongshi(3);
+
+    function gongshi(messageType) {
+        $.ajax({
+            type: "get",
+            url: 'oa/login/messageList?messageType=' + messageType,//目标地址
+            success: function (data) {
+                disposeList(data.obj, messageType);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+            }
+        })
+    }
+
+    function disposeList(list, messageType) {
+        var lili = '';
+        if (messageType == 1) {
+            lili = '<li id="cor1"><b>公示文件</b></li>\n' +
+                '            <li class="cor2"><a href="#" id="more">更多+</a></li>';
+        } else if (messageType == 2) {
+            lili = '<li id="cor1"><b>通知公告</b></li>\n' +
+                '            <li class="cor2"><a href="#" id="more">更多+</a></li>';
+        } else if (messageType == 3) {
+            lili = '<li id="cor1"><b>媒体聚焦</b></li>\n' +
+                '            <li class="cor2"><a href="#" id="more">更多+</a></li>';
+        }
+        if (list.length > 0) {
+            for (var i = 0; i < list.length; i++) {
+                var li = '<li id="font1" style="line-height: 20px">' + list[i].title + '(' + list[i].publicTime + '阅' + list[i].count + '次)</li>';
+                lili += li;
+            }
+        }
+        if (messageType == 1) {
+            document.getElementById('gongshiwenjian').innerHTML = lili;
+        } else if (messageType == 2) {
+            document.getElementById('tongzhigonggao').innerHTML = lili;
+        } else if (messageType == 3) {
+            document.getElementById('meitijujiao').innerHTML = lili;
+        }
+    }
+
+    /**
+     *
+     */
     var myChart = echarts.init(document.getElementById('main-number'));
     var myChart_two = echarts.init(document.getElementById('main-dept'));
     var bingtu = '';
