@@ -1,0 +1,396 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
+<%@include file="/context/mytags.jsp" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <%--<t:base type="default"></t:base>--%>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .navbarBox {
+        display: flex;
+        position: relative;
+    }
+
+    .logoBox {
+        margin-left: 20px;
+    }
+
+    .title {
+        font-size: 16px;
+        color: #347BB7;
+        line-height: 90px;
+        font-weight: bold;
+        margin-left: 18px;
+    }
+
+    .btnBox {
+        height: 90px;
+        position: relative;
+        margin-left: 20px;
+        line-height: 90px;
+
+    }
+
+    .btnImg {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 20px;
+        height: 20px;
+        margin: auto;
+    }
+
+    .btnTxt {
+        font-size: 12px;
+        font-weight: 400;
+        color: #2F4050;
+        margin-left: 20px;
+    }
+
+    .btnTxt:hover {
+        color: #D30404;
+    }
+
+    .selectBox {
+        width: 300px;
+        /* margin-top: 26px; */
+        /* display: flex; */
+        /* margin-left: 45px; */
+        height: 28px;
+        position: relative;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        margin-left: 45px;
+        margin-right: 0;
+        border: 1px solid #000;
+    }
+
+    .selectBtn {
+        display: block;
+        width: 100px;
+        position: relative;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        margin-left: 0;
+        height: 28px;
+        text-align: center;
+        font-size: 20px;
+        color: #FFFFFF;
+        background: #E60012;
+        line-height: 28px;
+        border: 1px solid #000;
+    }
+
+    .tabs {
+        width: 100%;
+        height: 40px;
+        background: #347BB7;
+    }
+
+    .tabsBox {
+        margin: 0 auto;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .tabs_item {
+        width: 70px;
+        height: 30px;
+        margin-top: 10px;
+        line-height: 30px;
+        color: #FFFFFF;
+        font-weight: 500;
+        font-size: 16px;
+        margin-left: 16px;
+
+    }
+
+    .tabs_item:hover {
+
+        background: #296190;
+    }
+
+    .active {
+        background: #FFFFFF;
+        color: #347BB7;
+    }
+
+    .active:hover {
+        background: #FFFFFF;
+        color: #347BB7;
+    }
+
+    .tabTitle {
+        /* width: 100%; */
+        height: 60px;
+        background: #F1F9FF;
+        margin-top: 10px;
+        line-height: 60px;
+        padding-left: 130px;
+    }
+
+    .tabs1Center {
+        height: 580px;
+        border-bottom: 1px solid #CCCCCC;
+        width: 70%;
+        margin: 0 auto;
+    }
+
+    .tabs1List {
+        position: relative;
+        display: flex;
+        height: 40px;
+        border-bottom: 1px dashed #CCCCCC;
+        line-height: 40px;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .tabs1List_dian {
+        width: 6px;
+        height: 6px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+        background: #808080;
+        border-radius: 50%;
+    }
+
+    .tabs1List_name {
+        margin-left: 26px;
+        color: #4C4C4C;
+        max-width: 300px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .tabs1List_name:hover {
+        color: #D30404;
+    }
+
+    .tabs1List_right {
+        margin-right: 10px;
+        font-size: 16px;
+        color: #000000;
+    }
+
+    .tabs1Page {
+        width: 70%;
+        margin: 0 auto;
+        text-align: right;
+        margin-top: 5px;
+    }
+
+    .friendBox {
+        border-top: 1px solid #CCCCCC;
+        margin-top: 40px;
+        padding-left: 40px;
+    }
+
+    .friendTxt {
+        font-size: 16px;
+        color: #7F7F80;
+        line-height: 60px;
+
+    }
+
+    .friendHerf {
+        display: inline-block;
+        height: 32px;
+        color: #FFFFFF;
+        background: #2F4050;
+        margin-left: 30px;
+        line-height: 32px;
+        padding: 0 5px;
+        text-decoration: none;
+    }
+</style>
+
+<body>
+<div id="app">
+    <div class="navbarBox">
+        <div class="logoBox">
+            <img src="img/a.png" alt="">
+        </div>
+        <div class="title">
+            双井街道智慧办公系统
+        </div>
+        <div class="btnBox">
+            <img class="btnImg" src="img/d.png" alt="">
+            <span class="btnTxt">
+                    <a href="/oa/console">门户首页</a>
+                </span>
+        </div>
+        <div class="btnBox">
+            <img class="btnImg" src="img/b.png" alt="">
+            <span class="btnTxt">
+                    <a href="/oa/console">个人办公</a>
+                </span>
+        </div>
+        <div class="btnBox">
+            <img class="btnImg" src="img/c.png" alt="">
+            <span class="btnTxt">
+                    财务系统
+                </span>
+        </div>
+        <div class="selectBox">
+            <el-input placeholder="请输入关键字" prefix-icon="el-icon-search" v-model="input2">
+            </el-input>
+        </div>
+        <div class="selectBtn">
+            搜索
+        </div>
+    </div>
+    <div class="tabs">
+        <div class="tabsBox">
+            <div class="tabs_item" v-for="(item,index) in tabs" :key="index" :class="{'active': isActive == index}"
+                 @click="tabsClick(item,index)">
+                {{item.name}}
+            </div>
+        </div>
+    </div>
+    <div class="tab1">
+        <div class="tabTitle">
+                <span class="tabPath">
+                    您现在的位置：
+                </span>
+            <span class="tabPath">
+                    首页
+                </span>
+            >
+            <span class="tabPath">
+
+                    {{loginName}}
+
+                </span>
+            >
+            <span class="tabPath">
+
+                    正文
+
+                </span>
+
+        </div>
+        <div class="tabs1Center">
+            <div class="tabs1List" v-for="(item,index) in titleList" :key="index" @click="listClick(item)">
+                <div class="tabs1List_dian">
+
+                </div>
+                <div class="tabs1List_name">
+                    {{item.title}}
+                </div>
+                <div class="tabs1List_right">
+                    {{item.publicTime}} 阅{{item.count}}次
+                </div>
+            </div>
+        </div>
+        <div class="tabs1Page">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :current-page="currentPage4" :page-sizes="[20, 40, 100]" :page-size="20"
+                           layout="total, sizes, prev, pager, next, jumper" :total="20">
+            </el-pagination>
+        </div>
+    </div>
+    <div class="friendBox">
+        <span class="friendTxt"> 连接</span>
+        <a class="friendHerf" href="http://www.chy.egov.cn/"> 朝阳政务</a>
+        <a class="friendHerf" href="http://www.bjchy.gov.cn/"> 朝阳区政务网</a>
+        <a class="friendHerf" href="http://bgpc.beijing.gov.cn/"> 市政府采购中心</a>
+        <a class="friendHerf" href="http://3d.bjchy.gov.cn"> 云享朝阳·感知互动体验中心</a>
+        <a class="friendHerf" href="https://www.xuexi.cn/"> 学习强国</a>
+        <a class="friendHerf" href="http://www.chy.egov.cn/qbm-5.html"> 区保密局提示</a>
+    </div>
+</div>
+</body>
+<script>
+
+    var messageType = ${messageType};
+    var massages = [];
+
+    var dom = new Vue({
+        el: '#app',
+        data() {
+            return {
+                input2: '',
+                isActive: 1,
+                loginName: '',
+                tabs: [{
+                    name: "双井图库"
+                },
+                    {
+                        name: "公式文件",
+                        messageType: 1,
+                    },
+                    {
+                        name: "通知公告",
+                        messageType: 2,
+                    },
+                    {
+                        name: "媒体聚焦",
+                        messageType: 3,
+                    },
+                    {
+                        name: "工作信息",
+                        messageType: 4,
+                    },
+                    {
+                        name: "制度范围",
+                        messageType: 5,
+                    }
+                ],
+                currentPage4: 3,
+                titleList: [],
+            }
+        },
+        mounted() {
+            this.getTitList()
+        },
+        methods: {
+            getTitList() {
+                axios.get('oa/login/messageList?messageType=' + messageType).then((msg) => {
+                    this.loginName = this.tabs[messageType].name;
+                    this.isActive = messageType;
+                    this.titleList = msg.data.obj
+                })
+            },
+            tabsClick(item, index) {
+                axios.get('oa/login/messageList?messageType=' + item.messageType).then((msg) => {
+                    this.isActive = index;
+                    this.loginName = item.name;
+                    this.titleList = msg.data.obj
+                })
+            },
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+            }
+        }
+    })
+
+</script>
+</html>
+
+
+

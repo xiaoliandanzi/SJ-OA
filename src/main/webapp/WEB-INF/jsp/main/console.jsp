@@ -9,14 +9,14 @@
     <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
 </head>
 <body>
-<%--<div id="herder">
+<div id="herder">
     <ul>
         <li><img src="img/1.png " id="img1"></li>
-        <li><a href="#" id="cor"><b>双井街道智慧办公系统</b></a></li>
+        <li><a href="/oa/console" id="cor"><b>双井街道智慧办公系统</b></a></li>
         <li><img src="img/首页@2x.png" id="ban"></li>
-        <li><a href="#" id="cor-size">门户首页</a></li>
+        <li><a href="/oa/console" id="cor-size">门户首页</a></li>
         <li><img src="img/办公.png" id="ban"></li>
-        <li><a href="#" id="cor-size">个人办公</a></li>
+        <li><a href="/oa/index" id="cor-size">个人办公</a></li>
         <li><img src="img/财务Finance.png" id="ban"></li>
         <li><a href="#" id="cor-size">财务系统</a></li>
         <li>
@@ -25,27 +25,26 @@
         </li>
         <li><input type="button" value="搜索" id="text-btn"></li>
     </ul>
-</div>--%>
+</div>
 <div id="main">
     <div id="boder1">
         <ul>
-            <li id="cor1"><b>双井图库</b></li>
-            <li class="cor2"><a href="#" id="more">更多+</a></li>
-            <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>
+            <li id="cor1"><b style="font-size: 12px">双井图库</b></li>
+            <li class="cor2"><a href="#" id="more" style="font-size: 10px">更多+</a></li>
         </ul>
     </div>
     <div id="boder1">
-        <ul>
-            <li id="cor1"><b>工作信息</b></li>
+        <ul id="gongzuoxinxi">
+            <%--<li id="cor1"><b>工作信息</b></li>
             <li class="cor2"><a href="#" id="more">更多+</a></li>
             <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>
-
+--%>
         </ul>
     </div>
 
     <div id="boder1">
         <ul>
-            <li id="cor1"><b>公示文件</b></li>
+            <li id="cor1"><b style="font-size: 12px">待办事项</b></li>
             <li class="cor2"><a href="#" id="more"></a></li>
             <li id="yuan">3</li>
             <li id="yuan">4</li>
@@ -70,7 +69,7 @@
     </div>
     <div id="boder1">
         <ul>
-            <li id="cor1"><b>12345案件统计</b></li>
+            <li id="cor1"><b style="font-size: 10px">12345案件统计</b></li>
             <li class="cor2"><a href="#" id="more"></a></li>
             <li id="item">
                 <div>
@@ -90,18 +89,18 @@
         </ul>
     </div>
     <div id="boder1">
-        <ul>
-            <li id="cor1"><b>制度范围</b></li>
+        <ul id="zhidufanwei">
+            <%--<li id="cor1"><b>制度范围</b></li>
             <li class="cor2"><a href="#" id="more">更多+</a></li>
             <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>
-
+--%>
         </ul>
     </div>
     <div id="boder1">
         <ul>
-            <li id="cor1"><b>事件通知</b></li>
-            <li class="cor2"><a href="#" id="more">更多+</a></li>
-            <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>
+            <li id="cor1"><b style="font-size: 12px">事件通知</b></li>
+            <li class="cor2"><a href="#" id="more" style="font-size: 10px">更多+</a></li>
+            <li class="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>
 
         </ul>
     </div>
@@ -131,16 +130,18 @@
     gongshi(1);
     gongshi(2);
     gongshi(3);
+    gongshi(4);
+    gongshi(5);
 
     function gongshi(messageType) {
         $.ajax({
             type: "get",
-            url: 'oa/login/messageList?messageType=' + messageType,//目标地址
+            url: 'oa/login/messageList?messageType=' + messageType + "&rows=" + 8,//目标地址
             success: function (data) {
                 disposeList(data.obj, messageType);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(textStatus)
+                disposeList([], messageType);
             }
         })
     }
@@ -148,18 +149,24 @@
     function disposeList(list, messageType) {
         var lili = '';
         if (messageType == 1) {
-            lili = '<li id="cor1"><b>公示文件</b></li>\n' +
-                '            <li class="cor2"><a href="#" id="more">更多+</a></li>';
+            lili = '<li id="cor1"><b style="font-size: 12px">公示文件</b></li>\n' +
+                '            <li class="cor2"><a href="/oa/oa/index/viewArticleList?messageType=1" id="more" style="font-size: 10px">更多+</a></li>';
         } else if (messageType == 2) {
-            lili = '<li id="cor1"><b>通知公告</b></li>\n' +
-                '            <li class="cor2"><a href="#" id="more">更多+</a></li>';
+            lili = '<li id="cor1"><b style="font-size: 12px">通知公告</b></li>\n' +
+                '            <li class="cor2"><a href="/oa/oa/index/viewArticleList?messageType=2" id="more" style="font-size: 10px">更多+</a></li>';
         } else if (messageType == 3) {
-            lili = '<li id="cor1"><b>媒体聚焦</b></li>\n' +
-                '            <li class="cor2"><a href="#" id="more">更多+</a></li>';
+            lili = '<li id="cor1"><b style="font-size: 12px">媒体聚焦</b></li>\n' +
+                '            <li class="cor2"><a href="/oa/oa/index/viewArticleList?messageType=3" id="more" style="font-size: 10px">更多+</a></li>';
+        } else if (messageType == 4) {
+            lili = '<li id="cor1"><b style="font-size: 12px">工作信息</b></li>\n' +
+                '            <li class="cor2"><a href="/oa/oa/index/viewArticleList?messageType=4" id="more" style="font-size: 10px">更多+</a></li>';
+        } else if (messageType == 5) {
+            lili = ' <li id="cor1"><b style="font-size: 12px">制度范围</b></li>\n' +
+                '            <li class="cor2"><a href="/oa/oa/index/viewArticleList?messageType=5" id="more" style="font-size: 10px">更多+</a></li>';
         }
         if (list.length > 0) {
             for (var i = 0; i < list.length; i++) {
-                var li = '<li id="font1" style="line-height: 20px">' + list[i].title + '(' + list[i].publicTime + '阅' + list[i].count + '次)</li>';
+                var li = '<li onclick="getArticle(this)" class="font1" style="line-height: 20px" id="' + list[i].id + '">' + list[i].title + '(' + list[i].publicTime + '阅' + list[i].count + '次)</li>';
                 lili += li;
             }
         }
@@ -169,8 +176,18 @@
             document.getElementById('tongzhigonggao').innerHTML = lili;
         } else if (messageType == 3) {
             document.getElementById('meitijujiao').innerHTML = lili;
+        } else if (messageType == 4) {
+            document.getElementById('gongzuoxinxi').innerHTML = lili;
+        } else if (messageType == 5) {
+            document.getElementById('zhidufanwei').innerHTML = lili;
         }
     }
+
+    var getArticle = function (data) {
+        console.log($(data).attr("id"));
+
+    }
+
 
     /**
      *

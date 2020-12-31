@@ -26,10 +26,10 @@
 
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="topic/table" tableContentId="jqGrid_wrapper" searchGroupId="searchGroupId" fit="true"
-            caption="用户管理" name="table_list_2" pageSize="20" sortName="creatTime" sortOrder="desc">
+            caption="议题申请" name="table_list_2" pageSize="20" sortName="creatTime" sortOrder="desc">
     <t:dgCol name="topicId" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="creatTime" label="申报日期" width="90" query="false"></t:dgCol>
-    <t:dgCol name="topicName" label="议题名称" width="90" query="true"></t:dgCol>
+    <t:dgCol name="creatTime" label="申报日期" width="150" query="false"></t:dgCol>
+    <t:dgCol name="topicName" label="议题名称" width="150" query="true"></t:dgCol>
     <t:dgCol name="deptLeaderId" label="提议领导" query="false"></t:dgCol>
     <t:dgCol name="deptLeaderId" label="汇报人" query="false"></t:dgCol>
     <t:dgCol name="deptLeaderId" label="科室负责人" query="false"></t:dgCol>
@@ -42,14 +42,8 @@
     <t:dgCol name="isWorkingCommittee" label="工委会" replace="○_1, _0" query="false"></t:dgCol>
     <t:dgCol name="opt" label="操作" width="290"></t:dgCol>
     <t:dgDelOpt label="删除" url="sys/user/del?id={id}" operationCode="sys:user:del"/>
-    <t:dgToolBar url="sys/user/addorupdate" type="add" width="60%" operationCode="sys:user:add"></t:dgToolBar>
-    <t:dgToolBar url="sys/user/addorupdate" type="edit" width="60%" operationCode="sys:user:edit"></t:dgToolBar>
-    <t:dgToolBar label="重置密码" icon="fa fa-cog" url="sys/user/changepwd" type="pop" width="40%" height="50%"
-                 operationCode="sys:user:password"></t:dgToolBar>
-    <t:dgToolBar label="锁定用户" icon="fa fa-lock" type="define" funName="lockUser"
-                 operationCode="sys:user:lock"></t:dgToolBar>
-    <t:dgToolBar label="解锁用户" icon="fa fa-unlock" type="define" funName="unLockUser"
-                 operationCode="sys:user:unlock"></t:dgToolBar>
+    <%--<t:dgToolBar url="sys/user/addorupdate" type="add" width="60%" operationCode="sys:user:add"></t:dgToolBar>
+    <t:dgToolBar url="sys/user/addorupdate" type="edit" width="60%" operationCode="sys:user:edit"></t:dgToolBar>--%>
 </t:datagrid>.0
 
 <script type="text/javascript">

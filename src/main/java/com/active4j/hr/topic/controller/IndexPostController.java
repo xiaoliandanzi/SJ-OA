@@ -20,8 +20,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 
@@ -29,7 +32,7 @@ import java.io.IOException;
  * @author weiZiHao
  * @date 2020/12/29
  */
-@RequestMapping("oa")
+@RequestMapping("/oa")
 @RestController
 @Slf4j
 public class IndexPostController extends BaseController {
@@ -37,16 +40,54 @@ public class IndexPostController extends BaseController {
     @Autowired
     private FlowMessageApprovalService flowMessageApprovalService;
 
-    @RequestMapping("/login/messageList")
+    //  /oa/index/viewArticleList
+    @RequestMapping(value = "/index/viewArticleList")
+    public ModelAndView viewArticleList(FlowMessageApprovalEntity flowMessageApprovalEntity) {
+        ModelAndView modelAndView = new ModelAndView("main/articleList");
+        modelAndView.addObject("messageType",flowMessageApprovalEntity.getMessageType());
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/index/viewArticle")
+    public ModelAndView viewArticle() {
+        return new ModelAndView("main/topiclist");
+    }
+
+
+    @RequestMapping(value = "/login/getArticle")
+    @Transactional(propagation = Propagation.REQUIRED)
+    public AjaxJson getOne(FlowMessageApprovalEntity flowMessageApprovalEntity) {
+        AjaxJson json = new AjaxJson();
+        try {
+            FlowMessageApprovalEntity dao = flowMessageApprovalService.getById(flowMessageApprovalEntity.getId());
+            json.setObj(dao);
+            dao.setCount(dao.getCount() + 1);
+            flowMessageApprovalService.saveOrUpdate(dao);
+        } catch (Exception e) {
+            log.error("获取文章失败,错误信息:" + e.getMessage());
+            json.setSuccess(false);
+            json.setMsg("获取文章失败");
+            e.printStackTrace();
+        }
+        return json;
+    }
+
+    @RequestMapping(value = "/login/messageList")
     public AjaxJson getMessage(FlowMessageApprovalEntity flowMessageApprovalEntity, DataGrid dataGrid) {
         AjaxJson json = new AjaxJson();
-        dataGrid.setRows(8);
-        flowMessageApprovalEntity.setApplyStatus(1);
-        QueryWrapper<FlowMessageApprovalEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.setEntity(flowMessageApprovalEntity);
-        queryWrapper.orderByDesc("CREATE_DATE");
-        IPage<FlowMessageApprovalEntity> page = flowMessageApprovalService.page(new Page<FlowMessageApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
-        json.setObj(page.getRecords());
+        try {
+            flowMessageApprovalEntity.setApplyStatus(1);
+            QueryWrapper<FlowMessageApprovalEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.setEntity(flowMessageApprovalEntity);
+            queryWrapper.orderByDesc("CREATE_DATE");
+            IPage<FlowMessageApprovalEntity> page = flowMessageApprovalService.page(new Page<FlowMessageApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+            json.setObj(page.getRecords());
+        } catch (Exception e) {
+            log.error("获取文章列表失败,错误信息:" + e.getMessage());
+            json.setSuccess(false);
+            json.setMsg("获取文章列表失败");
+            e.printStackTrace();
+        }
         return json;
     }
 

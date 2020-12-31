@@ -84,10 +84,10 @@ div ul li a:hover {
 }
 
 .i1, .i2 {
-    width: 80px;
-    height: 20px;
+    width: 150px;
+    height: 30px;
     background-color: #2F4050;
-    font-size: 7px;
+    font-size: 10px;
     color: white;
     line-height: 0;
     margin: 10px;
@@ -160,7 +160,7 @@ div ul li a:hover {
     margin: 20px;
 }
 
-#font1 {
+.font1 {
     font-size: 6px;
     margin: 0;
     padding: 0;
