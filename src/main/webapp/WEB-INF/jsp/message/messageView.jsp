@@ -30,7 +30,8 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">信息类型：</label>
                             <div class="col-sm-8">
-                                <t:dictSelect name="messageType" type="select" typeGroupCode="messagetypes" defaultVal="${biz.messageType}"></t:dictSelect>
+                                <%--<t:dictSelect name="messageType" type="select" typeGroupCode="messagetypes" defaultVal="${biz.messageType}"></t:dictSelect>--%>
+                                    <input type="text" class="form-control" required="" readonly value="${type }">
                             </div>
                         </div>
                         <div class="form-group">
@@ -61,6 +62,7 @@
                             <label class="col-sm-3 control-label m-b">附件：</label>
                             <div class="col-sm-8">
                                 <button class="btn btn-primary" type="button" onclick="doBtnDownloadFile();">下载附件</button>
+                                <div id="fileList" class="uploader-list">${biz.attachment}</div>
                             </div>
                         </div>
                         <%--<div class="form-group">--%>
