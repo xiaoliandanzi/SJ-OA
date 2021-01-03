@@ -105,21 +105,6 @@
                             <div class="col-sm-8">
                                 <button class="btn btn-primary" type="button" onclick="doBtnDownloadFile();">下载附件</button>
                             </div>
-<<<<<<< HEAD
-                        </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">紧急程度：</label>
-                        <div class="col-sm-8">
-                            <c:choose>
-                                <c:when test="${empty base.level}">
-                                    <t:dictSelect name="level" type="radio" typeGroupCode="workflowlevel" defaultVal="0"></t:dictSelect>
-                                </c:when>
-                                <c:otherwise>
-                                    <t:dictSelect name="level" type="radio" typeGroupCode="workflowlevel" defaultVal="${base.level}"></t:dictSelect>
-                                </c:otherwise>
-                            </c:choose>
-=======
->>>>>>> e2872ebdd2da0afacc457659c0adc0fbf764440f
                         </div>
                     <%--<div class="form-group">--%>
                         <%--<label class="col-sm-3 control-label">紧急程度：</label>--%>
