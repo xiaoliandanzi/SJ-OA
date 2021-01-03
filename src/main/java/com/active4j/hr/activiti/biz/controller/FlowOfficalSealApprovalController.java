@@ -293,6 +293,7 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
                 return j;
             }
+            workflowBaseEntity.setLevel("0");
 
             if(null == flowOfficalSealApprovalEntity.getUseUnit()) {
                 j.setSuccess(false);

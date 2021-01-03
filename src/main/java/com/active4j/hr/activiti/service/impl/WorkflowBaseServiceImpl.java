@@ -44,7 +44,7 @@ public class WorkflowBaseServiceImpl extends ServiceImpl<WorkflowBaseDao, Workfl
 			j.setMsg("流程参数不能为空");
 			return j;
 		}
-		
+		workflowBaseEntity.setLevel("0");
 		if(StringUtils.isBlank(workflowBaseEntity.getLevel())) {
 			j.setSuccess(false);
 			j.setMsg("流程紧急程度不能为空");

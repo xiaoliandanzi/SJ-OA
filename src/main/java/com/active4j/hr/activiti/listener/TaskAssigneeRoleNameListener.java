@@ -51,6 +51,14 @@ public class TaskAssigneeRoleNameListener implements TaskListener {
 			roleName=WorkflowTaskUtil.getLeaderDept(applyName);
 		}
 
+		if(taskName.equalsIgnoreCase("书记审批")){
+			roleName="书记";
+		}
+
+		if(taskName.equalsIgnoreCase("主任审批")){
+			roleName="主任";
+		}
+
 		List<String> lstUsers = WorkflowTaskUtil.getApprovalUserByRoleName(roleName);
 		
 		if(null == lstUsers || lstUsers.size() <= 0) {

@@ -38,5 +38,4 @@
 		<t:dgToolBar type="refresh"></t:dgToolBar>
 	</t:datagrid>
 </body>
-
 </html>
