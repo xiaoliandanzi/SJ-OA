@@ -7,12 +7,15 @@ import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.util.StringUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
+import com.active4j.hr.system.entity.SysUserEntity;
 import com.active4j.hr.system.model.ActiveUser;
+import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.topic.entity.OaTopic;
 import com.active4j.hr.topic.service.OaTopicService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.inject.internal.cglib.proxy.$Callback;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +25,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * <p>
@@ -38,6 +44,9 @@ public class OaTopicController extends BaseController {
 
     @Autowired
     private OaTopicService topicService;
+
+    @Autowired
+    private SysUserService userService;
 
     /**
      * list视图
@@ -81,10 +90,17 @@ public class OaTopicController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("topic/topic");
         if (StringUtil.isEmpty(oaTopic.getId())) {
             oaTopic = new OaTopic();
+            oaTopic.setId(UUID.randomUUID().toString());
         } else {
             oaTopic = topicService.getById(oaTopic.getId());
         }
+        SysUserEntity userEntity = getUser();
+        QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("DEPT_ID", userEntity.getDeptId());
+        List<SysUserEntity> users = userService.list(queryWrapper);
         modelAndView.addObject("oaTopic", oaTopic);
+        //汇报人
+        modelAndView.addObject("reportList", users);
         return modelAndView;
     }
 
@@ -117,6 +133,14 @@ public class OaTopicController extends BaseController {
         return json;
     }
 
-
+    /**
+     * 得到用户
+     *
+     * @return
+     */
+    private SysUserEntity getUser() {
+        ActiveUser activeUser = ShiroUtils.getSessionUser();
+        return userService.getById(activeUser.getId());
+    }
 }
 

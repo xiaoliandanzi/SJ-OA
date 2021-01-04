@@ -2,6 +2,7 @@
 <%@include file="/context/mytags.jsp" %>
 <!DOCTYPE html>
 <html>
+
 <head>
     <%--<t:base type="default"></t:base>--%>
     <meta charset="UTF-8">
@@ -283,15 +284,15 @@
                     {{loginName}}
 
                 </span>
-            >
-            <span class="tabPath">
 
-                    正文
+            <span class="tabPath" v-if="zhengwen">
+
+                    > 正文
 
                 </span>
 
         </div>
-        <div class="tabs1Center">
+        <div class="tabs1Center" v-if="!zhengwen">
             <div class="tabs1List" v-for="(item,index) in titleList" :key="index" @click="listClick(item)">
                 <div class="tabs1List_dian">
 
@@ -304,13 +305,27 @@
                 </div>
             </div>
         </div>
-        <div class="tabs1Page">
+        <div class="tabs1Page" v-if="!zhengwen">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                            :current-page="currentPage4" :page-sizes="[20, 40, 100]" :page-size="20"
                            layout="total, sizes, prev, pager, next, jumper" :total="20">
             </el-pagination>
         </div>
     </div>
+    <div class="tabs1Center">
+        <div class="tab1Zhengwen" v-if="zhengwen">
+            <p class="tab1_zwTitle" style="text-align: center">
+                {{tab1zwMsg.title}}
+            </p>
+            <p class="tab1_zwDate" style="text-align: center">
+                {{tab1zwMsg.publicTime}}
+            </p>
+            <p class="tab1_zwVal">
+                {{tab1zwMsg.content}}
+            </p>
+        </div>
+    </div>
+
     <div class="friendBox">
         <span class="friendTxt"> 连接</span>
         <a class="friendHerf" href="http://www.chy.egov.cn/"> 朝阳政务</a>
@@ -323,8 +338,8 @@
 </div>
 </body>
 <script>
-
     var messageType = ${messageType};
+    ;
     var massages = [];
 
     var dom = new Vue({
@@ -360,6 +375,12 @@
                 ],
                 currentPage4: 3,
                 titleList: [],
+                zhengwen: false,
+                tab1zwMsg: {
+                    title: "标题",
+                    publicTime: "2020-08-08",
+                    content: "念佛阿红i我那就理解的 赛哦就打算就 撒娇打击撒泼大数据所惧怕就得跑收到啦降低记得啦时间"
+                }
             }
         },
         mounted() {
@@ -374,10 +395,13 @@
                 })
             },
             tabsClick(item, index) {
+
                 axios.get('oa/login/messageList?messageType=' + item.messageType).then((msg) => {
                     this.isActive = index;
                     this.loginName = item.name;
-                    this.titleList = msg.data.obj
+                    this.titleList = msg.data.obj;
+                    this.zhengwen = false;
+
                 })
             },
             handleSizeChange(val) {
@@ -385,12 +409,21 @@
             },
             handleCurrentChange(val) {
                 console.log(`当前页: ${val}`);
+            },
+            listClick(item) {
+                axios.get('oa//login/getArticle?id=' + item.id).then((msg) => {
+                    this.zhengwen = true;
+                    console.log(this.tab1zwMsg)
+                    console.log(msg)
+                    this.tab1zwMsg = msg.data.obj;
+                })
+
+            },
+            goBack() {
+                this.zhengwen = false;
             }
         }
     })
-
 </script>
+
 </html>
-
-
-
