@@ -100,9 +100,9 @@
 
                     $("#btnLabel").empty();
                     $("#btnLabel").append("<label class='col-sm-4 control-label'></label>");
-                    $("#btnLabel").append("<button class='col-sm-1 btn btn-primary m-t' width='500' type='button' onclick='doBtnApproveAction();'>通过</button>");
-                    $("#btnLabel").append("<button class='col-sm-1 btn btn-danger m-t' style='margin-left:20px;' width='500' type='button' onclick='doBtnBackAction();'>驳回</button>");
-                    $("#btnLabel").append("<button class='col-sm-1 btn btn-primary m-t' style='margin-left:20px;' width='500' type='button' onclick='doBtnOverApproveAction();'>结束</button>");
+                    $("#btnLabel").append("<button class='col-sm-2 btn btn-primary m-t' type='button' onclick='doBtnApproveAction();'>通过&转领导审批</button>");
+                    $("#btnLabel").append("<button class='col-sm-1 btn btn-danger m-t' style='margin-left:20px;' type='button' onclick='doBtnBackAction();'>驳回</button>");
+                    $("#btnLabel").append("<button class='col-sm-2 btn btn-primary m-t' style='margin-left:20px;' type='button' onclick='doBtnOverApproveAction();'>通过&结束审批</button>");
                 }
             }
         });
