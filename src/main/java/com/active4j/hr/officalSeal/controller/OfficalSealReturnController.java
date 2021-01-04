@@ -268,7 +268,7 @@ public class OfficalSealReturnController extends BaseController {
         }
         // 执行查询
         IPage<WorkflowBaseEntity> lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
-        long size = lstResult.getTotal();
+        long size = lstResult.getRecords().size();
         for (long i = size - 1; i >= 0; --i) {
             if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("双井公章申请")){
                 lstResult.getRecords().remove(lstResult.getRecords().get((int) i));

@@ -6,18 +6,18 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<div class="form-group">
-    <label class="col-sm-3 control-label">申请编号：</label>
-    <div class="col-sm-5">
-        <input id="projectNo"  hidden="true" name="projectNo" minlength="2" type="text" class="form-control" readonly required="" value="${base.projectNo }">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-sm-3 control-label">申请流程名称：</label>
-    <div class="col-sm-5">
-        <input id="name"  hidden="true" name="name" minlength="2" type="text" class="form-control" readonly required="" value="${base.name }">
-    </div>
-</div>
+<%--<div class="form-group">--%>
+<%--    <label class="col-sm-3 control-label">申请编号：</label>--%>
+<%--    <div class="col-sm-5">--%>
+<%--        <input id="projectNo"  hidden="true" name="projectNo" minlength="2" type="text" class="form-control" readonly required="" value="${base.projectNo }">--%>
+<%--    </div>--%>
+<%--</div>--%>
+<%--<div class="form-group">--%>
+<%--    <label class="col-sm-3 control-label">申请流程名称：</label>--%>
+<%--    <div class="col-sm-5">--%>
+<%--        <input id="name"  hidden="true" name="name" minlength="2" type="text" class="form-control" readonly required="" value="${base.name }">--%>
+<%--    </div>--%>
+<%--</div>--%>
 <%--<div class="form-group">--%>
 <%--    <label class="col-sm-3 control-label ">开始日期：</label>--%>
 <%--    <div class="col-sm-5">--%>
