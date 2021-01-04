@@ -101,6 +101,8 @@ public class OaTopicController extends BaseController {
         modelAndView.addObject("oaTopic", oaTopic);
         //汇报人
         modelAndView.addObject("reportList", users);
+        //主要领导
+
         return modelAndView;
     }
 
@@ -142,5 +144,9 @@ public class OaTopicController extends BaseController {
         ActiveUser activeUser = ShiroUtils.getSessionUser();
         return userService.getById(activeUser.getId());
     }
+
+    /*private List<SysUserEntity> userList(){
+
+    }*/
 }
 
