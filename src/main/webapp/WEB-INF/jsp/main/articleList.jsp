@@ -239,13 +239,13 @@
         <div class="btnBox">
             <img class="btnImg" src="img/d.png" alt="">
             <span class="btnTxt">
-                    <a href="/oa/console">门户首页</a>
+                    <a href="/oa/">门户首页</a>
                 </span>
         </div>
         <div class="btnBox">
             <img class="btnImg" src="img/b.png" alt="">
             <span class="btnTxt">
-                    <a href="/oa/console">个人办公</a>
+                    <a href="/oa/">个人办公</a>
                 </span>
         </div>
         <div class="btnBox">

@@ -57,9 +57,13 @@ public class OaTopic {
     @TableField("DEPT_ID")
     private String deptId;
 
-    @ApiModelProperty(value = "科室负责人 提议领导")
+    @ApiModelProperty(value = "科室负责人")
     @TableField("DEPT_LEADER_ID")
     private String deptLeaderId;
+
+    @ApiModelProperty(value = "提议领导")
+    @TableField("PROPOSE_LEADER")
+    private String proposeLeader;
 
     @ApiModelProperty(value = "汇报人ID")
     @TableField("REPORT_ID")

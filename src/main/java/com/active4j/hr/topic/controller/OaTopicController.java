@@ -8,7 +8,9 @@ import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.util.StringUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.system.entity.SysUserEntity;
+import com.active4j.hr.system.entity.SysUserRoleEntity;
 import com.active4j.hr.system.model.ActiveUser;
+import com.active4j.hr.system.service.SysUserRoleService;
 import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.topic.entity.OaTopic;
 import com.active4j.hr.topic.service.OaTopicService;
@@ -25,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -47,6 +50,9 @@ public class OaTopicController extends BaseController {
 
     @Autowired
     private SysUserService userService;
+
+    @Autowired
+    private SysUserRoleService userRoleService;
 
     /**
      * list视图
@@ -87,22 +93,25 @@ public class OaTopicController extends BaseController {
      */
     @RequestMapping(value = "saveOrUpdateView")
     public ModelAndView saveOrUpdateOa(OaTopic oaTopic) {
+        //创建人
+        SysUserEntity userEntity = getUser();
         ModelAndView modelAndView = new ModelAndView("topic/topic");
         if (StringUtil.isEmpty(oaTopic.getId())) {
             oaTopic = new OaTopic();
+            oaTopic.setDeptId(userEntity.getDeptId());
             oaTopic.setId(UUID.randomUUID().toString());
         } else {
             oaTopic = topicService.getById(oaTopic.getId());
         }
-        SysUserEntity userEntity = getUser();
         QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("DEPT_ID", userEntity.getDeptId());
         List<SysUserEntity> users = userService.list(queryWrapper);
         modelAndView.addObject("oaTopic", oaTopic);
         //汇报人
         modelAndView.addObject("reportList", users);
-        //主要领导
-
+        //提议领导 查询主要领导
+        modelAndView.addObject("proposeLeaderList", userList("", "1e3124100e45ed3e9ec99bf3e35be2c0"));
+        //科室负责人
         return modelAndView;
     }
 
@@ -145,8 +154,34 @@ public class OaTopicController extends BaseController {
         return userService.getById(activeUser.getId());
     }
 
-    /*private List<SysUserEntity> userList(){
+    /**
+     * roleID 换 users
+     *
+     * @return
+     */
+    private List<SysUserEntity> userList(String deptId, String roleId) {
+        QueryWrapper<SysUserRoleEntity> userRoleEntityQueryWrapper = new QueryWrapper<>();
+        userRoleEntityQueryWrapper.eq("ROLE_ID", roleId);
+        List<SysUserRoleEntity> URList = userRoleService.list(userRoleEntityQueryWrapper);
+        List<SysUserEntity> users = new ArrayList<>();
+        if (URList.size() > 0)
+            URList.forEach(URDao -> {
+                SysUserEntity user = userService.getById(URDao.getUserId());
+                users.add(user);
+            });
+        return users;
+    }
 
-    }*/
+    /**
+     * 追溯上级
+     *
+     * @param userEntity
+     * @return
+     */
+    private List<SysUserEntity> leaderList(SysUserEntity userEntity) {
+        return null;
+    }
+
+
 }
 

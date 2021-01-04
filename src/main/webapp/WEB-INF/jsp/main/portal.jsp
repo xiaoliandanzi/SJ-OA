@@ -9,12 +9,12 @@
     <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
 </head>
 <body>
-<%--<div id="herder">
+<div id="herder">
     <ul>
         <li><img src="img/1.png " id="img1"></li>
-        <li><a href="/oa/console" id="cor"><b>双井街道智慧办公系统</b></a></li>
+        <li><a href="/oa/portal" id="cor"><b>双井街道智慧办公系统</b></a></li>
         <li><img src="img/首页@2x.png" id="ban"></li>
-        <li><a href="/oa/" id="cor-size">门户首页</a></li>
+        <li><a href="/oa/portal" id="cor-size">门户首页</a></li>
         <li><img src="img/办公.png" id="ban"></li>
         <li><a href="/oa/index" id="cor-size">个人办公</a></li>
         <li><img src="img/财务Finance.png" id="ban"></li>
@@ -25,8 +25,8 @@
         </li>
         <li><input type="button" value="搜索" id="text-btn"></li>
     </ul>
-</div>--%>
-<div id="main" style="padding-top: 0px">
+</div>
+<div id="main">
     <div id="boder1">
         <ul>
             <li id="cor1"><b style="font-size: 12px">双井图库</b></li>

@@ -31,7 +31,7 @@ function doSubmit() {
 	$.post("login", {userName:userName, password:password, randCode:randCode}, function(data) {
 		if(data.success) {
 			toastr.success('登录成功');
-			location.href = 'index'; //后台主页
+			location.href = 'portal'; //后台主页index  跳转门户portal
 		}else {
 			toastr.warning(data.msg);
 		}
