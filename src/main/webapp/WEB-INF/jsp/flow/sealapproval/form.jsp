@@ -9,13 +9,13 @@
 <div class="form-group">
     <label class="col-sm-3 control-label">申请编号：</label>
     <div class="col-sm-5">
-        <input id="projectNo" name="projectNo" minlength="2" type="text" class="form-control" readonly required="" value="${base.projectNo }">
+        <input id="projectNo"  hidden="true" name="projectNo" minlength="2" type="text" class="form-control" readonly required="" value="${base.projectNo }">
     </div>
 </div>
 <div class="form-group">
     <label class="col-sm-3 control-label">申请流程名称：</label>
     <div class="col-sm-5">
-        <input id="name" name="name" minlength="2" type="text" class="form-control" readonly required="" value="${base.name }">
+        <input id="name"  hidden="true" name="name" minlength="2" type="text" class="form-control" readonly required="" value="${base.name }">
     </div>
 </div>
 <%--<div class="form-group">--%>
@@ -72,16 +72,16 @@
         <textarea id="commit" name="commit" class="form-control">${biz.commit }</textarea>
     </div>
 </div>
-<div class="form-group">
-    <label class="col-sm-3 control-label">紧急程度：</label>
-    <div class="col-sm-5">
-        <c:choose>
-            <c:when test="${empty base.level}">
-                <t:dictSelect name="level" type="radio" typeGroupCode="workflowlevel" defaultVal="0"></t:dictSelect>
-            </c:when>
-            <c:otherwise>
-                <t:dictSelect name="level" type="radio" typeGroupCode="workflowlevel" defaultVal="${base.level}"></t:dictSelect>
-            </c:otherwise>
-        </c:choose>
-    </div>
-</div>
+<%--<div class="form-group">--%>
+<%--    <label class="col-sm-3 control-label">紧急程度：</label>--%>
+<%--    <div class="col-sm-5">--%>
+<%--        <c:choose>--%>
+<%--            <c:when test="${empty base.level}">--%>
+<%--                <t:dictSelect name="level" type="radio" typeGroupCode="workflowlevel" defaultVal="0"></t:dictSelect>--%>
+<%--            </c:when>--%>
+<%--            <c:otherwise>--%>
+<%--                <t:dictSelect name="level" type="radio" typeGroupCode="workflowlevel" defaultVal="${base.level}"></t:dictSelect>--%>
+<%--            </c:otherwise>--%>
+<%--        </c:choose>--%>
+<%--    </div>--%>
+<%--</div>--%>

@@ -91,19 +91,20 @@ public class PaperApplyController {
 
     @RequestMapping("/myapply")
     public ModelAndView myApply(HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("flow/task/waittasklist");
-
-        // 获取流程类别数据
-        List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
-
-        List<WorkflowCategoryEntity> result = new ArrayList<>();
-        for (WorkflowCategoryEntity entity : lstCatogorys) {
-            if (entity.getName().equalsIgnoreCase("发文申请")) {
-                result.add(entity);
-            }
-        }
-
-        view.addObject("categoryReplace", ListUtils.listToReplaceStr(result, "name", "id"));
+        ModelAndView view = new ModelAndView("paper/waittasklist");
+//        ModelAndView view = new ModelAndView("flow/task/waittasklist");
+//
+//        // 获取流程类别数据
+//        List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
+//
+//        List<WorkflowCategoryEntity> result = new ArrayList<>();
+//        for (WorkflowCategoryEntity entity : lstCatogorys) {
+//            if (entity.getName().equalsIgnoreCase("发文申请")) {
+//                result.add(entity);
+//            }
+//        }
+//
+//        view.addObject("categoryReplace", ListUtils.listToReplaceStr(result, "name", "id"));
         return view;
     }
 
@@ -121,7 +122,6 @@ public class PaperApplyController {
         List<WorkflowBaseEntity> newList = new ArrayList<>();
         if (total > 0) {
             for (WorkflowBaseEntity entity : lstResult.getRecords()) {
-                //只显示审批完成的文件
                 if (entity.getWorkFlowName().equalsIgnoreCase("发文申请")) {
                     newList.add(entity);
                     tempTotal++;

@@ -2,7 +2,6 @@ package com.active4j.hr.message.controller;
 
 import com.active4j.hr.activiti.biz.entity.FlowMessageApprovalEntity;
 import com.active4j.hr.base.controller.BaseController;
-import com.active4j.hr.common.constant.SysConstant;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.common.constant.SysConstant;
 import com.active4j.hr.core.model.AjaxJson;
@@ -179,6 +178,8 @@ public class MessageManageController extends BaseController {
 
         if(StringUtils.isNotEmpty(flowMessageApprovalEntity.getId())) {
             flowMessageApprovalEntity = oaMessageService.getById(flowMessageApprovalEntity.getId());
+            String type = getMessageTypeName(flowMessageApprovalEntity.getMessageType());
+            view.addObject("type", type);
             view.addObject("biz", flowMessageApprovalEntity);
         }
 
