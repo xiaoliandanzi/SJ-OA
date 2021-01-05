@@ -58,7 +58,7 @@
 		}
 		
 		var rowData = $('#workflowMngList').jqGrid('getRowData',rowId);
-		
+
 		if('过期' == rowData.status) {
 			qhAlert('过期流程无法停用');
 			return;

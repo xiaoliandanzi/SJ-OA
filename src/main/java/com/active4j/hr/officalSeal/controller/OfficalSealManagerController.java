@@ -89,15 +89,15 @@ public class OfficalSealManagerController extends BaseController {
     public AjaxJson save(OaOfficalSealEntity oaOfficalSealEntity, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try{
-            if(StringUtils.isEmpty(oaOfficalSealEntity.getSealId())) {
+            if(StringUtils.isEmpty(oaOfficalSealEntity.getDepartmentId())) {
                 j.setSuccess(false);
-                j.setMsg("公章编号不能为空!");
+                j.setMsg("科室编号不能为空!");
                 return j;
             }
 
             if(StringUtils.isEmpty(oaOfficalSealEntity.getName())) {
                 j.setSuccess(false);
-                j.setMsg("公章名称不能为空!");
+                j.setMsg("科室名称不能为空!");
                 return j;
             }
 
@@ -136,10 +136,90 @@ public class OfficalSealManagerController extends BaseController {
         }catch(Exception e) {
             j.setSuccess(false);
             j.setMsg(GlobalConstant.Err_Msg_All);
-            log.error("删除公章失败，错误信息:{}", e);
+            log.error("删除科室失败，错误信息:{}", e);
         }
         return j;
     }
+
+    /**
+     * 删除
+     * @param oaOfficalSealEntity
+     * @param request
+     * @return
+     */
+    @RequestMapping("/sealreturn")
+    @ResponseBody
+    public AjaxJson sealReturn(OaOfficalSealEntity oaOfficalSealEntity, HttpServletRequest request) {
+        AjaxJson j = new AjaxJson();
+        try{
+            if(StringUtils.isNotEmpty(oaOfficalSealEntity.getId())) {
+                //归还公章
+                OaOfficalSealEntity tmp = oaOfficalSealService.getById(oaOfficalSealEntity.getId());
+                tmp.setStatus("0");
+                MyBeanUtils.copyBeanNotNull2Bean(oaOfficalSealEntity, tmp);
+                oaOfficalSealService.saveOrUpdate(tmp);
+            }
+        }catch(Exception e) {
+            j.setSuccess(false);
+            j.setMsg(GlobalConstant.Err_Msg_All);
+            log.error("归还借用公章失败失败，错误信息:{}", e);
+        }
+        return j;
+    }
+
+    /**
+     * 删除
+     * @param oaOfficalSealEntity
+     * @param request
+     * @return
+     */
+    @RequestMapping("/unlock")
+    @ResponseBody
+    public AjaxJson unlock(OaOfficalSealEntity oaOfficalSealEntity, HttpServletRequest request) {
+        AjaxJson j = new AjaxJson();
+        try{
+            if(StringUtils.isNotEmpty(oaOfficalSealEntity.getId())) {
+                //归还公章
+                OaOfficalSealEntity tmp = oaOfficalSealService.getById(oaOfficalSealEntity.getId());
+                tmp.setStatus("0");
+                MyBeanUtils.copyBeanNotNull2Bean(oaOfficalSealEntity, tmp);
+                oaOfficalSealService.saveOrUpdate(tmp);
+            }
+        }catch(Exception e) {
+            j.setSuccess(false);
+            j.setMsg(GlobalConstant.Err_Msg_All);
+            log.error("解禁科室失败，错误信息:{}", e);
+        }
+        return j;
+    }
+
+
+    /**
+     * 删除
+     * @param oaOfficalSealEntity
+     * @param request
+     * @return
+     */
+    @RequestMapping("/lock")
+    @ResponseBody
+    public AjaxJson lock(OaOfficalSealEntity oaOfficalSealEntity, HttpServletRequest request) {
+        AjaxJson j = new AjaxJson();
+        try{
+            if(StringUtils.isNotEmpty(oaOfficalSealEntity.getId())) {
+                //归还公章
+                OaOfficalSealEntity tmp = oaOfficalSealService.getById(oaOfficalSealEntity.getId());
+                tmp.setStatus("2");
+                MyBeanUtils.copyBeanNotNull2Bean(oaOfficalSealEntity, tmp);
+                oaOfficalSealService.saveOrUpdate(tmp);
+            }
+        }catch(Exception e) {
+            j.setSuccess(false);
+            j.setMsg(GlobalConstant.Err_Msg_All);
+            log.error("封禁科室失败，错误信息:{}", e);
+        }
+        return j;
+    }
+
 
     /**
      * 跳转到新增编辑页面
@@ -188,9 +268,9 @@ public class OfficalSealManagerController extends BaseController {
     public ModelAndView bookview(OaOfficalSealEntity oaOfficalSealEntity, String currentDate, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("officalSeal/sealBooks");
 
-        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getSealId())) {
-            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getSealId());
-            view.addObject("sealId", oaOfficalSealEntity.getSealId());
+        if(StringUtils.isNotEmpty(oaOfficalSealEntity.getDepartmentId())) {
+            oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getDepartmentId());
+            view.addObject("sealId", oaOfficalSealEntity.getDepartmentId());
             view.addObject("sealName", oaOfficalSealEntity.getName());
             view.addObject("sealName", oaOfficalSealEntity.getName());
             view.addObject("id", oaOfficalSealEntity.getId());
@@ -253,7 +333,7 @@ public class OfficalSealManagerController extends BaseController {
             if(StringUtils.isNotEmpty(oaOfficalSealEntity.getId())) {
                 oaOfficalSealEntity = oaOfficalSealService.getById(oaOfficalSealEntity.getId());
                 map.put("sealName", oaOfficalSealEntity.getName());
-                map.put("sealId", oaOfficalSealEntity.getSealId());
+                map.put("sealId", oaOfficalSealEntity.getDepartmentId());
 
                 List<OaOfficalSealBookEntity> lstBooks = oaOfficalSealBookService.findSealBooks(oaOfficalSealEntity);
                 List<OaBookSealDomain> lstBookDoamins = new ArrayList<OaBookSealDomain>();
