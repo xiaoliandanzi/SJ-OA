@@ -29,7 +29,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">审批意见：</label>
+								<label class="col-sm-3 control-label">意见：</label>
 								<div class="col-sm-5">
 									<textarea id="comment" name="comment" class="form-control" required="required"></textarea>
 								</div>
@@ -87,13 +87,13 @@
 					
 					$("#btnLabel").empty();
 					$("#btnLabel").append("<label class='col-sm-4 control-label'></label>");
-					$("#btnLabel").append("<button class='btn btn-primary m-t' type='button' onclick='doBtnApproveAction();'>审批通过</button>");
+					$("#btnLabel").append("<button class='btn btn-primary m-t' type='button' onclick='doBtnApproveAction();'>通过</button>");
 				}else if(count == 2) {
 					//存在审批通过和驳回的情况
 					
 					$("#btnLabel").empty();
 					$("#btnLabel").append("<label class='col-sm-4 control-label'></label>");
-					$("#btnLabel").append("<button class='col-sm-1 btn btn-primary m-t' type='button' onclick='doBtnApproveAction();'>审批通过</button>");
+					$("#btnLabel").append("<button class='col-sm-1 btn btn-primary m-t' type='button' onclick='doBtnApproveAction();'>通过</button>");
 					$("#btnLabel").append("<button class='col-sm-1 btn btn-danger m-t' style='margin-left:20px;' type='button' onclick='doBtnBackAction();'>驳回</button>");
 				}
 			}

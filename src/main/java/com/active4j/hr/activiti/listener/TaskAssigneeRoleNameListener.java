@@ -3,7 +3,6 @@ package com.active4j.hr.activiti.listener;
 import com.active4j.hr.activiti.util.WorkflowConstant;
 import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.core.beanutil.ApplicationContextUtil;
-import com.active4j.hr.system.service.SysDeptService;
 import com.active4j.hr.system.service.SysUserService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
@@ -24,8 +23,6 @@ public class TaskAssigneeRoleNameListener implements TaskListener {
 
 	@Autowired
 	private SysUserService sysUserService;
-	@Autowired
-	private SysDeptService sysDeptService;
 
 	/**
 	 * 
@@ -46,8 +43,8 @@ public class TaskAssigneeRoleNameListener implements TaskListener {
 			roleName = StringUtils.substringBefore(taskName, WorkflowConstant.STR_TASK_NAME_HANDLE);
 		}
 
+		String applyName = (String)delegateTask.getVariable("applyName");
 		if(taskName.equalsIgnoreCase("主管领导审批")){
-			String applyName = (String)delegateTask.getVariable("applyName");
 			roleName=WorkflowTaskUtil.getLeaderDept(applyName);
 		}
 
@@ -65,6 +62,8 @@ public class TaskAssigneeRoleNameListener implements TaskListener {
 			taskService.setAssignee(delegateTask.getId(), WorkflowConstant.Str_Admin);
 		}else if(lstUsers.size() == 1) {
 			taskService.setAssignee(delegateTask.getId(), lstUsers.get(0));
+			WorkflowTaskUtil.sendSystemMessage(sysUserService.getUserByUseName(lstUsers.get(0)).getId(),
+					sysUserService.getUserByUseName(applyName).getRealName());
 		}else {
 			for(String user : lstUsers) {
 				taskService.addCandidateUser(delegateTask.getId(), user);

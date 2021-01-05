@@ -44,6 +44,8 @@
     <label class="col-sm-2 control-label">内容：*</label>
     <div class="col-sm-6">
         <textarea rows=8 id="content" name="content" minlength="1" type="text" class="form-control" required="">${biz.content }</textarea>
+        <%--<div id="summernote"></div>--%>
+        <%--<input type="hidden" name="content" id="content" value="">--%>
     </div>
 </div>
 <c:if test="${empty biz.id }">

@@ -30,7 +30,7 @@
 		<t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
 		<t:dgCol name="categoryId" hidden="true" label="流程类别" replace="${categoryReplace}" query="true" queryId="categoryId" width="90"></t:dgCol>
 		<t:dgCol name="workFlowName" label="流程名称" width="70"></t:dgCol>
-		<t:dgCol name="projectNo" label="编号" width="120" query="true"></t:dgCol>
+		<t:dgCol name="projectNo" label="编号" width="120"></t:dgCol>
 		<t:dgCol name="name" label="标题名称" width="120" query="true"></t:dgCol>
 		<t:dgCol name="status" label="状态" width="70" dictionary="actstatus" classes="text-navy"></t:dgCol>
 		<t:dgCol name="level" hidden="true" label="紧急程度" width="70" dictionary="workflowlevel" display="level"></t:dgCol>
@@ -44,8 +44,8 @@
 	
 	<script type="text/javascript">
 		$(function(){
-			laydate({elem:"#applyDate_begin",event:"focus",istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
-			laydate({elem:"#applyDate_end",event:"focus",istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
+			laydate({elem:"#applyDate_begin",event:"focus",istime: true, format: 'YYYY-MM-DD'});
+			laydate({elem:"#applyDate_end",event:"focus",istime: true, format: 'YYYY-MM-DD'});
 		});
 	</script>
 </body>

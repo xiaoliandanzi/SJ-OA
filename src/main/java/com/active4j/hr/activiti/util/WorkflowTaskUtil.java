@@ -6,6 +6,7 @@ import com.active4j.hr.system.entity.SysUserEntity;
 import com.active4j.hr.system.service.SysDeptService;
 import com.active4j.hr.system.service.SysRoleService;
 import com.active4j.hr.system.service.SysUserService;
+import com.active4j.hr.system.util.MessageUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -72,5 +73,10 @@ public class WorkflowTaskUtil {
 		List<SysUserEntity> lstUsers = sysRoleService.findUserByRoleName(roleName);
 
 		return lstUsers.stream().map(u -> u.getUserName()).collect(Collectors.toList());
+	}
+
+	public static void sendSystemMessage(String approvalName, String applyName) {
+		MessageUtils.SendSysMessage(sysUserService.getUserByUseName(approvalName).getId(),
+				"您收到一条来自" + sysUserService.getUserByUseName(applyName).getRealName() + "的审批需求");
 	}
 }

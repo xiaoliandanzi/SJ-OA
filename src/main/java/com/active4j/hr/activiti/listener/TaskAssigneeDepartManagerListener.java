@@ -3,9 +3,11 @@ package com.active4j.hr.activiti.listener;
 import com.active4j.hr.activiti.util.WorkflowConstant;
 import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.core.beanutil.ApplicationContextUtil;
+import com.active4j.hr.system.service.SysUserService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -16,6 +18,9 @@ import java.util.List;
  *
  */
 public class TaskAssigneeDepartManagerListener implements TaskListener {
+
+	@Autowired
+	private SysUserService sysUserService;
 
 	/**
 	 * 
@@ -35,6 +40,7 @@ public class TaskAssigneeDepartManagerListener implements TaskListener {
 			taskService.setAssignee(delegateTask.getId(), WorkflowConstant.Str_Admin);
 		}else if(lstUsers.size() == 1) {
 			taskService.setAssignee(delegateTask.getId(), lstUsers.get(0));
+			WorkflowTaskUtil.sendSystemMessage(lstUsers.get(0), applyName);
 		}else {
 			//并非审批人，候选人，需要自己去承接组任务
 			for(String userName : lstUsers) {

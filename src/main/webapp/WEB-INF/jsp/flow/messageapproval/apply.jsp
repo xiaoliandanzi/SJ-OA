@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,laydate,icheck,prettyfile,webuploader"></t:base>
+    <t:base type="default,laydate,icheck,prettyfile,webuploader,summernote"></t:base>
     <%--<script type="text/javascript">--%>
         <%--$(function() {--%>
             <%--laydate({elem:"#publicTime",event:"focus",istime: false, format: 'YYYY-MM-DD HH:mm'});--%>
@@ -27,7 +27,9 @@
                     <h5>信息发布流程</h5>
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal m-t" id="commonForm" action="flow/biz/messageapproval/save" method="post">
+                    <t:formvalid beforeSubmit="setEditValue();" action="flow/biz/messageapproval/save" formid="commonForm"
+                                 cssClass="form-horizontal m-t">
+                    <%--<form class="form-horizontal m-t" id="commonForm" method="post">--%>
                         <input type="hidden" name="workflowId" id="workflowId" value="${workflowId }">
                         <input type="hidden" name="optType" id="optType">
                         <input type="hidden" name="id" id="id" value="${base.id }">
@@ -41,7 +43,8 @@
                                 <button class="btn btn-primary" type="button" onclick="doBtnSaveApplyAction();">发起申请</button>
                             </div>
                         </div>
-                    </form>
+                    <%--</form>--%>
+                    </t:formvalid>
                 </div>
             </div>
         </div>
@@ -50,6 +53,71 @@
 </body>
 
 <script type="text/javascript">
+
+    $(function() {
+        $("#summernote").summernote({
+            lang : "zh-CN",
+            height : 300,
+            // 重写图片上传
+            onImageUpload : function(files, editor, $editable) {
+                uploadFile(files[0], editor, $editable);
+            }
+        });
+
+        var content = '${biz.content}';
+
+        $('#summernote').code(content);
+    });
+
+    function uploadFile(file, editor, $editable) {
+        var filename = false;
+        try {
+            filename = file['name'];
+        } catch (e) {
+            filename = false;
+        }
+        if (!filename) {
+            $(".note-alarm").remove();
+        }
+
+        //以上防止在图片在编辑器内拖拽引发第二次上传导致的提示错误
+        data = new FormData();
+        data.append("file", file);
+        data.append("key", filename); //唯一性参数
+
+        $.ajax({
+            data : data,
+            type : "POST",
+            url : "func/upload/uploadImages?db=1",
+            cache : false,
+            contentType : false,
+            processData : false,
+            success : function(data) {
+                var o = $.parseJSON(data);
+                if(o.success) {
+                    var filePath = o.attributes.filePath;
+                    editor.insertImage($editable, filePath);
+                }else {
+                    qhTipError("上传失败!" + o.msg);
+                }
+            },
+            error : function() {
+                qhTipError("上传失败!");
+                return;
+            }
+        });
+    }
+
+    function setEditValue() {
+
+        var content = $('#summernote').code();
+
+        $("#content").val(content);
+
+        return true;
+    }
+
+
 
     $(function() {
         //初始化Web Uploader
