@@ -15,5 +15,5 @@ import java.util.List;
 public interface OaOfficalSealService extends IService<OaOfficalSealEntity> {
 
     public List<OaOfficalSealEntity> findNormalSeal();
-
+    public List<OaOfficalSealEntity> findDepartmentSeal(String name);
 }

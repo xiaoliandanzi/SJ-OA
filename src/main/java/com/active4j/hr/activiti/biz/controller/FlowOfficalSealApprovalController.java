@@ -91,9 +91,15 @@ public class FlowOfficalSealApprovalController  extends BaseController {
     public ModelAndView go(String formId, String type, String workflowId, String id, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("flow/sealapproval/apply");
 
-        //查询可用的公章
-        List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findNormalSeal();
-        view.addObject("lstSeals", lstSeals);
+
+        //获取当前用户id
+        String userId = ShiroUtils.getSessionUserId();
+        //获取当前用户个人资料
+        SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
+
+//        //查询可用的公章
+//        List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findNormalSeal();
+//        view.addObject("lstSeals", lstSeals);
 
         if(StringUtils.isEmpty(formId)) {
             view = new ModelAndView("system/common/warning");
@@ -156,10 +162,6 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             view.addObject("biz", biz);
         } else {
             FlowOfficalSealApprovalEntity biz = new FlowOfficalSealApprovalEntity();
-            //获取当前用户id
-            String userId = ShiroUtils.getSessionUserId();
-            //获取当前用户个人资料
-            SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
             WorkflowBaseEntity base = new WorkflowBaseEntity();
@@ -172,10 +174,6 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             view.addObject("biz", biz);
         }
 
-        //获取当前用户id
-        String userId = ShiroUtils.getSessionUserId();
-        //获取当前用户个人资料
-        SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
         view.addObject("dept", user.getDeptName());
         view.addObject("userName", user.getRealName());
 
@@ -328,6 +326,19 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
                 return j;
             }
+
+            //获取当前用户id
+            String userId = ShiroUtils.getSessionUserId();
+            //获取当前用户个人资料
+            SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
+            String departMentname = user.getDeptName();
+            List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findDepartmentSeal(departMentname);
+            if(!lstSeals.get(0).getStatus().equalsIgnoreCase("0")){
+                j.setSuccess(false);
+                j.setMsg("科室不可借用公章，请联系管理员处理");
+                return j;
+            }
+
             workflowBaseEntity.setLevel("0");
 
             if(null == flowOfficalSealApprovalEntity.getUseUnit()) {

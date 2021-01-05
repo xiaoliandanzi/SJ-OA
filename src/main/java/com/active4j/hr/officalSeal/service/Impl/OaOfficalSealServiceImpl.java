@@ -32,4 +32,13 @@ public class OaOfficalSealServiceImpl extends ServiceImpl<OaOfficalSealDao, OaOf
         return this.list(queryWrapper);
     }
 
+    /*
+     * 查看可用公章
+     * */
+    public List<OaOfficalSealEntity> findDepartmentSeal(String name){
+        QueryWrapper<OaOfficalSealEntity> queryWrapper = new QueryWrapper<OaOfficalSealEntity>();
+        queryWrapper.eq("DEPARTMENTNAME", name);
+        return this.list(queryWrapper);
+    }
+
 }

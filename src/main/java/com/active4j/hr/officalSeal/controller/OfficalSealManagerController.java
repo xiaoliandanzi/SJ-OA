@@ -182,6 +182,7 @@ public class OfficalSealManagerController extends BaseController {
                 //归还公章
                 OaOfficalSealEntity tmp = oaOfficalSealService.getById(oaOfficalSealEntity.getId());
                 tmp.setStatus("0");
+                tmp.setOvertimedays(0);
                 MyBeanUtils.copyBeanNotNull2Bean(oaOfficalSealEntity, tmp);
                 oaOfficalSealService.saveOrUpdate(tmp);
             }
@@ -316,9 +317,9 @@ public class OfficalSealManagerController extends BaseController {
             }
         }
 
-        //查询可用的公章
-        List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findNormalSeal();
-        view.addObject("lstSeals", lstSeals);
+//        //查询可用的公章
+//        List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findNormalSeal();
+//        view.addObject("lstSeals", lstSeals);
 
         return view;
     }

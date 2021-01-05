@@ -36,7 +36,7 @@
 <%--    <t:dgCol name="departmentId" label="部门编号" width="100"></t:dgCol>--%>
     <t:dgCol name="name" label="科室名称" width="80"></t:dgCol>
     <t:dgCol name="status" label="公章借用状态" width="80" dictionary="officalsealstatus" display="status"></t:dgCol>
-    <t:dgCol name="overtimedays" label="借用超时天数" width="80" ></t:dgCol>
+    <t:dgCol name="overtimedays" label="借用超时天数" width="40" ></t:dgCol>
     <t:dgCol name="opt" label="操作" ></t:dgCol>
     <t:dgDelOpt label="删除" url="officalSeal/manager/delete?id={id}"/>
     <t:dgToolBar url="officalSeal/manager/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>

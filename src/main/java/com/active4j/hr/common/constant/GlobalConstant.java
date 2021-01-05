@@ -102,8 +102,8 @@ public class GlobalConstant {
 	/***
 	 * OA OFFICALSEAL
 	 */
-	public static final String OA_OFFICALSEAL_STATUS_NORMAL = "1"; //正常
-	public static final String OA_OFFICALSEAL_STATUS_STOP = "0"; //停用
+	public static final String OA_OFFICALSEAL_STATUS_NORMAL = "0"; //正常
+	public static final String OA_OFFICALSEAL_STATUS_STOP = "2"; //停用
 
 	/***
 	 * OA OFFICALSEAL REUTURN
