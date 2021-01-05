@@ -12,9 +12,9 @@
 <div id="herder">
     <ul>
         <li><img src="img/1.png " id="img1"></li>
-        <li><a href="/oa/portal" id="cor"><b>双井街道智慧办公系统</b></a></li>
+        <li><a href="/oa/console" id="cor"><b>双井街道智慧办公系统</b></a></li>
         <li><img src="img/首页@2x.png" id="ban"></li>
-        <li><a href="/oa/portal" id="cor-size">门户首页</a></li>
+        <li><a href="/oa/console" id="cor-size">门户首页</a></li>
         <li><img src="img/办公.png" id="ban"></li>
         <li><a href="/oa/index" id="cor-size">个人办公</a></li>
         <li><img src="img/财务Finance.png" id="ban"></li>

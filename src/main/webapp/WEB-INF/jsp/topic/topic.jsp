@@ -8,7 +8,6 @@
         $(function () {
             $("#roleid").val("${roleId}".split(",")).trigger("change");
         });
-
     </script>
 </head>
 <body class="gray-bg">
@@ -17,14 +16,13 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <t:formvalid action="sys/user/saveUser">
-                        <input type="hidden" name="id" id="id" value="${user.id }">
+                    <t:formvalid action="topic/save">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">科室*：</label>
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <t:choose url="common/selectDepart" hiddenName="deptId"
-                                              hiddenValue="${user.deptId }"
+                                              hiddenValue="${oaTopic.deptId }"
                                               textValue="${deptName }" textName="departLabel" hiddenId="departId"
                                               textId="departLabel"></t:choose>
                                 </div>
@@ -33,76 +31,127 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">提议领导*：</label>
                             <div class="col-sm-8">
-                                <div class="input-group">
-                                    <t:choose url="common/selectDepart" hiddenName="deptId"
-                                              hiddenValue="${user.deptId }" textValue="${deptName }"
-                                              textName="departLabel" hiddenId="departId"
-                                              textId="departLabel"></t:choose>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">汇报人*：</label>
-                            <div class="col-sm-8">
-                                <input id="realName" name="reportId" minlength="2" maxlength="10" type="text"
-                                       class="form-control" required="" value="${user.realName }">
-                            </div>
-                        </div>
-                        <c:if test="${empty user.id }">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">密码*：</label>
-                                <div class="col-sm-8">
-                                    <input id="password" name="password" minlength="2" maxlength="20" type="password"
-                                           class="form-control" required="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">重复密码*：</label>
-                                <div class="col-sm-8">
-                                    <input id="repassword" name="repassword" minlength="2" maxlength="20"
-                                           type="password"
-                                           class="form-control" required="" equalTo='#password'>
-                                </div>
-                            </div>
-                        </c:if>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">角色：</label>
-                            <div class="col-sm-8">
-                                <select class="form-control m-b select2" name="roleid" id="roleid" multiple="multiple">
-                                    <c:forEach items="${lstRoles}" var="role">
-                                        <option value="${role.id }">${role.roleName}</option>
+                                <select class="form-control m-b select2" name="proposeLeader" multiple="multiple">
+                                    <c:forEach items="${proposeLeaderList}" var="propose">
+                                        <option value="${propose.id }">${propose.realName}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">手机号码：</label>
+                            <label class="col-sm-3 control-label">汇报人*：</label>
                             <div class="col-sm-8">
-                                <input id="telNo" name="telNo" type="text" class="form-control" value="${user.telNo }">
+                                <select class="form-control m-b select2" name="reportId" multiple="multiple">
+                                    <c:forEach items="${reportList}" var="report">
+                                        <option value="${report.id }">${report.realName}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">常用邮箱：</label>
+                            <label class="col-sm-3 control-label">议题标题*：</label>
                             <div class="col-sm-8">
-                                <input id="email" name="email" type="email" class="form-control" value="${user.email }">
+                                <input id="topicName" name="topicName" minlength="2" maxlength="20" type="text"
+                                       class="form-control" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">是否管理员：</label>
+                            <label class="col-sm-3 control-label">内容摘要*：</label>
+                            <div class="col-sm-8">
+                                <textarea name="topicContent" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">备注：</label>
+                            <div class="col-sm-8">
+                                <textarea name="topicRemark" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <%--议题材料--%>
+                        <%--议题材料--%>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">工委会：</label>
                             <div class="col-sm-8">
                                 <c:choose>
-                                    <c:when test="${empty user.admin}">
-                                        <t:dictSelect name="admin" type="radio" typeGroupCode="byesorno"
-                                                      defaultVal="false"></t:dictSelect>
+                                    <c:when test="${empty oaTopic.isWorkingCommittee}">
+                                        <t:dictSelect name="isWorkingCommittee" type="radio" typeGroupCode="byesorno"
+                                                      defaultVal="1"></t:dictSelect>
                                     </c:when>
                                     <c:otherwise>
-                                        <t:dictSelect name="admin" type="radio" typeGroupCode="byesorno"
-                                                      defaultVal="${user.admin}"></t:dictSelect>
+                                        <t:dictSelect name="isWorkingCommittee" type="radio" typeGroupCode="byesorno"
+                                                      defaultVal="0"></t:dictSelect>
                                     </c:otherwise>
                                 </c:choose>
 
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">主任会：</label>
+                            <div class="col-sm-8">
+                                <c:choose>
+                                    <c:when test="${empty oaTopic.isDirector}">
+                                        <t:dictSelect name="isDirector" type="radio" typeGroupCode="byesorno"
+                                                      defaultVal="1"></t:dictSelect>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <t:dictSelect name="isDirector" type="radio" typeGroupCode="byesorno"
+                                                      defaultVal="0"></t:dictSelect>
+                                    </c:otherwise>
+                                </c:choose>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">科室负责人*：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-b select2" name="deptLeaderId" multiple="multiple">
+                                    <c:forEach items="${deptLeader}" var="deptL">
+                                        <option value="${deptL.id }">${deptL.realName}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">主管领导*：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-b select2" name="leaderId" multiple="multiple">
+                                    <c:forEach items="${lv2Leader}" var="lv2l">
+                                        <option value="${lv2l.id }">${lv2l.realName}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">综合办*：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-b select2" name="generalOffice" multiple="multiple">
+                                    <c:forEach items="${generalOffice}" var="genera">
+                                        <option value="${genera.id }">${genera.realName}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">财务科*：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-b select2" name="financeOffice" multiple="multiple">
+                                    <c:forEach items="${financeOffice}" var="finance">
+                                        <option value="${finance.id }">${finance.realName}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">纪委*：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-b select2" name="disciplineOffice" multiple="multiple">
+                                    <c:forEach items="${disciplineOffice}" var="discipline">
+                                        <option value="${discipline.id }">${discipline.realName}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+
                     </t:formvalid>
                 </div>
             </div>

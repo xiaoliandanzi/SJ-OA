@@ -7,13 +7,18 @@ import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.util.StringUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
+import com.active4j.hr.system.entity.SysDeptEntity;
+import com.active4j.hr.system.entity.SysRoleEntity;
 import com.active4j.hr.system.entity.SysUserEntity;
 import com.active4j.hr.system.entity.SysUserRoleEntity;
 import com.active4j.hr.system.model.ActiveUser;
+import com.active4j.hr.system.service.SysDeptService;
+import com.active4j.hr.system.service.SysRoleService;
 import com.active4j.hr.system.service.SysUserRoleService;
 import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.topic.entity.OaTopic;
 import com.active4j.hr.topic.service.OaTopicService;
+import com.active4j.hr.topic.until.DeptLeaderRole;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -54,6 +59,12 @@ public class OaTopicController extends BaseController {
     @Autowired
     private SysUserRoleService userRoleService;
 
+    @Autowired
+    private SysRoleService roleService;
+
+    @Autowired
+    private SysDeptService deptService;
+
     /**
      * list视图
      *
@@ -75,7 +86,6 @@ public class OaTopicController extends BaseController {
     @RequestMapping(value = "table")
     public void topicTable(OaTopic oaTopic, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
         ActiveUser user = ShiroUtils.getSessionUser();
-        System.err.println(user);
         if ("".equals(oaTopic.getTopicName())) {
             oaTopic.setTopicName(null);
         }
@@ -87,6 +97,7 @@ public class OaTopicController extends BaseController {
 
     /**
      * 增改视图
+     * topic/saveOrUpdateView
      *
      * @param oaTopic
      * @return
@@ -99,7 +110,7 @@ public class OaTopicController extends BaseController {
         if (StringUtil.isEmpty(oaTopic.getId())) {
             oaTopic = new OaTopic();
             oaTopic.setDeptId(userEntity.getDeptId());
-            oaTopic.setId(UUID.randomUUID().toString());
+            //oaTopic.setId(UUID.randomUUID().toString());
         } else {
             oaTopic = topicService.getById(oaTopic.getId());
         }
@@ -107,11 +118,26 @@ public class OaTopicController extends BaseController {
         queryWrapper.eq("DEPT_ID", userEntity.getDeptId());
         List<SysUserEntity> users = userService.list(queryWrapper);
         modelAndView.addObject("oaTopic", oaTopic);
+        //
+        SysDeptEntity dept = deptService.getById(userEntity.getDeptId());
+        modelAndView.addObject("deptName", dept.getName());
         //汇报人
         modelAndView.addObject("reportList", users);
         //提议领导 查询主要领导
         modelAndView.addObject("proposeLeaderList", userList("", "1e3124100e45ed3e9ec99bf3e35be2c0"));
         //科室负责人
+        DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
+        String leaderRole = deptLeaderRole.getRoleForDept().get(userEntity.getDeptId());
+        modelAndView.addObject("deptLeader", userList("", leaderRole));
+        //主管领导
+        SysRoleEntity roleEntity = roleService.getById(leaderRole);
+        modelAndView.addObject("lv2Leader", userList("", roleEntity.getParentId()));
+        //综合办
+        modelAndView.addObject("generalOffice", roleService.findUserByRoleName("综合办议题审核员"));
+        //财务科科长
+        modelAndView.addObject("financeOffice", roleService.findUserByRoleName("财务科室负责人"));
+        //纪委科长
+        modelAndView.addObject("disciplineOffice", roleService.findUserByRoleName("纪检监察组科室负责人"));
         return modelAndView;
     }
 
@@ -120,11 +146,15 @@ public class OaTopicController extends BaseController {
      * 新增议题
      *
      * @param oaTopic
-     * @return
+     * @return topic/save
      */
     @RequestMapping(value = "save")
     public AjaxJson saveOaTopic(OaTopic oaTopic) {
+        System.err.println(oaTopic);
         AjaxJson ajaxJson = new AjaxJson();
+        oaTopic = getUserName(oaTopic);
+        oaTopic.setCreatTime(new Date());
+        oaTopic.setStateId(0);
         try {
             topicService.saveOrUpdate(oaTopic);
         } catch (Exception e) {
@@ -182,6 +212,34 @@ public class OaTopicController extends BaseController {
         return null;
     }
 
-
+    /**
+     * id换真名
+     *
+     * @return
+     */
+    private OaTopic getUserName(OaTopic oaTopic) {
+        if (!StringUtil.isEmpty(oaTopic.getProposeLeader())) {
+            oaTopic.setProposeLeaderName(userService.findNameById(oaTopic.getProposeLeader()));
+        }
+        if (!StringUtil.isEmpty(oaTopic.getReportId())) {
+            oaTopic.setReportName(userService.findNameById(oaTopic.getReportId()));
+        }
+        if (!StringUtil.isEmpty(oaTopic.getDeptLeaderId())) {
+            oaTopic.setDeptLeaderName(userService.findNameById(oaTopic.getDeptLeaderId()));
+        }
+        if (!StringUtil.isEmpty(oaTopic.getLeaderId())) {
+            oaTopic.setLeaderName(userService.findNameById(oaTopic.getLeaderId()));
+        }
+        if (!StringUtil.isEmpty(oaTopic.getGeneralOffice())) {
+            oaTopic.setGeneralOfficeName(userService.findNameById(oaTopic.getGeneralOffice()));
+        }
+        if (!StringUtil.isEmpty(oaTopic.getFinanceOffice())) {
+            oaTopic.setFinanceName(userService.findNameById(oaTopic.getGeneralOffice()));
+        }
+        if (!StringUtil.isEmpty(oaTopic.getDisciplineOffice())) {
+            oaTopic.setDisciplineName(userService.findNameById(oaTopic.getDisciplineOffice()));
+        }
+        return oaTopic;
+    }
 }
 

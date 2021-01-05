@@ -30,20 +30,21 @@
     <t:dgCol name="topicId" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="creatTime" label="申报日期" width="150" query="false"></t:dgCol>
     <t:dgCol name="topicName" label="议题名称" width="150" query="true"></t:dgCol>
-    <t:dgCol name="deptLeaderId" label="提议领导" query="false"></t:dgCol>
-    <t:dgCol name="deptLeaderId" label="汇报人" query="false"></t:dgCol>
-    <t:dgCol name="deptLeaderId" label="科室负责人" query="false"></t:dgCol>
-    <t:dgCol name="deptLeaderId" label="主管领导" query="false"></t:dgCol>
-    <t:dgCol name="deptLeaderId" label="综合办" query="false"></t:dgCol>
-    <t:dgCol name="deptLeaderId" label="财务科" query="false"></t:dgCol>
-    <t:dgCol name="deptLeaderId" label="纪委" query="false"></t:dgCol>
-    <t:dgCol name="isSecretary" label="书记会" replace="○_1, _0" query="false"></t:dgCol>
-    <t:dgCol name="isDirector" label="主任会" replace="○_1, _0" query="false"></t:dgCol>
-    <t:dgCol name="isWorkingCommittee" label="工委会" replace="○_1, _0" query="false"></t:dgCol>
+    <t:dgCol name="proposeLeaderName" label="提议领导" query="false"></t:dgCol>
+    <t:dgCol name="reportName" label="汇报人" query="false"></t:dgCol>
+    <t:dgCol name="deptLeaderName" label="科室负责人" query="false"></t:dgCol>
+    <t:dgCol name="leaderName" label="主管领导" query="false"></t:dgCol>
+    <t:dgCol name="generalOfficeName" label="综合办" query="false"></t:dgCol>
+    <t:dgCol name="financeName" label="财务科" query="false"></t:dgCol>
+    <t:dgCol name="disciplineName" label="纪委" query="false"></t:dgCol>
+    <t:dgCol name="isSecretary" label="书记会" dictionary="byesorno" query="true"></t:dgCol>
+    <t:dgCol name="isWorkingCommittee" label="主任会" dictionary="byesorno" query="flase"></t:dgCol>
+    <t:dgCol name="isDirector" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>
+    <%--<t:dgCol name="isWorkingCommittee" label="工委会" replace="○_1, _0" query="false"></t:dgCol>--%>
     <t:dgCol name="opt" label="操作" width="290"></t:dgCol>
     <t:dgDelOpt label="删除" url="sys/user/del?id={id}" operationCode="sys:user:del"/>
-    <%--<t:dgToolBar url="sys/user/addorupdate" type="add" width="60%" operationCode="sys:user:add"></t:dgToolBar>
-    <t:dgToolBar url="sys/user/addorupdate" type="edit" width="60%" operationCode="sys:user:edit"></t:dgToolBar>--%>
+    <t:dgToolBar url="topic/saveOrUpdateView" type="add" width="60%" operationCode="sys:user:add"></t:dgToolBar>
+    <t:dgToolBar url="sys/user/addorupdate" type="edit" width="60%" operationCode="sys:user:edit"></t:dgToolBar>
 </t:datagrid>.0
 
 <script type="text/javascript">

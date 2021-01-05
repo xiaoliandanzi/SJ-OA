@@ -81,5 +81,14 @@
 		AND su.DEPT_ID = sd.ID
 		AND su.ID = #{userId}
 	</select>
-	
+
+    <select id="findRealName" resultType="java.lang.String">
+		SELECT
+			REAL_NAME
+		FROM
+			sys_user
+		WHERE
+			id = #{id}
+	</select>
+
 </mapper>

@@ -30,7 +30,7 @@ public class OaTopic {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "议题ID")
-    @TableId(value = "ID", type = IdType.INPUT)
+    @TableId(value = "ID", type = IdType.UUID)
     private String id;
 
     @ApiModelProperty(value = "0提交审核 1一级pass 2二级pass 3综合办pass 4全部pass 5驳回 ")
@@ -61,44 +61,73 @@ public class OaTopic {
     @TableField("DEPT_LEADER_ID")
     private String deptLeaderId;
 
+    @ApiModelProperty(value = "科室负责人姓名")
+    @TableField("DEPT_LEADER_NAME")
+    private String deptLeaderName;
+
     @ApiModelProperty(value = "提议领导")
     @TableField("PROPOSE_LEADER")
     private String proposeLeader;
+
+    @ApiModelProperty(value = "提议领导姓名")
+    @TableField("PROPOSE_LEADER_NAME")
+    private String proposeLeaderName;
 
     @ApiModelProperty(value = "汇报人ID")
     @TableField("REPORT_ID")
     private String reportId;
 
-    @TableField("DEPT_LEADER")
+    @ApiModelProperty(value = "汇报人姓名")
+    @TableField("REPORT_NAME")
+    private String reportName;
+
+    //废弃
+    @TableField(exist = false)
     private String deptLeader;
 
     @ApiModelProperty(value = "主管领导ID")
     @TableField("LEADER_ID")
     private String leaderId;
 
+    @ApiModelProperty(value = "主管领导姓名")
+    @TableField("LEADER_NAME")
+    private String leaderName;
+
     @ApiModelProperty(value = "综合办ID")
     @TableField("GENERAL_OFFICE")
     private String generalOffice;
+
+    @ApiModelProperty(value = "综合办职员姓名")
+    @TableField("GENERAL_OFFICE_NAME")
+    private String generalOfficeName;
 
     @ApiModelProperty(value = "财务科")
     @TableField("FINANCE_OFFICE")
     private String financeOffice;
 
+    @ApiModelProperty(value = "财务科长姓名")
+    @TableField("FINANCE_NAME")
+    private String financeName;
+
     @ApiModelProperty(value = "纪委")
     @TableField("DISCIPLINE_OFFICE")
     private String disciplineOffice;
 
+    @ApiModelProperty(value = "纪委科长姓名")
+    @TableField("DISCIPLINE_NAME")
+    private String disciplineName;
+
     //书记会
     @TableField(exist = false)
-    private Integer isSecretary = 1;
+    private String isSecretary = "true";
 
     @ApiModelProperty(value = "是否工委会  0不上 1上")
     @TableField("IS_WORKING_COMMITTEE")
-    private Integer isWorkingCommittee;
+    private String isWorkingCommittee;
 
     @ApiModelProperty(value = "是否主任会 0否1是")
     @TableField("IS_DIRECTOR")
-    private Integer isDirector;
+    private String isDirector;
 
     @ApiModelProperty(value = "科室负责人意见")
     @TableField("OPINION_DEPT_LEADER")
