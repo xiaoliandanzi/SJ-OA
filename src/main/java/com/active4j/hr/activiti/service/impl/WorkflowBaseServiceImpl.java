@@ -1,6 +1,11 @@
 package com.active4j.hr.activiti.service.impl;
 
+import com.active4j.hr.core.shiro.ShiroUtils;
+import com.active4j.hr.core.util.DateUtils;
+import com.active4j.hr.system.model.SysUserModel;
+import com.active4j.hr.system.service.SysUserService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +16,8 @@ import com.active4j.hr.core.model.AjaxJson;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
+
+import java.text.SimpleDateFormat;
 
 /**
  * 
@@ -25,8 +32,18 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Slf4j
 public class WorkflowBaseServiceImpl extends ServiceImpl<WorkflowBaseDao, WorkflowBaseEntity> implements WorkflowBaseService {
-	
+	@Autowired
+	private SysUserService sysUserService;
 	public AjaxJson validWorkflowBase(WorkflowBaseEntity workflowBaseEntity, AjaxJson j) {
+		//获取当前用户id
+		String userId = ShiroUtils.getSessionUserId();
+		//获取当前用户个人资料
+		SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
+		if(workflowBaseEntity.getName()==null || workflowBaseEntity.getProjectNo()==null){
+			workflowBaseEntity.setName("双井公章借用申请");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
+			workflowBaseEntity.setProjectNo(String.format("%s-%s", user.getUserName(), DateUtils.date2Str(DateUtils.getNow(), sdf)));
+		}
 		if(StringUtils.isBlank(workflowBaseEntity.getName())) {
 			j.setSuccess(false);
 			j.setMsg("流程名称不能为空");

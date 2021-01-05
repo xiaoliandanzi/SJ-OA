@@ -5,8 +5,10 @@ import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowOfficalSealApprovalService;
 import com.active4j.hr.activiti.biz.service.FlowPaperApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
+import com.active4j.hr.activiti.entity.WorkflowFormEntity;
 import com.active4j.hr.activiti.entity.WorkflowMngEntity;
 import com.active4j.hr.activiti.service.WorkflowBaseService;
+import com.active4j.hr.activiti.service.WorkflowFormService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.activiti.service.WorkflowService;
 import com.active4j.hr.base.controller.BaseController;
@@ -75,6 +77,9 @@ public class FlowOfficalSealApprovalController  extends BaseController {
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private WorkflowFormService workflowFormService;
+
 
     /**
      * 跳转到表单页面
@@ -118,7 +123,7 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             view.addObject("show", "0");
 
         }else if(StringUtils.equals("2", type)) {
-            view = new ModelAndView("flow/include/approve");
+            view = new ModelAndView("officalSeal/officalSealApprove");
 
             //根据businessKey查询任务list
             String currentName = ShiroUtils.getSessionUserName();
@@ -214,7 +219,11 @@ public class FlowOfficalSealApprovalController  extends BaseController {
                 map.put("flag", "Y");
 
                 saveSubmitTask(taskId, id, comment, map);
-            }else {
+            }else if (StringUtils.equals("O", result)) {
+                map.put("flag", "O");
+                saveSubmitOverTask(taskId, id, comment, map);
+            }
+            else {
                 saveSubmitTask(taskId, id, comment, map);
             }
 
@@ -227,6 +236,32 @@ public class FlowOfficalSealApprovalController  extends BaseController {
 
         return j;
     }
+
+    private void saveSubmitOverTask(String taskId, String businessKey, String comments, Map<String, Object> variables) {
+        // 使用任务ID，查询任务对象，获取流程流程实例ID
+        Task task = taskService.createTaskQuery()//
+                .taskId(taskId)// 使用任务ID查询
+                .singleResult();
+
+        // 获取流程实例ID
+        String processInstanceId = task.getProcessInstanceId();
+        Authentication.setAuthenticatedUserId(ShiroUtils.getSessionUserName());
+        taskService.addComment(taskId, processInstanceId, comments);
+
+        // 使用任务ID，完成当前人的个人任务，同时流程变量
+        taskService.complete(taskId, variables, true);
+        WorkflowBaseEntity workflowBaseEntity = workflowBaseService.getById(businessKey);
+        if (null != workflowBaseEntity){
+            workflowBaseEntity.setStatus("3");
+            FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity = flowOfficalSealApprovalService.getById(workflowBaseEntity.getBusinessId());
+            flowOfficalSealApprovalEntity.setApplyStatus(1);
+            flowOfficalSealApprovalService.saveOrUpdate(flowOfficalSealApprovalEntity);
+        }
+        workflowBaseService.saveOrUpdate(workflowBaseEntity);
+        log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
+
+    }
+
 
     private void saveSubmitTask(String taskId, String businessKey, String comments, Map<String, Object> variables) {
         // 使用任务ID，查询任务对象，获取流程流程实例ID
@@ -489,6 +524,36 @@ public class FlowOfficalSealApprovalController  extends BaseController {
         return j;
     }
 
+    /**
+     * 直接办理任务
+     * @param baseActivitiEntity
+     * @param request
+     * @return
+     * @throws ClassNotFoundException
+     */
+    @RequestMapping("/approve")
+    public ModelAndView approve(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request) throws ClassNotFoundException {
+        ModelAndView view = new ModelAndView("");
+
+        if(StringUtils.isNotEmpty(workflowBaseEntity.getId())) {
+
+            workflowBaseEntity = workflowBaseService.getById(workflowBaseEntity.getId());
+
+            //根据主表中的流程ID，查询流程中心的流程配置
+            WorkflowMngEntity workflow = workflowMngService.getById(workflowBaseEntity.getWorkflowId());
+
+            if(null != workflow) {
+                //查询表单
+                WorkflowFormEntity form = workflowFormService.getById(workflow.getFormId());
+                //系统表单
+                if(StringUtils.equals("0", form.getType())) {
+                    view = new ModelAndView("redirect:" + form.getPath() + "?formId=" + form.getId() + "&type=2" + "&workflowId=" + workflow.getId() + "&id=" + workflowBaseEntity.getId());
+                    return view;
+                }
+            }
+        }
+        return view;
+    }
 
 
 }
