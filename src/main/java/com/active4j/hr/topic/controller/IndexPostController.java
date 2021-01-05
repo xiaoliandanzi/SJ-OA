@@ -4,6 +4,7 @@ import com.active4j.hr.activiti.biz.entity.FlowMessageApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowMessageApprovalService;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.core.model.AjaxJson;
+import com.active4j.hr.core.util.StringUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.func.timer.entity.QuartzJobEntity;
 import com.active4j.hr.topic.entity.OaTopic;
@@ -44,7 +45,12 @@ public class IndexPostController extends BaseController {
     @RequestMapping(value = "/index/viewArticleList")
     public ModelAndView viewArticleList(FlowMessageApprovalEntity flowMessageApprovalEntity) {
         ModelAndView modelAndView = new ModelAndView("main/articleList");
-        modelAndView.addObject("messageType",flowMessageApprovalEntity.getMessageType());
+        modelAndView.addObject("messageType", flowMessageApprovalEntity.getMessageType());
+        if (!StringUtil.isEmpty(flowMessageApprovalEntity.getId())) {
+            modelAndView.addObject("getOne", flowMessageApprovalEntity.getId());
+        } else {
+            modelAndView.addObject("getOne", "0");
+        }
         return modelAndView;
     }
 

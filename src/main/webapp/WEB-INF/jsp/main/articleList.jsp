@@ -32,7 +32,7 @@
     }
 
     .title {
-        font-size: 16px;
+        font-size: 30px;
         color: #347BB7;
         line-height: 90px;
         font-weight: bold;
@@ -57,7 +57,7 @@
     }
 
     .btnTxt {
-        font-size: 12px;
+        font-size: 16px;
         font-weight: 400;
         color: #2F4050;
         margin-left: 20px;
@@ -225,37 +225,42 @@
         padding: 0 5px;
         text-decoration: none;
     }
+
+    .nava {
+        color: #2F4050;
+
+    }
 </style>
 
 <body>
 <div id="app">
     <div class="navbarBox">
         <div class="logoBox">
-            <img src="img/a.png" alt="">
+            <img src="./img/a.png" alt="">
         </div>
         <div class="title">
             双井街道智慧办公系统
         </div>
         <div class="btnBox">
-            <img class="btnImg" src="img/d.png" alt="">
+            <img class="btnImg" src="./img/d.png" alt="">
             <span class="btnTxt">
-                    <a href="/oa/">门户首页</a>
+                    <a href="/oa/" class="nava">门户首页</a>
                 </span>
         </div>
         <div class="btnBox">
-            <img class="btnImg" src="img/b.png" alt="">
+            <img class="btnImg" src="./img/b.png" alt="">
             <span class="btnTxt">
-                    <a href="/oa/">个人办公</a>
+                   <a href="/oa/index" class="nava">个人办公</a>
                 </span>
         </div>
         <div class="btnBox">
-            <img class="btnImg" src="img/c.png" alt="">
+            <img class="btnImg" src="./img/c.png" alt="">
             <span class="btnTxt">
-                    财务系统
+                    <a href="#" class="nava">财务系统</a>
                 </span>
         </div>
         <div class="selectBox">
-            <el-input placeholder="请输入关键字" prefix-icon="el-icon-search" v-model="input2">
+            <el-input size="mini" placeholder="请输入关键字" prefix-icon="el-icon-search" v-model="input2">
             </el-input>
         </div>
         <div class="selectBtn">
@@ -307,7 +312,7 @@
         </div>
         <div class="tabs1Page" v-if="!zhengwen">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                           :current-page="currentPage4" :page-sizes="[20, 40, 100]" :page-size="20"
+                           :current-page="currentPage4" :page-sizes="[20]" :page-size="20"
                            layout="total, sizes, prev, pager, next, jumper" :total="20">
             </el-pagination>
         </div>
@@ -339,7 +344,9 @@
 </body>
 <script>
     var messageType = ${messageType};
-    ;
+
+    var id = '${getOne}';
+
     var massages = [];
 
     var dom = new Vue({
@@ -384,18 +391,22 @@
             }
         },
         mounted() {
-            this.getTitList()
+            this.getTitList();
+            if (id === 0) {
+            } else {
+                this.loginForThis(id);
+            }
         },
         methods: {
             getTitList() {
                 axios.get('oa/login/messageList?messageType=' + messageType).then((msg) => {
+                    console.log('getTitList')
                     this.loginName = this.tabs[messageType].name;
                     this.isActive = messageType;
                     this.titleList = msg.data.obj
                 })
             },
             tabsClick(item, index) {
-
                 axios.get('oa/login/messageList?messageType=' + item.messageType).then((msg) => {
                     this.isActive = index;
                     this.loginName = item.name;
@@ -413,8 +424,16 @@
             listClick(item) {
                 axios.get('oa//login/getArticle?id=' + item.id).then((msg) => {
                     this.zhengwen = true;
-                    console.log(this.tab1zwMsg)
-                    console.log(msg)
+                    this.tab1zwMsg = msg.data.obj;
+                })
+
+            },
+            loginForThis(item) {
+                axios.get('oa//login/getArticle?id=' + item).then((msg) => {
+                    console.log('loginForThis')
+                    this.loginName = this.tabs[messageType].name;
+                    this.isActive = messageType;
+                    this.zhengwen = true;
                     this.tab1zwMsg = msg.data.obj;
                 })
 
