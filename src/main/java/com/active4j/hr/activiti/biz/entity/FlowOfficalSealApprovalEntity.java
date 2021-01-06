@@ -55,20 +55,26 @@ public class FlowOfficalSealApprovalEntity extends BaseEntity {
     private String commit;
 
     /**
-     * 开始日期
+     * 使用日期
      */
-    @TableField("START_DAY")
-    private Date startDay;
+    @TableField("USE_DAY")
+    private Date useDay;
 
-    /**
-     * 结束日期
-     */
-    @TableField("END_DAY")
-    private Date endDay;
+//    /**
+//     * 结束日期
+//     */
+//    @TableField("END_DAY")
+//    private Date endDay;
 
     /**
      * 审批状态 0:审批中 1：审批完成 2：驳回
      */
     @TableField("APPLY_STATUS")
     private Integer applyStatus;
+
+    /**
+     * 归还状态 0:已归还
+     */
+    @TableField("RETURN_FLAG")
+    private Integer returnFlag;
 }

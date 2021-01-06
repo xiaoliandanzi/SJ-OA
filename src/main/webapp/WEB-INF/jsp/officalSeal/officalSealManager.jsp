@@ -35,15 +35,15 @@
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
 <%--    <t:dgCol name="departmentId" label="部门编号" width="100"></t:dgCol>--%>
     <t:dgCol name="name" label="科室名称" width="80"></t:dgCol>
-    <t:dgCol name="status" label="公章借用状态" width="80" dictionary="officalsealstatus" display="status"></t:dgCol>
-    <t:dgCol name="overtimedays" label="借用超时天数" width="40" ></t:dgCol>
-    <t:dgCol name="opt" label="操作" ></t:dgCol>
-    <t:dgDelOpt label="删除" url="officalSeal/manager/delete?id={id}"/>
+    <t:dgCol name="status" label="公章借用状态" width="80" dictionary="officalsealstatus" display="status" query="true"></t:dgCol>
+<%--    <t:dgCol name="overtimedays" label="借用超时天数" width="40" ></t:dgCol>--%>
+<%--    <t:dgCol name="opt" label="操作" ></t:dgCol>--%>
+<%--    <t:dgDelOpt label="删除" url="officalSeal/manager/delete?id={id}"/>--%>
     <t:dgToolBar url="officalSeal/manager/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>
     <t:dgToolBar url="officalSeal/manager/addorupdate" type="edit" width="40%" height="70%"></t:dgToolBar>
     <t:dgToolBar label="封禁" icon="fa fa-lock" type="define" funName="doBanDepartment"></t:dgToolBar>
     <t:dgToolBar label="解禁" icon="fa fa-unlock" type="define" funName="doUnsealDepartment"></t:dgToolBar>
-    <t:dgToolBar label="归还" icon="fa fa-unlock" type="define" funName="returnSeal"></t:dgToolBar>
+<%--    <t:dgToolBar label="已送达" icon="fa fa-unlock" type="define" funName="returnSeal"></t:dgToolBar>--%>
 </t:datagrid>
 </body>
 <script type="text/javascript">
@@ -63,11 +63,6 @@
 
         if('暂停借用' == status) {
             qhAlert('该科室已被禁用！');
-            return;
-        }
-
-        if('借用中' == status) {
-            qhAlert('禁用失败，该科室公章尚未归还，请联系科室负责人');
             return;
         }
 
@@ -104,10 +99,6 @@
         var str3 = str2.split("<");
         var status = str3[0]
 
-        if('借用中' == status) {
-            qhAlert('解禁失败，该科室状态正常');
-            return;
-        }
 
         if('可借用' == status) {
             qhAlert('解禁失败，该科室状态正常');

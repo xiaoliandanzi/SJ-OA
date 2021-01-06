@@ -25,17 +25,17 @@
 <%--    </div>--%>
 <%--</div>--%>
 <div class="form-group">
-    <label class="col-sm-3 control-label m-b">开始日期：</label>
+    <label class="col-sm-3 control-label m-b">使用日期：</label>
     <div class="col-sm-4 m-b">
-        <input class="laydate-icon form-control layer-date" id="startDay" name="startDay"  value='<fmt:formatDate value="${biz.startDay }" type="both" pattern="yyyy-MM-dd HH:mm"/>'>
+        <input class="laydate-icon form-control layer-date" id="useDay" name="useDay"  value='<fmt:formatDate value="${biz.useDay }" type="both" pattern="yyyy-MM-dd"/>'>
     </div>
 </div>
-<div class="form-group">
-    <label class="col-sm-3 control-label m-b">开始日期：</label>
-    <div class="col-sm-4 m-b">
-        <input class="laydate-icon form-control layer-date" id="endDay" name="endDay"  value='<fmt:formatDate value="${biz.endDay }" type="both" pattern="yyyy-MM-dd HH:mm"/>'>
-    </div>
-</div>
+<%--<div class="form-group">--%>
+<%--    <label class="col-sm-3 control-label m-b">结束日期：</label>--%>
+<%--    <div class="col-sm-4 m-b">--%>
+<%--        <input class="laydate-icon form-control layer-date" id="endDay" name="endDay"  value='<fmt:formatDate value="${biz.endDay }" type="both" pattern="yyyy-MM-dd HH:mm"/>'>--%>
+<%--    </div>--%>
+<%--</div>--%>
 <%--<div class="form-group">--%>
 <%--    <label class="col-sm-3 control-label">结束日期：</label>--%>
 <%--    <div class="col-sm-5">--%>

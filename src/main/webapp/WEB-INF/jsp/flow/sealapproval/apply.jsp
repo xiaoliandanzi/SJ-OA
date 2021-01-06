@@ -65,17 +65,17 @@
     //时间控件初始化
     $(function() {
         laydate({
-            elem : "#startDay",
+            elem : "#useDay",
             event : "focus",
-            istime : true,
-            format : 'YYYY-MM-DD hh:mm'
+            istime : false,
+            format : 'YYYY-MM-DD'
         });
-        laydate({
-            elem : "#endDay",
-            event : "focus",
-            istime : true,
-            format : 'YYYY-MM-DD hh:mm'
-        });
+        // laydate({
+        //     elem : "#endDay",
+        //     event : "focus",
+        //     istime : true,
+        //     format : 'YYYY-MM-DD hh:mm'
+        // });
     });
 
     //保存草稿
