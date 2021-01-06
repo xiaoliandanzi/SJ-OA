@@ -522,28 +522,28 @@
         },
         methods: {
             oneMounted() {
-                axios.get('oa/login/messageList?messageType=' + 1).then((msg) => {
-                    this.oneList = msg.data.obj
+                axios.get('oa/login/messageList?messageType=' + 1 + '&rows=' + 8).then((msg) => {
+                    this.oneList = msg.data.obj.records
                 })
             },
             twoMounted() {
-                axios.get('oa/login/messageList?messageType=' + 2).then((msg) => {
-                    this.twoList = msg.data.obj
+                axios.get('oa/login/messageList?messageType=' + 2 + '&rows=' + 8).then((msg) => {
+                    this.twoList = msg.data.obj.records
                 })
             },
             threeMounted() {
-                axios.get('oa/login/messageList?messageType=' + 3).then((msg) => {
-                    this.threeList = msg.data.obj
+                axios.get('oa/login/messageList?messageType=' + 3 + '&rows=' + 8).then((msg) => {
+                    this.threeList = msg.data.obj.records
                 })
             },
             fourMounted() {
-                axios.get('oa/login/messageList?messageType=' + 4).then((msg) => {
-                    this.fourList = msg.data.obj
+                axios.get('oa/login/messageList?messageType=' + 4 + '&rows=' + 8).then((msg) => {
+                    this.fourList = msg.data.obj.records
                 })
             },
             fiveMounted() {
-                axios.get('oa/login/messageList?messageType=' + 5).then((msg) => {
-                    this.fiveList = msg.data.obj
+                axios.get('oa/login/messageList?messageType=' + 5 + '&rows=' + 8).then((msg) => {
+                    this.fiveList = msg.data.obj.records
                 })
             },
             listClick(item) {

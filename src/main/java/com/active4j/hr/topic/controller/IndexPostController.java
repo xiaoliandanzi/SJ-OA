@@ -87,7 +87,7 @@ public class IndexPostController extends BaseController {
             queryWrapper.setEntity(flowMessageApprovalEntity);
             queryWrapper.orderByDesc("CREATE_DATE");
             IPage<FlowMessageApprovalEntity> page = flowMessageApprovalService.page(new Page<FlowMessageApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
-            json.setObj(page.getRecords());
+            json.setObj(page);
         } catch (Exception e) {
             log.error("获取文章列表失败,错误信息:" + e.getMessage());
             json.setSuccess(false);

@@ -312,8 +312,9 @@
         </div>
         <div class="tabs1Page" v-if="!zhengwen">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                           :current-page="currentPage4" :page-sizes="[20]" :page-size="20"
-                           layout="total, sizes, prev, pager, next, jumper" :total="20">
+                           @prev-click="prevClick" @next-click="nextClick"
+                           :current-page="currentPage4" :page-sizes="[20,40]" :page-size="pageSize"
+                           layout="total, sizes, prev, pager, next" :total="totalSize">
             </el-pagination>
         </div>
     </div>
@@ -380,8 +381,11 @@
                         messageType: 5,
                     }
                 ],
-                currentPage4: 3,
+                currentPage4: 1,
+                pageSize: 20,
+                pageIndex: 1,
                 titleList: [],
+                totalSize: 20,
                 zhengwen: false,
                 tab1zwMsg: {
                     title: "标题",
@@ -392,49 +396,84 @@
         },
         mounted() {
             this.getTitList();
-            if (id === 0) {
+
+            if (id == 0) {
+                console.log(0)
             } else {
+                console.log(1)
                 this.loginForThis(id);
             }
         },
         methods: {
             getTitList() {
                 axios.get('oa/login/messageList?messageType=' + messageType).then((msg) => {
+                    console.log(msg)
                     console.log('getTitList')
                     this.loginName = this.tabs[messageType].name;
                     this.isActive = messageType;
-                    this.titleList = msg.data.obj
+                    this.titleList = msg.data.obj.records;
+                    this.totalSize = msg.data.obj.total;
                 })
             },
             tabsClick(item, index) {
-                axios.get('oa/login/messageList?messageType=' + item.messageType).then((msg) => {
+                axios.get('oa/login/messageList?messageType=' + item.messageType + '&rows=' + this.pageSize).then((msg) => {
+                    messageType = item.messageType;
                     this.isActive = index;
                     this.loginName = item.name;
-                    this.titleList = msg.data.obj;
+                    this.titleList = msg.data.obj.records;
+                    this.totalSize = msg.data.obj.total;
                     this.zhengwen = false;
 
                 })
             },
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+                axios.get('oa/login/messageList?messageType=' + messageType + '&rows=' + val).then((msg) => {
+                    this.loginName = this.tabs[messageType].name;
+                    this.isActive = messageType;
+                    this.titleList = msg.data.obj.records;
+                    this.pageSize = val;
+                })
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+                axios.get('oa/login/messageList?messageType=' + messageType + '&rows=' + this.pageSize + '&page=' + val).then((msg) => {
+                    this.loginName = this.tabs[messageType].name;
+                    this.isActive = messageType;
+                    this.titleList = msg.data.obj.records;
+                    this.pageIndex = val;
+                })
+            },
+            prevClick(val) {
+                console.log(val)
+                axios.get('oa/login/messageList?messageType=' + messageType + '&rows=' + this.pageSize + '&page=' + val).then((msg) => {
+                    this.loginName = this.tabs[messageType].name;
+                    this.isActive = messageType;
+                    this.titleList = msg.data.obj.records;
+                    this.pageIndex = val;
+                })
+            },
+            nextClick(val) {
+                console.log(val)
+                axios.get('oa/login/messageList?messageType=' + messageType + '&rows=' + this.pageSize + '&page=' + val).then((msg) => {
+                    this.loginName = this.tabs[messageType].name;
+                    this.isActive = messageType;
+                    this.titleList = msg.data.obj.records;
+                    this.pageIndex = val;
+                })
             },
             listClick(item) {
                 axios.get('oa//login/getArticle?id=' + item.id).then((msg) => {
                     this.zhengwen = true;
-                    this.tab1zwMsg = msg.data.obj;
+                    this.tab1zwMsg = msg.data.obj.records;
                 })
 
             },
             loginForThis(item) {
-                axios.get('oa//login/getArticle?id=' + item).then((msg) => {
+                axios.get('oa/login/getArticle?id=' + item).then((msg) => {
                     console.log('loginForThis')
                     this.loginName = this.tabs[messageType].name;
                     this.isActive = messageType;
                     this.zhengwen = true;
-                    this.tab1zwMsg = msg.data.obj;
+                    this.tab1zwMsg = msg.data.obj.records;
                 })
 
             },
