@@ -179,43 +179,99 @@
                                 </select>
                             </div>
                         </div>
-                        <c:if test="${params  == 1}">
+                        <%--<c:if test="${params  == 1}">--%>
+                        <c:if test="${oaTopic.isPassOne != 0}">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">科室负责人意见：</label>
-                                <div class="col-sm-8">
+                                <label class="col-sm-2 control-label">科室负责人意见：</label>
+                                <div class="col-sm-5">
                                 <textarea name="opinionDeptLeader" class="form-control"
                                 >${oaTopic.opinionDeptLeader}</textarea>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">主管领导意见：</label>
-                                <div class="col-sm-8">
-                                <textarea name="opinionLeader" class="form-control"
-                                >${oaTopic.opinionLeader}</textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">综合办意见：</label>
-                                <div class="col-sm-8">
-                                <textarea name="opinionGeneralOffice" class="form-control"
-                                >${oaTopic.opinionGeneralOffice}</textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">财务科意见：</label>
-                                <div class="col-sm-8">
-                                <textarea name="opinionFinanceOffice" class="form-control"
-                                >${oaTopic.opinionFinanceOffice}</textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">纪委意见：</label>
-                                <div class="col-sm-8">
-                                <textarea name="opinionDisciplineOffice" class="form-control"
-                                >${oaTopic.opinionDisciplineOffice}</textarea>
+                                <label class="col-sm-2 control-label">审核结果：</label>
+                                <div class="col-sm-3">
+                                    <p class="form-control-static">
+                                        <c:choose>
+                                            <c:when test="${oaTopic.isPassOne == 1}">通过</c:when>
+                                            <c:when test="${oaTopic.isPassOne == 2}">不通过</c:when>
+                                        </c:choose></p>
                                 </div>
                             </div>
                         </c:if>
+                        <c:if test="${oaTopic.isPassTwo != 0}">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">主管领导意见：</label>
+                                <div class="col-sm-5">
+                                <textarea name="opinionLeader" class="form-control"
+                                >${oaTopic.opinionLeader}</textarea>
+                                </div>
+                                <label class="col-sm-2 control-label">审核结果：</label>
+                                <div class="col-sm-3">
+                                    <p class="form-control-static">
+                                        <c:choose>
+                                            <c:when test="${oaTopic.isPassTwo == 1}">通过</c:when>
+                                            <c:when test="${oaTopic.isPassTwo == 2}">不通过</c:when>
+                                        </c:choose></p>
+                                </div>
+                            </div>
+                        </c:if>
+                        <c:if test="${oaTopic.isPassThree != 0}">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">综合办意见：</label>
+                                <div class="col-sm-5">
+                                <textarea name="opinionGeneralOffice" class="form-control"
+                                >${oaTopic.opinionGeneralOffice}</textarea>
+                                </div>
+                                <label class="col-sm-2 control-label">审核结果：</label>
+                                <div class="col-sm-3">
+                                    <p class="form-control-static">
+                                        <c:choose>
+                                            <c:when test="${oaTopic.isPassThree == 1}">通过</c:when>
+                                            <c:when test="${oaTopic.isPassThree == 2}">不通过</c:when>
+                                        </c:choose></p>
+                                </div>
+                            </div>
+                        </c:if>
+                        <c:if test="${oaTopic.isPassFour != 0}">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">财务科意见：</label>
+                                <div class="col-sm-5">
+                                <textarea name="opinionFinanceOffice" class="form-control"
+                                >${oaTopic.opinionFinanceOffice}</textarea>
+                                </div>
+                                <label class="col-sm-2 control-label">审核结果：</label>
+                                <div class="col-sm-3">
+                                    <p class="form-control-static">
+                                        <c:choose>
+                                            <c:when test="${oaTopic.isPassFour == 1}">通过</c:when>
+                                            <c:when test="${oaTopic.isPassFour == 2}">不通过</c:when>
+                                        </c:choose></p>
+                                </div>
+                            </div>
+                        </c:if>
+                        <c:if test="${oaTopic.isPassFive != 0}">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">纪委意见：</label>
+                                <div class="col-sm-5">
+                                <textarea name="opinionDisciplineOffice" class="form-control"
+                                >${oaTopic.opinionDisciplineOffice}</textarea>
+                                </div>
+                                <label class="col-sm-2 control-label">审核结果：</label>
+                                <div class="col-sm-3">
+                                    <p class="form-control-static">
+                                        <c:choose>
+                                            <c:when test="${oaTopic.isPassFive == 1}">通过</c:when>
+                                            <c:when test="${oaTopic.isPassFive == 2}">不通过</c:when>
+                                        </c:choose></p>
+                                </div>
+                            </div>
+                        </c:if>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">审核意见：</label>
+                            <div class="col-sm-8">
+                                <textarea name="opinion" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <%-- </c:if>--%>
                     </t:formvalid>
                 </div>
             </div>

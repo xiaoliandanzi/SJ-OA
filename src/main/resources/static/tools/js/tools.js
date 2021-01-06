@@ -143,11 +143,11 @@ function addQh(id, url, width, height, params) {
 			//确定按钮回调
 			//表单提交
 			parent.frames['layui-layer-iframe' + index].submitL();
-			
+
 		},
 		btn2 : function(index, layero) {
 			//取消按钮回调
-			
+
 		},
 		end: function() {
 			// 操作结束，刷新表格
@@ -234,14 +234,14 @@ function editQh(id, url, width, height, params) {
 			//确定按钮回调
 			//表单提交
 			parent.frames['layui-layer-iframe' + index].submitL();
-			
+
 			// 操作结束，刷新表格
 			reloadTable(id);
-			
+
 		},
 		btn2 : function(index, layero) {
 			//取消按钮回调
-			
+
 		},
 		end: function() {
 			// 操作结束，刷新表格
@@ -334,7 +334,7 @@ function viewQh(id, url, width, height, params) {
 		end: function() {
 			// 操作结束，刷新表格
 			reloadTable(id);
-		} 
+		}
 	});
 
 }
@@ -370,7 +370,7 @@ function pop(id, url, title, width, height) {
 		},
 		btn2 : function(index, layero) {
 			//取消按钮回调
-			
+
 		},
 		end: function() {
 			// 操作结束，刷新表格
@@ -399,7 +399,7 @@ function popNo(id, url, title, width, height) {
 		},
 		btn2 : function(index, layero) {
 			//取消按钮回调
-			
+
 		},
 		end: function() {
 			// 操作结束，刷新表格
@@ -515,38 +515,38 @@ function exit() {
 /** **********************************业务使用方法end******************************************** */
 
 /** **********************************js日期格式化start******************************************** */
-/** 
- * 时间对象的格式化; 
- */  
-Date.prototype.QHformat = function(format) {  
+/**
+ * 时间对象的格式化;
+ */
+Date.prototype.QHformat = function(format) {
     /* 
      * eg:format="yyyy-MM-dd hh:mm:ss"; 
-     */  
-    var o = {  
-        "M+" : this.getMonth() + 1, // month  
-        "d+" : this.getDate(), // day  
-        "h+" : this.getHours(), // hour  
-        "m+" : this.getMinutes(), // minute  
-        "s+" : this.getSeconds(), // second  
-        "q+" : Math.floor((this.getMonth() + 3) / 3), // quarter  
-        "S" : this.getMilliseconds()  
+     */
+    var o = {
+        "M+" : this.getMonth() + 1, // month
+        "d+" : this.getDate(), // day
+        "h+" : this.getHours(), // hour
+        "m+" : this.getMinutes(), // minute
+        "s+" : this.getSeconds(), // second
+        "q+" : Math.floor((this.getMonth() + 3) / 3), // quarter
+        "S" : this.getMilliseconds()
         // millisecond  
-    }  
-  
-    if (/(y+)/.test(format)) {  
-        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4  
-                        - RegExp.$1.length));  
-    }  
-  
-    for (var k in o) {  
-        if (new RegExp("(" + k + ")").test(format)) {  
-            format = format.replace(RegExp.$1, RegExp.$1.length == 1  
-                            ? o[k]  
-                            : ("00" + o[k]).substr(("" + o[k]).length));  
-        }  
-    }  
-    return format;  
-}  
+    }
+
+    if (/(y+)/.test(format)) {
+        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4
+                        - RegExp.$1.length));
+    }
+
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(format)) {
+            format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                            ? o[k]
+                            : ("00" + o[k]).substr(("" + o[k]).length));
+        }
+    }
+    return format;
+}
 /** **********************************js日期格式化end******************************************** */
 
 
@@ -554,7 +554,7 @@ Date.prototype.QHformat = function(format) {
 //取自定义分页显示的最小页
 function getMinPage(currentPage, totalPage) {
 	if(currentPage <= 5 || totalPage <= 10) {
-		return 1;	
+		return 1;
 	}else {
 		return totalPage - 9;
 	}
@@ -592,7 +592,7 @@ function getPager(currentPage, totalPage) {
 	}
 	html += " <button class='btn btn-white' type='button' onclick=goNext(" + max + ")><i class='fa fa-chevron-right'></i></button>";
 	html += "</div></div>";
-	
+
 	return html;
 }
 
@@ -616,7 +616,55 @@ function goNext(max) {
 	}
 }
 
+//议题查看
+function popNoForMe(id, url, title, width, height) {
+	parent.layer.open({
+		type : 2,
+		title : title,
+		shadeClose : true,
+		shade : 0.8,
+		area : [ width, height ],
+		content : url, // iframe的url
+		btn : ['取消' ],
+		btn2 : function(index, layero) {
+			//取消按钮回调
 
+		},
+		end: function() {
+			// 操作结束，刷新表格
+			reloadTable(id);
+		}
+	});
+
+}
+//议题审核
+function auditTopic(id, url, title, width, height) {
+	parent.layer.open({
+		type : 2,
+		title : title,
+		shadeClose : true,
+		shade : 0.8,
+		area : [ width, height ],
+		content : url, // iframe的url
+		btn : ['审核通过','驳回' ],
+        yes : function(index, layero) {
+            //确定按钮回调
+            //表单提交
+            parent.frames['layui-layer-iframe' + index].submitL();
+            // 操作结束，刷新表格
+            reloadTable(id);
+        },
+		btn2 : function(index, layero) {
+			//取消按钮回调
+
+		},
+		end: function() {
+			// 操作结束，刷新表格
+			reloadTable(id);
+		}
+	});
+
+}
 /************************************自定义分页栏end***************************************************/
 
 

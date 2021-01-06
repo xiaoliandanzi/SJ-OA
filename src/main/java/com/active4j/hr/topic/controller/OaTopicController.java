@@ -25,6 +25,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.inject.internal.cglib.proxy.$Callback;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -75,6 +77,11 @@ public class OaTopicController extends BaseController {
         return new ModelAndView("topic/topiclist");
     }
 
+    @RequestMapping(value = "audit/list")
+    public ModelAndView auditTopicList() {
+        return new ModelAndView("topic/topiclistaudit");
+    }
+
     /**
      * 表格数据
      *
@@ -103,53 +110,33 @@ public class OaTopicController extends BaseController {
      * @return
      */
     @RequestMapping(value = "saveOrUpdateView")
-    public ModelAndView saveOrUpdateOa(OaTopic oaTopic) {
+    public ModelAndView saveOrUpdateOa(OaTopic oaTopic, String params) {
         //创建人
-        SysUserEntity userEntity = getUser();
         ModelAndView modelAndView = new ModelAndView("topic/topic");
-        if (StringUtil.isEmpty(oaTopic.getId())) {
-            oaTopic = new OaTopic();
-            oaTopic.setDeptId(userEntity.getDeptId());
-            //oaTopic.setId(UUID.randomUUID().toString());
-        } else {
-            oaTopic = topicService.getById(oaTopic.getId());
+        modelAndView = getMV(oaTopic,modelAndView);
+        if (!StringUtil.isEmpty(params)) {
+            modelAndView.addObject("params", params);
         }
-        QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("DEPT_ID", userEntity.getDeptId());
-        List<SysUserEntity> users = userService.list(queryWrapper);
-        modelAndView.addObject("oaTopic", oaTopic);
-        //
-        SysDeptEntity dept = deptService.getById(userEntity.getDeptId());
-        modelAndView.addObject("deptName", dept.getName());
-        //汇报人
-        modelAndView.addObject("reportList", users);
-        //提议领导 查询主要领导
-        modelAndView.addObject("proposeLeaderList", userList("", "1e3124100e45ed3e9ec99bf3e35be2c0"));
-        //科室负责人
-        DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
-        String leaderRole = deptLeaderRole.getRoleForDept().get(userEntity.getDeptId());
-        modelAndView.addObject("deptLeader", userList("", leaderRole));
-        //主管领导
-        SysRoleEntity roleEntity = roleService.getById(leaderRole);
-        modelAndView.addObject("lv2Leader", userList("", roleEntity.getParentId()));
-        //综合办
-        modelAndView.addObject("generalOffice", roleService.findUserByRoleName("综合办议题审核员"));
-        //财务科科长
-        modelAndView.addObject("financeOffice", roleService.findUserByRoleName("财务科室负责人"));
-        //纪委科长
-        modelAndView.addObject("disciplineOffice", roleService.findUserByRoleName("纪检监察组科室负责人"));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "auditModel")
+    public ModelAndView auditModel(OaTopic oaTopic) {
+        //创建人
+        ModelAndView modelAndView = new ModelAndView("topic/topicaudit");
+        modelAndView = getMV(oaTopic,modelAndView);
         return modelAndView;
     }
 
 
     /**
-     * 新增议题
+     * 新增修改议题
      *
      * @param oaTopic
      * @return topic/save
      */
-    @RequestMapping(value = "save")
-    public AjaxJson saveOaTopic(OaTopic oaTopic) {
+    @RequestMapping(value = "saveOrUpdate")
+    public AjaxJson saveOrUpdateOaTopic(OaTopic oaTopic) {
         System.err.println(oaTopic);
         AjaxJson ajaxJson = new AjaxJson();
         oaTopic = getUserName(oaTopic);
@@ -158,9 +145,45 @@ public class OaTopicController extends BaseController {
         try {
             topicService.saveOrUpdate(oaTopic);
         } catch (Exception e) {
-            log.error("新增议题失败,错误信息:" + e.getMessage());
+            log.error("提交议题失败,错误信息:" + e.getMessage());
             ajaxJson.setSuccess(false);
-            ajaxJson.setMsg("新增议题失败");
+            ajaxJson.setMsg("提交议题失败");
+            e.printStackTrace();
+        }
+        return ajaxJson;
+    }
+
+    @RequestMapping(value = "getOne")
+    public AjaxJson getOne(OaTopic oaTopic) {
+        AjaxJson ajaxJson = new AjaxJson();
+        System.err.println(oaTopic);
+        try {
+            ajaxJson.setObj(topicService.getById(oaTopic.getId()));
+        } catch (Exception e) {
+            log.error("获取议题失败,错误信息:" + e.getMessage());
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg("获取议题失败");
+            e.printStackTrace();
+        }
+        return ajaxJson;
+    }
+
+    /**
+     * 删除
+     *
+     * @param oaTopic
+     * @return
+     */
+    @RequestMapping(value = "remove")
+    @Transactional(propagation = Propagation.REQUIRED)
+    public AjaxJson remove(OaTopic oaTopic) {
+        AjaxJson ajaxJson = new AjaxJson();
+        try {
+            topicService.removeById(oaTopic.getId());
+        } catch (Exception e) {
+            log.error("删除议题失败,错误信息:" + e.getMessage());
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg("删除议题失败");
             e.printStackTrace();
         }
         return ajaxJson;
@@ -240,6 +263,47 @@ public class OaTopicController extends BaseController {
             oaTopic.setDisciplineName(userService.findNameById(oaTopic.getDisciplineOffice()));
         }
         return oaTopic;
+    }
+
+    /**
+     * @param oaTopic
+     * @return
+     */
+    private ModelAndView getMV(OaTopic oaTopic,ModelAndView modelAndView) {
+        SysUserEntity userEntity = getUser();
+        if (StringUtil.isEmpty(oaTopic.getId())) {
+            oaTopic = new OaTopic();
+            oaTopic.setDeptId(userEntity.getDeptId());
+            //oaTopic.setId(UUID.randomUUID().toString());
+        } else {
+            oaTopic = topicService.getById(oaTopic.getId());
+        }
+        QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("DEPT_ID", userEntity.getDeptId());
+        List<SysUserEntity> users = userService.list(queryWrapper);
+        modelAndView.addObject("oaTopic", oaTopic);
+        //
+        SysDeptEntity dept = deptService.getById(userEntity.getDeptId());
+        modelAndView.addObject("deptName", dept.getName());
+        //汇报人
+        modelAndView.addObject("reportList", users);
+        //提议领导 查询主要领导
+        modelAndView.addObject("proposeLeaderList", userList("", "1e3124100e45ed3e9ec99bf3e35be2c0"));
+        //科室负责人
+        DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
+        String leaderRole = deptLeaderRole.getRoleForDept().get(userEntity.getDeptId());
+        modelAndView.addObject("deptLeader", userList("", leaderRole));
+        //主管领导
+        SysRoleEntity roleEntity = roleService.getById(leaderRole);
+        modelAndView.addObject("lv2Leader", userList("", roleEntity.getParentId()));
+        //综合办
+        modelAndView.addObject("generalOffice", roleService.findUserByRoleName("综合办议题审核员"));
+        //财务科科长
+        modelAndView.addObject("financeOffice", roleService.findUserByRoleName("财务科室负责人"));
+        //纪委科长
+        modelAndView.addObject("disciplineOffice", roleService.findUserByRoleName("纪检监察组科室负责人"));
+        //
+        return modelAndView;
     }
 }
 

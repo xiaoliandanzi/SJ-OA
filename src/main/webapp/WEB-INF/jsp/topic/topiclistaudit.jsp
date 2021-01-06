@@ -26,7 +26,7 @@
 
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="topic/table" tableContentId="jqGrid_wrapper" searchGroupId="searchGroupId" fit="true"
-            caption="议题申请" name="topicAddList" pageSize="20" sortName="creatTime" sortOrder="desc">
+            caption="议题审核" name="topicAddList" pageSize="20" sortName="creatTime" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="creatTime" label="申报日期" width="300" query="false"></t:dgCol>
     <t:dgCol name="topicName" label="议题名称" width="150" query="true"></t:dgCol>
@@ -40,10 +40,9 @@
     <t:dgCol name="isSecretary" label="书记会" dictionary="byesorno" query="false"></t:dgCol>
     <t:dgCol name="isDirector" label="主任会" dictionary="byesorno" query="flase"></t:dgCol>
     <t:dgCol name="isWorkingCommittee" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>
-    <t:dgToolBar url="topic/saveOrUpdateView" type="add" width="60%" operationCode="topic:add"></t:dgToolBar>
-    <t:dgToolBar url="topic/saveOrUpdateView" type="edit" width="60%" operationCode="topic:add"></t:dgToolBar>
     <t:dgToolBar label="查看" type="define" funName="getOne"></t:dgToolBar>
-    <t:dgToolBar label="取消" type="define" funName="remove" operationCode="topic:add"></t:dgToolBar>
+    <t:dgToolBar label="审核" type="define" funName="getOne"></t:dgToolBar>
+    <t:dgToolBar label="二次审核" type="define" funName="getOne"></t:dgToolBar>
 </t:datagrid>
 <script type="text/javascript">
     function getOne() {
@@ -52,7 +51,7 @@
             qhAlert('请选择要查看的议题');
             return;
         }
-        popNoForMe("topicAddList", "topic/saveOrUpdateView?id=" + rowId + "&params=1", "查看", "60%", "80%");
+        popNoForMe("topicAddList", "topic/auditModel?id=" + rowId, "查看", "60%", "80%");
     }
 
 

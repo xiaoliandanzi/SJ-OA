@@ -174,5 +174,8 @@ public class OaTopic {
     @JsonFormat(pattern = "yyyy年MM月dd日HH:mm", timezone = "GMT+8")
     private Date creatTime;
 
+    //提交的审核意见
+    @TableField(exist = false)
+    private String opinion;
 
 }

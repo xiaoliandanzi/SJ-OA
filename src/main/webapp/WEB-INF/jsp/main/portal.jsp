@@ -204,7 +204,7 @@
     .yuanBox {
         width: 98px;
         height: 98px;
-        border: 1px solid #E6E6E6;
+        /*border: 1px solid #E6E6E6;*/
         border-radius: 50%;
         line-height: 100px;
         text-align: center;
