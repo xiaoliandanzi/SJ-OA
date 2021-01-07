@@ -34,7 +34,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <t:formvalid action="topic/saveOrUpdate">
+                    <t:formvalid action="topic/audit">
                         <input type="hidden" name="id" id="id" value="${oaTopic.id}">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">科室*：</label>
@@ -265,12 +265,24 @@
                                 </div>
                             </div>
                         </c:if>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">审核意见：</label>
-                            <div class="col-sm-8">
-                                <textarea name="opinion" class="form-control"></textarea>
+                        <c:if test="${lookOrAdu == null}">
+                            <hr/>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">是否通过审核：</label>
+                                <div class="col-sm-8">
+                                    <select name="isOk" class="form-control">
+                                        <option value="1">是</option>
+                                        <option value="2">否</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">审核意见：</label>
+                                <div class="col-sm-8">
+                                    <textarea name="opinion" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </c:if>
                         <%-- </c:if>--%>
                     </t:formvalid>
                 </div>

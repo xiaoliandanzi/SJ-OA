@@ -153,6 +153,7 @@ public class OaTopic {
     @TableField("IS_PASS_ONE")
     private Integer isPassOne;
 
+
     @ApiModelProperty(value = "0未审核 1通过 2不通过 主管领导")
     @TableField("IS_PASS_TWO")
     private Integer isPassTwo;
@@ -174,8 +175,20 @@ public class OaTopic {
     @JsonFormat(pattern = "yyyy年MM月dd日HH:mm", timezone = "GMT+8")
     private Date creatTime;
 
+    @ApiModelProperty(value = "是否需经过财务审核 或由财务科员创建")
+    @TableField("CHOICE_PASS_FOUR")
+    private String choicePassFour;
+
+    @ApiModelProperty(value = "是否经需过纪委审核  或由纪检科员创建")
+    @TableField("CHOICE_PASS_FIVE")
+    private String choicePassFive;
+
     //提交的审核意见
     @TableField(exist = false)
     private String opinion;
+
+    //提交审核结果
+    @TableField(exist = false)
+    private Integer isOk;
 
 }

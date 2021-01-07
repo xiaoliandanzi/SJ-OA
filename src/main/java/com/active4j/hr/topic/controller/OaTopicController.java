@@ -24,11 +24,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.inject.internal.cglib.proxy.$Callback;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.loadtime.Aj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -96,6 +99,9 @@ public class OaTopicController extends BaseController {
         if ("".equals(oaTopic.getTopicName())) {
             oaTopic.setTopicName(null);
         }
+        //判断 表格显示数据 查询条件
+        oaTopic = getSelectTopic(oaTopic, user);
+        //纪委与财务 负责人查询数据为两种
         QueryWrapper<OaTopic> queryWrapper = new QueryWrapper<>();
         queryWrapper.setEntity(oaTopic);
         IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
@@ -113,21 +119,54 @@ public class OaTopicController extends BaseController {
     public ModelAndView saveOrUpdateOa(OaTopic oaTopic, String params) {
         //创建人
         ModelAndView modelAndView = new ModelAndView("topic/topic");
-        modelAndView = getMV(oaTopic,modelAndView);
+        modelAndView = getMV(oaTopic, modelAndView);
         if (!StringUtil.isEmpty(params)) {
             modelAndView.addObject("params", params);
         }
         return modelAndView;
     }
 
+    /**
+     * 审核视图
+     *
+     * @param oaTopic
+     * @return
+     */
     @RequestMapping(value = "auditModel")
     public ModelAndView auditModel(OaTopic oaTopic) {
         //创建人
         ModelAndView modelAndView = new ModelAndView("topic/topicaudit");
-        modelAndView = getMV(oaTopic,modelAndView);
+        modelAndView.addObject("lookOrAdu", oaTopic.getOpinion());
+        modelAndView = getMV(oaTopic, modelAndView);
         return modelAndView;
     }
 
+    /**
+     * 审核
+     *
+     * @param oaTopic id 与 opinion
+     * @return
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    @RequestMapping("audit")
+    public AjaxJson audit(OaTopic oaTopic) {
+        AjaxJson ajaxJson = new AjaxJson();
+        System.err.println("审核:" + oaTopic);
+        try {
+            OaTopic dao = topicService.getById(oaTopic.getId());
+            String auditLV = ShiroUtils.getSessionValue("auditLV");
+            //审核结果处理
+            dao = topicAndAuditLV(dao, auditLV, oaTopic.getOpinion(),
+                    oaTopic.getIsOk(), oaTopic.getIsWorkingCommittee(), oaTopic.getIsDirector());
+            topicService.saveOrUpdate(dao);
+        } catch (Exception e) {
+            log.error("提交审核失败,错误信息:" + e.getMessage());
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg("提交审核失败");
+            e.printStackTrace();
+        }
+        return ajaxJson;
+    }
 
     /**
      * 新增修改议题
@@ -137,12 +176,15 @@ public class OaTopicController extends BaseController {
      */
     @RequestMapping(value = "saveOrUpdate")
     public AjaxJson saveOrUpdateOaTopic(OaTopic oaTopic) {
-        System.err.println(oaTopic);
         AjaxJson ajaxJson = new AjaxJson();
-        oaTopic = getUserName(oaTopic);
-        oaTopic.setCreatTime(new Date());
-        oaTopic.setStateId(0);
         try {
+            oaTopic = getUserName(oaTopic);
+            //判断是否是 纪委与财务创建的议题
+            oaTopic = ifJWOrCW(oaTopic);
+            //判断是否需要 纪委或综合办参与审核  根据是否选中两个科室的负责人id
+            oaTopic = ifNeedJWOrCW(oaTopic);
+            oaTopic.setCreatTime(new Date());
+            oaTopic.setStateId(0);
             topicService.saveOrUpdate(oaTopic);
         } catch (Exception e) {
             log.error("提交议题失败,错误信息:" + e.getMessage());
@@ -153,10 +195,15 @@ public class OaTopicController extends BaseController {
         return ajaxJson;
     }
 
+    /**
+     * 获取单个议题
+     *
+     * @param oaTopic
+     * @return
+     */
     @RequestMapping(value = "getOne")
     public AjaxJson getOne(OaTopic oaTopic) {
         AjaxJson ajaxJson = new AjaxJson();
-        System.err.println(oaTopic);
         try {
             ajaxJson.setObj(topicService.getById(oaTopic.getId()));
         } catch (Exception e) {
@@ -189,12 +236,176 @@ public class OaTopicController extends BaseController {
         return ajaxJson;
     }
 
+
+
     @RequestMapping(value = "test")
     public AjaxJson testGet(OaTopic oaTopic) {
         AjaxJson json = new AjaxJson();
         oaTopic = topicService.getById(oaTopic.getId());
         json.setObj(oaTopic);
         return json;
+    }
+
+    /**
+     * 处理审核
+     *
+     * @param oaTopic            审核议题 数据库数据
+     * @param auditLV            审核级别
+     * @param opinion            意见
+     * @param isOk               是否通过
+     * @param isWorkingCommittee 是否工委会
+     * @param isDirector         是否主任会
+     * @return
+     */
+    private OaTopic topicAndAuditLV(OaTopic oaTopic, String auditLV, String opinion,
+                                    Integer isOk, String isWorkingCommittee, String isDirector) {
+        //五阶段审核
+        Integer lv = Integer.parseInt(auditLV);
+        if (lv == 1) {
+            //科室负责人审核
+            if (isOk == 1) {
+                oaTopic.setIsPassOne(1);
+                oaTopic.setOpinionDeptLeader(opinion);
+                oaTopic.setStateId(1);
+            } else {
+                //负责人拒绝后直接打回
+                oaTopic.setIsPassOne(2);
+                oaTopic.setOpinionDeptLeader(opinion);
+                oaTopic.setStateId(0);
+            }
+        } else if (lv == 2) {
+            //主管领导
+            if (isOk == 1) {
+                oaTopic.setIsPassTwo(1);
+                oaTopic.setOpinionLeader(opinion);
+                oaTopic.setStateId(2);
+            } else {
+                oaTopic.setIsPassTwo(2);
+                oaTopic.setOpinionLeader(opinion);
+                oaTopic.setStateId(1);
+            }
+        } else if (lv == 3) {
+            //综合办
+            if (isOk == 1) {
+                oaTopic.setIsPassThree(1);
+                oaTopic.setOpinionGeneralOffice(opinion);
+                oaTopic.setStateId(3);
+                //修改上会建议
+                oaTopic.setIsWorkingCommittee(isWorkingCommittee);
+                oaTopic.setIsDirector(isDirector);
+            } else {
+                oaTopic.setIsPassThree(2);
+                oaTopic.setOpinionGeneralOffice(opinion);
+                oaTopic.setStateId(1);
+            }
+        } else if (lv == 4) {
+            //财务
+            if (isOk == 1) {
+                oaTopic.setIsPassFour(1);
+                oaTopic.setOpinionFinanceOffice(opinion);
+                //财务同意后 判断是否还要经过纪委同意 两者都同意  审核通过
+                // 且 纪委负责人还要审核本部门的提交的审核
+
+            } else {
+                oaTopic.setIsPassFour(2);
+                oaTopic.setOpinionFinanceOffice(opinion);
+                oaTopic.setStateId(1);
+            }
+        } else if (lv == 5) {
+            //纪委
+            if (isOk == 1) {
+                oaTopic.setIsPassFive(1);
+                oaTopic.setOpinionDisciplineOffice(opinion);
+                //纪委同意后 判断
+            } else {
+                oaTopic.setIsPassFive(2);
+                oaTopic.setOpinionDisciplineOffice(opinion);
+                oaTopic.setStateId(1);
+            }
+        }
+        return oaTopic;
+    }
+
+    /**
+     * 判断登录角色的查询条件
+     *
+     * @param oaTopic
+     * @param user
+     * @return
+     */
+    private OaTopic getSelectTopic(OaTopic oaTopic, ActiveUser user) {
+        SysUserEntity userEntity = getUser();
+        if (ShiroUtils.hasRole("011")) {
+            //判断是否主管领导
+            //03本科室主管领导  leaderId 通过科长审核
+            oaTopic.setLeaderId(user.getId());
+            oaTopic.setIsPassOne(1);
+            ShiroUtils.setSessionValue("auditLV", "2");
+        } else if (ShiroUtils.hasRole("01061")) {
+            //判断是否纪委负责人
+            //06纪委科长 disciplineOffice isPassThree choicePassFive
+            /*oaTopic.setDisciplineOffice(user.getId());
+            oaTopic.setIsPassThree(1);*/
+            oaTopic.setChoicePassFive("true");
+            ShiroUtils.setSessionValue("auditLV", "5");
+        } else if (ShiroUtils.hasRole("01014")) {
+            //判断是否财务负责人
+            //05财务科科长 financeOffice isPassThree choicePassFour
+           /* oaTopic.setFinanceOffice(user.getId());
+            oaTopic.setIsPassThree(1);*/
+            oaTopic.setChoicePassFive("true");
+            ShiroUtils.setSessionValue("auditLV", "4");
+        } else if (ShiroUtils.hasRole("topicadd")) {
+            //判断是否议题发起人
+            //01议题发起人  deptId查询条件
+            oaTopic.setDeptId(userEntity.getDeptId());
+        } else if (ShiroUtils.hasRole("topicaudit")) {
+            //判断是否综合办议题审核人员
+            //04综合办议题审核员 isPassOne isPassTwo
+            oaTopic.setIsPassTwo(1);
+            oaTopic.setIsPassThree(1);
+            ShiroUtils.setSessionValue("auditLV", "3");
+        } else {
+            //剩下的 为 本科室 负责人
+            //02本科室科长  deptLeaderId
+            oaTopic.setDeptLeaderId(user.getId());
+            ShiroUtils.setSessionValue("auditLV", "1");
+        }
+        return oaTopic;
+    }
+
+    /**
+     * 判断是否纪委与财务创建
+     *
+     * @param oaTopic
+     * @return
+     */
+    private OaTopic ifJWOrCW(OaTopic oaTopic) {
+        SysUserEntity userEntity = getUser();
+        if ("c1150728449e35b42fbe86db549477e8".equals(userEntity.getDeptId())) {
+            //纪检监察组
+            oaTopic.setChoicePassFive("true");
+        } else if ("088c84560ed47db5d1ce11696a4915e3".equals(userEntity.getDeptId())) {
+            //财务处
+            oaTopic.setChoicePassFour("true");
+        }
+        return oaTopic;
+    }
+
+    /**
+     * 判断是否需要纪委与财务参与审核
+     *
+     * @param oaTopic
+     * @return
+     */
+    private OaTopic ifNeedJWOrCW(OaTopic oaTopic) {
+        if (!StringUtil.isEmpty(oaTopic.getFinanceOffice())) {
+            oaTopic.setChoicePassFour("true");
+        }
+        if (!StringUtil.isEmpty(oaTopic.getDisciplineOffice())) {
+            oaTopic.setChoicePassFive("true");
+        }
+        return oaTopic;
     }
 
     /**
@@ -266,10 +477,12 @@ public class OaTopicController extends BaseController {
     }
 
     /**
+     * 返回视图
+     *
      * @param oaTopic
      * @return
      */
-    private ModelAndView getMV(OaTopic oaTopic,ModelAndView modelAndView) {
+    private ModelAndView getMV(OaTopic oaTopic, ModelAndView modelAndView) {
         SysUserEntity userEntity = getUser();
         if (StringUtil.isEmpty(oaTopic.getId())) {
             oaTopic = new OaTopic();
