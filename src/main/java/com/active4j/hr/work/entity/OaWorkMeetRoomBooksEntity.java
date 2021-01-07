@@ -1,15 +1,14 @@
 package com.active4j.hr.work.entity;
 
-import java.util.Date;
-
 import com.active4j.hr.common.entity.BaseEntity;
 import com.active4j.hr.core.annotation.QueryField;
 import com.active4j.hr.core.query.QueryCondition;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 
 /**
  * @title OaWorkMeetRoomBooksEntity.java
@@ -34,6 +33,9 @@ public class OaWorkMeetRoomBooksEntity extends BaseEntity {
 	@TableField("USER_ID")
 	private String userId;
 
+	@TableField("DEPT")
+	private String dept;
+
 	@TableField("BOOK_DATE")
 	@QueryField(condition=QueryCondition.eq, queryColumn="BOOK_DATE")
 	private Date bookDate;
@@ -46,6 +48,12 @@ public class OaWorkMeetRoomBooksEntity extends BaseEntity {
 
 	@TableField("END_DATE")
 	private Date endDate;
+
+	@TableField("CONTENT")
+	private String content;
+
+	@TableField("EQUIPMENT")
+	private String equipment;
 
 	@TableField("MEMO")
 	private String memo;

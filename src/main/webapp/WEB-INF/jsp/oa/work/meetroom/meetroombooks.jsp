@@ -23,6 +23,16 @@
 									</select>
                                 </div>
                             </div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">科室：</label>
+								<div class="col-sm-4">
+									<input id="dept" name="dept"  type="text" class="form-control" required="" readonly value="${dept }">
+								</div>
+								<label class="col-sm-2 control-label">登记人：</label>
+								<div class="col-sm-4">
+									<input id="userName" name="userName"  type="text" class="form-control" required="" readonly value="${userName }">
+								</div>
+							</div>
                             <div class="form-group">
 								<label class="col-sm-2 control-label m-b">会议日期：</label>
 								<div class="col-sm-4 m-b">
@@ -39,16 +49,26 @@
 			                            </span>
 			                        </div>
 								</div>
-							</div>
-                            <div class="form-group">
 								<label class="col-sm-2 control-label m-b">结束时间：</label>
 								<div class="col-sm-4 m-b">
 									<div class="input-group clockpicker" data-autoclose="true">
-									 	<input type="text" class="form-control" name="endDate" value='<fmt:formatDate value="${meet.endDate }" type="time" pattern="HH:mm"/>'>
-			                            <span class="input-group-addon">
+										<input type="text" class="form-control" name="endDate" value='<fmt:formatDate value="${meet.endDate }" type="time" pattern="HH:mm"/>'>
+										<span class="input-group-addon">
 			                                   <span class="fa fa-clock-o"></span>
 			                            </span>
-			                        </div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">设备配置：</label>
+								<div class="col-sm-8">
+									<input id="equipment" name="equipment" class="form-control" >${meet.equipment}</>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">会议内容：</label>
+								<div class="col-sm-8">
+									<textarea rows="4" id="content" name="content" class="form-control" >${meet.content}</textarea>
 								</div>
 							</div>
                             <div class="form-group">

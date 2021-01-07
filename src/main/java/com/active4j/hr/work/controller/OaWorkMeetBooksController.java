@@ -1,17 +1,5 @@
 package com.active4j.hr.work.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
@@ -22,6 +10,8 @@ import com.active4j.hr.core.util.DateUtils;
 import com.active4j.hr.core.util.ListUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
+import com.active4j.hr.system.model.SysUserModel;
+import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.work.entity.OaWorkMeetRoomBooksEntity;
 import com.active4j.hr.work.entity.OaWorkMeetRoomEntity;
 import com.active4j.hr.work.service.OaWorkMeetRoomBooksService;
@@ -29,8 +19,17 @@ import com.active4j.hr.work.service.OaWorkMeetRoomService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @title OaWorkMeetBooksController.java
@@ -50,6 +49,8 @@ public class OaWorkMeetBooksController extends BaseController {
 	private OaWorkMeetRoomBooksService oaWorkMeetRoomBooksService;
 	@Autowired
 	private OaWorkMeetRoomService oaWorkMeetRoomService;
+	@Autowired
+	private SysUserService sysUserService;
 	
 	/**
 	 * 会议室预定列表
@@ -99,7 +100,12 @@ public class OaWorkMeetBooksController extends BaseController {
 		//查询可用的会议室
 		List<OaWorkMeetRoomEntity> lstRooms = oaWorkMeetRoomService.findNormalMeetRoom();
 		view.addObject("lstRooms", lstRooms);
-		
+
+		String userId = ShiroUtils.getSessionUserId();
+		SysUserModel userModel = sysUserService.getInfoByUserId(userId).get(0);
+		view.addObject("userName", userModel.getRealName());
+		view.addObject("dept", userModel.getDeptName());
+
 		if(StringUtils.isNotEmpty(oaWorkMeetRoomBooksEntity.getId())) {
 			oaWorkMeetRoomBooksEntity = oaWorkMeetRoomBooksService.getById(oaWorkMeetRoomBooksEntity.getId());
 			view.addObject("meet", oaWorkMeetRoomBooksEntity);
@@ -122,8 +128,10 @@ public class OaWorkMeetBooksController extends BaseController {
 		try{
 			
 			//预定人赋值
+			String userId = ShiroUtils.getSessionUserId();
 			oaWorkMeetRoomBooksEntity.setUserName(ShiroUtils.getSessionUser().getRealName());
-			oaWorkMeetRoomBooksEntity.setUserId(ShiroUtils.getSessionUserId());
+			oaWorkMeetRoomBooksEntity.setUserId(userId);
+			oaWorkMeetRoomBooksEntity.setDept(sysUserService.getInfoByUserId(userId).get(0).getDeptName());
 			
 			if(null == oaWorkMeetRoomBooksEntity.getBookDate()) {
 				j.setSuccess(false);
