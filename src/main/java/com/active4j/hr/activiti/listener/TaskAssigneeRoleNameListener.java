@@ -62,8 +62,7 @@ public class TaskAssigneeRoleNameListener implements TaskListener {
 			taskService.setAssignee(delegateTask.getId(), WorkflowConstant.Str_Admin);
 		}else if(lstUsers.size() == 1) {
 			taskService.setAssignee(delegateTask.getId(), lstUsers.get(0));
-			WorkflowTaskUtil.sendSystemMessage(sysUserService.getUserByUseName(lstUsers.get(0)).getId(),
-					sysUserService.getUserByUseName(applyName).getRealName());
+			WorkflowTaskUtil.sendSystemMessage(lstUsers.get(0), applyName);
 		}else {
 			for(String user : lstUsers) {
 				taskService.addCandidateUser(delegateTask.getId(), user);

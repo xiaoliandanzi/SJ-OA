@@ -335,7 +335,7 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findDepartmentSeal(departMentname);
             if(!lstSeals.get(0).getStatus().equalsIgnoreCase("0")){
                 j.setSuccess(false);
-                j.setMsg("科室不可借用公章，请联系管理员处理");
+                j.setMsg("您所在科室已被限制公章申请，请科室及时提交公章签字表");
                 return j;
             }
 
@@ -353,17 +353,12 @@ public class FlowOfficalSealApprovalController  extends BaseController {
                 return j;
             }
 
-            if(null == flowOfficalSealApprovalEntity.getStartDay()) {
+            if(null == flowOfficalSealApprovalEntity.getUseDay()) {
                 j.setSuccess(false);
-                j.setMsg("开始日期不能为空");
+                j.setMsg("使用日期不能为空");
                 return j;
             }
 
-            if(null == flowOfficalSealApprovalEntity.getEndDay()) {
-                j.setSuccess(false);
-                j.setMsg("结束日期不能为空");
-                return j;
-            }
 
             if(StringUtils.isBlank(flowOfficalSealApprovalEntity.getContent())) {
                 j.setSuccess(false);
@@ -467,15 +462,9 @@ public class FlowOfficalSealApprovalController  extends BaseController {
                 return j;
             }
 
-            if(null == flowOfficalSealApprovalEntity.getStartDay()) {
+            if(null == flowOfficalSealApprovalEntity.getUseDay()) {
                 j.setSuccess(false);
-                j.setMsg("开始日期不能为空");
-                return j;
-            }
-
-            if(null == flowOfficalSealApprovalEntity.getEndDay()) {
-                j.setSuccess(false);
-                j.setMsg("结束日期不能为空");
+                j.setMsg("使用日期不能为空");
                 return j;
             }
 

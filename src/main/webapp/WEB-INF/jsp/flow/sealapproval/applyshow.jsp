@@ -64,15 +64,15 @@
         laydate({
             elem : "#startDay",
             event : "focus",
-            istime : true,
-            format : 'YYYY-MM-DD hh:mm'
+            istime : false,
+            format : 'YYYY-MM-DD'
         });
-        laydate({
-            elem : "#endDay",
-            event : "focus",
-            istime : true,
-            format : 'YYYY-MM-DD hh:mm'
-        });
+        // laydate({
+        //     elem : "#endDay",
+        //     event : "focus",
+        //     istime : true,
+        //     format : 'YYYY-MM-DD hh:mm'
+        // });
 
         //让页面管理表单的字段不可编辑
         $("#commonForm input").attr("disabled", "disabled");

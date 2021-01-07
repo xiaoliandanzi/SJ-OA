@@ -27,8 +27,7 @@ CREATE TABLE `flow_officalseal_approval` (
   `UPDATE_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
   `UPDATE_DATE` datetime DEFAULT NULL COMMENT '更新时间',
   `BOOKDATE` datetime DEFAULT NULL COMMENT '借用时间',
-  `START_DAY` datetime DEFAULT NULL COMMENT '开始日期',
-  `END_DAY` datetime DEFAULT NULL COMMENT '结束日期',
+  `USE_DAY` datetime DEFAULT NULL COMMENT '使用日期',
   `SEALNAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '公章名称',
   `DEPARTMENTNAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '科室',
   `USERNAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '借用人',
@@ -36,5 +35,6 @@ CREATE TABLE `flow_officalseal_approval` (
   `CONTENT` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '内容',
   `COMMIT` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
   `APPLY_STATUS` int DEFAULT '0' COMMENT '审核状态',
+  `RETURN_FLAG` int DEFAULT '1' COMMENT '归还状态',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
