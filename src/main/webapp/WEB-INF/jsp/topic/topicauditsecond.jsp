@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,select2,icheck,webuploader"></t:base>
+    <t:base type="default,select2,icheck"></t:base>
     <script type="text/javascript">
         $(function () {
             $("#proposeLeader").val("${oaTopic.proposeLeader}".split(",")).trigger("change");
@@ -34,9 +34,8 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <t:formvalid action="topic/saveOrUpdate">
+                    <t:formvalid action="topic/auditSecond">
                         <input type="hidden" name="id" id="id" value="${oaTopic.id}">
-                        <input type="hidden" name="fileId" id="fileId" value="${oaTopic.fileId}">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">科室*：</label>
                             <div class="col-sm-8">
@@ -92,25 +91,6 @@
                             </div>
                         </div>
                         <%--议题材料--%>
-                        <c:if test="${empty oaTopic.id}">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label m-b">附件:</label>
-                                <div class="col-sm-2">
-                                    <div id="filePicker">上传附件</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div id="fileList" class="uploader-list"></div>
-                                </div>
-                            </div>
-                        </c:if>
-                        <c:if test="${not empty oaTopic.id}">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label m-b">附件:</label>
-                                <div class="col-sm-2">
-                                    <button type="button" class="btn btn-success" id="download">下载</button>
-                                </div>
-                            </div>
-                        </c:if>
                         <%--议题材料--%>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">主任会：</label>
@@ -141,29 +121,6 @@
                                                       defaultVal="${oaTopic.isWorkingCommittee}"></t:dictSelect>
                                     </c:otherwise>
                                 </c:choose>
-
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">科室负责人*：</label>
-                            <div class="col-sm-8">
-                                <select class="form-control m-b select2"
-                                        id="deptLeaderId" name="deptLeaderId" multiple="multiple">
-                                    <c:forEach items="${deptLeader}" var="deptL">
-                                        <option value="${deptL.id }">${deptL.realName}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">主管领导*：</label>
-                            <div class="col-sm-8">
-                                <select class="form-control m-b select2"
-                                        id="leaderId" name="leaderId" multiple="multiple">
-                                    <c:forEach items="${lv2Leader}" var="lv2l">
-                                        <option value="${lv2l.id }">${lv2l.realName}</option>
-                                    </c:forEach>
-                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -174,6 +131,15 @@
                                     <c:forEach items="${generalOffice}" var="genera">
                                         <option value="${genera.id }">${genera.realName}</option>
                                     </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">财务科是否参与审核：</label>
+                            <div class="col-sm-8">
+                                <select name="isFO" class="form-control">
+                                    <option value="2">否</option>
+                                    <option value="1">是</option>
                                 </select>
                             </div>
                         </div>
@@ -189,6 +155,15 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-3 control-label">纪委是否参与审核：</label>
+                            <div class="col-sm-8">
+                                <select name="isDO" class="form-control">
+                                    <option value="2">否</option>
+                                    <option value="1">是</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-3 control-label">纪委*：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
@@ -199,43 +174,14 @@
                                 </select>
                             </div>
                         </div>
-                        <c:if test="${params  == 1}">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">科室负责人意见：</label>
-                                <div class="col-sm-8">
-                                <textarea name="opinionDeptLeader" class="form-control"
-                                >${oaTopic.opinionDeptLeader}</textarea>
-                                </div>
+                        <hr/>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">综合办审核意见：</label>
+                            <div class="col-sm-8">
+                                <textarea name="opinion" class="form-control"></textarea>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">主管领导意见：</label>
-                                <div class="col-sm-8">
-                                <textarea name="opinionLeader" class="form-control"
-                                >${oaTopic.opinionLeader}</textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">综合办意见：</label>
-                                <div class="col-sm-8">
-                                <textarea name="opinionGeneralOffice" class="form-control"
-                                >${oaTopic.opinionGeneralOffice}</textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">财务科意见：</label>
-                                <div class="col-sm-8">
-                                <textarea name="opinionFinanceOffice" class="form-control"
-                                >${oaTopic.opinionFinanceOffice}</textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">纪委意见：</label>
-                                <div class="col-sm-8">
-                                <textarea name="opinionDisciplineOffice" class="form-control"
-                                >${oaTopic.opinionDisciplineOffice}</textarea>
-                                </div>
-                            </div>
-                        </c:if>
+                        </div>
+                        <%-- </c:if>--%>
                     </t:formvalid>
                 </div>
             </div>
@@ -243,59 +189,6 @@
     </div>
 </div>
 </body>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#download").click(function () {
-            if ('${oaTopic.fileId}' != null){
-                $.get("func/upload/download?id=" + '${oaTopic.fileId}', null, function () {
 
-                })
-            }
-        });
-    });
-
-    $(function () {
-        //初始化Web Uploader
-        var uploader2 = WebUploader.create({
-            // 选完文件后，是否自动上传。
-            auto: true,
-            // swf文件路径
-            swf: 'static/webuploader/Uploader.swf',
-            // 文件接收服务端。
-            server: 'func/upload/uploadFiles?db=1',
-            // 选择文件的按钮。可选。
-            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-            pick: {
-                id: '#filePicker'
-            },
-
-            fileSizeLimit: 5 * 1024 * 1024
-
-        });
-
-
-        // 文件上传过程中创建进度条实时显示。
-        uploader2.on('uploadProgress', function (file, percentage) {
-        });
-
-        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-        uploader2.on('uploadSuccess', function (file, data) {
-            var filePath = data.attributes.filePath;
-            $("#fileList").html(file.name);
-            $("#fileId").val(filePath);
-        });
-
-        // 文件上传失败，显示上传出错。
-        uploader2.on('uploadError', function (file) {
-
-        });
-
-        // 完成上传完了，成功或者失败，先删除进度条。
-        uploader2.on('uploadComplete', function (file) {
-            qhTipSuccess('上传完成....');
-        });
-
-    });
-</script>
 </html>
 

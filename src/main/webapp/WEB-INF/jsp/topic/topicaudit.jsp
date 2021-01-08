@@ -36,6 +36,7 @@
                 <div class="ibox-content">
                     <t:formvalid action="topic/audit">
                         <input type="hidden" name="id" id="id" value="${oaTopic.id}">
+                        <input type="hidden" name="fileId" id="fileId" value="${oaTopic.fileId}">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">科室*：</label>
                             <div class="col-sm-8">

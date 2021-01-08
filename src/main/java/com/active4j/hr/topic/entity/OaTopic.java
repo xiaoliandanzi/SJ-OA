@@ -183,6 +183,14 @@ public class OaTopic {
     @TableField("CHOICE_PASS_FIVE")
     private String choicePassFive;
 
+    //历史议题 0否 1是
+    @TableField("IS_HISTORY")
+    private Integer isHistory;
+
+    //附件id
+    @TableField("FILE_ID")
+    private String fileId;
+
     //提交的审核意见
     @TableField(exist = false)
     private String opinion;
@@ -190,5 +198,13 @@ public class OaTopic {
     //提交审核结果
     @TableField(exist = false)
     private Integer isOk;
+
+    //财务科是否参与审核 1 是 2否
+    @TableField(exist = false)
+    private Integer isFO;
+
+    //纪委是否参与审核  1 是 2否
+    @TableField(exist = false)
+    private Integer isDO;
 
 }
