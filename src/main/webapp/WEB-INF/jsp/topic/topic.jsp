@@ -246,10 +246,18 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#download").click(function () {
-            if ('${oaTopic.fileId}' != null){
-                $.get("func/upload/download?id=" + '${oaTopic.fileId}', null, function () {
-
-                })
+            if ('${oaTopic.fileId}' != null) {
+                var x = new XMLHttpRequest();
+                x.open("GET", "func/upload/download?id=" + '${oaTopic.fileId}', true);
+                x.responseType = 'blob';
+                x.onload = function (e) {
+                    var url = window.URL.createObjectURL(x.response)
+                    var a = document.createElement('a');
+                    a.href = url
+                    a.download = ''
+                    a.click()
+                }
+                x.send();
             }
         });
     });

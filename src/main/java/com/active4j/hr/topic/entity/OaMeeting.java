@@ -30,24 +30,36 @@ public class OaMeeting implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "ID")
-    @TableId(value = "ID", type = IdType.AUTO)
-    private Long id;
+    @TableId(value = "ID", type = IdType.UUID)
+    private String id;
 
-    @ApiModelProperty(value = "0 未开始  1进行中 2 已结束")
+    @ApiModelProperty(value = "")
     @TableField("STATE_ID")
-    private Integer stateId;
+    private String stateId;
+
+
 
     @ApiModelProperty(value = "使用科室")
-    @TableField("DEPT_ID")
-    private String deptId;
+    @TableField("DEPT_NAME")
+    private String deptName;
 
-    @ApiModelProperty(value = "登记人ID")
-    @TableField("Registrant_ID")
-    private String registrantId;
+
+
+    @ApiModelProperty(value = "登记人")
+    @TableField("Registrant_NAME")
+    private String registrantName;
+
 
     @ApiModelProperty(value = "会议时间")
     @TableField("Meeting_Time")
-    private Date meetingTime;
+    private String meetingTime;
+
+    @ApiModelProperty(value = "会议时间")
+    @TableField("Meeting_endTime")
+    private String meetingendTime;
+
+
+
 
     @ApiModelProperty(value = "会议室ID")
     @TableField("Meeting_ID")
@@ -67,11 +79,27 @@ public class OaMeeting implements Serializable {
 
     @ApiModelProperty(value = "议题ID")
     @TableField("ISSUE_ID")
-    private Long issueId;
+    private String issueId;
 
     @ApiModelProperty(value = "备注")
     @TableField("MEMO")
     private String memo;
+
+
+
+    @ApiModelProperty(value = "参会")
+    @TableField("canhuipeo")
+    private String canhuipeo;
+
+
+    @TableField(exist = false)
+    private String  ids;
+
+
+    @TableField(exist = false)
+    private String  canHuitype;
+
+
 
     @TableField(value = "CREATE_TIME", fill = FieldFill.INSERT)
     private Date createTime;

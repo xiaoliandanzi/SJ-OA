@@ -207,4 +207,6 @@ public class OaTopic {
     @TableField(exist = false)
     private Integer isDO;
 
+    @TableField(exist = false)
+    private String  ids;
 }

@@ -663,6 +663,33 @@ function auditTopic(id, url, title, width, height, rowId) {
     });
 
 }
+//自定义弹出页面
+function popNoYT(id, url, title, width, height) {
+    parent.layer.open({
+        type : 2,
+        title : title,
+        shadeClose : true,
+        shade : 0.8,
+        area : [ width, height ],
+        content : url, // iframe的url
+        yes : function(index, layero) {
+            //确定按钮回调
+            //表单提交
+            parent.frames['layui-layer-iframe' + index].submitL();
+            // 操作结束，刷新表格
+            reloadTable(id);
+        },
+        btn2 : function(index, layero) {
+            //取消按钮回调
+
+        },
+        end: function() {
+            // 操作结束，刷新表格
+            reloadTable(id);
+        }
+    });
+
+}
 
 /************************************自定义分页栏end***************************************************/
 
