@@ -61,7 +61,7 @@
         var rowId = $('#topicAddList').jqGrid('getGridParam', 'selrow');
         var topic = {};
         if (!rowId) {
-            qhAlert('请选择要删除的议题');
+            qhAlert('请选择要取消的议题');
             return;
         }
         $.get("topic/getOne?id=" + rowId, null, function (data) {
@@ -72,8 +72,8 @@
             }
         })
         console.log(topic)
-        if (topic.isPassFive == 1) {
-            qhAlert('该议题禁止删除');
+        if (topic.isHistory == 1) {
+            qhAlert('该议题禁止取消');
             return;
         }
 

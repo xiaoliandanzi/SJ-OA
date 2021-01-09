@@ -92,7 +92,7 @@
                             </div>
                         </div>
                         <%--议题材料--%>
-                        <c:if test="${empty oaTopic.id}">
+                        <c:if test="${params != 1}">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label m-b">附件:</label>
                                 <div class="col-sm-2">
@@ -103,7 +103,7 @@
                                 </div>
                             </div>
                         </c:if>
-                        <c:if test="${not empty oaTopic.id}">
+                        <c:if test="${params  == 1}">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label m-b">附件:</label>
                                 <div class="col-sm-2">

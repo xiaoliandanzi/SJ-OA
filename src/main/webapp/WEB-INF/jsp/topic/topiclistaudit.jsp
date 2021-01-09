@@ -61,6 +61,18 @@
             qhAlert('请选择要审核的议题');
             return;
         }
+        var topic = {};
+        $.get("topic/getOne?id=" + rowId, null, function (data) {
+            if (data.success) {
+                topic = data.obj;
+            } else {
+                qhTipWarning(data.msg);
+            }
+        })
+        if (topic.isHistory == 0) {
+            qhAlert('请选择历史议题进行审核');
+            return;
+        }
         auditTopic("topicAddList", "topic/auditSecondModel?id=" + rowId, "二次审核", "60%", "80%");
     }
 
@@ -88,7 +100,6 @@
                 qhTipWarning(data.msg);
             }
         })
-        console.log(topic)
         if (topic.isPassFive == 1) {
             qhAlert('该议题禁止删除');
             return;

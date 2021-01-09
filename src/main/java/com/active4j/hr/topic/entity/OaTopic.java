@@ -208,5 +208,5 @@ public class OaTopic {
     private Integer isDO;
 
     @TableField(exist = false)
-    private String  ids;
+    private String ids;
 }
