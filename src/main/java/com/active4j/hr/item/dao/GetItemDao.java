@@ -1,6 +1,6 @@
 package com.active4j.hr.item.dao;
 
-import com.active4j.hr.item.entity.TempCardEntity;
+import com.active4j.hr.item.entity.GetItemEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -10,5 +10,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @Date: 2020/11/20/16:17
  * @Description:
  */
-public interface TempCardDao extends BaseMapper<TempCardEntity> {
+public interface GetItemDao extends BaseMapper<GetItemEntity> {
 }

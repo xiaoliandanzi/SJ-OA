@@ -23,7 +23,7 @@ import java.util.List;
 public class RequisitionedItemServiceImpl extends ServiceImpl<RequisitionedItemDao, RequisitionedItemEntity>
         implements RequisitionedItemService {
     /*
-     * 查看领用物品
+     * 查看借用物品
      * */
     public List<RequisitionedItemEntity> findBorrowItem(){
         QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<RequisitionedItemEntity>();
@@ -31,14 +31,21 @@ public class RequisitionedItemServiceImpl extends ServiceImpl<RequisitionedItemD
         return this.list(queryWrapper);
     }
     /*
-     * 查看领用物品
+     * 查看临时餐卡
      * */
     public List<RequisitionedItemEntity> findTmpCard(){
         QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<RequisitionedItemEntity>();
         queryWrapper.eq("TYPE", GlobalConstant.ITEM_TMPCARD);
         return this.list(queryWrapper);
     }
-
+    /*
+     * 查看领用物品
+     * */
+    public List<RequisitionedItemEntity> findGetItem(){
+        QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<RequisitionedItemEntity>();
+        queryWrapper.eq("TYPE", GlobalConstant.ITEM_GET);
+        return this.list(queryWrapper);
+    }
 
 
 }

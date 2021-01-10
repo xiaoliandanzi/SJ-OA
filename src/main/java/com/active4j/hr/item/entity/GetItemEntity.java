@@ -17,10 +17,10 @@ import java.util.Date;
  * @Date: 2020/11/20/11:16
  * @Description:
  */
-@TableName("OA_ITEM_TMEP_CARD")
+@TableName("oa_get_item")
 @Getter
 @Setter
-public class TempCardEntity extends BaseEntity {
+public class GetItemEntity extends BaseEntity {
 
 
     /**
@@ -28,23 +28,35 @@ public class TempCardEntity extends BaseEntity {
      */
     private static final long serialVersionUID = 5570248248147514677L;
 
-    @TableField("NUMBER")
-    @NotEmpty(message = "编号")
-    private String number;
+    /**
+     * 使用科室
+     */
+    @TableField("DEPARTMENTNAME")
+    private String departmentName;
 
-    @TableField("START_TIME")
-    private Date startTime;
+    /**
+     * 领用人
+     */
+    @TableField("USERNAME")
+    private String userName;
 
-    @TableField("END_TIME")
-    private Date endTime;
+    /**
+     * 物品名称
+     */
+    @TableField("ITEMNAME")
+    private String itemName;
 
-    @TableField("STATUS")
-    @NotEmpty(message = "状态不能为空")
-    private String status;
+    /**
+     * 数量
+     */
+    @TableField("QUANTITY")
+    private Integer quantity;
 
-    @TableField("NAME")
-    @NotEmpty(message = "使用人")
-    private String name;
+    /**
+     * 领取时间
+     */
+    @TableField("GET_DAY")
+    private Date getDay;
 
     @TableField("MEMO")
     private String memo;
