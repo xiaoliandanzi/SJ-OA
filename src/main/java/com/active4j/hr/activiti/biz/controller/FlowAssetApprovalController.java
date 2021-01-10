@@ -1,7 +1,7 @@
 package com.active4j.hr.activiti.biz.controller;
 
-import com.active4j.hr.activiti.biz.entity.FlowMessageApprovalEntity;
-import com.active4j.hr.activiti.biz.service.FlowMessageApprovalService;
+import com.active4j.hr.activiti.biz.entity.FlowAssetApprovalEntity;
+import com.active4j.hr.activiti.biz.service.FlowAssetApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
 import com.active4j.hr.activiti.entity.WorkflowMngEntity;
 import com.active4j.hr.activiti.service.WorkflowBaseService;
@@ -38,12 +38,12 @@ import java.util.Map;
 /**
  * @author xfzhang
  * @version 1.0
- * @date 2020/12/22 下午10:11
+ * @date 2021/1/10 下午7:28
  */
 @Controller
-@RequestMapping("flow/biz/messageapproval")
+@RequestMapping("flow/biz/assetapproval")
 @Slf4j
-public class FlowMessageApprovalController extends BaseController {
+public class FlowAssetApprovalController extends BaseController {
     @Autowired
     private WorkflowBaseService workflowBaseService;
 
@@ -51,7 +51,7 @@ public class FlowMessageApprovalController extends BaseController {
     private WorkflowMngService workflowMngService;
 
     @Autowired
-    private FlowMessageApprovalService flowMessageApprovalService;
+    private FlowAssetApprovalService flowAssetApprovalService;
 
     @Autowired
     private WorkflowService workflowService;
@@ -71,7 +71,7 @@ public class FlowMessageApprovalController extends BaseController {
      */
     @RequestMapping("/go")
     public ModelAndView go(String formId, String type, String workflowId, String id, HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("flow/messageapproval/apply");
+        ModelAndView view = new ModelAndView("flow/assetapproval/apply");
 
         if(StringUtils.isEmpty(formId)) {
             view = new ModelAndView("system/common/warning");
@@ -87,9 +87,9 @@ public class FlowMessageApprovalController extends BaseController {
          * 3： 审批时显示详情页面，并附带审批功能
          */
         if(StringUtils.equals("0", type)) {
-            view = new ModelAndView("flow/messageapproval/apply");
+            view = new ModelAndView("flow/assetapproval/apply");
         }else if(StringUtils.equals("1", type)) {
-            view = new ModelAndView("flow/messageapproval/applyshow");
+            view = new ModelAndView("flow/assetapproval/applyshow");
 
             //根据businessKey查询任务list
             String currentName = ShiroUtils.getSessionUserName();
@@ -107,9 +107,9 @@ public class FlowMessageApprovalController extends BaseController {
             String currentName = ShiroUtils.getSessionUserName();
             List<Task> lstTasks = workflowService.findTaskListByBusinessKey(id, currentName);
             view.addObject("lstTasks", lstTasks);
-            view.addObject("action", "flow/biz/messageapproval/doApprove");
+            view.addObject("action", "flow/biz/assetapproval/doApprove");
         }else if(StringUtils.equals("3", type)) {
-            view = new ModelAndView("flow/messageapproval/applyshow");
+            view = new ModelAndView("flow/assetapproval/applyshow");
 
             //根据businessKey查询任务list
             String currentName =ShiroUtils.getSessionUserName();
@@ -121,7 +121,7 @@ public class FlowMessageApprovalController extends BaseController {
             view.addObject("lstComments", lstComments);
             view.addObject("currentName", currentName);
             view.addObject("show", "1");
-            view.addObject("action", "flow/biz/messageapproval/doApprove");
+            view.addObject("action", "flow/biz/assetapproval/doApprove");
         }
 
 
@@ -130,37 +130,29 @@ public class FlowMessageApprovalController extends BaseController {
             WorkflowBaseEntity base = workflowBaseService.getById(id);
             view.addObject("base", base);
 
-            FlowMessageApprovalEntity biz = flowMessageApprovalService.getById(base.getBusinessId());
+            FlowAssetApprovalEntity biz = flowAssetApprovalService.getById(base.getBusinessId());
             view.addObject("biz", biz);
         } else {
-
+            FlowAssetApprovalEntity biz = new FlowAssetApprovalEntity();
             //获取当前用户id
             String userId = ShiroUtils.getSessionUserId();
             //获取当前用户个人资料
             SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
 
+
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
             WorkflowBaseEntity base = new WorkflowBaseEntity();
             base.setProjectNo(String.format("%s-%s", user.getUserName(), DateUtils.date2Str(DateUtils.getNow(), sdf)));
-            base.setName("信息发布");
+            base.setName("资产移交申请");
+
             view.addObject("base", base);
 
+            view.addObject("base", base);
 
-         /*   SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
-            WorkflowBaseEntity base = new WorkflowBaseEntity();
-            base.setProjectNo(String.format("%s-%s", user.getUserName(), DateUtils.date2Str(DateUtils.getNow(), sdf)));
-            base.setName("信息发布");
-            view.addObject("base", base);*/
-
-            FlowMessageApprovalEntity biz = new FlowMessageApprovalEntity();
-            biz.setPublicMan(user.getRealName());
+            biz.setUserName(user.getRealName());
             biz.setDept(user.getDeptName());
             view.addObject("biz", biz);
         }
-
-        /*//查询数据字典
-        List<SysDicValueEntity> types = SystemUtils.getDictionaryLst(SysConstant.DIC_MESSAGE_TYPE);
-        request.setAttribute("types", types);*/
 
         view.addObject("workflowId", workflowId);
         return view;
@@ -250,20 +242,21 @@ public class FlowMessageApprovalController extends BaseController {
             if (pi == null) {
                 // 更新请假单表的状态从2变成3（审核中-->审核完成）
                 workflowBaseEntity.setStatus("3");
-                FlowMessageApprovalEntity flowMessageApprovalEntity = flowMessageApprovalService.getById(workflowBaseEntity.getBusinessId());
-                flowMessageApprovalEntity.setPublicTime(DateUtils.getDate());
-                flowMessageApprovalEntity.setApplyStatus(1);
-                flowMessageApprovalService.saveOrUpdate(flowMessageApprovalEntity);
+                FlowAssetApprovalEntity flowAssetApprovalEntity = flowAssetApprovalService.getById(workflowBaseEntity.getBusinessId());
+                flowAssetApprovalEntity.setApplyStatus(1);
+                flowAssetApprovalService.saveOrUpdate(flowAssetApprovalEntity);
             } else {
                 workflowBaseEntity.setStatus("2");
-                FlowMessageApprovalEntity flowMessageApprovalEntity = flowMessageApprovalService.getById(workflowBaseEntity.getBusinessId());
-                flowMessageApprovalEntity.setApplyStatus(0);
-                flowMessageApprovalService.saveOrUpdate(flowMessageApprovalEntity);
+                FlowAssetApprovalEntity flowAssetApprovalEntity = flowAssetApprovalService.getById(workflowBaseEntity.getBusinessId());
+                flowAssetApprovalEntity.setApplyStatus(0);
+                flowAssetApprovalService.saveOrUpdate(flowAssetApprovalEntity);
             }
             workflowBaseService.saveOrUpdate(workflowBaseEntity);
             log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
         }
     }
+
+
 
     /**
      * 保存方法
@@ -275,42 +268,46 @@ public class FlowMessageApprovalController extends BaseController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public AjaxJson save(WorkflowBaseEntity workflowBaseEntity, FlowMessageApprovalEntity flowMessageApprovalEntity,
+    public AjaxJson save(WorkflowBaseEntity workflowBaseEntity, FlowAssetApprovalEntity flowAssetApprovalEntity,
                          String optType, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try {
-//            if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
-//                return j;
-//            }
-
             workflowBaseEntity.setLevel("0");
-            if(null == flowMessageApprovalEntity.getTitle()) {
+
+            if(StringUtils.isBlank(workflowBaseEntity.getWorkflowId())) {
                 j.setSuccess(false);
-                j.setMsg("标题为空");
+                j.setMsg("流程参数不能为空");
                 return j;
             }
 
-            if(null == flowMessageApprovalEntity.getContent()) {
+
+            if(null == flowAssetApprovalEntity.getAddress()) {
                 j.setSuccess(false);
-                j.setMsg("内容为空");
+                j.setMsg("移交地址为空");
                 return j;
             }
 
-            if(flowMessageApprovalEntity.getContent().length() > 1999){
+            if(-1 == flowAssetApprovalEntity.getAmount()) {
                 j.setSuccess(false);
-                j.setMsg("内容过长，请以附件上传");
+                j.setMsg("价格为空");
                 return j;
             }
 
-            if(null == flowMessageApprovalEntity.getMessageType()) {
+            if(null == flowAssetApprovalEntity.getAssetName()) {
                 j.setSuccess(false);
-                j.setMsg("信息类型不能为空");
+                j.setMsg("资产名称为空");
                 return j;
             }
 
-            if(null == flowMessageApprovalEntity.getAttachment()) {
+            if(null == flowAssetApprovalEntity.getModel()) {
                 j.setSuccess(false);
-                j.setMsg("附件不能为空!");
+                j.setMsg("资产类型为空");
+                return j;
+            }
+
+            if(null == flowAssetApprovalEntity.getQuantity()) {
+                j.setSuccess(false);
+                j.setMsg("数量不能为空");
                 return j;
             }
 
@@ -322,7 +319,7 @@ public class FlowMessageApprovalController extends BaseController {
             }
 
             if(StringUtils.equals(optType, "1")) {
-                flowMessageApprovalEntity.setApplyStatus(0);
+                flowAssetApprovalEntity.setApplyStatus(0);
                 //直接申请流程
                 if(StringUtils.isBlank(workflowBaseEntity.getId())) {
                     workflowBaseEntity.setApplyDate(DateUtils.getDate());
@@ -332,9 +329,9 @@ public class FlowMessageApprovalController extends BaseController {
                     workflowBaseEntity.setWorkflowId(workflow.getId());
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
                     workflowBaseEntity.setStatus("1"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
-                    workflowBaseEntity.setName("信息发布-"+flowMessageApprovalEntity.getTitle());
+                    workflowBaseEntity.setName("固定资产移交-"+flowAssetApprovalEntity.getAssetName());
                     //保存业务数据
-                    flowMessageApprovalService.saveNewMessage(workflowBaseEntity, flowMessageApprovalEntity);
+                    flowAssetApprovalService.saveNewAsset(workflowBaseEntity, flowAssetApprovalEntity);
 
                     //启动流程
                     //赋值流程变量
@@ -344,11 +341,11 @@ public class FlowMessageApprovalController extends BaseController {
                     WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
                     MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
 
-                    FlowMessageApprovalEntity biz = flowMessageApprovalService.getById(base.getBusinessId());
-                    MyBeanUtils.copyBeanNotNull2Bean(flowMessageApprovalEntity, biz);
+                    FlowAssetApprovalEntity biz = flowAssetApprovalService.getById(base.getBusinessId());
+                    MyBeanUtils.copyBeanNotNull2Bean(flowAssetApprovalEntity, biz);
                     //已申请
                     base.setStatus("1");
-                    flowMessageApprovalService.saveUpdate(base, biz);
+                    flowAssetApprovalService.saveUpdate(base, biz);
 
                     //启动流程
                     //赋值流程变量
@@ -368,17 +365,17 @@ public class FlowMessageApprovalController extends BaseController {
                     workflowBaseEntity.setWorkflowId(workflow.getId());
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
                     workflowBaseEntity.setStatus("0"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
-                    flowMessageApprovalEntity.setApplyStatus(3); //文件状态 3：草稿中
-                    workflowBaseEntity.setName("信息发布-"+flowMessageApprovalEntity.getTitle());
-                    flowMessageApprovalService.saveNewMessage(workflowBaseEntity, flowMessageApprovalEntity);
+                    flowAssetApprovalEntity.setApplyStatus(3); //文件状态 3：草稿中
+                    workflowBaseEntity.setName("固定资产移交-"+flowAssetApprovalEntity.getAssetName());
+                    flowAssetApprovalService.saveNewAsset(workflowBaseEntity, flowAssetApprovalEntity);
                 }else {
                     WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
                     MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
 
-                    FlowMessageApprovalEntity biz = flowMessageApprovalService.getById(base.getBusinessId());
-                    MyBeanUtils.copyBeanNotNull2Bean(flowMessageApprovalEntity, biz);
+                    FlowAssetApprovalEntity biz = flowAssetApprovalService.getById(base.getBusinessId());
+                    MyBeanUtils.copyBeanNotNull2Bean(flowAssetApprovalEntity, biz);
 
-                    flowMessageApprovalService.saveUpdate(base, biz);
+                    flowAssetApprovalService.saveUpdate(base, biz);
                 }
             }
 
@@ -386,7 +383,7 @@ public class FlowMessageApprovalController extends BaseController {
         }catch(Exception e) {
             j.setSuccess(false);
             j.setMsg("申请流程保存失败，错误信息:" + e.getMessage());
-            log.error("信息审批流程保存失败，错误信息:{}", e);
+            log.error("固定资产移交流程保存失败，错误信息:{}", e);
         }
 
         return j;
@@ -398,44 +395,48 @@ public class FlowMessageApprovalController extends BaseController {
      */
     @RequestMapping("/reSubmit")
     @ResponseBody
-    public AjaxJson reSubmit(WorkflowBaseEntity workflowBaseEntity, FlowMessageApprovalEntity flowMessageApprovalEntity, String taskId, HttpServletRequest request) {
+    public AjaxJson reSubmit(WorkflowBaseEntity workflowBaseEntity, FlowAssetApprovalEntity flowAssetApprovalEntity, String taskId, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try{
 
-            if(null == flowMessageApprovalEntity.getTitle()) {
+            if(null == flowAssetApprovalEntity.getAddress()) {
                 j.setSuccess(false);
-                j.setMsg("标题为空");
+                j.setMsg("移交地址为空");
                 return j;
             }
 
-            if(null == flowMessageApprovalEntity.getContent()) {
+            if(-1 == flowAssetApprovalEntity.getAmount()) {
                 j.setSuccess(false);
-                j.setMsg("内容为空");
+                j.setMsg("价格为空");
                 return j;
             }
 
-            if(null == flowMessageApprovalEntity.getMessageType()) {
+            if(null == flowAssetApprovalEntity.getAssetName()) {
                 j.setSuccess(false);
-                j.setMsg("信息类型不能为空");
+                j.setMsg("资产名称为空");
                 return j;
             }
 
-            if(null == flowMessageApprovalEntity.getAttachment()) {
+            if(null == flowAssetApprovalEntity.getModel()) {
                 j.setSuccess(false);
-                j.setMsg("附件不能为空!");
+                j.setMsg("资产类型为空");
+                return j;
+            }
+
+            if(null == flowAssetApprovalEntity.getQuantity()) {
+                j.setSuccess(false);
+                j.setMsg("数量不能为空");
                 return j;
             }
 
             WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
             MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
 
-            FlowMessageApprovalEntity biz = flowMessageApprovalService.getById(base.getBusinessId());
-            biz.setAttachment(flowMessageApprovalEntity.getAttachment());
-            biz.setContent(flowMessageApprovalEntity.getContent());
-            biz.setTitle(flowMessageApprovalEntity.getTitle());
+            FlowAssetApprovalEntity biz = flowAssetApprovalService.getById(base.getBusinessId());
+            biz.setCommit(flowAssetApprovalEntity.getCommit());
             //已申请
             base.setStatus("1");
-            flowMessageApprovalService.saveUpdate(base, biz);
+            flowAssetApprovalService.saveUpdate(base, biz);
 
 
             Map<String, Object> map = new HashMap<String, Object>();
@@ -465,7 +466,7 @@ public class FlowMessageApprovalController extends BaseController {
         AjaxJson j = new AjaxJson();
         try {
             if(StringUtils.isNotBlank(businessId)) {
-                flowMessageApprovalService.removeById(businessId);
+                flowAssetApprovalService.removeById(businessId);
             }
         }catch(Exception e) {
             j.setSuccess(false);
@@ -475,4 +476,5 @@ public class FlowMessageApprovalController extends BaseController {
 
         return j;
     }
+
 }
