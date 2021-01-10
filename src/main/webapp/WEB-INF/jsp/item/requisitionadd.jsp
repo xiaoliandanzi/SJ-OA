@@ -34,27 +34,51 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">种类*：</label>
+                            <label class="col-sm-3 control-label">物品类型*：</label>
                             <div class="col-sm-8">
-                                <input id="type" name="type" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${item.type }">
+                                <t:dictSelect name="type" type="select" typeGroupCode="itemkind" defaultVal="${item.type}"></t:dictSelect>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">品牌*：</label>
+                            <label class="col-sm-3 control-label">编号：</label>
                             <div class="col-sm-8">
-                                <input id="board" name="board" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${item.board }">
+                                <input id="itemId" name="itemId" minlength="1" maxlength="30" type="text" class="form-control"  value="${item.itemId }">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">数量：</label>
+                            <label class="col-sm-3 control-label">规格/型号：</label>
+                            <div class="col-sm-8">
+                                <input id="model" name="model" minlength="1" maxlength="30" type="text" class="form-control" value="${item.model }">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">数量*：</label>
                             <div class="col-sm-8">
                                 <input id="quantity" name="quantity" type="digits" class="form-control" required="" value="${item.quantity }">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">状态：</label>
+                            <label class="col-sm-3 control-label">低量预警*：</label>
                             <div class="col-sm-8">
-                                <t:dictSelect name="status" type="select" typeGroupCode="itemstatus" defaultVal="${item.status}"></t:dictSelect>
+                                <input id="minQuantity" name="minQuantity" type="digits" class="form-control" required="" value="${item.minQuantity }">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">数量单位*：</label>
+                            <div class="col-sm-8">
+                                <input id="unit" name="unit" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${item.unit }">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">存放地点*：</label>
+                            <div class="col-sm-8">
+                                <input id="location" name="location" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${item.location }">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">保管人*：</label>
+                            <div class="col-sm-8">
+                                <input id="keeper" name="keeper" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${item.keeper }">
                             </div>
                         </div>
                         <div class="form-group">
@@ -63,6 +87,11 @@
                                 <textarea id="memo" name="memo" class="form-control" >${item.memo}</textarea>
                             </div>
                         </div>
+<%--                        <label class="col-sm-3 control-label">状态：</label>--%>
+<%--                        <div class="col-sm-8">--%>
+<%--                            <t:dictSelect name="status" type="select" typeGroupCode="itemstatus" defaultVal="${item.status}"></t:dictSelect>--%>
+<%--                        </div>--%>
+                </div>
                     </t:formvalid>
                 </div>
             </div>

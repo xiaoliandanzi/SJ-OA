@@ -1,0 +1,56 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: jinxin
+  Date: 2021/1/7
+  Time: 22:54
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<div class="form-group">
+    <label class="col-sm-3 control-label">借用科室*：</label>
+    <div class="col-sm-5">
+        <textarea id="departmentName" name="departmentName" class="form-control">${biz.departmentName }</textarea>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">借用人*：</label>
+    <div class="col-sm-5">
+        <textarea id="userName" name="userName" class="form-control">${biz.userName }</textarea>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">餐卡类型*：</label>
+    <div class="col-sm-5">
+        <select id="cardName" name="cardName" class="form-control" required="" >
+            <c:forEach items="${lstItems }" var="c">
+                <option value="${c.name }" <c:if test="${biz.cardName == c.name }">selected="selected"</c:if>>${c.name }</option>
+            </c:forEach>
+        </select>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">借用数量*：</label>
+    <div class="col-sm-5">
+        <input id="quantity" name="quantity" type="number" class="form-control" required="" value="${biz.quantity }">
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-3 control-label m-b">领用日期*：</label>
+    <div class="col-sm-4 m-b">
+        <input class="laydate-icon form-control layer-date" id="useDay" name="useDay"  value='<fmt:formatDate value="${biz.useDay }" type="both" pattern="yyyy-MM-dd"/>'>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-3 control-label">借用事由*：</label>
+    <div class="col-sm-5">
+        <textarea id="reason" name="reason" class="form-control">${biz.reason }</textarea>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">备注：</label>
+    <div class="col-sm-5">
+        <textarea id="commit" name="commit" class="form-control">${biz.commit }</textarea>
+    </div>
+</div>

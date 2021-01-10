@@ -94,6 +94,13 @@ public class GlobalConstant {
 	public static final String ITEM_REQUISITION_STATUS_STOP = "0"; //停用
 
 	/***
+	 * ITEM kind
+	 */
+	public static final String ITEM_BORROW = "1"; //借用物品
+	public static final String ITEM_GET = "0"; //领用物品
+	public static final String ITEM_TMPCARD = "2"; //临时餐卡
+
+	/***
 	 * OA CAR
 	 */
 	public static final String OA_CAR_STATUS_NORMAL = "1"; //正常

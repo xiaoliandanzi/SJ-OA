@@ -1,9 +1,7 @@
 package com.active4j.hr.activiti.biz.controller;
 
-import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
-import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
-import com.active4j.hr.activiti.biz.service.FlowOfficalSealApprovalService;
-import com.active4j.hr.activiti.biz.service.FlowPaperApprovalService;
+import com.active4j.hr.activiti.biz.entity.FlowItemBorrowApprovalEntity;
+import com.active4j.hr.activiti.biz.service.FlowItemBorrowApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
 import com.active4j.hr.activiti.entity.WorkflowFormEntity;
 import com.active4j.hr.activiti.entity.WorkflowMngEntity;
@@ -17,9 +15,8 @@ import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
-import com.active4j.hr.officalSeal.entity.OaOfficalSealEntity;
-import com.active4j.hr.officalSeal.service.OaOfficalSealBookService;
-import com.active4j.hr.officalSeal.service.OaOfficalSealService;
+import com.active4j.hr.item.entity.RequisitionedItemEntity;
+import com.active4j.hr.item.service.RequisitionedItemService;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -46,13 +43,13 @@ import java.util.Map;
  * Created with IntelliJ IDEA.
  *
  * @Auther: jinxin
- * @Date: 2020/12/14/23:50
+ * @Date: 2021/01/07/23:50
  * @Description:
  */
 @Controller
-@RequestMapping("flow/biz/sealapproval")
+@RequestMapping("flow/biz/itemborrow")
 @Slf4j
-public class FlowOfficalSealApprovalController  extends BaseController {
+public class FlowItemBorrowApprovalController extends BaseController {
     @Autowired
     private WorkflowBaseService workflowBaseService;
 
@@ -60,13 +57,10 @@ public class FlowOfficalSealApprovalController  extends BaseController {
     private WorkflowMngService workflowMngService;
 
     @Autowired
-    private FlowOfficalSealApprovalService flowOfficalSealApprovalService;
-
-    @Autowired
     private WorkflowService workflowService;
 
     @Autowired
-    private OaOfficalSealService oaOfficalSealService;
+    private RequisitionedItemService requisitionedItemService;
 
     @Autowired
     private TaskService taskService;
@@ -80,6 +74,10 @@ public class FlowOfficalSealApprovalController  extends BaseController {
     @Autowired
     private WorkflowFormService workflowFormService;
 
+    @Autowired
+    private FlowItemBorrowApprovalService flowItemBorrowApprovalService;
+
+
 
     /**
      * 跳转到表单页面
@@ -89,7 +87,7 @@ public class FlowOfficalSealApprovalController  extends BaseController {
      */
     @RequestMapping("/go")
     public ModelAndView go(String formId, String type, String workflowId, String id, HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("flow/sealapproval/apply");
+        ModelAndView view = new ModelAndView("flow/item/borrowapply");
 
 
         //获取当前用户id
@@ -97,9 +95,9 @@ public class FlowOfficalSealApprovalController  extends BaseController {
         //获取当前用户个人资料
         SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
 
-//        //查询可用的公章
-//        List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findNormalSeal();
-//        view.addObject("lstSeals", lstSeals);
+        //查询可借用物品
+        List<RequisitionedItemEntity> lstItems = requisitionedItemService.findBorrowItem();
+        view.addObject("lstItems", lstItems);
 
         if(StringUtils.isEmpty(formId)) {
             view = new ModelAndView("system/common/warning");
@@ -115,9 +113,9 @@ public class FlowOfficalSealApprovalController  extends BaseController {
          * 3： 审批时显示详情页面，并附带审批功能
          */
         if(StringUtils.equals("0", type)) {
-            view = new ModelAndView("flow/sealapproval/apply");
+            view = new ModelAndView("flow/item/borrowapply");
         }else if(StringUtils.equals("1", type)) {
-            view = new ModelAndView("flow/sealapproval/applyshow");
+            view = new ModelAndView("flow/item/borrowapplyshow");
 
             //根据businessKey查询任务list
             String currentName = ShiroUtils.getSessionUserName();
@@ -129,15 +127,15 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             view.addObject("show", "0");
 
         }else if(StringUtils.equals("2", type)) {
-            view = new ModelAndView("officalSeal/officalSealApprove");
+            view = new ModelAndView("item/itemTmpCardApprove");
 
             //根据businessKey查询任务list
             String currentName = ShiroUtils.getSessionUserName();
             List<Task> lstTasks = workflowService.findTaskListByBusinessKey(id, currentName);
             view.addObject("lstTasks", lstTasks);
-            view.addObject("action", "flow/biz/sealapproval/doApprove");
+            view.addObject("action", "flow/biz/itemborrow/doApprove");
         }else if(StringUtils.equals("3", type)) {
-            view = new ModelAndView("flow/sealapproval/applyshow");
+            view = new ModelAndView("flow/item/borrowapplyshow");
 
             //根据businessKey查询任务list
             String currentName =ShiroUtils.getSessionUserName();
@@ -149,7 +147,7 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             view.addObject("lstComments", lstComments);
             view.addObject("currentName", currentName);
             view.addObject("show", "1");
-            view.addObject("action", "flow/biz/sealapproval/doApprove");
+            view.addObject("action", "flow/biz/itemborrow/doApprove");
         }
 
 
@@ -158,15 +156,15 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             WorkflowBaseEntity base = workflowBaseService.getById(id);
             view.addObject("base", base);
 
-            FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
+            FlowItemBorrowApprovalEntity biz = flowItemBorrowApprovalService.getById(base.getBusinessId());
             view.addObject("biz", biz);
         } else {
-            FlowOfficalSealApprovalEntity biz = new FlowOfficalSealApprovalEntity();
+            FlowItemBorrowApprovalEntity biz = new FlowItemBorrowApprovalEntity();
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
             WorkflowBaseEntity base = new WorkflowBaseEntity();
             base.setProjectNo(String.format("%s-%s", user.getUserName(), DateUtils.date2Str(DateUtils.getNow(), sdf)));
-            base.setName("公章&物品申请");
+            base.setName("物品借用申请");
             view.addObject("base", base);
 
             biz.setUserName(user.getRealName());
@@ -192,7 +190,7 @@ public class FlowOfficalSealApprovalController  extends BaseController {
      */
     @RequestMapping("/doApprove")
     @ResponseBody
-    public AjaxJson doApprove(String id, String taskId, String comment,String result, HttpServletRequest request){
+    public AjaxJson doApprove(String id, String taskId, String comment, String result, HttpServletRequest request){
         AjaxJson j = new AjaxJson();
 
         try{
@@ -251,9 +249,9 @@ public class FlowOfficalSealApprovalController  extends BaseController {
         WorkflowBaseEntity workflowBaseEntity = workflowBaseService.getById(businessKey);
         if (null != workflowBaseEntity){
             workflowBaseEntity.setStatus("3");
-            FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity = flowOfficalSealApprovalService.getById(workflowBaseEntity.getBusinessId());
-            flowOfficalSealApprovalEntity.setApplyStatus(1);
-            flowOfficalSealApprovalService.saveOrUpdate(flowOfficalSealApprovalEntity);
+            FlowItemBorrowApprovalEntity flowItemBorrowApprovalEntity = flowItemBorrowApprovalService.getById(workflowBaseEntity.getBusinessId());
+            flowItemBorrowApprovalEntity.setApplyStatus(1);
+            flowItemBorrowApprovalService.saveOrUpdate(flowItemBorrowApprovalEntity);
         }
         workflowBaseService.saveOrUpdate(workflowBaseEntity);
         log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
@@ -296,14 +294,14 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             if (pi == null) {
                 // 更新请假单表的状态从2变成3（审核中-->审核完成）
                 workflowBaseEntity.setStatus("3");
-                FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity = flowOfficalSealApprovalService.getById(workflowBaseEntity.getBusinessId());
-                flowOfficalSealApprovalEntity.setApplyStatus(1);
-                flowOfficalSealApprovalService.saveOrUpdate(flowOfficalSealApprovalEntity);
+                FlowItemBorrowApprovalEntity flowItemBorrowApprovalEntity = flowItemBorrowApprovalService.getById(workflowBaseEntity.getBusinessId());
+                flowItemBorrowApprovalEntity.setApplyStatus(1);
+                flowItemBorrowApprovalService.saveOrUpdate(flowItemBorrowApprovalEntity);
             } else {
                 workflowBaseEntity.setStatus("2");
-                FlowOfficalSealApprovalEntity flowOfficalSealAfpprovalEntity = flowOfficalSealApprovalService.getById(workflowBaseEntity.getBusinessId());
-                flowOfficalSealAfpprovalEntity.setApplyStatus(0);
-                flowOfficalSealApprovalService.saveOrUpdate(flowOfficalSealAfpprovalEntity);
+                FlowItemBorrowApprovalEntity flowItemBorrowApprovalEntity = flowItemBorrowApprovalService.getById(workflowBaseEntity.getBusinessId());
+                flowItemBorrowApprovalEntity.setApplyStatus(0);
+                flowItemBorrowApprovalService.saveOrUpdate(flowItemBorrowApprovalEntity);
             }
             workflowBaseService.saveOrUpdate(workflowBaseEntity);
             log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
@@ -312,7 +310,7 @@ public class FlowOfficalSealApprovalController  extends BaseController {
 
     /**
      * 保存方法
-     * @param flowOfficalSealApprovalEntity
+     * @param flowItemBorrowApprovalEntity
      * @param optType  0 : 保存草稿   1:直接申请
      * @param flowId   流程管理中心ID
      * @param request
@@ -320,7 +318,7 @@ public class FlowOfficalSealApprovalController  extends BaseController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public AjaxJson save(WorkflowBaseEntity workflowBaseEntity, FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity, String optType, HttpServletRequest request) {
+    public AjaxJson save(WorkflowBaseEntity workflowBaseEntity, FlowItemBorrowApprovalEntity flowItemBorrowApprovalEntity, String optType, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try {
             if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
@@ -332,37 +330,41 @@ public class FlowOfficalSealApprovalController  extends BaseController {
             //获取当前用户个人资料
             SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
             String departMentname = user.getDeptName();
-            List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findDepartmentSeal(departMentname);
-            if(!lstSeals.get(0).getStatus().equalsIgnoreCase("0")){
-                j.setSuccess(false);
-                j.setMsg("您所在科室已被限制公章申请，请科室及时提交公章签字表");
-                return j;
-            }
 
             workflowBaseEntity.setLevel("0");
 
-            if(null == flowOfficalSealApprovalEntity.getUseUnit()) {
+            if(null == flowItemBorrowApprovalEntity.getItemName()) {
                 j.setSuccess(false);
-                j.setMsg("主送单位不能为空");
+                j.setMsg("物品名称不能为空");
                 return j;
             }
 
-            if(null == flowOfficalSealApprovalEntity.getDepartmentName()) {
+            if(null == flowItemBorrowApprovalEntity.getQuantity()) {
                 j.setSuccess(false);
-                j.setMsg("科室不能为空");
+                j.setMsg("借用数量不能为空");
                 return j;
             }
 
-            if(null == flowOfficalSealApprovalEntity.getUseDay()) {
+            if(null == flowItemBorrowApprovalEntity.getDepartmentName()) {
+                j.setSuccess(false);
+                j.setMsg("借用科室不能为空");
+                return j;
+            }
+
+            if(null == flowItemBorrowApprovalEntity.getUseDay()) {
                 j.setSuccess(false);
                 j.setMsg("使用日期不能为空");
                 return j;
             }
-
-
-            if(StringUtils.isBlank(flowOfficalSealApprovalEntity.getContent())) {
+            if(null == flowItemBorrowApprovalEntity.getReturnDay()) {
                 j.setSuccess(false);
-                j.setMsg("内容不能为空");
+                j.setMsg("归还日期不能为空");
+                return j;
+            }
+
+            if(StringUtils.isBlank(flowItemBorrowApprovalEntity.getReason())) {
+                j.setSuccess(false);
+                j.setMsg("借用事由不能为空");
                 return j;
             }
 
@@ -384,7 +386,7 @@ public class FlowOfficalSealApprovalController  extends BaseController {
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
                     workflowBaseEntity.setStatus("1"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
                     //保存业务数据
-                    flowOfficalSealApprovalService.saveNewSeal(workflowBaseEntity, flowOfficalSealApprovalEntity);
+                    flowItemBorrowApprovalService.saveNewItemBorrow(workflowBaseEntity, flowItemBorrowApprovalEntity);
 
                     //启动流程
                     //赋值流程变量
@@ -394,11 +396,11 @@ public class FlowOfficalSealApprovalController  extends BaseController {
                     WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
                     MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
 
-                    FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
-                    MyBeanUtils.copyBeanNotNull2Bean(flowOfficalSealApprovalService, biz);
+                    FlowItemBorrowApprovalEntity biz = flowItemBorrowApprovalService.getById(base.getBusinessId());
+                    MyBeanUtils.copyBeanNotNull2Bean(flowItemBorrowApprovalService, biz);
                     //已申请
                     base.setStatus("1");
-                    flowOfficalSealApprovalService.saveUpdate(base, biz);
+                    flowItemBorrowApprovalService.saveUpdate(base, biz);
 
                     //启动流程
                     //赋值流程变量
@@ -419,15 +421,15 @@ public class FlowOfficalSealApprovalController  extends BaseController {
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
                     workflowBaseEntity.setStatus("0"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
 
-                    flowOfficalSealApprovalService.saveNewSeal(workflowBaseEntity, flowOfficalSealApprovalEntity);
+                    flowItemBorrowApprovalService.saveNewItemBorrow(workflowBaseEntity, flowItemBorrowApprovalEntity);
                 }else {
                     WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
                     MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
 
-                    FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
-                    MyBeanUtils.copyBeanNotNull2Bean(flowOfficalSealApprovalEntity, biz);
+                    FlowItemBorrowApprovalEntity biz = flowItemBorrowApprovalService.getById(base.getBusinessId());
+                    MyBeanUtils.copyBeanNotNull2Bean(flowItemBorrowApprovalEntity, biz);
 
-                    flowOfficalSealApprovalService.saveUpdate(base, biz);
+                    flowItemBorrowApprovalService.saveUpdate(base, biz);
                 }
             }
 
@@ -447,43 +449,54 @@ public class FlowOfficalSealApprovalController  extends BaseController {
      */
     @RequestMapping("/reSubmit")
     @ResponseBody
-    public AjaxJson reSubmit(WorkflowBaseEntity workflowBaseEntity, FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity, String taskId, HttpServletRequest request) {
+    public AjaxJson reSubmit(WorkflowBaseEntity workflowBaseEntity, FlowItemBorrowApprovalEntity flowItemBorrowApprovalEntity, String taskId, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try{
-            if(null == flowOfficalSealApprovalEntity.getUseUnit()) {
+            if(null == flowItemBorrowApprovalEntity.getItemName()) {
                 j.setSuccess(false);
-                j.setMsg("主送单位不能为空");
+                j.setMsg("物品名称不能为空");
                 return j;
             }
 
-            if(null == flowOfficalSealApprovalEntity.getDepartmentName()) {
+            if(null == flowItemBorrowApprovalEntity.getQuantity()) {
                 j.setSuccess(false);
-                j.setMsg("科室不能为空");
+                j.setMsg("借用数量不能为空");
                 return j;
             }
 
-            if(null == flowOfficalSealApprovalEntity.getUseDay()) {
+            if(null == flowItemBorrowApprovalEntity.getDepartmentName()) {
+                j.setSuccess(false);
+                j.setMsg("借用科室不能为空");
+                return j;
+            }
+
+            if(null == flowItemBorrowApprovalEntity.getUseDay()) {
                 j.setSuccess(false);
                 j.setMsg("使用日期不能为空");
                 return j;
             }
-
-            if(StringUtils.isBlank(flowOfficalSealApprovalEntity.getContent())) {
+            if(null == flowItemBorrowApprovalEntity.getReturnDay()) {
                 j.setSuccess(false);
-                j.setMsg("内容不能为空");
+                j.setMsg("归还日期不能为空");
+                return j;
+            }
+
+            if(StringUtils.isBlank(flowItemBorrowApprovalEntity.getReason())) {
+                j.setSuccess(false);
+                j.setMsg("借用事由不能为空");
                 return j;
             }
 
             WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
             MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
 
-            FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
-            biz.setDepartmentName(flowOfficalSealApprovalEntity.getDepartmentName());
-            biz.setCommit(flowOfficalSealApprovalEntity.getCommit());
-            biz.setUseUnit(flowOfficalSealApprovalEntity.getUseUnit());
+            FlowItemBorrowApprovalEntity biz = flowItemBorrowApprovalService.getById(base.getBusinessId());
+            biz.setDepartmentName(flowItemBorrowApprovalEntity.getDepartmentName());
+            biz.setCommit(flowItemBorrowApprovalEntity.getCommit());
+            biz.setDepartmentName(flowItemBorrowApprovalEntity.getDepartmentName());
             //已申请
             base.setStatus("1");
-            flowOfficalSealApprovalService.saveUpdate(base, biz);
+            flowItemBorrowApprovalService.saveUpdate(base, biz);
 
 
             Map<String, Object> map = new HashMap<String, Object>();
@@ -513,7 +526,7 @@ public class FlowOfficalSealApprovalController  extends BaseController {
         AjaxJson j = new AjaxJson();
         try {
             if(StringUtils.isNotBlank(businessId)) {
-                flowOfficalSealApprovalService.removeById(businessId);
+                flowItemBorrowApprovalService.removeById(businessId);
             }
         }catch(Exception e) {
             j.setSuccess(false);

@@ -1,4 +1,12 @@
-package com.active4j.hr.officalSeal.controller;
+/**
+ * Created with IntelliJ IDEA.
+ *
+ * @Auther: jinxin
+ * @Date: 2021/01/07/23:56
+ * @Description:
+ */
+
+package com.active4j.hr.item.controller;
 
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
 import com.active4j.hr.activiti.entity.WorkflowCategoryEntity;
@@ -27,18 +35,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- *
- * @Auther: jinxin
- * @Date: 2020/11/19/18:56
- * @Description:
- */
 @Controller
-@RequestMapping("officalSeal/audit")
+@RequestMapping("item/audit")
 @Slf4j
-public class OfficalSealAuditController extends BaseController {
-
+public class ItemAuditController extends BaseController {
     @Autowired
     private WorkflowCategoryService workflowCategoryService;
 
@@ -46,39 +46,31 @@ public class OfficalSealAuditController extends BaseController {
     private WorkflowService workflowService;
 
     /**
-     * @param request
-     * @return
-     */
-    @RequestMapping("/show")
-    public ModelAndView show(HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("officalSeal/officalSealAudit");
-        return view;
-    }
-
-    /**
-     * 跳转到待审批公章页面
+     * 跳转到待审批物品页面
      *
      * @param req
      * @return
      */
     @RequestMapping("/list")
     public ModelAndView list(HttpServletRequest req) {
-        ModelAndView view = new ModelAndView("officalSeal/officalSealAudit");
+        ModelAndView view = new ModelAndView("item/itemAudit");
 
         // 获取流程类别数据
         List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
-        List<WorkflowCategoryEntity> lstSeal = new ArrayList<WorkflowCategoryEntity>();
+        List<WorkflowCategoryEntity> lstItem = new ArrayList<WorkflowCategoryEntity>();
         int size = lstCatogorys.size();
         for (int i = size - 1; i >= 0; i--) {
             WorkflowCategoryEntity catogorys = lstCatogorys.get(i);
-            if (catogorys.getName().equals("双井公章审批")) {
-                lstSeal.add(catogorys);
+            if (catogorys.getName().equals("物品审批")) {
+                lstItem.add(catogorys);
             }
         }
-        view.addObject("categoryReplace", ListUtils.listToReplaceStr(lstSeal, "name", "id"));
+        view.addObject("categoryReplace", ListUtils.listToReplaceStr(lstItem, "name", "id"));
 
         return view;
     }
+
+
 
     /**
      * 删除
@@ -98,35 +90,9 @@ public class OfficalSealAuditController extends BaseController {
         } catch (Exception e) {
             j.setSuccess(false);
             j.setMsg(GlobalConstant.Err_Msg_All);
-            log.error("删除公章审批记录失败，错误信息:{}", e);
+            log.error("删除物品审批记录失败，错误信息:{}", e);
         }
         return j;
-    }
-
-    /**
-     * 跳转到承接审批流程
-     *
-     * @param req
-     * @return
-     */
-    @RequestMapping("/groupwaittasklist")
-    public ModelAndView groupwaittasklist(HttpServletRequest req) {
-        ModelAndView view = new ModelAndView("officalSeal/groupwaittasklist");
-
-        // 获取流程类别数据
-        List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
-
-        List<WorkflowCategoryEntity> lstSeal = new ArrayList<WorkflowCategoryEntity>();
-        int size = lstCatogorys.size();
-        for (int i = size - 1; i >= 0; i--) {
-            WorkflowCategoryEntity catogorys = lstCatogorys.get(i);
-            if (catogorys.getName().equals("双井公章审批")) {
-                lstSeal.add(catogorys);
-            }
-        }
-        view.addObject("categoryReplace", ListUtils.listToReplaceStr(lstSeal, "name", "id"));
-
-        return view;
     }
 
     /**
@@ -147,14 +113,13 @@ public class OfficalSealAuditController extends BaseController {
         IPage<WorkflowBaseEntity> lstResult = workflowService.findTaskStrsByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
         long size = lstResult.getTotal();
         for (long i = size - 1; i >= 0; --i) {
-            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("双井公章申请")){
+            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("物品审批")){
                 lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
             }
         }
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
     }
-
 
     /**
      * 查询数据  -- 我的待办审批  组任务
@@ -181,7 +146,7 @@ public class OfficalSealAuditController extends BaseController {
         IPage<WorkflowBaseEntity> lstResult = workflowService.findGroupTaskStrsByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName());
         long size = lstResult.getTotal();
         for (long i = size - 1; i >= 0; --i) {
-            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("双井公章申请")){
+            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("物品审批")){
                 lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
             }
         }
@@ -189,8 +154,4 @@ public class OfficalSealAuditController extends BaseController {
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
     }
-
-
-
 }
-

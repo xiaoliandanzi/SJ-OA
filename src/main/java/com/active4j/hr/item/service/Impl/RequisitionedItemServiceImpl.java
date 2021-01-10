@@ -25,9 +25,20 @@ public class RequisitionedItemServiceImpl extends ServiceImpl<RequisitionedItemD
     /*
      * 查看领用物品
      * */
-    public List<RequisitionedItemEntity> findNormalRequisitionItem(){
+    public List<RequisitionedItemEntity> findBorrowItem(){
         QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<RequisitionedItemEntity>();
-        queryWrapper.eq("STATUS", GlobalConstant.ITEM_REQUISITION_STATUS_NORMAL);
+        queryWrapper.eq("TYPE", GlobalConstant.ITEM_BORROW);
         return this.list(queryWrapper);
     }
+    /*
+     * 查看领用物品
+     * */
+    public List<RequisitionedItemEntity> findTmpCard(){
+        QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<RequisitionedItemEntity>();
+        queryWrapper.eq("TYPE", GlobalConstant.ITEM_TMPCARD);
+        return this.list(queryWrapper);
+    }
+
+
+
 }

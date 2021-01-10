@@ -40,7 +40,7 @@ public class WorkflowBaseServiceImpl extends ServiceImpl<WorkflowBaseDao, Workfl
 		//获取当前用户个人资料
 		SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
 		if(workflowBaseEntity.getName()==null || workflowBaseEntity.getProjectNo()==null){
-			workflowBaseEntity.setName("双井公章借用申请");
+			workflowBaseEntity.setName("公章&物品申请");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
 			workflowBaseEntity.setProjectNo(String.format("%s-%s", user.getUserName(), DateUtils.date2Str(DateUtils.getNow(), sdf)));
 		}

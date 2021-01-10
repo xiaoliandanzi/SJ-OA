@@ -81,19 +81,55 @@ public class RequisitionedItemsManageController extends BaseController {
         try{
             if(StringUtils.isEmpty(requisitionedItemEntity.getName())) {
                 j.setSuccess(false);
-                j.setMsg("名称不能为空!");
+                j.setMsg("物品名称不能为空!");
                 return j;
             }
 
             if(StringUtils.isEmpty(requisitionedItemEntity.getType())) {
                 j.setSuccess(false);
-                j.setMsg("种类不能为空!");
+                j.setMsg("物品类型种类不能为空!");
                 return j;
             }
 
-            if(StringUtils.isEmpty(requisitionedItemEntity.getBoard())) {
+//            if(StringUtils.isEmpty(requisitionedItemEntity.getModel())) {
+//                j.setSuccess(false);
+//                j.setMsg("规格不能为空!");
+//                return j;
+//            }
+
+//            if(StringUtils.isEmpty(requisitionedItemEntity.getItemId())) {
+//                j.setSuccess(false);
+//                j.setMsg("编号不能为空!");
+//                return j;
+//            }
+
+            if("null" .equals(requisitionedItemEntity.getQuantity())) {
                 j.setSuccess(false);
-                j.setMsg("品牌不能为空!");
+                j.setMsg("物品数量不能为空!");
+                return j;
+            }
+
+            if(StringUtils.isEmpty(requisitionedItemEntity.getUnit())) {
+                j.setSuccess(false);
+                j.setMsg("物品单位不能为空!");
+                return j;
+            }
+
+            if(StringUtils.isEmpty(requisitionedItemEntity.getKeeper())) {
+                j.setSuccess(false);
+                j.setMsg("物品保管人不能为空!");
+                return j;
+            }
+
+            if(StringUtils.isEmpty(requisitionedItemEntity.getLocation())) {
+                j.setSuccess(false);
+                j.setMsg("物品存放地点不能为空!");
+                return j;
+            }
+
+            if(StringUtils.isEmpty(requisitionedItemEntity.getMinQuantity())) {
+                j.setSuccess(false);
+                j.setMsg("物品最低预警数量不能为空!");
                 return j;
             }
 

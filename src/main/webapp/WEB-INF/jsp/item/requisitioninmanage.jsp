@@ -40,11 +40,17 @@
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="item/manage/requisition/datagrid" tableContentId="itemRequisitionTable" searchGroupId="searchGroupId" fit="true" caption="领用物品管理" name="requisitionManageList" pageSize="20" sortName="createDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="name" label="种类" width="100"></t:dgCol>
-    <t:dgCol name="name" label="品牌" width="100"></t:dgCol>
+    <t:dgCol name="type" label="物品类型" width="80" dictionary="itemkind" display="status" query="true"></t:dgCol>
+    <t:dgCol name="itemId" label="物品编号" width="80"></t:dgCol>
+    <t:dgCol name="name" label="物品名称" width="80"></t:dgCol>
+    <t:dgCol name="model" label="规格/类型" width="80"></t:dgCol>
     <t:dgCol name="quantity" label="数量" width="80"></t:dgCol>
-    <t:dgCol name="status" label="状态" width="80" dictionary="itemstatus" display="zeroOrOne"></t:dgCol>
+    <t:dgCol name="unit" label="数量单位" width="80"></t:dgCol>
+    <t:dgCol name="location" label="存放地点" width="80"></t:dgCol>
+    <t:dgCol name="keeper" label="保管人" width="80"></t:dgCol>
+    <t:dgCol name="minQuantity" label="低量预警线" width="80"></t:dgCol>
     <t:dgCol name="memo" label="备注" width="80"></t:dgCol>
+    <t:dgCol name="status" label="物品状态" width="80" dictionary="itemstatus" display="level" query="true"></t:dgCol>
     <t:dgCol name="opt" label="操作" ></t:dgCol>
     <t:dgDelOpt label="删除" url="item/manage/requisition/delete?id={id}"/>
     <t:dgToolBar url="item/manage/requisition/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>

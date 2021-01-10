@@ -238,7 +238,7 @@ public class OfficalSealReturnController extends BaseController {
         // 获取流程类别数据
         List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
         int size = lstCatogorys.size();
-        for (int i = 0; i < size; i++) {
+        for (int i = size-1; i >=0 ; i--) {
             if(!lstCatogorys.get(i).getName().equals("双井公章审批")){
                 lstCatogorys.remove(i);
             }

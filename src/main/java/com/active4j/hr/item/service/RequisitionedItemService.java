@@ -13,5 +13,6 @@ import java.util.List;
  * @Description:
  */
 public interface RequisitionedItemService extends IService<RequisitionedItemEntity> {
-    public List<RequisitionedItemEntity> findNormalRequisitionItem();
+    public List<RequisitionedItemEntity> findBorrowItem();
+    public List<RequisitionedItemEntity> findTmpCard();
 }

@@ -1,6 +1,8 @@
 package com.active4j.hr.item.entity;
 
 import com.active4j.hr.common.entity.BaseEntity;
+import com.active4j.hr.core.annotation.QueryField;
+import com.active4j.hr.core.query.QueryCondition;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
@@ -24,17 +26,34 @@ public class RequisitionedItemEntity extends BaseEntity {
     @TableField("NAME")
     private String name;
 
+    @TableField("ITEMID")
+    private String itemId;
+
     @TableField("TYPE")
+    @QueryField(queryColumn = "type", condition = QueryCondition.eq)
     private String type;
 
-    @TableField("BOARD")
-    private String board;
+    @TableField("MODEL")
+    private String model;
 
     @TableField("QUANTITY")
     private int quantity;
 
+    @TableField("UNIT")
+    private String unit;
+
+    @TableField("LOCATION")
+    private String location;
+
+    @TableField("KEEPER")
+    private String keeper;
+
+    @TableField("MINQUANTITY")
+    private String minQuantity;
+
     @TableField("STATUS")
     @NotEmpty(message = "状态不能为空")
+    @QueryField(queryColumn = "STATUS", condition = QueryCondition.eq)
     private String status;
 
     @TableField("MEMO")
