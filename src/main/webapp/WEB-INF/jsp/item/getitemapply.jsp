@@ -85,7 +85,7 @@
                 $(form).ajaxSubmit({
                     success : function(o) {
                         if (o.success) {
-                            qhTipSuccess('保存成功');
+                            qhTipSuccess('保存成功');   
                             location.href='common/goSuccess';
                         } else {
                             qhTipWarning(o.msg);
@@ -105,14 +105,12 @@
             istime : false,
             format : 'YYYY-MM-DD'
         });
-
-        $('.clockpicker').clockpicker();
     });
     //保存申请
     function doBtnSaveApplyAction() {
         $("#commonForm").submit();
 
-        location.href='common/goSuccess';
+        // location.href='common/goSuccess';
     }
 </script>
 </html>

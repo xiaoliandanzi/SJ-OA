@@ -46,6 +46,13 @@ public class RequisitionedItemServiceImpl extends ServiceImpl<RequisitionedItemD
         queryWrapper.eq("TYPE", GlobalConstant.ITEM_GET);
         return this.list(queryWrapper);
     }
-
+    /*
+     * 查看领用物品
+     * */
+    public List<RequisitionedItemEntity> getItemByname(String name){
+        QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<RequisitionedItemEntity>();
+        queryWrapper.eq("NAME", name);
+        return this.list(queryWrapper);
+    }
 
 }

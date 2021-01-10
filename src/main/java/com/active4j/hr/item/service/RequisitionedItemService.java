@@ -16,4 +16,5 @@ public interface RequisitionedItemService extends IService<RequisitionedItemEnti
     public List<RequisitionedItemEntity> findBorrowItem();
     public List<RequisitionedItemEntity> findTmpCard();
     public List<RequisitionedItemEntity> findGetItem();
+    public List<RequisitionedItemEntity> getItemByname(String name);
 }

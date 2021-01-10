@@ -53,11 +53,11 @@ public class ItemGetController extends BaseController {
     public ModelAndView addorupdate(GetItemEntity getItemEntity, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("item/getitemapply");
 
-        //查询正常餐卡
+        //查询领用物品
         List<RequisitionedItemEntity> lstItems = requisitionedItemService.findGetItem();
         view.addObject("lstItems", lstItems);
 
-        if(StringUtils.isNotEmpty(getItemEntity.getId())) {
+        if (StringUtils.isNotEmpty(getItemEntity.getId())) {
             getItemEntity = getItemService.getById(getItemEntity.getId());
             view.addObject("item", getItemEntity);
         }
@@ -97,9 +97,27 @@ public class ItemGetController extends BaseController {
                 j.setMsg("领用数量不能为空");
                 return j;
             }
-            if(StringUtils.isEmpty(getItemEntity.getId())) {
+
+            int quantity = getItemEntity.getQuantity();
+            List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(getItemEntity.getItemName());
+            if (stockEntity.size() != 1) {
+                j.setSuccess(false);
+                j.setMsg("库存多项物品冲突");
+                return j;
+            }
+            RequisitionedItemEntity entity = stockEntity.get(0);
+             if (quantity > entity.getQuantity()) {
+                j.setSuccess(false);
+                j.setMsg("库存不足，剩余" + entity.getQuantity());
+                return j;
+            }
+
+            entity.setQuantity(entity.getQuantity() - quantity);
+
+            if (StringUtils.isEmpty(getItemEntity.getId())) {
                 //新增方法
                 getItemService.save(getItemEntity);
+                requisitionedItemService.saveOrUpdate(entity);
             }else {
                 //编辑方法
                 GetItemEntity tmp = getItemService.getById(getItemEntity.getId());
