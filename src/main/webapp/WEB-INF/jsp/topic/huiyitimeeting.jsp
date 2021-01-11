@@ -6,7 +6,7 @@
     <t:base type="default,select2,icheck,laydate,jqgrid"></t:base>
     <script type="text/javascript">
         $(function () {
-            $("#roleid").val("${roleId}".split(",")).trigger("change");
+            $("#meetingId").val("${oaMeeting.meetingId}".split(",")).trigger("change");
         });
     </script>
 </head>
@@ -18,32 +18,27 @@
                 <div class="ibox-content">
                     <t:formvalid action="meeting/save">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label m-b">科室*：</label>
+                            <label class="col-sm-2 control-label m-b">会议名称*：</label>
                             <div class="col-sm-4 m-b">
-                                <div class="input-group">
-                                    <t:choose url="common/selectDepart" hiddenName="depId"
-                                              hiddenValue="${deptNo }"
-                                              textValue="${name }" textName="deptName" hiddenId="depId"
-                                              textId="deptName"></t:choose>
-                                </div>
+                                <input id="meetingName" name="meetingName" value="${oaMeeting.meetingName}" minlength="2" maxlength="10" type="text" class="form-control" required=""  >
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label m-b">登记人*：</label>
+                            <label class="col-sm-2 control-label m-b">议题会议类型：</label>
                             <div class="col-sm-4 m-b">
-                                <input id="registrantName"  name="registrantName"    value="${user.realName }"   minlength="2" type="text" class="form-control" required="" >
+                                <t:dictSelect name="meetingType" type="select"   typeGroupCode="meetingtype" defaultVal="${meetingtype}"></t:dictSelect>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label m-b">会议开始时间*：</label>
                             <div class="col-sm-4 m-b">
-                                <input class="laydate-icon form-control layer-date" id="meetingTime" name="meetingTime" required="">
+                                <input class="laydate-icon form-control layer-date" id="meetingTime"  value="${oaMeeting.meetingTime}" name="meetingTime" required="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label m-b">会议结束时间*：</label>
                             <div class="col-sm-4 m-b">
-                                <input class="laydate-icon form-control layer-date" id="meetingendTime" name="meetingendTime" required="">
+                                <input class="laydate-icon form-control layer-date" id="meetingendTime" value="${oaMeeting.meetingendTime}"  name="meetingendTime" required="">
                             </div>
                         </div>
                         <div class="form-group">
@@ -56,65 +51,17 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label m-b">议题会议类型：</label>
-                            <div class="col-sm-4 m-b">
-                                <t:dictSelect name="meetingType" type="select" typeGroupCode="meetingtype" defaultVal="1"></t:dictSelect>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label m-b">会议名称*：</label>
-                            <div class="col-sm-4 m-b">
-                                <input id="meetingName" name="meetingName" minlength="2" maxlength="10" type="text" class="form-control" required=""  >
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">议题列表：</label>
-                            <div class="col-sm-4">
-                                <select class="form-control m-b select2" name="topid" id="topid" multiple="multiple" >
-                                    <c:forEach items="${oalist}" var="top">
-                                        <option value="${top.id }">${top.topicName}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
                         <div class="ibox">
                             <div class="ibox-content">
                                 <div id="topictable" class="topictable"></div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label m-b">参会人员：</label>
-                            <div class="col-sm-4 m-b">
-                        <select   name="canhuipeo" id="canhuipeo"  >
-                            <option value="1" onclick="func(1)">主要领导</option>
-                            <option value="2" onclick="func(2)">主管领导</option>
-                            <option value="3" onclick="func(3)">科室负责人</option>
-                            <option value="4" onclick="func(4)">科员</option>
-                        </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">人员：</label>
-                            <div class="col-sm-4">
-                                <select class="form-control m-b select2" name="conferee" id="conferee" multiple="multiple" >
-                                    <c:forEach items="${dataList}" var="peo">
-                                        <option value="${peo.realName }">${peo.realName}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-2 control-label m-b">备注：</label>
                             <div class="col-sm-4 m-b">
-                                <textarea name="memo" class="form-control"></textarea>
+                                <input name="memo"   value=${oaMeeting.memo} class="form-control"></input>
                             </div>
                         </div>
-
-
-
-
-
                     </t:formvalid>
                 </div>
             </div>
@@ -122,7 +69,7 @@
     </div>
 </div>
 <!-- 脚本部分 -->
-<t:datagrid actionUrl="meeting/tables"   tableContentId="topictable" searchGroupId="searchGroupId" fit="true"
+<t:datagrid actionUrl="meeting/tablechakanyiti"   tableContentId="topictable" searchGroupId="searchGroupId" fit="true"
             multiSelect="true"     rownumbers="true"    caption="议题列表" name="toptable"  pageSize="20" sortName="creatTime" sortOrder="desc" >
 
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
@@ -139,9 +86,6 @@
     <t:dgCol name="isDirector" label="主任会" dictionary="byesorno" query="flase"></t:dgCol>
     <t:dgCol name="isWorkingCommittee" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>
     <t:dgCol name="isHistory" label="历史议题" query="flase" replace="是_1, 否_0"></t:dgCol>
-    <t:dgCol name="opt" label="操作" width="290"></t:dgCol>
-    <t:dgToolBar label="添加标题" icon="fa fa-clock-o" type="define" funName="addbt"></t:dgToolBar>
-    <t:dgDelOpt label="删除" url="meeting/tablesdel?id={id}" />
 </t:datagrid>
 
 </body>

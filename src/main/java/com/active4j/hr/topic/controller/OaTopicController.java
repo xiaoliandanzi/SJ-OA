@@ -354,11 +354,11 @@ public class OaTopicController extends BaseController {
                     if (!"".equals(oaTopic.getDisciplineOffice()) && oaTopic.getIsPassFive() == 1) {
                         //纪委ID不为空 且通过审核
                         oaTopic.setStateId(4);
-                        oaTopic.setIsHistory(1);
+                        //oaTopic.setIsHistory(1);
                     } else if ("".equals(oaTopic.getDisciplineOffice())) {
                         //纪委ID空 通过审核  其他不修改状态
                         oaTopic.setStateId(4);
-                        oaTopic.setIsHistory(1);
+                        //oaTopic.setIsHistory(1);
                     }
                 } else {
                     oaTopic.setIsPassFour(2);
@@ -389,11 +389,11 @@ public class OaTopicController extends BaseController {
                     if (!"".equals(oaTopic.getFinanceOffice()) && oaTopic.getIsPassFour() == 1) {
                         //纪委ID不为空 且通过审核
                         oaTopic.setStateId(4);
-                        oaTopic.setIsHistory(1);
+                        //oaTopic.setIsHistory(1);
                     } else if ("".equals(oaTopic.getFinanceOffice())) {
                         //纪委ID空 通过审核  其他不修改状态
                         oaTopic.setStateId(4);
-                        oaTopic.setIsHistory(1);
+                        //oaTopic.setIsHistory(1);
                     }
                 } else {
                     oaTopic.setIsPassFive(2);
