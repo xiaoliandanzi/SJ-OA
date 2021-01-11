@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author xfzhang
  * @version 1.0
- * @date 2021/1/11 上午12:08
+ * @date 2021/1/11 下午9:51
  */
 @Service("oaAssetService")
 @Transactional
-public class OaPaperServiceImpl extends ServiceImpl<OaAssetDao, FlowAssetApprovalEntity> implements OaAssetService {
+public class OaAssetServiceImpl extends ServiceImpl<OaAssetDao, FlowAssetApprovalEntity> implements OaAssetService {
 }
