@@ -127,6 +127,17 @@ public class OaTopicController extends BaseController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "printTopic")
+    public ModelAndView printTopic(OaTopic oaTopic) {
+        //创建人
+        ModelAndView modelAndView = new ModelAndView("topic/topicprint");
+        oaTopic = topicService.getById(oaTopic.getId());
+        modelAndView.addObject("oaTopic", oaTopic);
+        SysDeptEntity deptEntity = deptService.getById(oaTopic.getDeptId());
+        modelAndView.addObject("deptName", deptEntity.getName());
+        return modelAndView;
+    }
+
     /**
      * 审核视图
      *

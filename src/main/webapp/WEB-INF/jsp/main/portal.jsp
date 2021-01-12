@@ -1,6 +1,368 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
 <%@include file="/context/mytags.jsp" %>
 <!DOCTYPE html>
+<html lang="en">
+<style>
+    .nava {
+        color: #2F4050;
+        text-decoration: none;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="./vue.min.js"></script>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+<div id="app">
+    <div class="topNavber">
+        <div class="logo">
+            <img class="logoImg" src="./img/a.png" alt="">
+        </div>
+        <div class="webName">
+            双井街道智慧办公系统
+        </div>
+        <div class="navberItem">
+            <img class="navIcon" src="./img/d.png" alt="">
+            <span class="navItemName">门户首页</span>
+        </div>
+        <div class="navberItem">
+            <img class="navIcon" src="./img/b.png" alt="">
+            <%--<a href="/oa/index" class="nava">个人办公</a>--%>
+            <span class="navItemName"><a href="/oa/index" class="nava">个人办公</a></span>
+        </div>
+        <div class="navberItem">
+            <img class="navIcon" src="./img/c.png" alt="">
+            <span class="navItemName">财务系统</span>
+        </div>
+        <div class="selectBox">
+            <div class="inpBox">
+                <input class="selectInp" v-model="selectMsg" type="text" @input="getSelectHold"/>
+                <div class="inpBack" v-if="selectHold">
+                    <img class="selectIcon" src="./img/select.png" alt="">
+                    <span>123132</span>
+                </div>
+            </div>
+            <div class="selectBtn">
+                搜索
+            </div>
+        </div>
+    </div>
+    <div class="listBox">
+        <!-- 第一个 -->
+        <div class="oneLine">
+            <div class="one_a">
+                <div class="borderTitle">
+                    <div class="border_left">双井图库</div>
+                    <div class="border_right">
+                        <div>
+                            <span class="jia">+</span>
+                            <span class="gengduo">更多</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <img class="BorderImgBox" src="./img/borderImg.png" alt="">
+                </div>
+            </div>
+            <!-- 第二个 -->
+            <div class="one_a borderCenter">
+                <div class="borderTitle">
+                    <div class="border_left">工作信息</div>
+                    <div class="border_right">
+                        <div>
+                            <span class="jia">+</span>
+                            <span class="gengduo">更多</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="articleItem" v-for="(item,index) in list" :key="index">
+                        <div class="articleTitle">{{item.title}}</div>
+                        <div class="articleDate">({{item.date}}</div>
+                        <div class="articleNums">阅{{item.nums}}次)</div>
+                    </div>
+                </div>
+            </div>
+            <!-- 第三个 -->
+            <div class="one_a">
+                <div class="borderTitle">
+                    <div class="border_left">代办事项</div>
+                    <div class="border_right">
+                        <div>
+                            <span class="jia">+</span>
+                            <span class="gengduo">更多</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="circularBigBox">
+                    <div class="circularBox">
+                        <div class="circular">
+                            3
+                        </div>
+                        <div class="circularTitle">
+                            待审核申请
+                        </div>
+                    </div>
+                    <div class="circularBox">
+                        <div class="circular">
+                            4
+                        </div>
+                        <div class="circularTitle">
+                            待督办事项
+                        </div>
+                    </div>
+                    <div class="circularBox">
+                        <div class="circular">
+                            8
+                        </div>
+                        <div class="circularTitle">
+                            被驳回事项
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 第二行 -->
+        <div class="oneLine twoLine">
+            <div class="one_a">
+                <div class="borderTitle">
+                    <div class="border_left">公式文件</div>
+                    <div class="border_right">
+                        <div>
+                            <span class="jia">+</span>
+                            <span class="gengduo">更多</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="articleItem" v-for="(item,index) in list" :key="index">
+                        <div class="articleTitle">{{item.title}}</div>
+                        <div class="articleDate">({{item.date}}</div>
+                        <div class="articleNums">阅{{item.nums}}次)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="one_a borderCenter">
+                <div class="borderTitle">
+                    <div class="border_left">媒体聚焦</div>
+                    <div class="border_right">
+                        <div>
+                            <span class="jia">+</span>
+                            <span class="gengduo">更多</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="articleItem" v-for="(item,index) in list" :key="index">
+                        <div class="articleTitle">{{item.title}}</div>
+                        <div class="articleDate">({{item.date}}</div>
+                        <div class="articleNums">阅{{item.nums}}次)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="one_a">
+                <div class="borderTitle">
+                    <div class="border_left">12345案件统计</div>
+                    <div class="border_right">
+                        <div>
+                            <span class="jia">+</span>
+                            <span class="gengduo">更多</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="articleItem" v-for="(item,index) in list" :key="index">
+                        <div class="articleTitle">{{item.title}}</div>
+                        <div class="articleDate">({{item.date}}</div>
+                        <div class="articleNums">阅{{item.nums}}次)</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- 第三行 -->
+        <div class="oneLine twoLine">
+            <div class="one_a">
+                <div class="borderTitle">
+                    <div class="border_left">通知公告</div>
+                    <div class="border_right">
+                        <div>
+                            <span class="jia">+</span>
+                            <span class="gengduo">更多</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="articleItem" v-for="(item,index) in list" :key="index">
+                        <div class="articleTitle">{{item.title}}</div>
+                        <div class="articleDate">({{item.date}}</div>
+                        <div class="articleNums">阅{{item.nums}}次)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="one_a borderCenter">
+                <div class="borderTitle">
+                    <div class="border_left">制度范围</div>
+                    <div class="border_right">
+                        <div>
+                            <span class="jia">+</span>
+                            <span class="gengduo">更多</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="articleItem" v-for="(item,index) in list" :key="index">
+                        <div class="articleTitle">{{item.title}}</div>
+                        <div class="articleDate">({{item.date}}</div>
+                        <div class="articleNums">阅{{item.nums}}次)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="one_a">
+                <div class="borderTitle">
+                    <div class="border_left">事件通知</div>
+                    <div class="border_right">
+                        <div>
+                            <span class="jia">+</span>
+                            <span class="gengduo">更多</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="articleItem" v-for="(item,index) in shijian" :key="index">
+                        <div class="eventIndex">{{index+1}}、{{item.title}}取消原因：{{item.msg}}</div>
+                        <!-- <div class="eventTitle"></div>
+                        <div class="eventMsg"></div> -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="herfBox">
+            <div class="lianjie">链接</div>
+            <a href="http://www.chy.egov.cn/" target="_blank">
+                <div class="hrefVal">
+                    朝阳政务
+                </div>
+            </a>
+            <a href="http://www.bjchy.gov.cn/" target="_blank">
+                <div class="hrefVal">
+                    朝阳区政府
+                </div>
+            </a>
+            <a href="http://bgpc.beijing.gov.cn/" target="_blank">
+                <div class="hrefVal">
+                    市政府采购中心
+                </div>
+            </a>
+            <a href="http://3d.bjchy.gov.cn" target="_blank">
+                <div class="hrefVal">
+                    云享朝阳·感知互动体验中心
+                </div>
+            </a>
+            <a href="https://www.xuexi.cn/" target="_blank">
+                <div class="hrefVal">
+                    学习强国
+                </div>
+            </a>
+            <a href="http://www.chy.egov.cn/qbm-5.html" target="_blank">
+                <div class="hrefVal">
+                    区保密局提示
+                </div>
+            </a>
+
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    var dom = new Vue({
+        el: "#app",
+        data() {
+            return {
+                selectMsg: '',
+                selectHold: true,
+                list: [{
+                    title: "双井街道通知",
+                    date: "2020-11-05 19: 00",
+                    nums: '3'
+                },
+                    {
+                        title: "双井街道通知",
+                        date: "2020-11-05 19: 00",
+                        nums: '3'
+                    },
+                    {
+                        title: "双井街道通知双井街道通知双井街道通知双井街道通知",
+                        date: "2020-11-05 19: 00",
+                        nums: '3'
+                    },
+                    {
+                        title: "双井街道通知",
+                        date: "2020-11-05 19: 00",
+                        nums: '3'
+                    },
+                    {
+                        title: "双井街道通知",
+                        date: "2020-11-05 19: 00",
+                        nums: '3'
+                    },
+                    {
+                        title: "双井街道通知双井街道通知双井街道通知",
+                        date: "2020-11-05 19: 00",
+                        nums: '3'
+                    }, {
+                        title: "双井街道通知双井街道通知双井街道通知",
+                        date: "2020-11-05 19: 00",
+                        nums: '3'
+                    }
+
+
+                ],
+                shijian: [{
+                    title: "您好，xx于x年x月x日x时x分取消了x年x月x日的发文申请。",
+                    msg: "这是原因"
+                },
+                    {
+                        title: "您好，xx于x年x月x日x时x分取消了x年x月x日的发文申请。",
+                        msg: "这是原因"
+                    }, {
+                        title: "您好，xx于x年x月x日x时x分取消了x年x月x日的发文申请。",
+                        msg: "这是原因"
+                    }, {
+                        title: "您好，xx于x年x月x日x时x分取消了x年x月x日的发文申请。",
+                        msg: "这是原因"
+                    }
+                ]
+            }
+        },
+        methods: {
+            getSelectHold() {
+                if (this.selectMsg != '') {
+                    this.selectHold = false
+
+                } else {
+                    this.selectHold = true
+
+                }
+            }
+        }
+    })
+    var scale = 'scale(0.8)';
+    document.body.style.webkitTransform = scale; // Chrome, Opera, Safari
+    document.body.style.msTransform = scale; // IE 9
+    document.body.style.transform = scale; // General
+</script>
+
+</html>
+
+
+<%--<!DOCTYPE html>
 <html>
 <style>
     * {
@@ -253,7 +615,7 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <%--<link rel="stylesheet" href="./home.css">--%>
+    &lt;%&ndash;<link rel="stylesheet" href="./home.css">&ndash;%&gt;
 </head>
 <body>
 <div id="home">
@@ -758,7 +1120,7 @@
 
 
 </script>
-</html>
+</html>--%>
 
 
 

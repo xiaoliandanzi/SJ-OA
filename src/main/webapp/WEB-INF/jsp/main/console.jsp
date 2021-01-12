@@ -26,7 +26,7 @@
         <li><input type="button" value="搜索" id="text-btn"></li>
     </ul>
 </div>--%>
-<div id="main" style="padding-top: 0px">
+<%--<div id="main" style="padding-top: 0px">
     <div id="boder1">
         <ul>
             <li id="cor1"><b style="font-size: 12px">双井图库</b></li>
@@ -35,10 +35,10 @@
     </div>
     <div id="boder1">
         <ul id="gongzuoxinxi">
-            <%--<li id="cor1"><b>工作信息</b></li>
+            &lt;%&ndash;<li id="cor1"><b>工作信息</b></li>
             <li class="cor2"><a href="#" id="more">更多+</a></li>
             <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>
---%>
+&ndash;%&gt;
         </ul>
     </div>
 
@@ -55,16 +55,16 @@
     </div>
     <div id="boder1">
         <ul id="gongshiwenjian">
-            <%--<li id="cor1"><b>公示文件</b></li>
+            &lt;%&ndash;<li id="cor1"><b>公示文件</b></li>
             <li class="cor2"><a href="#" id="more">更多+</a></li>
-            <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>--%>
+            <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>&ndash;%&gt;
         </ul>
     </div>
     <div id="boder1">
         <ul id="meitijujiao">
-            <%--<li id="cor1"><b>媒体聚焦</b></li>
+            &lt;%&ndash;<li id="cor1"><b>媒体聚焦</b></li>
             <li class="cor2"><a href="#" id="more">更多+</a></li>
-            <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>--%>
+            <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>&ndash;%&gt;
         </ul>
     </div>
     <div id="boder1">
@@ -83,17 +83,17 @@
     </div>
     <div id="boder1">
         <ul id="tongzhigonggao">
-            <%-- <li id="cor1"><b>通知公告</b></li>
+            &lt;%&ndash; <li id="cor1"><b>通知公告</b></li>
              <li class="cor2"><a href="#" id="more">更多+</a></li>
-             <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>--%>
+             <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>&ndash;%&gt;
         </ul>
     </div>
     <div id="boder1">
         <ul id="zhidufanwei">
-            <%--<li id="cor1"><b>制度范围</b></li>
+            &lt;%&ndash;<li id="cor1"><b>制度范围</b></li>
             <li class="cor2"><a href="#" id="more">更多+</a></li>
             <li id="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>
---%>
+&ndash;%&gt;
         </ul>
     </div>
     <div id="boder1">
@@ -124,14 +124,14 @@
 
         </ul>
     </div>
-</div>
+</div>--%>
 </body>
 <script type="text/javascript">
-    gongshi(1);
+    /*gongshi(1);
     gongshi(2);
     gongshi(3);
     gongshi(4);
-    gongshi(5);
+    gongshi(5);*/
 
     function gongshi(messageType) {
         $.ajax({

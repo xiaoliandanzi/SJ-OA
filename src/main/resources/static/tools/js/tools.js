@@ -663,33 +663,87 @@ function auditTopic(id, url, title, width, height, rowId) {
     });
 
 }
+
 //自定义弹出页面
 function popNoYT(id, url, title, width, height) {
     parent.layer.open({
-        type : 2,
-        title : title,
-        shadeClose : true,
-        shade : 0.8,
-        area : [ width, height ],
-        content : url, // iframe的url
-        yes : function(index, layero) {
+        type: 2,
+        title: title,
+        shadeClose: true,
+        shade: 0.8,
+        area: [width, height],
+        content: url, // iframe的url
+        yes: function (index, layero) {
             //确定按钮回调
             //表单提交
             parent.frames['layui-layer-iframe' + index].submitL();
             // 操作结束，刷新表格
             reloadTable(id);
         },
-        btn2 : function(index, layero) {
+        btn2: function (index, layero) {
             //取消按钮回调
 
         },
-        end: function() {
+        end: function () {
             // 操作结束，刷新表格
             reloadTable(id);
         }
     });
 
 }
+
+//议题打印
+function printTopic(id, url, title, width, height) {
+    parent.layer.open({
+        type: 2,
+        title: title,
+        shadeClose: true,
+        shade: 0.8,
+        area: [width, height],
+        content: url, // iframe的url
+        btn: [],
+        yes: function (index, layero) {
+
+        },
+        btn2: function (index, layero) {
+            //取消按钮回调
+
+        },
+        end: function () {
+            // 操作结束，刷新表格
+            reloadTable(id);
+        }
+    });
+
+}
+
+/*function printOut(fang) {
+    if (fang < 10) {
+        bdhtml = window.document.body.innerHTML;//获取当前页的html代码
+        sprnstr = "<!--startprint" + fang + "-->";//设置打印开始区域
+        eprnstr = "<!--endprint" + fang + "-->";//设置打印结束区域
+        prnhtml = bdhtml.substring(bdhtml.indexOf(sprnstr) + 18); //从开始代码向后取html
+        prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr));//从结束代码向前取html
+        window.document.body.innerHTML = prnhtml;
+        remove_ie_header_and_footer();
+        window.print();
+        window.document.body.innerHTML = bdhtml;
+    } else {
+        window.print();
+    }
+    //location.reload();
+}
+
+function remove_ie_header_and_footer() {
+    var hkey_root, hkey_path, hkey_key;
+    hkey_path = "HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\PageSetup\\";
+    try {
+        var RegWsh = new ActiveXObject("WScript.Shell");
+        RegWsh.RegWrite(hkey_path + "header", "");
+        RegWsh.RegWrite(hkey_path + "footer", "");
+    } catch (e) {
+    }
+}*/
 
 /************************************自定义分页栏end***************************************************/
 

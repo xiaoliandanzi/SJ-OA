@@ -44,6 +44,7 @@
     <t:dgToolBar url="topic/saveOrUpdateView" type="add" width="60%" operationCode="topic:add"></t:dgToolBar>
     <t:dgToolBar url="topic/saveOrUpdateView" type="edit" width="60%" operationCode="topic:add"></t:dgToolBar>
     <t:dgToolBar label="查看" type="define" funName="getOne"></t:dgToolBar>
+    <t:dgToolBar label="打印" type="define" funName="printIt"></t:dgToolBar>
     <t:dgToolBar label="取消" type="define" funName="remove" operationCode="topic:add"></t:dgToolBar>
 </t:datagrid>
 <script type="text/javascript">
@@ -54,6 +55,15 @@
             return;
         }
         popNoForMe("topicAddList", "topic/saveOrUpdateView?id=" + rowId + "&params=1", "查看", "60%", "80%");
+    }
+
+    function printIt() {
+        var rowId = $('#topicAddList').jqGrid('getGridParam', 'selrow');
+        if (!rowId) {
+            qhAlert('请选择要打印的议题');
+            return;
+        }
+        printTopic("topicAddList", "topic/printTopic?id=" + rowId, "打印", "60%", "80%");
     }
 
 
