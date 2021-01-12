@@ -31,7 +31,7 @@
 </div>
 
 <!-- 脚本部分 -->
-<t:datagrid actionUrl="asset/manage/datagrid" tableContentId="assetManageTable" searchGroupId="searchGroupId" fit="true" caption="申请列表" name="assetManageList" pageSize="20" sortName="createDate" sortOrder="desc">
+<t:datagrid actionUrl="asset/manage/approval/datagrid" tableContentId="assetManageTable" searchGroupId="searchGroupId" fit="true" caption="审核列表" name="assetManageList" pageSize="20" sortName="createDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="dept" label="所属科室" width="60" query="true"></t:dgCol>
     <t:dgCol name="assetName" label="移交固定资产名称" width="60" query="true"></t:dgCol>
@@ -42,9 +42,7 @@
     <t:dgCol name="userName" label="移交人" width="40"></t:dgCol>
     <t:dgCol name="monitor" label="监交人" width="40"></t:dgCol>
     <t:dgCol name="receiver" label="接收人" width="40"></t:dgCol>
-    <t:dgDelOpt label="删除" url="message/manage/delete?id={id}"/>
-    <t:dgToolBar url="asset/manage/addorupdate" label="固定资产入库" type="define" funName="addasset" width="70%"></t:dgToolBar>
-    <t:dgToolBar url="asset/manage/addorupdate" label="编辑" type="edit" width="70%"></t:dgToolBar>
+    <t:dgToolBar url="asset/manage/approval" label="审核" type="define" funName="approval" width="70%"></t:dgToolBar>
     <t:dgToolBar type="refresh" ></t:dgToolBar>
 </t:datagrid>
 </body>

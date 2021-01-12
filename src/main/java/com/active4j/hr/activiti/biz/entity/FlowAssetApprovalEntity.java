@@ -26,6 +26,18 @@ public class FlowAssetApprovalEntity extends BaseEntity {
     private String userName;
 
     /**
+     * 监交人
+     */
+    @TableField("MONITOR")
+    private String monitor;
+
+    /**
+     * 接受人
+     */
+    @TableField("RECEIVER")
+    private String receiver;
+
+    /**
      * 科室
      */
     @TableField("DEPT")
