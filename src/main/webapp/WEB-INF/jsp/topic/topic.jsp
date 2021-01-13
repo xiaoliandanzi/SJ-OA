@@ -241,9 +241,9 @@
                                 </div>
                             </div>
                         </c:if>
-                        <c:if test="${!empty uploadList}">
+                        <c:if test="${not empty uploadList}">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label m-b">附件:</label>
+                                <label class="col-sm-3 control-label m-b">已有附件:</label>
                                 <div class="col-sm-2">
                                     <c:forEach items="${uploadList}" var="fileDown">
                                         <button type="button" onclick="downThis(this)"

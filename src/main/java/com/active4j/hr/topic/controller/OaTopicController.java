@@ -149,7 +149,7 @@ public class OaTopicController extends BaseController {
         if (!StringUtil.isEmpty(params)) {
             modelAndView.addObject("params", params);
         }
-        if (!StringUtil.isEmpty(oaTopic.getFileId()))
+        if (!StringUtil.isEmpty(oaTopic.getId()))
             modelAndView = getFileList(modelAndView, oaTopic);
         return modelAndView;
     }
@@ -177,8 +177,7 @@ public class OaTopicController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("topic/topicaudit");
         modelAndView.addObject("lookOrAdu", oaTopic.getOpinion());
         modelAndView = getMV(oaTopic, modelAndView);
-        if (!StringUtil.isEmpty(oaTopic.getFileId()))
-            modelAndView = getFileList(modelAndView, oaTopic);
+        modelAndView = getFileList(modelAndView, oaTopic);
         return modelAndView;
     }
 
@@ -192,8 +191,7 @@ public class OaTopicController extends BaseController {
     public ModelAndView auditSecondModel(OaTopic oaTopic) {
         ModelAndView modelAndView = new ModelAndView("topic/topicauditsecond");
         modelAndView = getMV(oaTopic, modelAndView);
-        if (!StringUtil.isEmpty(oaTopic.getFileId()))
-            modelAndView = getFileList(modelAndView, oaTopic);
+        modelAndView = getFileList(modelAndView, oaTopic);
         return modelAndView;
     }
 
@@ -677,7 +675,8 @@ public class OaTopicController extends BaseController {
      */
     private ModelAndView getFileList(ModelAndView modelAndView, OaTopic oaTopic) {
         oaTopic = topicService.getById(oaTopic.getId());
-        if (StringUtil.isEmpty(oaTopic.getFileId()) || "".equals(oaTopic.getFileId())) {
+        if (!StringUtil.isEmpty(oaTopic.getFileId())) {
+            System.err.println("getFileList");
             String[] fileIds = oaTopic.getFileId().split(",");
             QueryWrapper<UploadAttachmentEntity> queryWrapper = new QueryWrapper<>();
             queryWrapper.in("ID", fileIds);

@@ -40,7 +40,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">科室*：</label>
                             <div class="col-sm-8">
-                                <div class="input-group">
+                                <div class="input-group" disabled>
                                     <t:choose url="common/selectDepart" hiddenName="deptId"
                                               hiddenValue="${oaTopic.deptId }"
                                               textValue="${deptName }" textName="departLabel" hiddenId="departId"
@@ -51,7 +51,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">提议领导*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2"
+                                <select class="form-control m-b select2" disabled
                                         id="proposeLeader" name="proposeLeader" multiple="multiple">
                                     <c:forEach items="${proposeLeaderList}" var="propose">
                                         <option value="${propose.id }">${propose.realName}</option>
@@ -62,7 +62,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">汇报人*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2"
+                                <select class="form-control m-b select2" disabled
                                         id="reportId" name="reportId" multiple="multiple">
                                     <c:forEach items="${reportList}" var="report">
                                         <option value="${report.id }">${report.realName}</option>
@@ -73,21 +73,21 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">议题标题*：</label>
                             <div class="col-sm-8">
-                                <input id="topicName" name="topicName" minlength="2" maxlength="20" type="text"
+                                <input id="topicName" name="topicName" minlength="2" maxlength="20" type="text" disabled
                                        class="form-control" required value="${oaTopic.topicName}">
                             </div>
                         </div>
                         <div class=" form-group">
                             <label class="col-sm-3 control-label">内容摘要*：</label>
                             <div class="col-sm-8">
-                                <textarea name="topicContent" class="form-control"
+                                <textarea name="topicContent" class="form-control" disabled
                                 >${oaTopic.topicContent}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">备注：</label>
                             <div class="col-sm-8">
-                                <textarea name="topicRemark" class="form-control"
+                                <textarea name="topicRemark" class="form-control" disabled
                                 >${oaTopic.topicRemark}</textarea>
                             </div>
                         </div>
@@ -136,7 +136,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">科室负责人*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2"
+                                <select class="form-control m-b select2" disabled
                                         id="deptLeaderId" name="deptLeaderId" multiple="multiple">
                                     <c:forEach items="${deptLeader}" var="deptL">
                                         <option value="${deptL.id }">${deptL.realName}</option>
@@ -147,7 +147,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">主管领导*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2"
+                                <select class="form-control m-b select2" disabled
                                         id="leaderId" name="leaderId" multiple="multiple">
                                     <c:forEach items="${lv2Leader}" var="lv2l">
                                         <option value="${lv2l.id }">${lv2l.realName}</option>
@@ -158,7 +158,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">综合办*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2"
+                                <select class="form-control m-b select2" disabled
                                         id="generalOffice" name="generalOffice" multiple="multiple">
                                     <c:forEach items="${generalOffice}" var="genera">
                                         <option value="${genera.id }">${genera.realName}</option>
@@ -169,7 +169,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">财务科*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2"
+                                <select class="form-control m-b select2" disabled
                                         id="financeOffice" name="financeOffice" multiple="multiple">
                                     <c:forEach items="${financeOffice}" var="finance">
                                         <option value="${finance.id }">${finance.realName}</option>
@@ -180,7 +180,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">纪委*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2"
+                                <select class="form-control m-b select2" disabled
                                         id="disciplineOffice" name="disciplineOffice" multiple="multiple">
                                     <c:forEach items="${disciplineOffice}" var="discipline">
                                         <option value="${discipline.id }">${discipline.realName}</option>
@@ -193,12 +193,12 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">科室负责人意见：</label>
                                 <div class="col-sm-5">
-                                <textarea name="opinionDeptLeader" class="form-control"
+                                <textarea name="opinionDeptLeader" class="form-control" disabled
                                 >${oaTopic.opinionDeptLeader}</textarea>
                                 </div>
                                 <label class="col-sm-2 control-label">审核结果：</label>
                                 <div class="col-sm-3">
-                                    <p class="form-control-static">
+                                    <p class="form-control-static" disabled>
                                         <c:choose>
                                             <c:when test="${oaTopic.isPassOne == 1}">通过</c:when>
                                             <c:when test="${oaTopic.isPassOne == 2}">不通过</c:when>
@@ -210,12 +210,12 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">主管领导意见：</label>
                                 <div class="col-sm-5">
-                                <textarea name="opinionLeader" class="form-control"
+                                <textarea name="opinionLeader" class="form-control" disabled
                                 >${oaTopic.opinionLeader}</textarea>
                                 </div>
                                 <label class="col-sm-2 control-label">审核结果：</label>
                                 <div class="col-sm-3">
-                                    <p class="form-control-static">
+                                    <p class="form-control-static" disabled>
                                         <c:choose>
                                             <c:when test="${oaTopic.isPassTwo == 1}">通过</c:when>
                                             <c:when test="${oaTopic.isPassTwo == 2}">不通过</c:when>
@@ -227,12 +227,12 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">综合办意见：</label>
                                 <div class="col-sm-5">
-                                <textarea name="opinionGeneralOffice" class="form-control"
+                                <textarea name="opinionGeneralOffice" class="form-control" disabled
                                 >${oaTopic.opinionGeneralOffice}</textarea>
                                 </div>
-                                <label class="col-sm-2 control-label">审核结果：</label>
+                                <label class="col-sm-2 control-label" >审核结果：</label>
                                 <div class="col-sm-3">
-                                    <p class="form-control-static">
+                                    <p class="form-control-static" disabled>
                                         <c:choose>
                                             <c:when test="${oaTopic.isPassThree == 1}">通过</c:when>
                                             <c:when test="${oaTopic.isPassThree == 2}">不通过</c:when>
@@ -244,7 +244,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">财务科意见：</label>
                                 <div class="col-sm-5">
-                                <textarea name="opinionFinanceOffice" class="form-control"
+                                <textarea name="opinionFinanceOffice" class="form-control" disabled
                                 >${oaTopic.opinionFinanceOffice}</textarea>
                                 </div>
                                 <label class="col-sm-2 control-label">审核结果：</label>
@@ -261,7 +261,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">纪委意见：</label>
                                 <div class="col-sm-5">
-                                <textarea name="opinionDisciplineOffice" class="form-control"
+                                <textarea name="opinionDisciplineOffice" class="form-control" disabled
                                 >${oaTopic.opinionDisciplineOffice}</textarea>
                                 </div>
                                 <label class="col-sm-2 control-label">审核结果：</label>
