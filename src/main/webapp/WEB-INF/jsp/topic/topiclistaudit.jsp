@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,select2,jqgrid"></t:base>
+    <t:base type="default,select2,jqgrid,datetimePicker,laydate"></t:base>
 </head>
 <body class="gray-bg">
 <!-- 页面部分 -->
@@ -28,7 +28,8 @@
 <t:datagrid actionUrl="topic/table" tableContentId="jqGrid_wrapper" searchGroupId="searchGroupId" fit="true"
             caption="议题审核" name="topicAddList" pageSize="20" sortName="creatTime" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="creatTime" label="申报日期" width="300" query="false"></t:dgCol>
+    <t:dgCol name="creatTime" label="申报日期" width="300" datefmt="yyyy-MM-dd HH:mm:ss" datePlugin="laydate" query="true"
+             queryModel="group"></t:dgCol>
     <t:dgCol name="topicName" label="议题名称" width="150" query="true"></t:dgCol>
     <t:dgCol name="proposeLeaderName" label="提议领导" query="false"></t:dgCol>
     <t:dgCol name="reportName" label="汇报人" query="false"></t:dgCol>
@@ -44,8 +45,14 @@
     <t:dgToolBar label="查看" type="define" funName="getOne"></t:dgToolBar>
     <t:dgToolBar label="审核" type="define" funName="auditOne"></t:dgToolBar>
     <t:dgToolBar label="二次审核" type="define" funName="secondAudit" operationCode="topic:second"></t:dgToolBar>
+    <t:dgToolBar label="打印" type="define" funName="printIt"></t:dgToolBar>
 </t:datagrid>
 <script type="text/javascript">
+    $(function () {
+        laydate({elem: "#creatTime_begin", event: "focus", istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
+        laydate({elem: "#creatTime_end", event: "focus", istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
+    });
+
     function getOne() {
         var rowId = $('#topicAddList').jqGrid('getGridParam', 'selrow');
         if (!rowId) {
@@ -54,6 +61,16 @@
         }
         popNoForMe("topicAddList", "topic/auditModel?id=" + rowId + "&opinion=opinion", "查看", "60%", "80%");
     }
+
+    function printIt() {
+        var rowId = $('#topicAddList').jqGrid('getGridParam', 'selrow');
+        if (!rowId) {
+            qhAlert('请选择要打印的议题');
+            return;
+        }
+        printTopic("topicAddList", "topic/printTopic?id=" + rowId, "打印", "60%", "80%");
+    }
+
 
     function secondAudit() {
         var rowId = $('#topicAddList').jqGrid('getGridParam', 'selrow');

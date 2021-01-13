@@ -6,6 +6,13 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<style media="print">
+    /*去除页眉页脚*/
+    @page {
+        size: auto;
+        margin: 0mm;
+    }
+</style>
 <style>
     html, body {
         overflow: auto;
@@ -65,29 +72,29 @@
         </tr>
         <tr>
             <td style="width: 150px">负责人</td>
-            <td style="width: 150px" id="company">${oaTopic.deptLeaderName}</td>
+            <td style="width: 150px" id="company">${oaTopic.createUserId}</td>
             <td style="width: 150px">汇报人</td>
             <td style="width: 150px">${oaTopic.reportName}</td>
         </tr>
     </table>
     <table width="670px" hight="978px" border="1px">
         <tr>
-            <td class="height-td top-td" colspan="2">科室负责人意见:${oaTopic.opinionDeptLeader}
-                <div class="time-right">2018年08月08日</div>
+            <td class="height-td top-td" colspan="2">科室负责人意见:
+                <div class="time-right">&nbsp&nbsp&nbsp&nbsp年&nbsp&nbsp&nbsp&nbsp月&nbsp&nbsp&nbsp&nbsp日</div>
             </td>
-            <td class="height-td top-td" colspan="2">主管领导意见:${oaTopic.opinionLeader}
-                <div class="time-right">2018年08月08日</div>
+            <td class="height-td top-td" colspan="2">主管领导意见:
+                <div class="time-right">&nbsp&nbsp&nbsp&nbsp年&nbsp&nbsp&nbsp&nbsp月&nbsp&nbsp&nbsp&nbsp日</div>
             </td>
-            <td class="height-td top-td" colspan="2">综合办意见:${oaTopic.opinionGeneralOffice}
-                <div class="time-right">2018年08月08日</div>
+            <td class="height-td top-td" colspan="2">综合办意见:
+                <div class="time-right">&nbsp&nbsp&nbsp&nbsp年&nbsp&nbsp&nbsp&nbsp月&nbsp&nbsp&nbsp&nbsp日</div>
             </td>
         </tr>
         <tr>
-            <td class="height-td" colspan="3">财务科意见:${oaTopic.opinionFinanceOffice}
-                <div class="time-right">2018年08月08日</div>
+            <td class="height-td" colspan="3">财务科意见:
+                <div class="time-right">&nbsp&nbsp&nbsp&nbsp年&nbsp&nbsp&nbsp&nbsp月&nbsp&nbsp&nbsp&nbsp日</div>
             </td>
-            <td class="height-td" colspan="3">纪委意见:${oaTopic.opinionDisciplineOffice}
-                <div class="time-right">2018年08月08日</div>
+            <td class="height-td" colspan="3">纪委意见:
+                <div class="time-right">&nbsp&nbsp&nbsp&nbsp年&nbsp&nbsp&nbsp&nbsp月&nbsp&nbsp&nbsp&nbsp日</div>
             </td>
         </tr>
         <tr>
@@ -106,9 +113,9 @@
 <!--打印内容结束-->
 
 <!--endprint1-->
-<div class="print-body" style="height: 20px;text-align: right">
+<div class="print-body" style="height: 30px;text-align: right">
     <button type='button' onclick=printOut(1)
-            style="background: #e6fffb;color: #5FB878; ">打印议题申请审批表
+            style="background: 	#008000;color: #ffffff; ">打印议题申请审批表
     </button>
 </div>
 </body>

@@ -7,6 +7,8 @@ import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.util.StringUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
+import com.active4j.hr.func.upload.entity.UploadAttachmentEntity;
+import com.active4j.hr.func.upload.service.UploadAttachmentService;
 import com.active4j.hr.system.entity.SysDeptEntity;
 import com.active4j.hr.system.entity.SysRoleEntity;
 import com.active4j.hr.system.entity.SysUserEntity;
@@ -24,6 +26,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.inject.internal.cglib.proxy.$Callback;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.xpath.functions.FuncUnparsedEntityURI;
 import org.aspectj.weaver.loadtime.Aj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -37,10 +41,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * <p>
@@ -69,6 +70,9 @@ public class OaTopicController extends BaseController {
 
     @Autowired
     private SysDeptService deptService;
+
+    @Autowired
+    private UploadAttachmentService uploadAttachmentService;
 
     /**
      * list视图
@@ -104,7 +108,28 @@ public class OaTopicController extends BaseController {
         oaTopic = getSelectTopic(oaTopic, user);
         //纪委与财务 负责人查询数据为两种
         QueryWrapper<OaTopic> queryWrapper = new QueryWrapper<>();
+        //名称模糊查询
+        if (!StringUtil.isEmpty(oaTopic.getTopicName())) {
+            queryWrapper.like("TOPIC_NAME", oaTopic.getTopicName());
+            oaTopic.setTopicName(null);
+        }
         queryWrapper.setEntity(oaTopic);
+        //处理时间查询
+        Map<String, String[]> paramsMap = request.getParameterMap();
+        if (null != paramsMap) {
+            String[] beginValue = paramsMap.get("creatTime_begin");
+            if (null != beginValue && beginValue.length > 0) {
+                if (StringUtils.isNotEmpty(beginValue[0].trim())) {
+                    queryWrapper.ge("CREAT_TIME", beginValue[0].trim());
+                }
+            }
+            String[] endValue = paramsMap.get("creatTime_end");
+            if (null != endValue && endValue.length > 0) {
+                if (StringUtils.isNotEmpty(endValue[0].trim())) {
+                    queryWrapper.le("CREAT_TIME", endValue[0].trim());
+                }
+            }
+        }
         IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
         ResponseUtil.writeJson(response, dataGrid, page);
     }
@@ -124,6 +149,8 @@ public class OaTopicController extends BaseController {
         if (!StringUtil.isEmpty(params)) {
             modelAndView.addObject("params", params);
         }
+        if (!StringUtil.isEmpty(oaTopic.getFileId()))
+            modelAndView = getFileList(modelAndView, oaTopic);
         return modelAndView;
     }
 
@@ -150,6 +177,8 @@ public class OaTopicController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("topic/topicaudit");
         modelAndView.addObject("lookOrAdu", oaTopic.getOpinion());
         modelAndView = getMV(oaTopic, modelAndView);
+        if (!StringUtil.isEmpty(oaTopic.getFileId()))
+            modelAndView = getFileList(modelAndView, oaTopic);
         return modelAndView;
     }
 
@@ -163,6 +192,8 @@ public class OaTopicController extends BaseController {
     public ModelAndView auditSecondModel(OaTopic oaTopic) {
         ModelAndView modelAndView = new ModelAndView("topic/topicauditsecond");
         modelAndView = getMV(oaTopic, modelAndView);
+        if (!StringUtil.isEmpty(oaTopic.getFileId()))
+            modelAndView = getFileList(modelAndView, oaTopic);
         return modelAndView;
     }
 
@@ -175,7 +206,6 @@ public class OaTopicController extends BaseController {
     @RequestMapping(value = "auditSecond")
     public AjaxJson auditSecond(OaTopic oaTopic) {
         AjaxJson ajaxJson = new AjaxJson();
-        System.err.println(oaTopic);
         try {
             //二次审核 回溯 科室负责人 选中部门再次审核 财务 纪委
             oaTopic.setIsHistory(0);
@@ -208,7 +238,6 @@ public class OaTopicController extends BaseController {
     @RequestMapping("audit")
     public AjaxJson audit(OaTopic oaTopic) {
         AjaxJson ajaxJson = new AjaxJson();
-        System.err.println("审核:" + oaTopic);
         try {
             OaTopic dao = topicService.getById(oaTopic.getId());
             String auditLV = ShiroUtils.getSessionValue("auditLV");
@@ -234,7 +263,9 @@ public class OaTopicController extends BaseController {
     @RequestMapping(value = "saveOrUpdate")
     public AjaxJson saveOrUpdateOaTopic(OaTopic oaTopic) {
         AjaxJson ajaxJson = new AjaxJson();
+        ActiveUser user = ShiroUtils.getSessionUser();
         try {
+            oaTopic.setCreateUserId(user.getRealName());
             oaTopic = getUserName(oaTopic);
             //判断是否是 纪委与财务创建的议题
             oaTopic = ifJWOrCW(oaTopic);
@@ -634,7 +665,25 @@ public class OaTopicController extends BaseController {
         modelAndView.addObject("financeOffice", roleService.findUserByRoleName("财务科室负责人"));
         //纪委科长
         modelAndView.addObject("disciplineOffice", roleService.findUserByRoleName("纪检监察组科室负责人"));
-        //
+        return modelAndView;
+    }
+
+    /**
+     * 文件列表
+     *
+     * @param modelAndView
+     * @param oaTopic
+     * @return
+     */
+    private ModelAndView getFileList(ModelAndView modelAndView, OaTopic oaTopic) {
+        oaTopic = topicService.getById(oaTopic.getId());
+        if (StringUtil.isEmpty(oaTopic.getFileId()) || "".equals(oaTopic.getFileId())) {
+            String[] fileIds = oaTopic.getFileId().split(",");
+            QueryWrapper<UploadAttachmentEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.in("ID", fileIds);
+            List<UploadAttachmentEntity> list = uploadAttachmentService.list(queryWrapper);
+            modelAndView.addObject("uploadList", list);
+        }
         return modelAndView;
     }
 }

@@ -92,14 +92,14 @@
                             </div>
                         </div>
                         <%--议题材料--%>
-                        <c:if test="${not empty oaTopic.fileId}">
+                        <%--<c:if test="${not empty oaTopic.fileId}">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label m-b">附件:</label>
                                 <div class="col-sm-2">
                                     <button type="button" class="btn btn-success" id="download">下载</button>
                                 </div>
                             </div>
-                        </c:if>
+                        </c:if>--%>
                         <%--议题材料--%>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">主任会：</label>
@@ -190,6 +190,15 @@
                                 <textarea name="opinion" class="form-control"></textarea>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label m-b">附件:</label>
+                            <div class="col-sm-2">
+                                <c:forEach items="${uploadList}" var="fileDown">
+                                    <button type="button" onclick="downThis(this)"
+                                            class="btn btn-success" id="${fileDown.id}">${fileDown.name}</button>
+                                </c:forEach>
+                            </div>
+                        </div>
                         <%-- </c:if>--%>
                     </t:formvalid>
                 </div>
@@ -216,6 +225,22 @@
             }
         });
     });
+
+    function downThis(date) {
+        var fileId = $(date).attr('id');
+        console.log(fileId);
+        var x = new XMLHttpRequest();
+        x.open("GET", "func/upload/download?id=" + fileId, true);
+        x.responseType = 'blob';
+        x.onload = function (e) {
+            var url = window.URL.createObjectURL(x.response)
+            var a = document.createElement('a');
+            a.href = url
+            a.download = ''
+            a.click()
+        }
+        x.send();
+    }
 </script>
 
 </html>
