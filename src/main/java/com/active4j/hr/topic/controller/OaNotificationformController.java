@@ -112,6 +112,78 @@ public class OaNotificationformController {
         }
         return j;
     }
+    /**
+     * 多选接收
+     *
+     * @param
+     * @param
+     * @param
+     * @param
+     */
+    @RequestMapping(value = "jieshou")
+    public AjaxJson jieshou(OaNotificationform oaNotificationform) {
+        AjaxJson j = new AjaxJson();
+        String  ids=oaNotificationform.getIds();
+        String str[] =ids.split(",");
+        try {
+            QueryWrapper<OaNotificationform> queryWrapper = new QueryWrapper<>();
+            queryWrapper.in("id",str);
+            List<OaNotificationform> list=notificationformService.list(queryWrapper);
+            for(OaNotificationform oano:list){
+                oano.setStatus("1");
+                notificationformService.saveOrUpdate(oano);
+            }
+        } catch (Exception e) {
+            j.setSuccess(false);
+            j.setMsg("操作失败");
+            e.printStackTrace();
+        }
+        return j;
+    }
 
+
+    /**
+     * 表格数据
+     *
+     * @param
+     * @param
+     * @param response
+     * @param dataGrid
+     */
+    @RequestMapping(value = "tableAll")
+    public void tableAlls(OaNotificationform oaNotificationform, HttpServletResponse response, DataGrid dataGrid) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.
+                getRequestAttributes()).getRequest();
+        ActiveUser user = ShiroUtils.getSessionUser();
+        QueryWrapper<OaNotificationform> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("nameid",user.getId());
+        queryWrapper.eq("status","0");
+        queryWrapper.orderByDesc("huiyidate");
+        IPage<OaNotificationform> page = notificationformService.page(new Page<OaNotificationform>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+        ResponseUtil.writeJson(response, dataGrid, page);
+    }
+
+    /**
+     * 表格数据
+     *
+     * @param
+     * @param
+     * @param
+     * @param
+     */
+    @RequestMapping(value = "tableAlls")
+    public AjaxJson tableAlls(OaNotificationform oaNotificationform) {
+        ActiveUser user = ShiroUtils.getSessionUser();
+        QueryWrapper<OaNotificationform> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("nameid",user.getId());
+        queryWrapper.eq("status","0");
+        queryWrapper.orderByDesc("huiyidate");
+        List<OaNotificationform> list=notificationformService.list(queryWrapper);
+        AjaxJson j = new AjaxJson();
+        j.setSuccess(true);
+        j.setMsg("操作成功");
+        j.setObj(list);
+        return j;
+    }
 
 }

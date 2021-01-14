@@ -38,17 +38,17 @@
 </t:datagrid>
 <script type="text/javascript">
     function getOne() {
-        var rowId = $('#table_list_1').jqGrid('getGridParam', 'selrow');
-        if (!rowId) {
+        var rowIds = $('#table_list_1').jqGrid('getGridParam', 'selrow');
+        if (!rowIds) {
             qhAlert('请选择要查看的议题会议');
             return;
         }
-        var list=$("#table_list_1").jqGrid('getRowData',rowId);
+        var list=$("#table_list_1").jqGrid('getRowData',rowIds);
         if(!list.id){
             qhAlert('请选择一条要查看的议题会议');
             return;
         }
-        popNoForMe("table_list_1", "meeting/myyitihuiyiview?id=" + rowId , "查看", "70%", "80%");
+        popNoForMe("table_list_1", "meeting/myyitihuiyiview?id=" + rowIds , "查看", "70%", "80%");
     }
     function gettongzhi() {
         var rowId = $('#table_list_1').jqGrid('getGridParam', 'selrow');

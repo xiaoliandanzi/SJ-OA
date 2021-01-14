@@ -728,6 +728,8 @@ public class OaMeetingController {
                 oano.setName(USER.getRealName());
                 oano.setHuiyiid(oaMeeting.getId());
                 oano.setCreateTime(new Date());
+                oano.setHuiyihome(oaMeeting.getMeetingId());
+                oano.setHuiyidate(oaMeeting.getMeetingTime());
                 notificationformService.saveOrUpdate(oano);
 
             }
@@ -856,6 +858,8 @@ public class OaMeetingController {
                         oano.setName(USER.getRealName());
                         oano.setHuiyiid(oaMeeting.getId());
                         oano.setCreateTime(new Date());
+                        oano.setHuiyihome(oaMeeting.getMeetingId());
+                        oano.setHuiyidate(oaMeeting.getMeetingTime());
                         notificationformService.saveOrUpdate(oano);
                     }
                 }

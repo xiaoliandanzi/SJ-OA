@@ -56,5 +56,14 @@ public class OaNotificationform implements Serializable {
     @TableField(value = "MODIFY_TIME", fill = FieldFill.INSERT_UPDATE)
     private Date modifyTime;
 
+    @TableField(value = "huiyidate")
+    private String huiyidate;
+
+    @TableField(value = "huiyihome")
+    private String huiyihome;
+
+
+    @TableField(exist = false)
+    private String ids;
 
 }
