@@ -4,9 +4,11 @@ import com.active4j.hr.activiti.biz.entity.FlowMessageApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowMessageApprovalService;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.core.model.AjaxJson;
+import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.StringUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.func.timer.entity.QuartzJobEntity;
+import com.active4j.hr.system.model.ActiveUser;
 import com.active4j.hr.topic.entity.OaTopic;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -115,6 +117,14 @@ public class IndexPostController extends BaseController {
         return json;
     }
 
+    @RequestMapping(value = "/portal/user")
+    public AjaxJson getUser() {
+        AjaxJson ajaxJson = new AjaxJson();
+        ActiveUser user = ShiroUtils.getSessionUser();
+        ajaxJson.setObj(user);
+        return ajaxJson;
+    }
+
     /**
      * 访问请求  oa/123456/postUrl
      */
@@ -152,5 +162,6 @@ public class IndexPostController extends BaseController {
         }
         return back;
     }
+
 
 }
