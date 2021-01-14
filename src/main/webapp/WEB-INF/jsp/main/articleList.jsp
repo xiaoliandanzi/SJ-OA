@@ -9,11 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
 </head>
-<%--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="./vue.min.js"></script>
+<link rel="stylesheet" href="./element.css">
 
 <!-- 引入组件库 -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>--%>
-<script src="./vue.min.js"></script>
+<script src="./element.js"></script>
 <script src="./axios.min.js"></script>
 
 <style>
@@ -319,7 +319,7 @@
             </el-pagination>
         </div>
     </div>
-    <div class="tabs1Center">
+    <div class="tabs1Center" v-if="zhengwen">
         <div class="tab1Zhengwen" v-if="zhengwen">
             <p class="tab1_zwTitle" style="text-align: center">
                 {{tab1zwMsg.title}}
