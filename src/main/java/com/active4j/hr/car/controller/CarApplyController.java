@@ -1,5 +1,9 @@
 package com.active4j.hr.car.controller;
 
+import com.active4j.hr.activiti.entity.WorkflowFormEntity;
+import com.active4j.hr.activiti.entity.WorkflowMngEntity;
+import com.active4j.hr.activiti.service.WorkflowFormService;
+import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
@@ -10,6 +14,8 @@ import com.active4j.hr.core.util.DateUtils;
 import com.active4j.hr.core.util.ListUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
+import com.active4j.hr.system.entity.SysRoleEntity;
+import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.work.entity.OaWorkMeetRoomBooksEntity;
 import com.active4j.hr.work.entity.OaWorkMeetRoomEntity;
 import com.active4j.hr.work.service.OaWorkMeetRoomBooksService;
@@ -27,7 +33,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author xfzhang
@@ -40,187 +48,46 @@ import java.util.List;
 public class CarApplyController extends BaseController {
 
     @Autowired
-    private OaWorkMeetRoomBooksService oaWorkMeetRoomBooksService;
+    private SysUserService sysUserService;
+
     @Autowired
-    private OaWorkMeetRoomService oaWorkMeetRoomService;
+    private WorkflowFormService workflowFormService;
 
+    @Autowired
+    private WorkflowMngService workflowMngService;
     /**
-     * 会议室预定列表
+     *
      * @return
      */
-    @RequestMapping("/list")
-    public ModelAndView list(HttpServletRequest request) {
+    @RequestMapping("/go")
+    public ModelAndView show(HttpServletRequest request) {
+        ModelAndView view;
 
-        ModelAndView view = new ModelAndView("car/carApply");
-        List<OaWorkMeetRoomEntity> lstRooms = oaWorkMeetRoomService.findNormalMeetRoom();
-        view.addObject("lstRooms", ListUtils.listToReplaceStr(lstRooms, "name", "id"));
+        //当前用户ID
+        String userId = ShiroUtils.getSessionUserId();
 
-        String nowStrDate = DateUtils.date2Str(DateUtils.SDF_YYYY_MM_DD);
-        view.addObject("nowStrDate", nowStrDate);
+        List<SysRoleEntity> lstRoles = sysUserService.getUserRoleByUserId(userId);
 
+        List<String> roleIds = new ArrayList<String>();
+        if(null != lstRoles) {
+            roleIds = lstRoles.stream().map(d -> d.getId()).collect(Collectors.toList());
+        }
+
+        List<WorkflowMngEntity> lstWorkflows = workflowMngService.findWorkflowMngByUserIdAndRoleIds(userId, roleIds);
+
+
+        for (WorkflowMngEntity workflowMngEntity : lstWorkflows) {
+            if (workflowMngEntity.getName().equals("车辆申请")) {
+                WorkflowFormEntity form = workflowFormService.getById(workflowMngEntity.getFormId());
+                view = new ModelAndView("redirect:" + form.getPath() +
+                        "?formId=" + workflowMngEntity.getFormId()
+                        + "&workflowId=" + workflowMngEntity.getId());
+                return view;
+            }
+        }
+        view = new ModelAndView("system/common/warning");
+        view.addObject("message", "系统不存在当前表单");
         return view;
     }
-
-    /**
-     * 查询数据
-     * @param oaWorkMeetRoomBooksEntity
-     * @param request
-     * @param response
-     * @param dataGrid
-     */
-    @RequestMapping("/datagrid")
-    public void datagrid(OaWorkMeetRoomBooksEntity oaWorkMeetRoomBooksEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
-        // 拼接查询条件
-        QueryWrapper<OaWorkMeetRoomBooksEntity> queryWrapper = QueryUtils.installQueryWrapper(oaWorkMeetRoomBooksEntity, request.getParameterMap(), dataGrid);
-        // 执行查询
-        IPage<OaWorkMeetRoomBooksEntity> lstResult = oaWorkMeetRoomBooksService.page(new Page<OaWorkMeetRoomBooksEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
-
-        // 输出结果
-        ResponseUtil.writeJson(response, dataGrid, lstResult);
-    }
-
-    /**
-     * 跳转到新增编辑页面
-     * @param oaWorkMeetRoomBooksEntity
-     * @param request
-     * @return
-     */
-    @RequestMapping("/addorupdate")
-    public ModelAndView addorupdate(OaWorkMeetRoomBooksEntity oaWorkMeetRoomBooksEntity, HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("oa/work/meetroom/meetroombooks");
-
-        //查询可用的会议室
-        List<OaWorkMeetRoomEntity> lstRooms = oaWorkMeetRoomService.findNormalMeetRoom();
-        view.addObject("lstRooms", lstRooms);
-
-        if(StringUtils.isNotEmpty(oaWorkMeetRoomBooksEntity.getId())) {
-            oaWorkMeetRoomBooksEntity = oaWorkMeetRoomBooksService.getById(oaWorkMeetRoomBooksEntity.getId());
-            view.addObject("meet", oaWorkMeetRoomBooksEntity);
-        }
-
-        return view;
-    }
-
-
-    /**
-     * 保存方法
-     * @param oaWorkMeetRoomBooksEntity
-     * @param request
-     * @return
-     */
-    @RequestMapping("/save")
-    @ResponseBody
-    public AjaxJson save(OaWorkMeetRoomBooksEntity oaWorkMeetRoomBooksEntity, String meetRoomId, HttpServletRequest request) {
-        AjaxJson j = new AjaxJson();
-        try{
-
-            //预定人赋值
-            oaWorkMeetRoomBooksEntity.setUserName(ShiroUtils.getSessionUser().getRealName());
-            oaWorkMeetRoomBooksEntity.setUserId(ShiroUtils.getSessionUserId());
-
-            if(null == oaWorkMeetRoomBooksEntity.getBookDate()) {
-                j.setSuccess(false);
-                j.setMsg("预定日期不能为空");
-                return j;
-            }
-
-            if(null == oaWorkMeetRoomBooksEntity.getStartDate() || null == oaWorkMeetRoomBooksEntity.getEndDate()) {
-                j.setSuccess(false);
-                j.setMsg("请填写完整的预定时间");
-                return j;
-            }
-
-            //日期赋值
-            oaWorkMeetRoomBooksEntity.setStrBookDate(DateUtils.date2Str(oaWorkMeetRoomBooksEntity.getBookDate(), DateUtils.SDF_YYYY_MM_DD));
-
-            //时间的校验，预定的会议室，时间不能重合
-            List<OaWorkMeetRoomBooksEntity> lstRooms = oaWorkMeetRoomBooksService.findMeetBooks(meetRoomId, oaWorkMeetRoomBooksEntity.getStrBookDate());
-            if(null != lstRooms && lstRooms.size() > 0) {
-                for(OaWorkMeetRoomBooksEntity bookRoom : lstRooms) {
-                    if(oaWorkMeetRoomBooksEntity.getStartDate().after(bookRoom.getStartDate()) && oaWorkMeetRoomBooksEntity.getStartDate().before(bookRoom.getEndDate())) {
-                        j.setSuccess(false);
-                        j.setMsg("当前会议室已经被预定");
-                        return j;
-                    }
-                    if(oaWorkMeetRoomBooksEntity.getEndDate().after(bookRoom.getStartDate()) && oaWorkMeetRoomBooksEntity.getEndDate().before(bookRoom.getEndDate())) {
-                        j.setSuccess(false);
-                        j.setMsg("当前会议室已经被预定");
-                        return j;
-                    }
-                }
-            }
-
-            if(StringUtils.isEmpty(oaWorkMeetRoomBooksEntity.getId())) {
-                if(StringUtils.isNotEmpty(meetRoomId)) {
-                    OaWorkMeetRoomEntity room = oaWorkMeetRoomService.getById(meetRoomId);
-                    if(StringUtils.equals(room.getStatus(), GlobalConstant.OA_WORK_MEET_ROOM_STATUS_STOP)) {
-                        j.setSuccess(false);
-                        j.setMsg("会议室不可用");
-                        return j;
-                    }
-                    oaWorkMeetRoomBooksEntity.setMeetRoomId(meetRoomId);
-                }
-
-                //新增方法
-                oaWorkMeetRoomBooksService.save(oaWorkMeetRoomBooksEntity);
-
-
-            }else {
-                //编辑方法
-                OaWorkMeetRoomBooksEntity tmp = oaWorkMeetRoomBooksService.getById(oaWorkMeetRoomBooksEntity.getId());
-                MyBeanUtils.copyBeanNotNull2Bean(oaWorkMeetRoomBooksEntity, tmp);
-
-                if(StringUtils.isNotEmpty(meetRoomId)) {
-                    OaWorkMeetRoomEntity room = oaWorkMeetRoomService.getById(meetRoomId);
-                    if(StringUtils.equals(room.getStatus(), GlobalConstant.OA_WORK_MEET_ROOM_STATUS_STOP)) {
-                        j.setSuccess(false);
-                        j.setMsg("会议室不可用");
-                        return j;
-                    }
-                    tmp.setMeetRoomId(meetRoomId);
-                }
-
-                oaWorkMeetRoomBooksService.saveOrUpdate(tmp);
-
-            }
-        }catch(Exception e) {
-            j.setSuccess(false);
-            j.setMsg(GlobalConstant.Err_Msg_All);
-            log.error("保存会议室预定信息失败，错误信息:{}", e);
-        }
-        return j;
-    }
-
-    /**
-     * 删除
-     * @param oaWorkMeetRoomBooksEntity
-     * @param request
-     * @return
-     */
-    @RequestMapping("/delete")
-    @ResponseBody
-    public AjaxJson delete(OaWorkMeetRoomBooksEntity oaWorkMeetRoomBooksEntity, HttpServletRequest request) {
-        AjaxJson j = new AjaxJson();
-        try{
-            if(StringUtils.isNotEmpty(oaWorkMeetRoomBooksEntity.getId())) {
-                oaWorkMeetRoomBooksEntity = oaWorkMeetRoomBooksService.getById(oaWorkMeetRoomBooksEntity.getId());
-
-                //不是自己预订的会议室不能删除
-                if(!StringUtils.equals(oaWorkMeetRoomBooksEntity.getUserId(), ShiroUtils.getSessionUserId())) {
-                    j.setSuccess(false);
-                    j.setMsg("不是自己预订的会议室不能删除");
-                    return j;
-                }
-                oaWorkMeetRoomBooksService.removeById(oaWorkMeetRoomBooksEntity.getId());
-            }
-        }catch(Exception e) {
-            j.setSuccess(false);
-            j.setMsg(GlobalConstant.Err_Msg_All);
-            log.error("删除会议室预定信息失败，错误信息:{}", e);
-        }
-
-        return j;
-    }
-
 
 }
