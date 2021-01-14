@@ -186,8 +186,10 @@
                         <div class="articleDate">({{item.date}}</div>
                         <div class="articleNums">阅{{item.nums}}次)</div>
                     </div>--%>
-                    <div id="main-number" style="width: 150px;height:150px;float: right;z-index: 9999999"></div>
-                    <div id="main-dept" style="width: 150px;height:150px; float: left;z-index: 9999999"></div>
+                    <div id="main-number"
+                         style="width: 200px;height:200px;float: right;z-index: 9999999;top: 20px;right: 40px"></div>
+                    <div id="main-dept"
+                         style="width: 200px;height:200px; float: left;z-index: 9999999;top: 20px;left: 40px"></div>
                 </div>
             </div>
 
@@ -384,11 +386,11 @@
     /**
      *
      */
-    /* var myChart = echarts.init(document.getElementById('main-number'));
-     var myChart_two = echarts.init(document.getElementById('main-dept'));
-     var bingtu = '';
-     search();
-     getNum();*/
+    var myChart = echarts.init(document.getElementById('main-number'));
+    var myChart_two = echarts.init(document.getElementById('main-dept'));
+    var bingtu = '';
+    search();
+    getNum();
 
     function search() {
         $.ajax({
@@ -461,13 +463,7 @@
                     labelLine: {
                         show: false
                     },
-                    data: [
-                        {value: 335, name: '直接访问'},
-                        {value: 310, name: '邮件营销'},
-                        {value: 234, name: '联盟广告'},
-                        {value: 135, name: '视频广告'},
-                        {value: 1548, name: '搜索引擎'}
-                    ]
+                    data: number
                 }
             ],
         };
@@ -518,13 +514,7 @@
                     labelLine: {
                         show: false
                     },
-                    data: [
-                        {value: 335, name: '直接访问'},
-                        {value: 310, name: '邮件营销'},
-                        {value: 234, name: '联盟广告'},
-                        {value: 135, name: '视频广告'},
-                        {value: 1548, name: '搜索引擎'}
-                    ]
+                    data: number
                 }
             ],
         };
