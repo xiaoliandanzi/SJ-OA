@@ -12,17 +12,17 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="row">
-					<div class="col-sm-5">
-						<div class="ibox float-e-margins">
-							<div class="ibox-title">
-								<h5>任务显示</h5>
-							</div>
-							<div class="ibox-content">
-								<div id="select-tasks"></div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-7">
+					<%--<div class="col-sm-5">--%>
+						<%--<div class="ibox float-e-margins">--%>
+							<%--<div class="ibox-title">--%>
+								<%--<h5>任务显示</h5>--%>
+							<%--</div>--%>
+							<%--<div class="ibox-content">--%>
+								<%--<div id="select-tasks"></div>--%>
+							<%--</div>--%>
+						<%--</div>--%>
+					<%--</div>--%>
+					<%--<div class="col-sm-7">--%>
 						<div class="ibox float-e-margins">
 							<div class="ibox-content">
 								<div class="row">
@@ -32,7 +32,7 @@
 											<input type="hidden" id="attachment" name="attachment" value="${task.attachment }">
 											<h2>${task.title }</h2>
 										</div>
-										<div class="col-sm-3">
+										<div class="col-sm-2">
 											<dl class="dl-horizontal">
 												<dt>状态：</dt>
 												<dd id="statusSpan">
@@ -171,7 +171,7 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						<%--</div>--%>
 					</div>
 				</div>
 			</div>

@@ -14,6 +14,8 @@
 						<%--beforeSubmit="setEditValue();"--%>
 						<t:formvalid action="oa/work/task/save" >
 							<input type="hidden" name="id" id="id" value="${task.id }">
+							<input type="hidden" name="appointUserId" id="appointUserId" value="${appointUserId }">
+							<input type="hidden" name="appointUserName" id="appointUserName" value="${appointUserName }">
 							<input type="hidden" name="attachment" id="attachment" value="${task.attachment }">
 							<div class="form-group">
 								<label class="col-sm-3 control-label">督办编号：*</label>
@@ -54,6 +56,14 @@
 									<%--</select>--%>
 								<%--</div>--%>
 							<%--</div>--%>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">承办科室：</label>
+								<div class="col-sm-8">
+									<div class="input-group">
+										<t:choose url="common/selectDepart" hiddenName="dept" hiddenValue="${deptId }" textValue="${dept }" textName="dept" hiddenId="deptId" textId="dept"></t:choose>
+									</div>
+								</div>
+							</div>
                             <%--<div class="form-group">
                                 <label class="col-sm-3 control-label">分配人：</label>
                                 <div class="col-sm-8">
@@ -66,7 +76,7 @@
                                 <label class="col-sm-3 control-label">责任人：*</label>
                                 <div class="col-sm-8">
                                 	<div class="input-group">
-                                		<t:choose url="common/selectDeptManagers" hiddenName="userId" hiddenValue="${userId }" textValue="${userName }" textName="userName" hiddenId="userId" textId="userName"></t:choose>
+                                		<t:choose url="common/selectUsers" hiddenName="userId" hiddenValue="${userId }" textValue="${userName }" textName="userName" hiddenId="userId" textId="userName"></t:choose>
                                 	</div>
                                 </div>
                             </div>
