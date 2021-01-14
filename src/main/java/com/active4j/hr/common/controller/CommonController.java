@@ -267,6 +267,7 @@ public class CommonController extends BaseController {
 			for (SysRoleEntity role : roles) {
 				if ((dept.getName()+"科室负责人").equalsIgnoreCase(role.getRoleName())) {
 					result.add(entity);
+					return result;
 				}
 			}
 		}

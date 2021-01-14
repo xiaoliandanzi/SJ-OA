@@ -77,6 +77,10 @@ public class OaWorkTaskEntity extends BaseEntity {
 	@TableField("MONITOR_USER_NAME")
 	private String monitorUserName;
 
+	// 任务完成时间
+	@TableField("FINISH_TIME")
+	private Date finishTime;
+
 	// 任务开始时间
 	@TableField("START_TIME")
 	private Date startTime;

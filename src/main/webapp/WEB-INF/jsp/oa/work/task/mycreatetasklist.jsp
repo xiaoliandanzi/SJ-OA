@@ -53,11 +53,13 @@
 		<t:dgCol name="title" label="任务" width="100" query="true" inputCol="4"></t:dgCol>
 		<t:dgCol name="appointUserName" label="分配人" width="60"></t:dgCol>
 		<t:dgCol name="userName" label="责任人" query="true" width="60"></t:dgCol>
-		<t:dgCol name="startTime" label="交办时间" width="70" datefmt="yyyy-MM-dd"></t:dgCol>
-		<t:dgCol name="endTime" label="办结时限" width="70" datefmt="yyyy-MM-dd"></t:dgCol>
+		<t:dgCol name="dept" label="承办科室" query="true" width="60"></t:dgCol>
+		<t:dgCol name="startTime" label="交办时间" width="60" datefmt="yyyy-MM-dd"></t:dgCol>
+		<t:dgCol name="endTime" label="办结时限" width="60" datefmt="yyyy-MM-dd"></t:dgCol>
+		<t:dgCol name="finishTime" label="办结时间" width="60" datefmt="yyyy-MM-dd"></t:dgCol>
 		<%--<t:dgCol name="monitorUserName" label="任务监控人" width="70"></t:dgCol>--%>
 		<t:dgCol name="status" label="状态" width="60" dictionary="oataskstatus" display="status"></t:dgCol>
-		<t:dgCol name="progress" label="进度" width="60" display="percent"></t:dgCol>
+		<%--<t:dgCol name="progress" label="进度" width="60" display="percent"></t:dgCol>--%>
 		<t:dgToolBar url="oa/work/task/addorupdate" type="add" width="60%" height="90%"></t:dgToolBar>
 		<t:dgToolBar url="oa/work/task/addorupdate" type="edit" width="60%" height="90%"></t:dgToolBar>
 		<t:dgToolBar label="查看执行" icon="fa fa-cog" url="oa/work/task/view" type="read" width="80%" height="90%"></t:dgToolBar>

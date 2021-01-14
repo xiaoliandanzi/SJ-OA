@@ -394,6 +394,8 @@ public class OaWorkTaskController extends BaseController {
                 return j;
             }
 
+
+
             if (StringUtils.isEmpty(oaWorkTaskEntity.getDept())) {
                 j.setMsg("承办科室不能为空");
                 j.setSuccess(false);
@@ -405,6 +407,7 @@ public class OaWorkTaskController extends BaseController {
                 j.setSuccess(false);
                 return j;
             }
+
 
             oaWorkTaskEntity.setDept(oaWorkTaskEntity.getDept().split(",")[0]);
 
@@ -455,7 +458,7 @@ public class OaWorkTaskController extends BaseController {
      */
     @RequestMapping("/view")
     public ModelAndView view(OaWorkTaskEntity oaWorkTaskEntity, HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("oa/work/task/view");
+        ModelAndView view = new ModelAndView("oa/work/task/viewv2");
 
         if (StringUtils.isNotEmpty(oaWorkTaskEntity.getId())) {
             oaWorkTaskEntity = oaWorkTaskService.getById(oaWorkTaskEntity.getId());
@@ -516,6 +519,34 @@ public class OaWorkTaskController extends BaseController {
         map.put("task", task);
         j.setAttributes(map);
 
+
+        return j;
+    }
+
+    /**
+     * 任务状态的修改
+     *
+     * @param oaWorkTaskEntity
+     * @param request
+     * @return
+     */
+    @RequestMapping("/doFinish")
+    @ResponseBody
+    public AjaxJson doFinish(OaWorkTaskEntity oaWorkTaskEntity, String status, HttpServletRequest request) {
+        AjaxJson j = new AjaxJson();
+        try {
+
+            if (StringUtils.isNotEmpty(oaWorkTaskEntity.getId())) {
+                OaWorkTaskEntity tmp = oaWorkTaskService.getById(oaWorkTaskEntity.getId());
+                tmp.setStatus(status);
+                tmp.setFinishTime(DateUtils.getDate());
+                oaWorkTaskService.saveOrUpdate(tmp, status);
+            }
+        } catch (Exception e) {
+            j.setSuccess(false);
+            j.setMsg(GlobalConstant.ERROR_MSG);
+            log.error("修改任务状态报错，错误信息:{}", e);
+        }
 
         return j;
     }

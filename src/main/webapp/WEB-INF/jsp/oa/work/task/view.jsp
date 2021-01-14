@@ -82,96 +82,100 @@
 													<fmt:formatDate value="${task.startTime }" type="time" pattern="yyyy年MM月dd HH:mm"/>&nbsp;到
 													<fmt:formatDate value="${task.endTime }" type="time" pattern="yyyy年MM月dd HH:mm"/>
 												</dd>
-												<dt>任务实际时间：</dt>
-												<dd id="actStartTime">
-													<fmt:formatDate value="${task.actStartTime }" type="time" pattern="yyyy年MM月dd HH:mm"/>&nbsp;到
-													<fmt:formatDate value="${task.actEndTime }" type="time" pattern="yyyy年MM月dd HH:mm"/>
-												</dd>
+												<%--<dt>任务实际时间：</dt>--%>
+												<%--<dd id="actStartTime">--%>
+													<%--<fmt:formatDate value="${task.actStartTime }" type="time" pattern="yyyy年MM月dd HH:mm"/>&nbsp;到--%>
+													<%--<fmt:formatDate value="${task.actEndTime }" type="time" pattern="yyyy年MM月dd HH:mm"/>--%>
+												<%--</dd>--%>
 											</dl>
 										</div>
-										<div class="row">
-											<input type="hidden" name="progress" id="progress" value="${task.progress }">
-											<div class="col-sm-10" id="divprogress">
-											</div>
-										</div>
+										<%--<div class="row">--%>
+											<%--<input type="hidden" name="progress" id="progress" value="${task.progress }">--%>
+											<%--<div class="col-sm-10" id="divprogress">--%>
+											<%--</div>--%>
+										<%--</div>--%>
 										<div class="row">
 											<p style="margin-left: 40px;">
 												<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="changeStartAction();">
 													<i class="fa fa-file-o"></i>&nbsp;开始执行
 												</button>
-												<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="changeGiveUpAction();">
-													<i class="fa fa-paste"></i>&nbsp;放弃任务
-												</button>
-												<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="addRecordAction();">
-													<i class="fa fa-tasks"></i>&nbsp;任务回复
-												</button>
-												<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="addExcuteAction();">
-													<i class="fa fa-tasks"></i>&nbsp;任务跟踪
+												<%--<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="changeGiveUpAction();">--%>
+													<%--<i class="fa fa-paste"></i>&nbsp;放弃任务--%>
+												<%--</button>--%>
+												<%--<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="addRecordAction();">--%>
+													<%--<i class="fa fa-tasks"></i>&nbsp;任务回复--%>
+												<%--</button>--%>
+												<%--<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="addExcuteAction();">--%>
+													<%--<i class="fa fa-tasks"></i>&nbsp;任务跟踪--%>
+												<%--</button>--%>
+												<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="addFinishAction();">
+													<i class="fa fa-tasks"></i>&nbsp;任务完成
 												</button>
 												<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="doBtnDownloadFile();">
 													<i class="fa fa-tasks"></i>&nbsp;下载附件
 												</button>
 											</p>
 										</div>
-										<div class="row m-t-sm">
-											<div class="col-sm-12">
-												<div class="panel blank-panel">
-													<div class="panel-heading">
-														<div class="panel-options">
-															<ul class="nav nav-tabs">
-																<li class="active"><a href="#tab-1" data-toggle="tab">任务回复</a></li>
-																<li class=""><a href="#tab-2" data-toggle="tab">任务跟踪</a>
-                                                			</li>
-															</ul>
-														</div>
-													</div>
-				
-													<div class="panel-body">
-														<div class="tab-content">
-															<div class="tab-pane active" id="tab-1">
-															</div>
-															 <div class="tab-pane" id="tab-2">
-			                                                <table class="table table-striped">
-			                                                    <thead>
-			                                                        <tr>
-			                                                            <th>开始时间</th>
-			                                                            <th>结束时间</th>
-			                                                            <th>进度</th>
-			                                                            <th>说明</th>
-			                                                        </tr>
-			                                                    </thead>
-			                                                    <tbody id="tab2body">
-			                                                        <tr>
-			                                                            <td>
-			                                                                11月7日 22:03
-			                                                            </td>
-			                                                            <td>
-			                                                                11月7日 20:11
-			                                                            </td>
-			                                                            <td class="project-completion">
-								                                            <small>当前进度： 28%</small>
-								                                            <div class="progress progress-mini">
-								                                                <div style="width: 28%;" class="progress-bar"></div>
-								                                            </div>
-								                                        </td>
-			                                                            <td>
-			                                                                <p class="small">
-			                                                                    	已经测试通过
-			                                                                </p>
-			                                                            </td>
-			                                                        </tr>
-			                                                    </tbody>
-			                                                </table>
-                                            				</div>
-														</div>
-													</div>
-												</div>
-											</div>
+										<%--<div class="row m-t-sm">--%>
+											<%--<div class="col-sm-12">--%>
+												<%--<div class="panel blank-panel">--%>
+													<%--<div class="panel-heading">--%>
+														<%--<div class="panel-options">--%>
+															<%--<ul class="nav nav-tabs">--%>
+																<%--&lt;%&ndash;<li class="active"><a href="#tab-1" data-toggle="tab">任务回复</a></li>&ndash;%&gt;--%>
+																<%--&lt;%&ndash;<li class=""><a href="#tab-2" data-toggle="tab">任务跟踪</a>&ndash;%&gt;--%>
+																	<%--<li class="active"><a href="#tab-1" data-toggle="tab">任务跟踪</a></li>--%>
+                                                			<%--</li>--%>
+															<%--</ul>--%>
+														<%--</div>--%>
+													<%--</div>--%>
+
+													<%--<div class="panel-body">--%>
+														<%--<div class="tab-content">--%>
+															<%--&lt;%&ndash;<div class="tab-pane active" id="tab-1">&ndash;%&gt;--%>
+															<%--</div>--%>
+															 <%--<div class="tab-pane" id="tab-1">--%>
+			                                                <%--<table class="table table-striped">--%>
+			                                                    <%--<thead>--%>
+			                                                        <%--<tr>--%>
+			                                                            <%--<th>开始时间</th>--%>
+			                                                            <%--<th>结束时间</th>--%>
+			                                                            <%--<th>进度</th>--%>
+			                                                            <%--<th>说明</th>--%>
+			                                                        <%--</tr>--%>
+			                                                    <%--</thead>--%>
+			                                                    <%--<tbody id="tab2body">--%>
+			                                                        <%--<tr>--%>
+			                                                            <%--<td>--%>
+			                                                                <%--11月7日 22:03--%>
+			                                                            <%--</td>--%>
+			                                                            <%--<td>--%>
+			                                                                <%--11月7日 20:11--%>
+			                                                            <%--</td>--%>
+			                                                            <%--<td class="project-completion">--%>
+								                                            <%--<small>当前进度： 28%</small>--%>
+								                                            <%--<div class="progress progress-mini">--%>
+								                                                <%--<div style="width: 28%;" class="progress-bar"></div>--%>
+								                                            <%--</div>--%>
+								                                        <%--</td>--%>
+			                                                            <%--<td>--%>
+			                                                                <%--<p class="small">--%>
+			                                                                    	<%--已经测试通过--%>
+			                                                                <%--</p>--%>
+			                                                            <%--</td>--%>
+			                                                        <%--</tr>--%>
+			                                                    <%--</tbody>--%>
+			                                                <%--</table>--%>
+                                            				<%--</div>--%>
+														<%--</div>--%>
+													<%--</div>--%>
+												<%--</div>--%>
+											<%--</div>--%>
 										</div>
-									</div>
+									<%--</div>--%>
 								</div>
 							</div>
-						<%--</div>--%>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -291,12 +295,33 @@
 		
 		$("#divprogress").append(html);
 	}
-	
+
+	function addFinishAction() {
+        var id = $("#id").val();
+
+        qhConfirm("确定该任务已完成?", function(index) {
+            //关闭询问
+            parent.layer.close(index);
+
+            //是
+            $.post("oa/work/task/doFinish", {id : id, status:'2'}, function(d){
+                if(d.success) {
+                    qhTipSuccess(d.msg);
+
+                    $("#statusSpan").html("<span class='label label-info'>完成</span>");
+                }
+            });
+
+        }, function() {
+            //否
+        });
+    }
+
 	//开始执行任务
 	function changeStartAction() {
 		var id = $("#id").val();
 		
-		qhConfirm("你确定要开始该任务吗?", function(index) {
+		qhConfirm("确定要开始该任务吗?", function(index) {
 			//关闭询问
 			parent.layer.close(index);
 			
