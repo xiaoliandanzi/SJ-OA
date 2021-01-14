@@ -38,39 +38,39 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">督办编号：*</label>
+                            <label class="col-sm-3 control-label">督办编号：</label>
                             <div class="col-sm-8">
                                 <input id="number" readonly name="number" type="text" class="form-control" required="" value="${task.number }">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">任务标题：*</label>
+                            <label class="col-sm-3 control-label">任务标题：</label>
                             <div class="col-sm-8">
                                 <input id="title" readonly name="title" type="text" class="form-control" required="" value="${task.title }">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label m-b">交办时间：*</label>
+                            <label class="col-sm-3 control-label m-b">交办时间：</label>
                             <div class="col-sm-4 m-b">
                                 <input readonly class="laydate-icon form-control layer-date" id="startTime" name="startTime"  value='<fmt:formatDate value="${task.startTime }" type="both" pattern="yyyy-MM-dd HH:mm"/>'>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label m-b">本次办结时限：*</label>
+                            <label class="col-sm-3 control-label m-b">本次办结时限：</label>
                             <div class="col-sm-4 m-b">
                                 <input readonly class="laydate-icon form-control layer-date" id="endTime" name="endTime"  value='<fmt:formatDate value="${task.endTime }" type="both" pattern="yyyy-MM-dd HH:mm"/>'>
                             </div>
                         </div>
                         <c:if test="${task.status == '2' }">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label m-b">办结时间：*</label>
+                            <label class="col-sm-3 control-label m-b">办结时间：</label>
                             <div class="col-sm-4 m-b">
                                 <input readonly class="laydate-icon form-control layer-date" id="finshTime" name="finshTime"  value='<fmt:formatDate value="${task.endTime }" type="both" pattern="yyyy-MM-dd HH:mm"/>'>
                             </div>
                         </div>
                         </c:if>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">督办内容：*</label>
+                            <label class="col-sm-3 control-label">督办内容：</label>
                             <div class="col-sm-8">
                                 <textarea rows=8 readonly id="content" name="content" minlength="1" type="text" class="form-control" required="">${task.content }</textarea>
                             </div>
