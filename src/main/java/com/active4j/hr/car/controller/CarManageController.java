@@ -104,9 +104,9 @@ public class CarManageController extends BaseController {
                 return j;
             }
 
-            if(StringUtils.isEmpty(oaCarEntity.getName())) {
+            if(StringUtils.isEmpty(oaCarEntity.getKind())) {
                 j.setSuccess(false);
-                j.setMsg("车辆名称不能为空!");
+                j.setMsg("车辆类型不能为空!");
                 return j;
             }
 
@@ -181,7 +181,7 @@ public class CarManageController extends BaseController {
         if(StringUtils.isNotEmpty(oaCarEntity.getId())) {
             oaCarEntity = oaCarService.getById(oaCarEntity.getId());
             view.addObject("carId", oaCarEntity.getCarId());
-            view.addObject("carName", oaCarEntity.getName());
+            view.addObject("carKind", oaCarEntity.getKind());
             view.addObject("id", oaCarEntity.getId());
             if(StringUtils.isNotEmpty(currentDate)) {
                 Date bookDate = DateUtils.str2Date(currentDate, DateUtils.SDF_YYYY_MM_DD);
@@ -205,7 +205,7 @@ public class CarManageController extends BaseController {
         view.addObject("lstBooks", "-1");
         if(StringUtils.isNotEmpty(oaCarEntity.getId())) {
             oaCarEntity = oaCarService.getById(oaCarEntity.getId());
-            view.addObject("carName", oaCarEntity.getName());
+            view.addObject("carKind", oaCarEntity.getKind());
             view.addObject("id", oaCarEntity.getId());
             view.addObject("carId", oaCarEntity.getCarId());
 
@@ -242,7 +242,7 @@ public class CarManageController extends BaseController {
 
             if(StringUtils.isNotEmpty(oaCarEntity.getId())) {
                 oaCarEntity = oaCarService.getById(oaCarEntity.getId());
-                map.put("carName", oaCarEntity.getName());
+                map.put("carKind", oaCarEntity.getKind());
                 map.put("carId", oaCarEntity.getCarId());
 
                 List<OaCarBooksEntity> lstBooks = oaCarBooksService.findCarBooks(oaCarEntity);

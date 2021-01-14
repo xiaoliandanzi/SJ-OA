@@ -152,11 +152,6 @@ public class CarBooksController extends BaseController {
             if(StringUtils.isEmpty(oaCarBooksEntity.getId())) {
                 if(StringUtils.isNotEmpty(id)) {
                     OaCarEntity room = oaCarService.getById(id);
-                    if(StringUtils.equals(room.getStatus(), GlobalConstant.OA_CAR_STATUS_STOP)) {
-                        j.setSuccess(false);
-                        j.setMsg("车辆不可用");
-                        return j;
-                    }
                     oaCarBooksEntity.setId(id);
                 }
 
@@ -171,11 +166,6 @@ public class CarBooksController extends BaseController {
 
                 if(StringUtils.isNotEmpty(id)) {
                     OaCarEntity room = oaCarService.getById(id);
-                    if(StringUtils.equals(room.getStatus(), GlobalConstant.OA_CAR_STATUS_STOP)) {
-                        j.setSuccess(false);
-                        j.setMsg("车辆不可用");
-                        return j;
-                    }
                     tmp.setId(id);
                 }
 

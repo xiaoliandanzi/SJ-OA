@@ -35,6 +35,7 @@
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="name" label="姓名" width="100"></t:dgCol>
     <t:dgCol name="age" label="年龄" width="80"></t:dgCol>
+    <t:dgCol name="birthday" label="出生年月" width="80" datefmt="yyyy-MM-dd"></t:dgCol>
     <t:dgCol name="memo" label="备注" width="80"></t:dgCol>
     <t:dgCol name="opt" label="操作" ></t:dgCol>
     <t:dgDelOpt label="删除" url="driver/manage/delete?id={id}"/>

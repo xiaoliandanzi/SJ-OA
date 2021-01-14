@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default"></t:base>
+    <t:base type="default,laydate,clock"></t:base>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -27,27 +27,45 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">车辆名称*：</label>
+                            <label class="col-sm-3 control-label">车辆类型*：</label>
                             <div class="col-sm-8">
-                                <input id="name" name="name" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${car.name }">
+                                <input id="kind" name="kind" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${car.kind }">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">最大荷载：</label>
-                            <div class="col-sm-8">
-                                <input id="persons" name="persons" type="digits" class="form-control" required="" value="${car.persons }">
+                            <label class="col-sm-3 control-label m-b">上路时间*：</label>
+                            <div class="col-sm-8 m-b">
+                                <input class="laydate-icon form-control layer-date" id="onRoadTime" name="onRoadTime" required="" value='<fmt:formatDate value="${car.onRoadTime }" type="date" pattern="yyyy-MM-dd"/>'>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">状态：</label>
-                            <div class="col-sm-8">
-                                <t:dictSelect name="status" type="select" typeGroupCode="oacarstatus" defaultVal="${car.status}"></t:dictSelect>
+                            <label class="col-sm-3 control-label m-b">保险日期*：</label>
+                            <div class="col-sm-8 m-b">
+                                <input class="laydate-icon form-control layer-date" id="ensureTime" name="ensureTime" required="" value='<fmt:formatDate value="${car.ensureTime }" type="date" pattern="yyyy-MM-dd"/>'>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">备注：</label>
+                            <label class="col-sm-3 control-label">保险提醒频率/天*：</label>
                             <div class="col-sm-8">
-                                <textarea id="memo" name="memo" class="form-control" >${car.memo}</textarea>
+                                <input id="ensureDay" name="ensureDay" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${car.ensureDay }">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label m-b">保养日期*：</label>
+                            <div class="col-sm-8 m-b">
+                                <input class="laydate-icon form-control layer-date" id="maintainTime" name="maintainTime" required="" value='<fmt:formatDate value="${car.maintainTime }" type="date" pattern="yyyy-MM-dd"/>'>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">保养提醒频率/天*：</label>
+                            <div class="col-sm-8">
+                                <input id="maintainDay" name="maintainDay" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${car.maintainDay }">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label m-b">验车日期*：</label>
+                            <div class="col-sm-8 m-b">
+                                <input class="laydate-icon form-control layer-date" id="checkCarTime" name="checkCarTime" required="" value='<fmt:formatDate value="${car.checkCarTime }" type="date" pattern="yyyy-MM-dd"/>'>
                             </div>
                         </div>
                     </t:formvalid>
@@ -57,5 +75,38 @@
     </div>
 </div>
 </body>
+<script type="text/javascript">
 
+    $(function() {
+        laydate({
+            elem : "#onRoadTime",
+            event : "focus",
+            istime : false,
+            format : 'YYYY-MM-DD'
+        });
+
+        laydate({
+            elem : "#ensureTime",
+            event : "focus",
+            istime : false,
+            format : 'YYYY-MM-DD'
+        });
+
+        laydate({
+            elem : "#maintainTime",
+            event : "focus",
+            istime : false,
+            format : 'YYYY-MM-DD'
+        });
+        laydate({
+            elem : "#checkCarTime",
+            event : "focus",
+            istime : false,
+            format : 'YYYY-MM-DD'
+        });
+
+        $('.clockpicker').clockpicker();
+
+    });
+</script>
 </html>

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.Date;
 
 /**
  * @author xfzhang
@@ -24,16 +25,33 @@ public class OaCarEntity extends BaseEntity {
     @NotEmpty(message = "车牌不能为空")
     private String carId;
 
-    @TableField("NAME")
-    @NotEmpty(message = "车辆名称不能为空")
-    private String name;
+    @TableField("KIND")
+    @NotEmpty(message = "车辆类型不能为空")
+    private String kind;
 
-    @TableField("STATUS")
-    @NotEmpty(message = "状态不能为空")
-    private String status;
+    @TableField("ONROADTIME")
+    @NotEmpty(message = "上路时间不能为空")
+    private Date onRoadTime;
 
-    @TableField("PERSONS")
-    private int persons;
+    @TableField("ENSURETIME")
+    @NotEmpty(message = "保险生效时间不能为空")
+    private Date ensureTime;
+
+    @TableField("ENSUREDAY")
+    @NotEmpty(message = "保险提醒时间不能为空")
+    private int ensureDay;
+
+    @TableField("MAINTAINTIME")
+    @NotEmpty(message = "保养日期不能为空")
+    private Date maintainTime;
+
+    @TableField("MAINTAINDAY")
+    @NotEmpty(message = "保险生效时间不能为空")
+    private int maintainDay;
+
+    @TableField("CHECKCARTIME")
+    @NotEmpty(message = "保养日期不能为空")
+    private Date checkCarTime;
 
     @TableField("MEMO")
     private String memo;

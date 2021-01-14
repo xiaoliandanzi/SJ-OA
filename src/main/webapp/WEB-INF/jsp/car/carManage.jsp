@@ -41,9 +41,16 @@
 <t:datagrid actionUrl="car/manage/datagrid" tableContentId="carManageTable" searchGroupId="searchGroupId" fit="true" caption="车辆管理" name="carManageList" pageSize="20" sortName="createDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="carId" label="车牌号" width="100"></t:dgCol>
-    <t:dgCol name="name" label="汽车名称" width="100"></t:dgCol>
-    <t:dgCol name="persons" label="载人数" width="80"></t:dgCol>
-    <t:dgCol name="status" label="状态" width="80" dictionary="oacarstatus" display="zeroOrOne"></t:dgCol>
+    <t:dgCol name="kind" label="车辆类型" width="100"></t:dgCol>
+
+    <t:dgCol name="onRoadTime" label="上路时间" width="80" datefmt="yyyy-MM-dd"></t:dgCol>
+    <t:dgCol name="ensureTime" label="保险日期" width="80" datefmt="yyyy-MM-dd"></t:dgCol>
+    <t:dgCol name="ensureDay" label="保险提醒频率/天" width="100"></t:dgCol>
+
+    <t:dgCol name="maintainTime" label="保养日期" width="80" datefmt="yyyy-MM-dd"></t:dgCol>
+    <t:dgCol name="maintainDay" label="保养提醒频率/天" width="100"></t:dgCol>
+    <t:dgCol name="checkCarTime" label="验车日期" width="80" datefmt="yyyy-MM-dd"></t:dgCol>
+
     <t:dgCol name="opt" label="操作" ></t:dgCol>
     <t:dgDelOpt label="删除" url="car/manage/delete?id={id}"/>
     <t:dgToolBar url="car/manage/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>
