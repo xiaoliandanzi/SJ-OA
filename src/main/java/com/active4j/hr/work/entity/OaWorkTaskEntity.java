@@ -51,6 +51,11 @@ public class OaWorkTaskEntity extends BaseEntity {
 	@TableField("USER_ID")
 	private String userId;
 
+	// 承办科室
+	@TableField("DEPT")
+	@QueryField(queryColumn="DEPT", condition=QueryCondition.like)
+	private String dept;
+
 	@TableField("USER_NAME")
 	@QueryField(queryColumn="USER_NAME", condition=QueryCondition.like)
 	private String userName;

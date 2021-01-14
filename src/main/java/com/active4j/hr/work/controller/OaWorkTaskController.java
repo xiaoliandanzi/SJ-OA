@@ -348,6 +348,7 @@ public class OaWorkTaskController extends BaseController {
             view.addObject("userName", oaWorkTaskEntity.getUserName());
             view.addObject("monitorUserId", oaWorkTaskEntity.getMonitorUserId());
             view.addObject("monitorUserName", oaWorkTaskEntity.getMonitorUserName());
+            view.addObject("dept", oaWorkTaskEntity.getDept());
 
             if (null != lstTasks && lstTasks.size() > 0) {
                 Iterator<OaWorkTaskEntity> itLst = lstTasks.iterator();
@@ -387,20 +388,14 @@ public class OaWorkTaskController extends BaseController {
                 return j;
             }
 
-            if (StringUtils.isEmpty(oaWorkTaskEntity.getAppointUserId())) {
-                j.setMsg("任务分配人不能为空");
+            if (StringUtils.isEmpty(oaWorkTaskEntity.getUserId())) {
+                j.setMsg("任务责任人不能为空");
                 j.setSuccess(false);
                 return j;
             }
 
-//			if(StringUtils.isEmpty(oaWorkTaskEntity.getMonitorUserId())) {
-//				j.setMsg("任务监控人不能为空");
-//				j.setSuccess(false);
-//				return j;
-//			}
-
-            if (StringUtils.isEmpty(oaWorkTaskEntity.getUserId())) {
-                j.setMsg("任务责任人不能为空");
+            if (StringUtils.isEmpty(oaWorkTaskEntity.getDept())) {
+                j.setMsg("承办科室不能为空");
                 j.setSuccess(false);
                 return j;
             }
@@ -410,6 +405,8 @@ public class OaWorkTaskController extends BaseController {
                 j.setSuccess(false);
                 return j;
             }
+
+            oaWorkTaskEntity.setDept(oaWorkTaskEntity.getDept().split(",")[0]);
 
             if (StringUtils.isEmpty(oaWorkTaskEntity.getId())) {
                 oaWorkTaskEntity.setStatus(GlobalConstant.OA_WORK_TASK_STATUS_NEW); //状态-新建
