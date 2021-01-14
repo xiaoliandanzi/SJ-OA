@@ -19,17 +19,19 @@ import java.util.Date;
 public class FlowCarApprovalEntity extends BaseEntity {
     private static final long serialVersionUID = -6396749047428505450L;
 
+
+    /**
+     * 用车单位
+     */
+    @TableField("USEDEPATMENT")
+    private String useDepartment;
+
+
     /**
      * 乘车人
      */
     @TableField("USERNAME")
     private String userName;
-
-    /**
-     * 用车事由
-     */
-    @TableField("REASON")
-    private String reason ;
 
     /**
      * 乘车人数
@@ -38,20 +40,26 @@ public class FlowCarApprovalEntity extends BaseEntity {
     private Integer person;
 
     /**
-     * 地点
+     * 用车事由
+     */
+    @TableField("REASON")
+    private String reason ;
+
+    /**
+     * 开始日期
+     */
+    @TableField("USETIME")
+    private Date useTime;
+
+    /**
+     * 途径地点
      */
     @TableField("DESTINATION")
     private String destination;
 
     /**
-     * 开始日期
+     * 备注
      */
-    @TableField("START_DAY")
-    private Date startDay;
-
-    /**
-     * 结束日期
-     */
-    @TableField("END_DAY")
-    private Date endDay;
+    @TableField("COMMIT")
+    private String commit;
 }

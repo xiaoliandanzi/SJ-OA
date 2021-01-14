@@ -10,11 +10,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,laydate,icheck"></t:base>
+    <t:base type="default,laydate,icheck,summernote,clock"></t:base>
     <script type="text/javascript">
         $(function() {
-            laydate({elem:"#startDay",event:"focus",istime: false, format: 'YYYY-MM-DD'});
-            laydate({elem:"#endDay",event:"focus",istime: false, format: 'YYYY-MM-DD'});
+            laydate({elem:"#useTime",event:"focus",istime: false, format: 'YYYY-MM-DD'});
+            // laydate({elem:"#endDay",event:"focus",istime: false, format: 'YYYY-MM-DD'});
         });
     </script>
 </head>
@@ -34,7 +34,6 @@
                         <%@include file="/WEB-INF/jsp/flow/carapproval/form.jsp" %>
                         <div class="form-group" style="margin-top: 30px;">
                             <div class="col-sm-4 col-sm-offset-3">
-                                <button class="btn btn-primary" type="button" onclick="doBtnSaveDraftAction();">保存草稿</button>
                                 <button class="btn btn-primary" type="button" onclick="doBtnSaveApplyAction();">发起申请</button>
                             </div>
                         </div>
@@ -69,11 +68,10 @@
         });
     });
 
-    //保存草稿
-    function doBtnSaveDraftAction() {
-        $("#optType").val("0");
-        $("#commonForm").submit();
-    }
+    // function doBtnSaveDraftAction() {
+    //     $("#optType").val("0");
+    //     $("#commonForm").submit();
+    // }
 
     //保存申请
     function doBtnSaveApplyAction() {

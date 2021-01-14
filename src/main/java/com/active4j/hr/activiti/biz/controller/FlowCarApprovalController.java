@@ -3,8 +3,10 @@ package com.active4j.hr.activiti.biz.controller;
 import com.active4j.hr.activiti.biz.entity.FlowCarApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowCarApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
+import com.active4j.hr.activiti.entity.WorkflowFormEntity;
 import com.active4j.hr.activiti.entity.WorkflowMngEntity;
 import com.active4j.hr.activiti.service.WorkflowBaseService;
+import com.active4j.hr.activiti.service.WorkflowFormService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.activiti.service.WorkflowService;
 import com.active4j.hr.base.controller.BaseController;
@@ -55,6 +57,8 @@ public class FlowCarApprovalController extends BaseController {
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private WorkflowFormService workflowFormService;
     /**
      * 跳转到表单页面
      * @param request
@@ -211,17 +215,12 @@ public class FlowCarApprovalController extends BaseController {
                 return j;
             }
 
-            if(null == flowCarApprovalEntity.getStartDay()) {
+            if(null == flowCarApprovalEntity.getUseTime()) {
                 j.setSuccess(false);
-                j.setMsg("开始日期不能为空");
+                j.setMsg("使用时间不能为空");
                 return j;
             }
 
-            if(null == flowCarApprovalEntity.getEndDay()) {
-                j.setSuccess(false);
-                j.setMsg("结束日期不能为空");
-                return j;
-            }
 
             if(StringUtils.isBlank(flowCarApprovalEntity.getReason())) {
                 j.setSuccess(false);
@@ -327,5 +326,36 @@ public class FlowCarApprovalController extends BaseController {
         }
 
         return j;
+    }
+
+    /**
+     * 直接办理任务
+     * @param baseActivitiEntity
+     * @param request
+     * @return
+     * @throws ClassNotFoundException
+     */
+    @RequestMapping("/approve")
+    public ModelAndView approve(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request) throws ClassNotFoundException {
+        ModelAndView view = new ModelAndView("");
+
+        if(StringUtils.isNotEmpty(workflowBaseEntity.getId())) {
+
+            workflowBaseEntity = workflowBaseService.getById(workflowBaseEntity.getId());
+
+            //根据主表中的流程ID，查询流程中心的流程配置
+            WorkflowMngEntity workflow = workflowMngService.getById(workflowBaseEntity.getWorkflowId());
+
+            if(null != workflow) {
+                //查询表单
+                WorkflowFormEntity form = workflowFormService.getById(workflow.getFormId());
+                //系统表单
+                if(StringUtils.equals("0", form.getType())) {
+                    view = new ModelAndView("redirect:" + form.getPath() + "?formId=" + form.getId() + "&type=2" + "&workflowId=" + workflow.getId() + "&id=" + workflowBaseEntity.getId());
+                    return view;
+                }
+            }
+        }
+        return view;
     }
 }

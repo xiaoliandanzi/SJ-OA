@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,laydate,icheck"></t:base>
+    <t:base type="default,laydate,icheck,summernote,clock"></t:base>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -52,6 +52,21 @@
         $("#commonForm input").attr("disabled", "disabled");
         $("#commonForm textarea").attr("disabled", "disabled");
 
+    });
+    //时间控件初始化
+    $(function() {
+        laydate({
+            elem : "#useTime",
+            event : "focus",
+            istime : false,
+            format : 'YYYY-MM-DD'
+        });
+        // laydate({
+        //     elem : "#endDay",
+        //     event : "focus",
+        //     istime : true,
+        //     format : 'YYYY-MM-DD hh:mm'
+        // });
     });
 
 </script>
