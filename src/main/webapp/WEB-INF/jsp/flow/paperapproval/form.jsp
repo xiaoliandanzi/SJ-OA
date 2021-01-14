@@ -83,11 +83,8 @@
 <c:if test="${not empty biz.id }">
     <div class="form-group">
         <label class="col-sm-2 control-label m-b">附件:</label>
-        <div class="col-sm-2">
-            <div id="filePicker">上传附件</div>
-        </div>
         <div class="col-sm-4">
-            <div id="fileList" class="uploader-list">${attachment}</div>
+            <button class="btn btn-primary" type="button" onclick="doBtnDownloadFile();">下载附件</button>
         </div>
     </div>
 </c:if>
