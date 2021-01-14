@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface FlowMessageApprovalService extends IService<FlowMessageApprovalEntity> {
 
-    public void saveNewPaper(WorkflowBaseEntity workflowBaseEntity, FlowMessageApprovalEntity flowMessageApprovalEntity);
+    public void saveNewMessage(WorkflowBaseEntity workflowBaseEntity, FlowMessageApprovalEntity flowMessageApprovalEntity);
 
     public void saveUpdate(WorkflowBaseEntity workflowBaseEntity, FlowMessageApprovalEntity flowMessageApprovalEntity);
 

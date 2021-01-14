@@ -91,27 +91,6 @@
                                 >${oaTopic.topicRemark}</textarea>
                             </div>
                         </div>
-                        <%--议题材料--%>
-                        <c:if test="${params != 1}">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label m-b">附件:</label>
-                                <div class="col-sm-2">
-                                    <div id="filePicker">上传附件</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div id="fileList" class="uploader-list"></div>
-                                </div>
-                            </div>
-                        </c:if>
-                        <c:if test="${params  == 1}">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label m-b">附件:</label>
-                                <div class="col-sm-2">
-                                    <button type="button" class="btn btn-success" id="download">下载</button>
-                                </div>
-                            </div>
-                        </c:if>
-                        <%--议题材料--%>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">主任会：</label>
                             <div class="col-sm-8">
@@ -236,6 +215,44 @@
                                 </div>
                             </div>
                         </c:if>
+                        <%--议题材料--%>
+                        <c:if test="${params != 1}">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label m-b">附件:</label>
+                                <div class="col-sm-2">
+                                    <div id="filePicker">上传附件</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label m-b">附件列表:</label>
+                                <div class="col-sm-9">
+                                    <div id="fileList">
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 200px;">文件名</th>
+                                                <th style="width: 100px;">大小</th>
+                                                <th style="width: 100px;">状态</th>
+                                            </tr>
+                                            </thead>
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+                        <c:if test="${not empty uploadList}">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label m-b">已有附件:</label>
+                                <div class="col-sm-2">
+                                    <c:forEach items="${uploadList}" var="fileDown">
+                                        <button type="button" onclick="downThis(this)"
+                                                class="btn btn-success" id="${fileDown.id}">${fileDown.name}</button>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                        </c:if>
+                        <%--议题材料--%>
                     </t:formvalid>
                 </div>
             </div>
@@ -244,9 +261,14 @@
 </div>
 </body>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $("#download").click(function () {
-            if ('${oaTopic.fileId}' != null) {
+    var fileIds = '${oaTopic.fileId}';
+    var start = '<table><thead><tr><th style="width: 200px;">文件名</th><th style="width: 100px;">大小</th><th style="width: 100px;">状态</th></tr></thead>';
+    var end = '</table>';
+
+
+    /* $(document).ready(function () {
+         $("#download").click(function () {
+             if ('${oaTopic.fileId}' != null) {
                 var x = new XMLHttpRequest();
                 x.open("GET", "func/upload/download?id=" + '${oaTopic.fileId}', true);
                 x.responseType = 'blob';
@@ -260,7 +282,23 @@
                 x.send();
             }
         });
-    });
+    });*/
+
+    function downThis(date) {
+        var fileId = $(date).attr('id');
+        console.log(fileId);
+        var x = new XMLHttpRequest();
+        x.open("GET", "func/upload/download?id=" + fileId, true);
+        x.responseType = 'blob';
+        x.onload = function (e) {
+            var url = window.URL.createObjectURL(x.response)
+            var a = document.createElement('a');
+            a.href = url
+            a.download = ''
+            a.click()
+        }
+        x.send();
+    }
 
     $(function () {
         //初始化Web Uploader
@@ -286,11 +324,16 @@
         uploader2.on('uploadProgress', function (file, percentage) {
         });
 
-        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+        // 文件上传成功，给item添加成功class, 用样式标记上传成功。 ,c8fe3347e868490a4053601e9e510fa2,37378ca49173719fdd354b8415310620
         uploader2.on('uploadSuccess', function (file, data) {
-            var filePath = data.attributes.filePath;
-            $("#fileList").html(file.name);
-            $("#fileId").val(filePath);
+            var fileSize = file.size;
+            var fileName = file.name;
+            var fileId = data.attributes.filePath;
+            var init = getTdList(file);
+            $("#fileList").html(init);
+            fileIds = fileIds + ',' + fileId;
+            console.log(fileIds);
+            $("#fileId").val(fileIds);
         });
 
         // 文件上传失败，显示上传出错。
@@ -304,6 +347,15 @@
         });
 
     });
+
+    function getTdList(file) {
+        var fileSize = file.size;
+        fileSize = (fileSize / 1024).toFixed(2);
+        var fileName = file.name;
+        start = start + '<tr><th style="width: 200px;">' + fileName + '</th><th style="width: 100px;">' + fileSize + '</th><th style="width: 100px;">成功</th></tr>';
+        var init = start + end;
+        return init;
+    }
 </script>
 </html>
 

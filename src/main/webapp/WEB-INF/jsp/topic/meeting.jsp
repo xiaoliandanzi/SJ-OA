@@ -16,9 +16,12 @@
             </div>
             <div class="ibox">
                 <div class="ibox-content">
+                    <div id="jqGrid_wrapper3" class="jqGrid_wrapper3"></div>
+                    <button id="chakanhuiyi" onclick="chakanhuiyi()" >查看议题</button>
                     <div id="jqGrid_wrapper" class="jqGrid_wrapper"></div>
                     <button id="chakan" onclick="chakan()" >查看</button>
                     <button id="bianji" onclick="bianji()" >编辑</button>
+                    <button id="tongzhi" onclick="tongzhi()" >通知详情</button>
                     <div id="jqGrid_wrappers" class="jqGrid_wrappers"></div>
                 </div>
             </div>
@@ -38,22 +41,45 @@
     <t:dgCol name="meetingName" label="会议名称" query="false"></t:dgCol>
 </t:datagrid>
 <!-- 脚本部分 -->
-<t:datagrid actionUrl="topic/table" tableContentId="jqGrid_wrapper" searchGroupId="searchGroupId" fit="true"
+<t:datagrid actionUrl="meeting/tableAll" tableContentId="jqGrid_wrapper" searchGroupId="searchGroupId" fit="true"
             multiSelect="true"     rownumbers="true"    caption="议题列表" name="table_list_1"  pageSize="20" sortName="creatTime" sortOrder="desc" >
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="creatTime" label="申报日期" width="250" query="false"></t:dgCol>
-    <t:dgCol name="topicName" label="议题名称" width="160" query="false"></t:dgCol>
+    <t:dgCol name="creatTime" label="申报日期" width="300" query="false"></t:dgCol>
+    <t:dgCol name="topicName" label="议题名称" width="150" query="true"></t:dgCol>
     <t:dgCol name="proposeLeaderName" label="提议领导" query="false"></t:dgCol>
     <t:dgCol name="reportName" label="汇报人" query="false"></t:dgCol>
-    <t:dgCol name="deptLeaderName" label="科室负责人" query="false"></t:dgCol>
-    <t:dgCol name="leaderName" label="主管领导" query="false"></t:dgCol>
-    <t:dgCol name="generalOfficeName" label="综合办" query="false"></t:dgCol>
-    <t:dgCol name="financeName" label="财务科" query="false"></t:dgCol>
-    <t:dgCol name="disciplineName" label="纪委" query="false"></t:dgCol>
+    <t:dgCol name="isPassOne" label="科室负责人" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isPassTwo" label="主管领导" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isPassThree" label="综合办" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isPassFour" label="财务科" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isPassFive" label="纪委" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
     <t:dgCol name="isSecretary" label="书记会" dictionary="byesorno" query="false"></t:dgCol>
-    <t:dgCol name="isWorkingCommittee" label="主任会" dictionary="byesorno" query="flase"></t:dgCol>
-    <t:dgCol name="isDirector" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>
-    <%--<t:dgCol name="isWorkingCommittee" label="工委会" replace="○_1, _0" query="false"></t:dgCol>--%>
+    <t:dgCol name="isDirector" label="主任会" dictionary="byesorno" query="flase"></t:dgCol>
+    <t:dgCol name="isWorkingCommittee" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>
+    <t:dgCol name="isHistory" label="历史议题" query="true" replace="是_1, 否_0"></t:dgCol>
+  <%--  <t:dgCol name="opt" label="操作" width="290"></t:dgCol>
+    <t:dgToolBar label="议题会议发起"  type="define" funName="add"></t:dgToolBar>
+    <t:dgToolBar label="议题列表"    type="define" funName="yitilb"></t:dgToolBar>
+    <t:dgToolBar label="会议列表"  type="define" funName="huiyilb"></t:dgToolBar>--%>
+</t:datagrid>
+<!-- 脚本部分 -->
+<t:datagrid actionUrl="meeting/tableAll" tableContentId="jqGrid_wrapper3" searchGroupId="searchGroupId" fit="true"
+            multiSelect="true"     rownumbers="true"    caption="议题列表11" name="table_list_3"  pageSize="20" sortName="creatTime" sortOrder="desc" >
+    <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
+    <t:dgCol name="creatTime" label="申报日期" width="300" query="false"></t:dgCol>
+    <t:dgCol name="topicName" label="议题名称" width="150" query="false"></t:dgCol>
+    <t:dgCol name="proposeLeaderName" label="提议领导" query="false"></t:dgCol>
+    <t:dgCol name="reportName" label="汇报人" query="false"></t:dgCol>
+    <t:dgCol name="isPassOne" label="科室负责人" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isPassTwo" label="主管领导" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isPassThree" label="综合办" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isPassFour" label="财务科" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isPassFive" label="纪委" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isSecretary" label="书记会" dictionary="byesorno" query="false"></t:dgCol>
+    <t:dgCol name="isDirector" label="主任会" dictionary="byesorno" query="flase"></t:dgCol>
+    <t:dgCol name="isWorkingCommittee" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>
+    <t:dgCol name="isHistory" label="历史议题" query="false" replace="是_1, 否_0"></t:dgCol>
+    <t:dgCol name="isWorkingCommittee" label="工委会" replace="○_1, _0" query="false"></t:dgCol>
     <t:dgCol name="opt" label="操作" width="290"></t:dgCol>
     <t:dgToolBar label="议题会议发起"  type="define" funName="add"></t:dgToolBar>
     <t:dgToolBar label="议题列表"    type="define" funName="yitilb"></t:dgToolBar>
@@ -63,9 +89,21 @@
     //自动加载
     window.onload = function(){
         $("#jqGrid_wrappers").hide();
+        $("#jqGrid_wrapper3").hide();
         $("#chakan").hide();
+        $("#chakanhuiyi").show();
+        $("#tongzhi").hide();
         $("#bianji").hide();
     }
+    function chakanhuiyi() {
+        var rowId = $('#table_list_1').jqGrid('getGridParam', 'selrow');
+        if (!rowId) {
+            qhAlert('请选择要查看的议题');
+            return;
+        }
+        popNoForMe("table_list_1", "topic/saveOrUpdateView?id=" + rowId + "&params=1", "查看", "60%", "80%");
+    }
+
     //发起议题会议
     function add(){
         var ids =$('#table_list_1').jqGrid('getGridParam', 'selarrrow');
@@ -80,15 +118,21 @@
         reloadTable('table_list_1');
         $("#jqGrid_wrapper").show();
         $("#jqGrid_wrappers").hide();
+        $("#jqGrid_wrapper3").hide();
         $("#chakan").hide();
+        $("#tongzhi").hide();
+        $("#chakanhuiyi").show();
         $("#bianji").hide();
     }
-    //议题列表
+    //会议列表
     function huiyilb() {
         reloadTable('table_list_2');
         $("#jqGrid_wrappers").show();
        $("#jqGrid_wrapper").hide();
+        $("#jqGrid_wrapper3").hide();
         $("#chakan").show();
+        $("#tongzhi").show();
+        $("#chakanhuiyi").hide();
         $("#bianji").show();
     }
     //会议查看
@@ -104,6 +148,16 @@
             return;
         }
         popNoYT("table_list_1", "meeting/lookView?id="+list.id.toString(), "查看议题会议", "70%", "80%");
+    }
+    //通知详情
+    function tongzhi(){
+        var rowIds = $("#table_list_2").jqGrid('getGridParam', 'selarrrow');
+        var list=$("#table_list_2").jqGrid('getRowData',rowIds);
+        if(!list.id){
+            qhAlert('请选择一条要查看的通知详情');
+            return;
+        }
+        popNoYT("table_list_2", "notificationform/saveOrUpdateView?huiyiid=" +list.id.toString(),  "通知详情", "70%", "80%");
     }
     //会议编辑
     function bianji(){

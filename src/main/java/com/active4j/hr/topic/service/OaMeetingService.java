@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface OaMeetingService extends IService<OaMeeting> {
 
+    void savemeeting(OaMeeting oaMeeting);
 }

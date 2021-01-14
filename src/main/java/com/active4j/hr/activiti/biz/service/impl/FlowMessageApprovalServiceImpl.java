@@ -23,7 +23,7 @@ public class FlowMessageApprovalServiceImpl extends ServiceImpl<FlowMessageAppro
     @Autowired
     private WorkflowBaseService workflowBaseService;
 
-    public void saveNewPaper(WorkflowBaseEntity workflowBaseEntity, FlowMessageApprovalEntity flowMessageApprovalEntity) {
+    public void saveNewMessage(WorkflowBaseEntity workflowBaseEntity, FlowMessageApprovalEntity flowMessageApprovalEntity) {
 
         this.save(flowMessageApprovalEntity);
 

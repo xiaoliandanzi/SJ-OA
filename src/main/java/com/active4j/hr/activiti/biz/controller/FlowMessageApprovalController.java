@@ -334,7 +334,7 @@ public class FlowMessageApprovalController extends BaseController {
                     workflowBaseEntity.setStatus("1"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
                     workflowBaseEntity.setName("信息发布-"+flowMessageApprovalEntity.getTitle());
                     //保存业务数据
-                    flowMessageApprovalService.saveNewPaper(workflowBaseEntity, flowMessageApprovalEntity);
+                    flowMessageApprovalService.saveNewMessage(workflowBaseEntity, flowMessageApprovalEntity);
 
                     //启动流程
                     //赋值流程变量
@@ -370,7 +370,7 @@ public class FlowMessageApprovalController extends BaseController {
                     workflowBaseEntity.setStatus("0"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
                     flowMessageApprovalEntity.setApplyStatus(3); //文件状态 3：草稿中
                     workflowBaseEntity.setName("信息发布-"+flowMessageApprovalEntity.getTitle());
-                    flowMessageApprovalService.saveNewPaper(workflowBaseEntity, flowMessageApprovalEntity);
+                    flowMessageApprovalService.saveNewMessage(workflowBaseEntity, flowMessageApprovalEntity);
                 }else {
                     WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
                     MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);

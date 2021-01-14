@@ -43,6 +43,9 @@ public class OaMeeting implements Serializable {
     @TableField("DEPT_NAME")
     private String deptName;
 
+    @ApiModelProperty(value = "科室id")
+    @TableField("depId")
+    private String depId;
 
 
     @ApiModelProperty(value = "登记人")
@@ -76,6 +79,12 @@ public class OaMeeting implements Serializable {
     @ApiModelProperty(value = "参加人员")
     @TableField("CONFEREE")
     private String conferee;
+
+    @ApiModelProperty(value = "参加人员ID")
+    @TableField("CONFEREEID")
+    private String confereeid;
+
+
 
     @ApiModelProperty(value = "议题ID")
     @TableField("ISSUE_ID")

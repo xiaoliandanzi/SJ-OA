@@ -9,12 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
 </head>
-<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="./vue.min.js"></script>
+<link rel="stylesheet" href="./element.css">
 
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <!-- 引入组件库 -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="./element.js"></script>
+<script src="./axios.min.js"></script>
 
 <style>
     * {
@@ -81,6 +81,7 @@
         margin-right: 0;
         border: 1px solid #000;
     }
+
 
     .selectBtn {
         display: block;
@@ -228,7 +229,7 @@
 
     .nava {
         color: #2F4050;
-
+        text-decoration: none;
     }
 </style>
 
@@ -318,7 +319,7 @@
             </el-pagination>
         </div>
     </div>
-    <div class="tabs1Center">
+    <div class="tabs1Center" v-if="zhengwen">
         <div class="tab1Zhengwen" v-if="zhengwen">
             <p class="tab1_zwTitle" style="text-align: center">
                 {{tab1zwMsg.title}}
@@ -463,7 +464,7 @@
             listClick(item) {
                 axios.get('oa//login/getArticle?id=' + item.id).then((msg) => {
                     this.zhengwen = true;
-                    this.tab1zwMsg = msg.data.obj.records;
+                    this.tab1zwMsg = msg.data.obj;
                 })
 
             },
@@ -473,7 +474,7 @@
                     this.loginName = this.tabs[messageType].name;
                     this.isActive = messageType;
                     this.zhengwen = true;
-                    this.tab1zwMsg = msg.data.obj.records;
+                    this.tab1zwMsg = msg.data.obj;
                 })
 
             },

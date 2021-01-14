@@ -14,6 +14,8 @@
     <link href="static/bootstrap/css/style.min.css" rel="stylesheet">
     <link href="static/toastr/css/toastr.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css"/>
+    <link href="static/layui/css/layui.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/index.css"/>
     <!--[if lt IE 9]>
     <meta http-equiv="refresh" content="0;ie.html"/>
     <![endif]-->
@@ -57,6 +59,7 @@
 <script src="static/validate/js/messages_zh.min.js"></script>
 <script src="static/login/js/login.js"></script>
 <script src="static/toastr/js/toastr.min.js"></script>
+<script src="static/layui/layui.js"></script>
 </body>
 
 

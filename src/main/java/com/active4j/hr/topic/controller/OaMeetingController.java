@@ -16,8 +16,10 @@ import com.active4j.hr.system.service.SysRoleService;
 import com.active4j.hr.system.service.SysUserRoleService;
 import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.topic.entity.OaMeeting;
+import com.active4j.hr.topic.entity.OaNotificationform;
 import com.active4j.hr.topic.entity.OaTopic;
 import com.active4j.hr.topic.service.OaMeetingService;
+import com.active4j.hr.topic.service.OaNotificationformService;
 import com.active4j.hr.topic.service.OaTopicService;
 import com.active4j.hr.topic.until.DeptLeaderRole;
 import com.active4j.hr.work.entity.OaWorkMeetRoomEntity;
@@ -25,7 +27,13 @@ import com.active4j.hr.work.service.OaWorkMeetRoomService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.catalina.User;
+import org.apache.velocity.runtime.directive.contrib.For;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,6 +45,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -68,6 +78,8 @@ public class OaMeetingController {
     @Autowired
     private SysRoleService roleService;
 
+
+
     @Autowired
     private OaTopicService topicService;
 
@@ -75,6 +87,9 @@ public class OaMeetingController {
     private OaWorkMeetRoomService oaWorkMeetRoomService;
     @Autowired
     private SysDeptService deptService;
+
+    @Autowired
+    private OaNotificationformService  notificationformService;
     /**
      * list视图
      *
@@ -85,6 +100,50 @@ public class OaMeetingController {
         return new ModelAndView("topic/meeting");
     }
 
+
+
+    /**
+     * list视图
+     *
+     * @return
+     */
+    @RequestMapping(value = "mylist")
+    public ModelAndView mylist() {
+
+        return new ModelAndView("topic/mymeeting");
+    }
+    /**
+     * 我的会议
+     *
+     * @param
+     * @param request
+     * @param response
+     * @param dataGrid
+     */
+    @RequestMapping(value = "mytablelist")
+    public void topicTable(HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        ActiveUser user = ShiroUtils.getSessionUser();
+        String  id=user.getId();
+        QueryWrapper<OaNotificationform> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("nameid",id);
+        List<OaNotificationform> list=notificationformService.list(queryWrapper);
+        List<String> huiyilist=new ArrayList<>();
+        for (OaNotificationform oano:list){
+            huiyilist.add(oano.getHuiyiid());
+        }
+        String   idza="";
+        for(int i=0; i<huiyilist.size(); i++){
+            if(i==0){
+                idza=huiyilist.get(i);
+            }else{
+                idza=idza+","+huiyilist.get(i);
+            }
+        }
+        QueryWrapper<OaMeeting> queryWrappers = new QueryWrapper<>();
+        queryWrappers.in("ID",idza);
+        IPage<OaMeeting> page = meetingService.page(new Page<OaMeeting>(dataGrid.getPage(), dataGrid.getRows()), queryWrappers);
+        ResponseUtil.writeJson(response, dataGrid, page);
+    }
 
     /**
      * 表格数据
@@ -132,6 +191,10 @@ public class OaMeetingController {
                 DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
                 String leaderRole = deptLeaderRole.getRoleForDept().get(userEntity.getDeptId());
                 json.setObj(userList("", leaderRole));
+            }
+            else if ("4".equals(oaMeeting.getCanHuitype())) {
+                //科员
+                json.setObj(userListS(userEntity.getDeptId()));
             }
         }catch(Exception e) {
             json.setSuccess(false);
@@ -191,12 +254,65 @@ public class OaMeetingController {
         queryWrappers.notIn("id",strArray);
         List<OaTopic> oalist=topicService.list(queryWrappers);
         modelAndView.addObject("oalist", oalist);
-            //提议领导 查询主要领导
-            modelAndView.addObject("dataList", userList("", "1e3124100e45ed3e9ec99bf3e35be2c0"));
+        //提议领导 查询主要领导
+        modelAndView.addObject("dataList", userList("", "1e3124100e45ed3e9ec99bf3e35be2c0"));
         List<OaWorkMeetRoomEntity> lstRooms = oaWorkMeetRoomService.findNormalMeetRoom();
         modelAndView.addObject("roomList", lstRooms);
         return modelAndView;
     }
+
+    /**
+     * 我的会议
+     * meeting/saveOrUpdateView
+     *
+     * @param oaMeeting
+     * @return
+     */
+    @RequestMapping(value = "myyitihuiyiview")
+    public ModelAndView myyitihuiyiview(OaMeeting oaMeeting) {
+       ModelAndView modelAndView = new ModelAndView("topic/huiyitimeeting");
+        if (StringUtil.isEmpty(oaMeeting.getId())){
+            oaMeeting = new OaMeeting();
+        } else {
+            oaMeeting = meetingService.getById(oaMeeting.getId());
+        }
+        modelAndView.addObject("oaMeeting",oaMeeting);
+        if("1".equals(oaMeeting.getMeetingType())){
+            modelAndView.addObject("meetingType","书记会");
+        }
+        else   if("2".equals(oaMeeting.getMeetingType())){
+            modelAndView.addObject("meetingType","主任会");
+        }
+        else  if("3".equals(oaMeeting.getMeetingType())){
+            modelAndView.addObject("meetingType","工委会");
+        }
+        List<OaWorkMeetRoomEntity> lstRooms = oaWorkMeetRoomService.findNormalMeetRoom();
+        modelAndView.addObject("roomList", lstRooms);
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.
+                getRequestAttributes()).getRequest();
+        HttpSession session=request.getSession();//创建session对象
+        String  ids=oaMeeting.getIssueId();
+        session.setAttribute("chakanhuiyiid", ids);
+        return modelAndView;
+    }
+    /**
+     * 表格数据
+     *
+     * @param oaTopic
+     * @param request
+     * @param response
+     * @param dataGrid
+     */
+    @RequestMapping(value = "tablechakanyiti")
+    public void tablechakanyiti(OaTopic oaTopic, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        QueryWrapper<OaTopic> queryWrapper = new QueryWrapper<>();
+        HttpSession session=request.getSession();//创建session对象
+        String ids= (String) session.getAttribute("chakanhuiyiid");
+        queryWrapper.in("ID",ids);
+        IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+        ResponseUtil.writeJson(response, dataGrid, page);
+    }
+
     /**
      * 查看会议数据
      */
@@ -473,16 +589,12 @@ public class OaMeetingController {
      */
     @RequestMapping(value = "tables")
     public void topicTable(OaTopic oaTopic, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
-        ActiveUser user = ShiroUtils.getSessionUser();
-        if ("".equals(oaTopic.getTopicName())) {
-            oaTopic.setTopicName(null);
-        }
         HttpSession session = request.getSession();
-
         String ids =  (String)session.getAttribute("ids");
         String[] strArray = ids.split(",");
         QueryWrapper<OaTopic> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("id",strArray);
+        queryWrapper.eq("STATE_ID",4);
         IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
         ResponseUtil.writeJson(response, dataGrid, page);
     }
@@ -496,16 +608,12 @@ public class OaMeetingController {
      */
     @RequestMapping(value = "tablechakans")
     public void tablechakans(OaTopic oaTopic, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
-        ActiveUser user = ShiroUtils.getSessionUser();
-        if ("".equals(oaTopic.getTopicName())) {
-            oaTopic.setTopicName(null);
-        }
         HttpSession session = request.getSession();
-
         String ids =  (String)session.getAttribute("meid");
         String[] strArray = ids.split(",");
         QueryWrapper<OaTopic> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("id",strArray);
+        queryWrapper.eq("STATE_ID",4);
         IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
         ResponseUtil.writeJson(response, dataGrid, page);
     }
@@ -559,16 +667,72 @@ public class OaMeetingController {
      * @return meeting/save
      */
     @RequestMapping(value = "save")
-    public AjaxJson save(OaMeeting oaMeeting,HttpServletRequest request) {
+    public AjaxJson save(OaMeeting oaMeeting,HttpServletRequest request) throws ParseException {
         System.err.println(oaMeeting);
         AjaxJson ajaxJson = new AjaxJson();
+        try {
         oaMeeting.setCreateTime(new Date());
         HttpSession session = request.getSession();
         String ids =  (String)session.getAttribute("ids");
         oaMeeting.setIssueId(ids.toString());
-        oaMeeting.setStateId("未开始");
-        try {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date  date =format.parse(oaMeeting.getMeetingTime());
+        Date  date1 =format.parse(oaMeeting.getMeetingendTime());
+        int compareTo =date.compareTo(new Date());
+        int compareTo2 =date1.compareTo(new Date());
+        if(compareTo==-1){
+            oaMeeting.setStateId("未开始");
+        }else if(compareTo==1){
+            oaMeeting.setStateId("进行中");
+        }
+        if (compareTo2==-1){
+            oaMeeting.setStateId("已结束");
+            String AA=oaMeeting.getIssueId();
+            String  strs[] =AA.split(",");
+            //议题列表的数据
+            QueryWrapper<OaTopic> queryWrappers = new QueryWrapper<>();
+            queryWrappers.in("id",strs);
+            List<OaTopic> oalist=topicService.list(queryWrappers);
+            for(OaTopic oa:oalist){
+                oa.setIsHistory(1);
+                topicService.saveOrUpdate(oa);
+            }
+        }
+        String  condata=oaMeeting.getConferee();
+        List<String> conlist= Arrays.asList(condata.split(","));
+        List<String>  coniddata=new ArrayList<>();
+        for (int i=0; i<conlist.size();i++){
+            QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.in("REAL_NAME",conlist.get(i));
+            SysUserEntity user = userService.list(queryWrapper).get(0);
+            coniddata.add(user.getId());
+        }
+            String   idza="";
+            for(int i=0; i<coniddata.size(); i++){
+                if(i==0){
+                    idza=coniddata.get(i);
+                }else{
+                    idza=idza+","+coniddata.get(i);
+                }
+            }
+            oaMeeting.setConfereeid(idza);
             meetingService.saveOrUpdate(oaMeeting);
+            for(int i=0; i<coniddata.size(); i++){
+                OaNotificationform oano =new OaNotificationform();
+                SysUserEntity USER=userService.getById(coniddata.get(i));
+                SysDeptEntity dept=deptService.getById(USER.getDeptId());
+                oano.setDepid(USER.getDeptId());
+                oano.setDepname(dept.getName());
+                oano.setStatus("0");
+                oano.setNameid(coniddata.get(i));
+                oano.setName(USER.getRealName());
+                oano.setHuiyiid(oaMeeting.getId());
+                oano.setCreateTime(new Date());
+                oano.setHuiyihome(oaMeeting.getMeetingId());
+                oano.setHuiyidate(oaMeeting.getMeetingTime());
+                notificationformService.saveOrUpdate(oano);
+
+            }
         } catch (Exception e) {
             ajaxJson.setSuccess(false);
             ajaxJson.setMsg("新增议题会议失败");
@@ -576,6 +740,24 @@ public class OaMeetingController {
         }
         return ajaxJson;
     }
+
+    /**
+     * 表格数据
+     *
+     * @param oaTopic
+     * @param request
+     * @param response
+     * @param dataGrid
+     */
+    @RequestMapping(value = "tableAll")
+    public void tableAll(OaTopic oaTopic, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        QueryWrapper<OaTopic> queryWrapper = new QueryWrapper<>();
+        oaTopic.setStateId(4);
+        queryWrapper.setEntity(oaTopic);
+        IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+        ResponseUtil.writeJson(response, dataGrid, page);
+    }
+
     /**
      * 编辑议题会议
      *
@@ -590,8 +772,98 @@ public class OaMeetingController {
         HttpSession session = request.getSession();
         String ids =  (String)session.getAttribute("bianid");
         oaMeeting.setIssueId(ids.toString());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            meetingService.saveOrUpdate(oaMeeting);
+            Date  date =format.parse(oaMeeting.getMeetingTime());
+            Date  date1 =format.parse(oaMeeting.getMeetingendTime());
+            int compareTo =date.compareTo(new Date());
+            int compareTo2 =date1.compareTo(new Date());
+            if(compareTo==-1){
+                oaMeeting.setStateId("未开始");
+            }else if(compareTo==1){
+                oaMeeting.setStateId("进行中");
+            }
+            if (compareTo2==-1){
+                oaMeeting.setStateId("已结束");
+                String AA=oaMeeting.getIssueId();
+                String  strs[] =AA.split(",");
+                //议题列表的数据
+                QueryWrapper<OaTopic> queryWrappers = new QueryWrapper<>();
+                queryWrappers.in("id",strs);
+                List<OaTopic> oalist=topicService.list(queryWrappers);
+                for(OaTopic oa:oalist){
+                    oa.setIsHistory(1);
+                    topicService.saveOrUpdate(oa);
+                }
+            }
+            if(oaMeeting.getConferee()==null||oaMeeting.getConferee()==""){
+                oaMeeting.setConfereeid("");
+                oaMeeting.setConferee("");
+                meetingService.saveOrUpdate(oaMeeting);
+                //查询通知表
+                QueryWrapper<OaNotificationform> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("huiyiid",oaMeeting.getId());
+                List<OaNotificationform> list =notificationformService.list(queryWrapper);
+                for(OaNotificationform oanot:list){
+                        QueryWrapper<OaNotificationform> queryRole = new QueryWrapper<OaNotificationform>();
+                        queryRole.eq("huiyiid", oaMeeting.getId());
+                        notificationformService.remove(queryRole);
+                }
+            }else {
+                String condata = oaMeeting.getConferee();
+                List<String> conlist = Arrays.asList(condata.split(","));
+                List<String> coniddata = new ArrayList<>();
+                for (int i = 0; i < conlist.size(); i++) {
+                    QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
+                    queryWrapper.eq("REAL_NAME", conlist.get(i));
+                    SysUserEntity user = userService.list(queryWrapper).get(0);
+                    coniddata.add(user.getId());
+                }
+                String idza = "";
+                for (int i = 0; i < coniddata.size(); i++) {
+                    if (i == 0) {
+                        idza = coniddata.get(i);
+                    } else {
+                        idza = idza + "," + coniddata.get(i);
+                    }
+                }
+                oaMeeting.setConfereeid(idza);
+                meetingService.saveOrUpdate(oaMeeting);
+                //查询通知表
+                QueryWrapper<OaNotificationform> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("huiyiid", oaMeeting.getId());
+                List<OaNotificationform> list = notificationformService.list(queryWrapper);
+                for (OaNotificationform oanot : list) {
+                    if (!coniddata.contains(oanot.getNameid())) {
+                        //先删除角色
+                        QueryWrapper<OaNotificationform> queryRole = new QueryWrapper<OaNotificationform>();
+                        queryRole.eq("huiyiid", oaMeeting.getId());
+                        queryRole.eq("nameid", oanot.getNameid());
+                        notificationformService.remove(queryRole);
+                    }
+                }
+                for (int i = 0; i < coniddata.size(); i++) {
+                    //查询通知表
+                    QueryWrapper<OaNotificationform> queryWrappers = new QueryWrapper<>();
+                    queryWrappers.eq("huiyiid", oaMeeting.getId()).eq("nameid", coniddata.get(i));
+                    List<OaNotificationform> oa = notificationformService.list(queryWrappers);
+                    if (oa.size() <= 0) {
+                        SysUserEntity USER=userService.getById(coniddata.get(i));
+                        SysDeptEntity dept=deptService.getById(USER.getDeptId());
+                        OaNotificationform oano = new OaNotificationform();
+                        oano.setDepid(USER.getDeptId());
+                        oano.setDepname(dept.getName());
+                        oano.setStatus("0");
+                        oano.setNameid(coniddata.get(i));
+                        oano.setName(USER.getRealName());
+                        oano.setHuiyiid(oaMeeting.getId());
+                        oano.setCreateTime(new Date());
+                        oano.setHuiyihome(oaMeeting.getMeetingId());
+                        oano.setHuiyidate(oaMeeting.getMeetingTime());
+                        notificationformService.saveOrUpdate(oano);
+                    }
+                }
+            }
         } catch (Exception e) {
             ajaxJson.setSuccess(false);
             ajaxJson.setMsg("修改议题会议失败");
@@ -599,5 +871,6 @@ public class OaMeetingController {
         }
         return ajaxJson;
     }
+
 }
 

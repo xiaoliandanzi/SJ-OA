@@ -21,10 +21,10 @@
                             <label class="col-sm-2 control-label m-b">科室*：</label>
                             <div class="col-sm-4 m-b">
                                 <div class="input-group">
-                                    <t:choose url="common/selectDepart" hiddenName="deptId"
-                                              hiddenValue="${depname }"
-                                              textValue="${depname }" textName="deptName" hiddenId="departId"
-                                              textId="departLabel"></t:choose>
+                                    <t:choose url="common/selectDepart" hiddenName="depId"
+                                              hiddenValue="${deptNo }"
+                                              textValue="${name }" textName="deptName" hiddenId="depId"
+                                              textId="deptName"></t:choose>
                                 </div>
                             </div>
                         </div>
@@ -124,23 +124,26 @@
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="meeting/tables"   tableContentId="topictable" searchGroupId="searchGroupId" fit="true"
             multiSelect="true"     rownumbers="true"    caption="议题列表" name="toptable"  pageSize="20" sortName="creatTime" sortOrder="desc" >
+
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="creatTime" label="申报日期" width="250" query="false"></t:dgCol>
-    <t:dgCol name="topicName" label="议题名称" width="160" query="false"></t:dgCol>
+    <t:dgCol name="creatTime" label="申报日期" width="300" query="false"></t:dgCol>
+    <t:dgCol name="topicName" label="议题名称" width="150" query="flase"></t:dgCol>
     <t:dgCol name="proposeLeaderName" label="提议领导" query="false"></t:dgCol>
     <t:dgCol name="reportName" label="汇报人" query="false"></t:dgCol>
-    <t:dgCol name="deptLeaderName" label="科室负责人" query="false"></t:dgCol>
-    <t:dgCol name="leaderName" label="主管领导" query="false"></t:dgCol>
-    <t:dgCol name="generalOfficeName" label="综合办" query="false"></t:dgCol>
-    <t:dgCol name="financeName" label="财务科" query="false"></t:dgCol>
-    <t:dgCol name="disciplineName" label="纪委" query="false"></t:dgCol>
+    <t:dgCol name="isPassOne" label="科室负责人" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isPassTwo" label="主管领导" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isPassThree" label="综合办" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isPassFour" label="财务科" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isPassFive" label="纪委" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
     <t:dgCol name="isSecretary" label="书记会" dictionary="byesorno" query="false"></t:dgCol>
-    <t:dgCol name="isWorkingCommittee" label="主任会" dictionary="byesorno" query="flase"></t:dgCol>
-    <t:dgCol name="isDirector" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>
+    <t:dgCol name="isDirector" label="主任会" dictionary="byesorno" query="flase"></t:dgCol>
+    <t:dgCol name="isWorkingCommittee" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>
+    <t:dgCol name="isHistory" label="历史议题" query="flase" replace="是_1, 否_0"></t:dgCol>
     <t:dgCol name="opt" label="操作" width="290"></t:dgCol>
     <t:dgToolBar label="添加标题" icon="fa fa-clock-o" type="define" funName="addbt"></t:dgToolBar>
     <t:dgDelOpt label="删除" url="meeting/tablesdel?id={id}" />
 </t:datagrid>
+
 </body>
 <script type="text/javascript">
     $(function() {
@@ -184,8 +187,8 @@
                     option.value = data.obj[i].realName;
                      option.Text = data.obj[i].realName;
                     option.innerHTML=data.obj[i].realName;
-                    $("#conferee").append(option);
 
+                    $("#conferee").append(option);
                 }
             },
             error:function(data){

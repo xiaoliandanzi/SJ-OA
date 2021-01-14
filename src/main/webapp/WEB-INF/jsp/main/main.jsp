@@ -155,7 +155,7 @@
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-                <div class="navbar-header" style="width: 900px"><a
+                <div class="navbar-header" style="width: 700px"><a
                         class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i
                         class="fa fa-bars"></i> </a>
                     <div style="float: left"><img src="img/1.png " style="width: 46px;height: 46px">
@@ -170,11 +170,11 @@
                     <div style="float: left"><img src="img/财务Finance.png" class="ban">
                         <a href="#" class="cor-size">财务系统&nbsp;&nbsp;&nbsp;&nbsp</a>
                     </div>
-                    <div style="float: left;position: relative;top: 15px">
+                    <%--<div style="float: left;position: relative;top: 15px">
                         <input type="search" placeholder="请输入关键字" id="text-input">
-                        <%--<span class="glyphicon glyphicon-search image"></span>--%>
+                        &lt;%&ndash;<span class="glyphicon glyphicon-search image"></span>&ndash;%&gt;
                         <input type="button" value="搜索" id="text-btn">
-                    </div>
+                    </div>--%>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li class="dropdown hidden-xs">
