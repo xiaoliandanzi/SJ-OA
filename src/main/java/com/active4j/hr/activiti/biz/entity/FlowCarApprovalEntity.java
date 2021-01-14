@@ -62,4 +62,6 @@ public class FlowCarApprovalEntity extends BaseEntity {
      */
     @TableField("COMMIT")
     private String commit;
+
+
 }

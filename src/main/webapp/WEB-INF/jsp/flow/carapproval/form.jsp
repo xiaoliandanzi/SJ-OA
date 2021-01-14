@@ -9,13 +9,13 @@
 <div class="form-group">
     <label class="col-sm-3 control-label">用车单位*：</label>
     <div class="col-sm-5">
-        <input id="useDepartment" name="useDepartment" minlength="2" type="text" class="form-control" required="" value="${base.useDepartment }">
+        <input id="useDepartment" name="useDepartment" minlength="2" type="text" class="form-control" required="" value="${biz.useDepartment }">
     </div>
 </div>
 <div class="form-group">
     <label class="col-sm-3 control-label">乘车人*：</label>
     <div class="col-sm-5">
-        <input id="userName" name="userName" minlength="2" type="text" class="form-control" required="" value="${base.userName }">
+        <input id="userName" name="userName" minlength="2" type="text" class="form-control" required="" value="${biz.userName }">
     </div>
 </div>
 <div class="form-group">

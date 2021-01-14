@@ -59,6 +59,10 @@ public class TaskAssigneeRoleNameListener implements TaskListener {
 		if(taskName.equalsIgnoreCase("综合办物品管理审批")){
 			roleName="物品管理员";
 		}
+
+		if(taskName.equalsIgnoreCase("车辆管理员审批")){
+			roleName="车辆管理员";
+		}
 		if ("监交人审批".equalsIgnoreCase(taskName)) {
 			roleName="综合办科员";
 		}
