@@ -1,13 +1,5 @@
 package com.active4j.hr.work.service.impl;
 
-import java.util.List;
-
-import org.apache.catalina.Globals;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.util.DateUtils;
 import com.active4j.hr.work.dao.OaWorkTaskDao;
@@ -20,6 +12,12 @@ import com.active4j.hr.work.service.OaWorkTaskExcuteService;
 import com.active4j.hr.work.service.OaWorkTaskService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * 
@@ -41,6 +39,10 @@ public class OaWorkTaskServiceImpl extends ServiceImpl<OaWorkTaskDao, OaWorkTask
 
 	public List<OaWorkTaskStatusDomain> queryOaWorkTaskStatusStat(String userId) {
 		return this.baseMapper.queryOaWorkTaskStatusStat(userId);
+	}
+
+	public List<OaWorkTaskStatusDomain> queryOaWorkTaskStatusStatByAppoint(String appointUserId) {
+		return this.baseMapper.queryOaWorkTaskStatusStatByAppoint(appointUserId);
 	}
 	
 	public List<OaWorkTaskEntity> findOaWorkTaskByUserId(String userId) {

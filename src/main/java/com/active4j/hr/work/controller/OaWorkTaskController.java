@@ -108,7 +108,7 @@ public class OaWorkTaskController extends BaseController {
         ModelAndView view = new ModelAndView("oa/work/task/mycreatetasklist");
 
         String userId = ShiroUtils.getSessionUserId();
-        List<OaWorkTaskStatusDomain> lstStatus = oaWorkTaskService.queryOaWorkTaskStatusStat(userId);
+        List<OaWorkTaskStatusDomain> lstStatus = oaWorkTaskService.queryOaWorkTaskStatusStatByAppoint(userId);
         List<OaWorkTaskStatusDomain> lstData = new ArrayList<OaWorkTaskStatusDomain>();
         int total = 0;
         //名称的赋值
