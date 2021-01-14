@@ -176,7 +176,8 @@ public class OaTopicController extends BaseController {
         //创建人
         ModelAndView modelAndView = new ModelAndView("topic/topicaudit");
         modelAndView.addObject("lookOrAdu", oaTopic.getOpinion());
-        modelAndView = getMV(oaTopic, modelAndView);
+        oaTopic = topicService.getById(oaTopic.getId());
+        modelAndView = getMVForStaud(oaTopic, modelAndView);
         modelAndView = getFileList(modelAndView, oaTopic);
         return modelAndView;
     }
@@ -190,7 +191,7 @@ public class OaTopicController extends BaseController {
     @RequestMapping(value = "auditSecondModel")
     public ModelAndView auditSecondModel(OaTopic oaTopic) {
         ModelAndView modelAndView = new ModelAndView("topic/topicauditsecond");
-        modelAndView = getMV(oaTopic, modelAndView);
+        modelAndView = getMVForStaud(oaTopic, modelAndView);
         modelAndView = getFileList(modelAndView, oaTopic);
         return modelAndView;
     }
@@ -653,6 +654,37 @@ public class OaTopicController extends BaseController {
         //科室负责人
         DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
         String leaderRole = deptLeaderRole.getRoleForDept().get(userEntity.getDeptId());
+        modelAndView.addObject("deptLeader", userList("", leaderRole));
+        //主管领导
+        SysRoleEntity roleEntity = roleService.getById(leaderRole);
+        modelAndView.addObject("lv2Leader", userList("", roleEntity.getParentId()));
+        //综合办
+        modelAndView.addObject("generalOffice", roleService.findUserByRoleName("综合办议题审核员"));
+        //财务科科长
+        modelAndView.addObject("financeOffice", roleService.findUserByRoleName("财务科室负责人"));
+        //纪委科长
+        modelAndView.addObject("disciplineOffice", roleService.findUserByRoleName("纪检监察组科室负责人"));
+        return modelAndView;
+    }
+
+    private ModelAndView getMVForStaud(OaTopic oaTopic, ModelAndView modelAndView) {
+        SysUserEntity userEntity = getUser();
+        oaTopic = topicService.getById(oaTopic.getId());
+        String deptId = oaTopic.getDeptId();
+        QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("DEPT_ID", deptId);
+        List<SysUserEntity> users = userService.list(queryWrapper);
+        modelAndView.addObject("oaTopic", oaTopic);
+        //
+        SysDeptEntity dept = deptService.getById(deptId);
+        modelAndView.addObject("deptName", dept.getName());
+        //汇报人
+        modelAndView.addObject("reportList", users);
+        //提议领导 查询主要领导
+        modelAndView.addObject("proposeLeaderList", userList("", "1e3124100e45ed3e9ec99bf3e35be2c0"));
+        //科室负责人
+        DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
+        String leaderRole = deptLeaderRole.getRoleForDept().get(deptId);
         modelAndView.addObject("deptLeader", userList("", leaderRole));
         //主管领导
         SysRoleEntity roleEntity = roleService.getById(leaderRole);
