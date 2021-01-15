@@ -187,6 +187,10 @@ public class OaTopic {
     @TableField("IS_HISTORY")
     private Integer isHistory;
 
+    //0未通过全部 1通过全部 默认零
+    @TableField("ALL_PASS")
+    private Integer allPass;
+
     //附件id
     @TableField("FILE_ID")
     private String fileId;

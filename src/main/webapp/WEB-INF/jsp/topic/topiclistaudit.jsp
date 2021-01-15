@@ -41,6 +41,7 @@
     <t:dgCol name="isSecretary" label="书记会" dictionary="byesorno" query="false"></t:dgCol>
     <t:dgCol name="isDirector" label="主任会" dictionary="byesorno" query="flase"></t:dgCol>
     <t:dgCol name="isWorkingCommittee" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>
+    <t:dgCol name="allPass" label="通过审核" query="true" replace="是_1, 否_0"></t:dgCol>
     <t:dgCol name="isHistory" label="历史议题" query="true" replace="是_1, 否_0"></t:dgCol>
     <t:dgToolBar label="查看" type="define" funName="getOne"></t:dgToolBar>
     <t:dgToolBar label="审核" type="define" funName="auditOne"></t:dgToolBar>
@@ -86,11 +87,13 @@
                 qhTipWarning(data.msg);
             }
         })
-        if (topic.isHistory == 0) {
-            qhAlert('请选择历史议题进行审核');
-            return;
-        }
-        auditTopic("topicAddList", "topic/auditSecondModel?id=" + rowId, "二次审核", "60%", "80%");
+        setTimeout(function () {
+            if (topic.allPass == 0) {
+                qhAlert('请选择通过审核的议题进行二次审核');
+                return;
+            }
+            auditTopic("topicAddList", "topic/auditSecondModel?id=" + rowId, "二次审核", "60%", "80%");
+        }, 500); // 延时半秒
     }
 
     function auditOne() {

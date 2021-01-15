@@ -179,6 +179,8 @@ public class OaTopicController extends BaseController {
         oaTopic = topicService.getById(oaTopic.getId());
         modelAndView = getMVForStaud(oaTopic, modelAndView);
         modelAndView = getFileList(modelAndView, oaTopic);
+        if (ShiroUtils.hasRole("topicaudit"))
+            modelAndView.addObject("isGeneralOffice", 1);
         return modelAndView;
     }
 
@@ -193,6 +195,8 @@ public class OaTopicController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("topic/topicauditsecond");
         modelAndView = getMVForStaud(oaTopic, modelAndView);
         modelAndView = getFileList(modelAndView, oaTopic);
+        if (ShiroUtils.hasRole("topicaudit"))
+            modelAndView.addObject("isGeneralOffice", 1);
         return modelAndView;
     }
 
@@ -268,8 +272,10 @@ public class OaTopicController extends BaseController {
             oaTopic = getUserName(oaTopic);
             //判断是否是 纪委与财务创建的议题
             oaTopic = ifJWOrCW(oaTopic);
-            oaTopic.setCreatTime(new Date());
-            oaTopic.setStateId(0);
+            if (StringUtil.isEmpty(oaTopic.getId())) {
+                oaTopic.setStateId(0);
+                oaTopic.setCreatTime(new Date());
+            }
             topicService.saveOrUpdate(oaTopic);
         } catch (Exception e) {
             log.error("提交议题失败,错误信息:" + e.getMessage());
@@ -395,10 +401,12 @@ public class OaTopicController extends BaseController {
                     if (!"".equals(oaTopic.getDisciplineOffice()) && oaTopic.getIsPassFive() == 1) {
                         //纪委ID不为空 且通过审核
                         oaTopic.setStateId(4);
+                        oaTopic.setAllPass(1);
                         //oaTopic.setIsHistory(1);
                     } else if ("".equals(oaTopic.getDisciplineOffice())) {
                         //纪委ID空 通过审核  其他不修改状态
                         oaTopic.setStateId(4);
+                        oaTopic.setAllPass(1);
                         //oaTopic.setIsHistory(1);
                     }
                 } else {
@@ -430,10 +438,12 @@ public class OaTopicController extends BaseController {
                     if (!"".equals(oaTopic.getFinanceOffice()) && oaTopic.getIsPassFour() == 1) {
                         //纪委ID不为空 且通过审核
                         oaTopic.setStateId(4);
+                        oaTopic.setAllPass(1);
                         //oaTopic.setIsHistory(1);
                     } else if ("".equals(oaTopic.getFinanceOffice())) {
                         //纪委ID空 通过审核  其他不修改状态
                         oaTopic.setStateId(4);
+                        oaTopic.setAllPass(1);
                         //oaTopic.setIsHistory(1);
                     }
                 } else {
@@ -647,13 +657,13 @@ public class OaTopicController extends BaseController {
         //
         SysDeptEntity dept = deptService.getById(userEntity.getDeptId());
         modelAndView.addObject("deptName", dept.getName());
+        DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
+        String leaderRole = deptLeaderRole.getRoleForDept().get(userEntity.getDeptId());
         //汇报人
         modelAndView.addObject("reportList", users);
         //提议领导 查询主要领导
-        modelAndView.addObject("proposeLeaderList", userList("", "1e3124100e45ed3e9ec99bf3e35be2c0"));
+        modelAndView.addObject("proposeLeaderList", getAllLeader(leaderRole));
         //科室负责人
-        DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
-        String leaderRole = deptLeaderRole.getRoleForDept().get(userEntity.getDeptId());
         modelAndView.addObject("deptLeader", userList("", leaderRole));
         //主管领导
         SysRoleEntity roleEntity = roleService.getById(leaderRole);
@@ -678,13 +688,13 @@ public class OaTopicController extends BaseController {
         //
         SysDeptEntity dept = deptService.getById(deptId);
         modelAndView.addObject("deptName", dept.getName());
+        DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
+        String leaderRole = deptLeaderRole.getRoleForDept().get(deptId);
         //汇报人
         modelAndView.addObject("reportList", users);
         //提议领导 查询主要领导
-        modelAndView.addObject("proposeLeaderList", userList("", "1e3124100e45ed3e9ec99bf3e35be2c0"));
+        modelAndView.addObject("proposeLeaderList", getAllLeader(leaderRole));
         //科室负责人
-        DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
-        String leaderRole = deptLeaderRole.getRoleForDept().get(deptId);
         modelAndView.addObject("deptLeader", userList("", leaderRole));
         //主管领导
         SysRoleEntity roleEntity = roleService.getById(leaderRole);
@@ -716,6 +726,19 @@ public class OaTopicController extends BaseController {
             modelAndView.addObject("uploadList", list);
         }
         return modelAndView;
+    }
+
+    /**
+     * 提议领导
+     *
+     * @return
+     */
+    private List<SysUserEntity> getAllLeader(String leaderRole) {
+        SysRoleEntity roleEntity = roleService.getById(leaderRole);
+        List<SysUserEntity> list = userList("", "1e3124100e45ed3e9ec99bf3e35be2c0");
+        list.addAll(userList("", leaderRole));
+        list.addAll(userList("", roleEntity.getParentId()));
+        return list;
     }
 }
 

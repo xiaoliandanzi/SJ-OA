@@ -92,47 +92,67 @@
                             </div>
                         </div>
                         <%--议题材料--%>
-                       <%-- <c:if test="${not empty oaTopic.fileId}">
+                        <%-- <c:if test="${not empty oaTopic.fileId}">
+                             <div class="form-group">
+                                 <label class="col-sm-3 control-label m-b">附件:</label>
+                                 <div class="col-sm-2">
+                                     <button type="button" class="btn btn-success" id="download">下载</button>
+                                 </div>
+                             </div>
+                         </c:if>--%>
+                        <%--议题材料--%>
+                        <c:if test="${not empty isGeneralOffice}">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label m-b">附件:</label>
-                                <div class="col-sm-2">
-                                    <button type="button" class="btn btn-success" id="download">下载</button>
+                                <label class="col-sm-3 control-label">主任会：</label>
+                                <div class="col-sm-8">
+                                    <c:choose>
+                                        <c:when test="${empty oaTopic.isDirector}">
+                                            <t:dictSelect name="isDirector" type="radio" typeGroupCode="byesorno"
+                                                          defaultVal="false"></t:dictSelect>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <t:dictSelect name="isDirector" type="radio" typeGroupCode="byesorno"
+                                                          defaultVal="${oaTopic.isDirector}"></t:dictSelect>
+                                        </c:otherwise>
+                                    </c:choose>
+
                                 </div>
                             </div>
-                        </c:if>--%>
-                        <%--议题材料--%>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">主任会：</label>
-                            <div class="col-sm-8">
-                                <c:choose>
-                                    <c:when test="${empty oaTopic.isDirector}">
-                                        <t:dictSelect name="isDirector" type="radio" typeGroupCode="byesorno"
-                                                      defaultVal="false"></t:dictSelect>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <t:dictSelect name="isDirector" type="radio" typeGroupCode="byesorno"
-                                                      defaultVal="${oaTopic.isDirector}"></t:dictSelect>
-                                    </c:otherwise>
-                                </c:choose>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">工委会：</label>
+                                <div class="col-sm-8">
+                                    <c:choose>
+                                        <c:when test="${empty oaTopic.isWorkingCommittee}">
+                                            <t:dictSelect name="isWorkingCommittee" type="radio"
+                                                          typeGroupCode="byesorno"
+                                                          defaultVal="false"></t:dictSelect>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <t:dictSelect name="isWorkingCommittee" type="radio"
+                                                          typeGroupCode="byesorno"
+                                                          defaultVal="${oaTopic.isWorkingCommittee}"></t:dictSelect>
+                                        </c:otherwise>
+                                    </c:choose>
 
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">工委会：</label>
-                            <div class="col-sm-8">
-                                <c:choose>
-                                    <c:when test="${empty oaTopic.isWorkingCommittee}">
-                                        <t:dictSelect name="isWorkingCommittee" type="radio" typeGroupCode="byesorno"
-                                                      defaultVal="false"></t:dictSelect>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <t:dictSelect name="isWorkingCommittee" type="radio" typeGroupCode="byesorno"
-                                                      defaultVal="${oaTopic.isWorkingCommittee}"></t:dictSelect>
-                                    </c:otherwise>
-                                </c:choose>
-
+                        </c:if>
+                        <c:if test="${empty isGeneralOffice}">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">主任会：</label>
+                                <div class="col-sm-8">
+                                    <c:if test="${oaTopic.isDirector == 'false'}">不上会</c:if>
+                                    <c:if test="${oaTopic.isDirector == 'true'}">上会</c:if>
+                                </div>
                             </div>
-                        </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">工委会：</label>
+                                <div class="col-sm-8">
+                                    <c:if test="${oaTopic.isWorkingCommittee == 'false'}">不上会</c:if>
+                                    <c:if test="${oaTopic.isWorkingCommittee == 'true'}">上会</c:if>
+                                </div>
+                            </div>
+                        </c:if>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">科室负责人*：</label>
                             <div class="col-sm-8">
@@ -230,7 +250,7 @@
                                 <textarea name="opinionGeneralOffice" class="form-control" disabled
                                 >${oaTopic.opinionGeneralOffice}</textarea>
                                 </div>
-                                <label class="col-sm-2 control-label" >审核结果：</label>
+                                <label class="col-sm-2 control-label">审核结果：</label>
                                 <div class="col-sm-3">
                                     <p class="form-control-static" disabled>
                                         <c:choose>
@@ -292,15 +312,22 @@
                                 </div>
                             </div>
                         </c:if>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label m-b">附件:</label>
-                            <div class="col-sm-2">
-                                <c:forEach items="${uploadList}" var="fileDown">
-                                    <button type="button" onclick="downThis(this)"
-                                            class="btn btn-success" id="${fileDown.id}">${fileDown.name}</button>
-                                </c:forEach>
+                        <c:if test="${not empty uploadList}">
+                            <hr/>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label m-b">已有附件:</label>
+                                <div class="col-sm-8">
+                                    <c:forEach items="${uploadList}" var="fileDown">
+                                        <div class="col-sm-8"
+                                             style="font-size: 16px;color: black">${fileDown.name}</div>
+                                        <button type="button" onclick="downThis(this)"
+                                                class="btn btn-success col-sm-2" id="${fileDown.id}">
+                                            下载
+                                        </button>
+                                    </c:forEach>
+                                </div>
                             </div>
-                        </div>
+                        </c:if>
                         <%-- </c:if>--%>
                     </t:formvalid>
                 </div>
