@@ -146,21 +146,25 @@
 
 </body>
 <script type="text/javascript">
-    $(function() {
+    //$(function() {
 
-        laydate({
+     var start=    ({
             elem: "#meetingTime",
             event: "focus",
             istime: true,
-            format: 'YYYY-MM-DD hh:mm:ss'
+            format: 'YYYY-MM-DD hh:mm:ss',
+            min: laydate.now(), //最大日期,
+            choose: function(datas){
+                end.min = datas; //开始日选好后，重置结束日的最小日期
+                }
         });
-        laydate({
+        var end=   ({
             elem: "#meetingendTime",
             event: "focus",
             istime: true,
             format: 'YYYY-MM-DD hh:mm:ss'
         });
-    });
+  //  });
   function addbt(){
       var  topid= $("#topid").val();
       if (topid==null){
@@ -175,6 +179,8 @@
           });
 
   }
+    laydate(start);
+    laydate(end);
     function func(st){
         $("#conferee").empty();
         $.ajax({

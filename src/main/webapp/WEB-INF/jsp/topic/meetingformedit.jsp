@@ -191,23 +191,24 @@
         }
         printTopic("toptable", "meeting/printTopicAll?issueId=" + rowIds+"&meetingId="+meetingId+"&meetingName="+meetingName+"&meetingTime="+meetingTime+"&id="+id,"打印", "60%", "80%");
     }
-    $(function() {
-
-        laydate({
-            elem: "#meetingTime",
-            event: "focus",
-            istime: true,
-            format: 'YYYY-MM-DD hh:mm:ss',
-        });
-
-        laydate({
-            elem: "#meetingendTime",
-            event: "focus",
-            istime: true,
-            format: 'YYYY-MM-DD hh:mm:ss'
-        });
-
+    var start=    ({
+        elem: "#meetingTime",
+        event: "focus",
+        istime: true,
+        format: 'YYYY-MM-DD hh:mm:ss',
+        min: laydate.now(), //最大日期,
+        choose: function(datas){
+            end.min = datas; //开始日选好后，重置结束日的最小日期
+        }
     });
+    var end=   ({
+        elem: "#meetingendTime",
+        event: "focus",
+        istime: true,
+        format: 'YYYY-MM-DD hh:mm:ss'
+    });
+    laydate(start);
+    laydate(end);
   function addbt(){
       var  topid= $("#topid").val();
       if (topid==null){

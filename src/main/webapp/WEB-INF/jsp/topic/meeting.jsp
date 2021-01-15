@@ -101,7 +101,7 @@
             qhAlert('请选择要查看的议题');
             return;
         }
-        popNoForMe("table_list_1", "topic/saveOrUpdateView?id=" + rowId + "&params=1", "查看", "60%", "80%");
+        popNoForMe("table_list_1", "topic/auditModel?id=" + rowId + "&params=1", "查看", "60%", "80%");
     }
 
     //发起议题会议
