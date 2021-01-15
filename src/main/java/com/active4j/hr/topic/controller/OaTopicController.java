@@ -130,6 +130,7 @@ public class OaTopicController extends BaseController {
                 }
             }
         }
+        queryWrapper.orderByDesc("CREAT_TIME");
         IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
         ResponseUtil.writeJson(response, dataGrid, page);
     }

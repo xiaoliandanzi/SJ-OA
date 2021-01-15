@@ -46,7 +46,7 @@
     <t:dgToolBar label="查看" type="define" funName="getOne"></t:dgToolBar>
     <t:dgToolBar label="审核" type="define" funName="auditOne"></t:dgToolBar>
     <t:dgToolBar label="二次审核" type="define" funName="secondAudit" operationCode="topic:second"></t:dgToolBar>
-    <t:dgToolBar label="打印" type="define" funName="printIt"></t:dgToolBar>
+    <t:dgToolBar label="导出" type="define" funName="printIt"></t:dgToolBar>
 </t:datagrid>
 <script type="text/javascript">
     $(function () {
@@ -64,12 +64,28 @@
     }
 
     function printIt() {
-        var rowId = $('#topicAddList').jqGrid('getGridParam', 'selrow');
+        /*var rowId = $('#topicAddList').jqGrid('getGridParam', 'selrow');
         if (!rowId) {
             qhAlert('请选择要打印的议题');
             return;
         }
-        printTopic("topicAddList", "topic/printTopic?id=" + rowId, "打印", "60%", "80%");
+        printTopic("topicAddList", "topic/printTopic?id=" + rowId, "打印", "60%", "80%");*/
+        var rowId = $('#topicAddList').jqGrid('getGridParam', 'selrow');
+        if (!rowId) {
+            qhAlert('请选择要导出的议题');
+            return;
+        }
+        var x = new XMLHttpRequest();
+        x.open("GET", "topicFile/getHtml?id=" + rowId, true);
+        x.responseType = 'blob';
+        x.onload = function (e) {
+            var url = window.URL.createObjectURL(x.response)
+            var a = document.createElement('a');
+            a.href = url
+            a.download = "议题申请审批表.doc"
+            a.click()
+        }
+        x.send();
     }
 
 
