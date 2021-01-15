@@ -266,38 +266,29 @@
     var end = '</table>';
 
 
-    /* $(document).ready(function () {
-         $("#download").click(function () {
-             if ('${oaTopic.fileId}' != null) {
-                var x = new XMLHttpRequest();
-                x.open("GET", "func/upload/download?id=" + '${oaTopic.fileId}', true);
-                x.responseType = 'blob';
-                x.onload = function (e) {
-                    var url = window.URL.createObjectURL(x.response)
-                    var a = document.createElement('a');
-                    a.href = url
-                    a.download = ''
-                    a.click()
-                }
-                x.send();
-            }
-        });
-    });*/
-
     function downThis(date) {
         var fileId = $(date).attr('id');
-        console.log(fileId);
-        var x = new XMLHttpRequest();
-        x.open("GET", "func/upload/download?id=" + fileId, true);
-        x.responseType = 'blob';
-        x.onload = function (e) {
-            var url = window.URL.createObjectURL(x.response)
-            var a = document.createElement('a');
-            a.href = url
-            a.download = ''
-            a.click()
-        }
-        x.send();
+        var filename = '';
+        $.get("topicFile/name?id=" + fileId, null, function (data) {
+            if (data.success) {
+                filename = data.obj;
+            } else {
+                qhTipWarning(data.msg);
+            }
+        })
+        setTimeout(function () {
+            var x = new XMLHttpRequest();
+            x.open("GET", "topicFile/down?id=" + fileId, true);
+            x.responseType = 'blob';
+            x.onload = function (e) {
+                var url = window.URL.createObjectURL(x.response)
+                var a = document.createElement('a');
+                a.href = url
+                a.download = filename
+                a.click()
+            }
+            x.send();
+        }, 1000);
     }
 
     $(function () {

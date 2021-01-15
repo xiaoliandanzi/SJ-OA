@@ -89,7 +89,7 @@
             }
         })
         console.log(topic)
-        if (topic.isHistory == 1) {
+        if (topic.isPassOne != 0) {
             qhAlert('该议题禁止取消');
             return;
         }
