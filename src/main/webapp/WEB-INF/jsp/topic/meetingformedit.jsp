@@ -154,6 +154,7 @@
     <t:dgToolBar label="添加标题" icon="fa fa-clock-o" type="define" funName="addbt"></t:dgToolBar>
     <t:dgToolBar label="批量打印" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
     <t:dgToolBar label="打印议题单" icon="fa fa-clock-o" type="define" funName="printIt"></t:dgToolBar>
+    <t:dgToolBar label="打印签到表" icon="fa fa-clock-o" type="define" funName="printqd"></t:dgToolBar>
     <t:dgDelOpt label="删除" url="meeting/bjtablesdel?id={id}" />
 </t:datagrid>
 </body>
@@ -169,6 +170,14 @@
             return;
         }
         printTopic("toptable", "meeting/printTopic?issueId=" + rowId+"&meetingId="+meetingId+"&meetingName="+meetingName+"&meetingTime="+meetingTime+"&id="+id,"打印", "60%", "80%");
+    }
+    function printqd() {
+        var conferee=$("#conferee").val();
+        if(conferee==""||conferee==null){
+            qhAlert('参会人员为空不能打印');
+            return;
+        }
+        printTopic("toptable", "meeting/printqd?conferee="+conferee,"打印", "60%", "80%");
     }
     function printItAll() {
         var meetingId=$("#meetingId").val();

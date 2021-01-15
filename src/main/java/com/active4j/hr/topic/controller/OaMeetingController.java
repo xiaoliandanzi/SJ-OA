@@ -27,13 +27,7 @@ import com.active4j.hr.work.service.OaWorkMeetRoomService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.apache.catalina.User;
-import org.apache.velocity.runtime.directive.contrib.For;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -918,6 +912,14 @@ public class OaMeetingController {
         modelAndView.addObject("oaTopiclist", list);
         modelAndView.addObject("time", time);
         modelAndView.addObject("row_count", 2);
+        return modelAndView;
+    }
+    @RequestMapping(value = "printqd")
+    public ModelAndView printqd(OaMeeting oaMeeting) throws ParseException {
+        //创建人
+        ModelAndView modelAndView = new ModelAndView("topic/meetingprintqd");
+        String str[] =oaMeeting.getConferee().split(",");
+        modelAndView.addObject("strlist",str);
         return modelAndView;
     }
     /**
