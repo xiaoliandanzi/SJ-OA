@@ -30,7 +30,7 @@
 </div>
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="meeting/table" tableContentId="jqGrid_wrappers" searchGroupId="searchGroupId" fit="true"
-            multiSelect="true"     rownumbers="true"    caption="会议列表" name="table_list_2"  pageSize="20" sortName="creatTime" sortOrder="desc" >
+            multiSelect="true"    sortable="true"    rownumbers="true"    caption="会议列表" name="table_list_2"  pageSize="20" sortName="meetingTime" sortOrder="desc" >
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="stateId" label="状态" width="150" query="false"></t:dgCol>
     <t:dgCol name="deptName" label="使用科室" width="150" query="false"></t:dgCol>
@@ -42,7 +42,7 @@
 </t:datagrid>
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="meeting/tableAll" tableContentId="jqGrid_wrapper" searchGroupId="searchGroupId" fit="true"
-            multiSelect="true"     rownumbers="true"    caption="议题列表" name="table_list_1"  pageSize="20" sortName="creatTime" sortOrder="desc" >
+            multiSelect="true"    sortable="true"    rownumbers="true"    caption="议题列表" name="table_list_1"  pageSize="20" sortName="creatTime" sortOrder="desc" >
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="creatTime" label="申报日期" width="300" query="false"></t:dgCol>
     <t:dgCol name="topicName" label="议题名称" width="150" query="true"></t:dgCol>
@@ -64,7 +64,7 @@
 </t:datagrid>
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="meeting/tableAll" tableContentId="jqGrid_wrapper3" searchGroupId="searchGroupId" fit="true"
-            multiSelect="true"     rownumbers="true"    caption="议题列表11" name="table_list_3"  pageSize="20" sortName="creatTime" sortOrder="desc" >
+            multiSelect="true"     rownumbers="true"   caption="议题列表11" name="table_list_3"  pageSize="20" sortName="creatTime" sortOrder="desc" >
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="creatTime" label="申报日期" width="300" query="false"></t:dgCol>
     <t:dgCol name="topicName" label="议题名称" width="150" query="false"></t:dgCol>

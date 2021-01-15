@@ -2,6 +2,7 @@ package com.active4j.hr.topic.controller;
 
 
 import com.active4j.hr.core.model.AjaxJson;
+import com.active4j.hr.core.query.QueryUtils;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.util.StringUtil;
@@ -152,6 +153,7 @@ public class OaMeetingController {
         System.err.println(user);
         QueryWrapper<OaMeeting> queryWrapper = new QueryWrapper<>();
         queryWrapper.setEntity(oaMeeting);
+        queryWrapper.orderByDesc("Meeting_Time");
         IPage<OaMeeting> page = meetingService.page(new Page<OaMeeting>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
         ResponseUtil.writeJson(response, dataGrid, page);
     }
@@ -748,6 +750,7 @@ public class OaMeetingController {
         QueryWrapper<OaTopic> queryWrapper = new QueryWrapper<>();
         oaTopic.setStateId(4);
         queryWrapper.setEntity(oaTopic);
+        queryWrapper.orderByDesc("CREAT_TIME");
         IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
         ResponseUtil.writeJson(response, dataGrid, page);
     }
