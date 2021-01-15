@@ -152,10 +152,36 @@
     <t:dgCol name="isHistory" label="历史议题" query="flase" replace="是_1, 否_0"></t:dgCol>
     <t:dgCol name="opt" label="操作" width="290"></t:dgCol>
     <t:dgToolBar label="添加标题" icon="fa fa-clock-o" type="define" funName="addbt"></t:dgToolBar>
+    <t:dgToolBar label="批量打印" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
+    <t:dgToolBar label="打印议题单" icon="fa fa-clock-o" type="define" funName="printIt"></t:dgToolBar>
     <t:dgDelOpt label="删除" url="meeting/bjtablesdel?id={id}" />
 </t:datagrid>
 </body>
 <script type="text/javascript">
+    function printIt() {
+        var meetingId=$("#meetingId").val();
+        var meetingName=$("#meetingName").val();
+        var meetingTime=$("#meetingTime").val();
+        var id=$("#id").val();
+        var rowId = $('#toptable').jqGrid('getGridParam', 'selrow');
+        if (!rowId) {
+            qhAlert('请选择要打印的议题');
+            return;
+        }
+        printTopic("toptable", "meeting/printTopic?issueId=" + rowId+"&meetingId="+meetingId+"&meetingName="+meetingName+"&meetingTime="+meetingTime+"&id="+id,"打印", "60%", "80%");
+    }
+    function printItAll() {
+        var meetingId=$("#meetingId").val();
+        var meetingName=$("#meetingName").val();
+        var meetingTime=$("#meetingTime").val();
+        var id=$("#id").val();
+        var rowIds = $('#toptable').jqGrid('getGridParam', 'selarrrow');
+        if (rowIds==""||rowIds==null) {
+            qhAlert('请选择要打印的议题');
+            return;
+        }
+        printTopic("toptable", "meeting/printTopicAll?issueId=" + rowIds+"&meetingId="+meetingId+"&meetingName="+meetingName+"&meetingTime="+meetingTime+"&id="+id,"打印", "60%", "80%");
+    }
     $(function() {
 
         laydate({

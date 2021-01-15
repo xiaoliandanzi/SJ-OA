@@ -45,12 +45,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -870,6 +868,87 @@ public class OaMeetingController {
             e.printStackTrace();
         }
         return ajaxJson;
+    }
+
+    @RequestMapping(value = "printTopic")
+    public ModelAndView printTopic(OaMeeting oaMeeting) throws ParseException {
+        //创建人
+       ModelAndView modelAndView = new ModelAndView("topic/meetingprint");
+          modelAndView.addObject("meetingId",oaMeeting.getMeetingId());
+          modelAndView.addObject("meetingName",oaMeeting.getMeetingName());
+          SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+          DateFormat sdd = new SimpleDateFormat("yyyy年MM月dd日");
+          Date date =sdf.parse(oaMeeting.getMeetingTime());
+          String datetime=sdd.format(date);
+          Calendar calendar = Calendar.getInstance();
+          calendar.setTime(date); //放入
+          int hours= calendar.get(Calendar.HOUR_OF_DAY); //时（24小时制）
+          String weekday=getWeekOfDate(date);
+          String getDuringDay=getDuringDay(hours);
+          int hour= calendar.get(Calendar.HOUR_OF_DAY); //时（24小时制）
+          String  time=datetime+weekday+getDuringDay+":"+hour+":00";
+          QueryWrapper<OaTopic> queryWrapper= new QueryWrapper<>();
+          queryWrapper.eq("id", oaMeeting.getIssueId());
+          OaTopic oatop=topicService.list(queryWrapper).get(0);
+          modelAndView.addObject("oaTopic", oatop);
+          modelAndView.addObject("time", time);
+          return modelAndView;
+    }
+    @RequestMapping(value = "printTopicAll")
+    public ModelAndView printTopicAll(OaMeeting oaMeeting) throws ParseException {
+        //创建人
+        ModelAndView modelAndView = new ModelAndView("topic/meetingprintAll");
+        modelAndView.addObject("meetingId",oaMeeting.getMeetingId());
+        modelAndView.addObject("meetingName",oaMeeting.getMeetingName());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat sdd = new SimpleDateFormat("yyyy年MM月dd日");
+        Date date =sdf.parse(oaMeeting.getMeetingTime());
+        String datetime=sdd.format(date);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date); //放入
+        int hours= calendar.get(Calendar.HOUR_OF_DAY); //时（24小时制）
+        String weekday=getWeekOfDate(date);
+        String getDuringDay=getDuringDay(hours);
+        int hour= calendar.get(Calendar.HOUR_OF_DAY); //时（24小时制）
+        String  time=datetime+weekday+getDuringDay+":"+hour+":00";
+        QueryWrapper<OaTopic> queryWrapper= new QueryWrapper<>();
+        String  str[]=oaMeeting.getIssueId().split(",");
+        queryWrapper.in("id",str);
+        List<OaTopic> list=topicService.list(queryWrapper);
+        modelAndView.addObject("oaTopiclist", list);
+        modelAndView.addObject("time", time);
+        modelAndView.addObject("row_count", 2);
+        return modelAndView;
+    }
+    /**
+     * 根据日期获得星期的方法
+     * @param date
+     * @return
+     * @author zhangsq
+     */
+    public static String getWeekOfDate(Date date) {
+        String[] weekDaysName = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+        //String[] weekDaysCode = { "0", "1", "2", "3", "4", "5", "6" };
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int intWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        return weekDaysName[intWeek];
+    }
+    /**
+     * 根据小时判断是否为上午、中午、下午
+     * @param hour
+     * @return
+     * @author zhangsq
+     */
+    public static String getDuringDay(int hour){
+        if (hour >= 7 && hour < 11) {
+            return "上午";
+        }if (hour >= 11 && hour <= 13) {
+            return "正午";
+        }if (hour >= 14 && hour <= 18) {
+            return "下午";
+        }
+        return null;
     }
 
 }
