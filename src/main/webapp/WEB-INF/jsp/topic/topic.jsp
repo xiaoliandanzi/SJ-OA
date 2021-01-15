@@ -317,19 +317,21 @@
 
         // 文件上传成功，给item添加成功class, 用样式标记上传成功。 ,c8fe3347e868490a4053601e9e510fa2,37378ca49173719fdd354b8415310620
         uploader2.on('uploadSuccess', function (file, data) {
-            var fileSize = file.size;
-            var fileName = file.name;
-            var fileId = data.attributes.filePath;
-            var init = getTdList(file);
-            $("#fileList").html(init);
-            fileIds = fileIds + ',' + fileId;
-            console.log(fileIds);
-            $("#fileId").val(fileIds);
+            if (data.success) {
+                var fileId = data.attributes.filePath;
+                var init = getTdList(file);
+                $("#fileList").html(init);
+                fileIds = fileIds + ',' + fileId;
+                console.log(fileIds);
+                $("#fileId").val(fileIds);
+            } else {
+                qhTipWarning(data.msg);
+            }
         });
 
         // 文件上传失败，显示上传出错。
-        uploader2.on('uploadError', function (file) {
-
+        uploader2.on('uploadError', function (file, data) {
+            qhTipWarning(data.msg);
         });
 
         // 完成上传完了，成功或者失败，先删除进度条。
