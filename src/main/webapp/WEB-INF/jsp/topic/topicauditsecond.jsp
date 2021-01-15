@@ -190,15 +190,22 @@
                                 <textarea name="opinion" class="form-control"></textarea>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label m-b">附件:</label>
-                            <div class="col-sm-2">
-                                <c:forEach items="${uploadList}" var="fileDown">
-                                    <button type="button" onclick="downThis(this)"
-                                            class="btn btn-success" id="${fileDown.id}">${fileDown.name}</button>
-                                </c:forEach>
+                        <c:if test="${not empty uploadList}">
+                            <hr/>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label m-b">已有附件:</label>
+                                <div class="col-sm-8">
+                                    <c:forEach items="${uploadList}" var="fileDown">
+                                        <div class="col-sm-8"
+                                             style="font-size: 16px;color: black">${fileDown.name}</div>
+                                        <button type="button" onclick="downThis(this)"
+                                                class="btn btn-success col-sm-2" id="${fileDown.id}">
+                                            下载
+                                        </button>
+                                    </c:forEach>
+                                </div>
                             </div>
-                        </div>
+                        </c:if>
                         <%-- </c:if>--%>
                     </t:formvalid>
                 </div>

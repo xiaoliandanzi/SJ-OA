@@ -42,6 +42,7 @@
     <t:dgCol name="isSecretary" label="书记会" dictionary="byesorno" query="false"></t:dgCol>
     <t:dgCol name="isDirector" label="主任会" dictionary="byesorno" query="flase"></t:dgCol>
     <t:dgCol name="isWorkingCommittee" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>
+    <t:dgCol name="allPass" label="通过审核" query="true" replace="是_1, 否_0"></t:dgCol>
     <t:dgCol name="isHistory" label="历史议题" query="true" replace="是_1, 否_0"></t:dgCol>
     <t:dgToolBar url="topic/saveOrUpdateView" type="add" width="60%" operationCode="topic:add"></t:dgToolBar>
     <t:dgToolBar url="topic/saveOrUpdateView" type="edit" width="60%" operationCode="topic:add"></t:dgToolBar>

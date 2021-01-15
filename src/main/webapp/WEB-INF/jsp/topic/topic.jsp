@@ -242,12 +242,23 @@
                             </div>
                         </c:if>
                         <c:if test="${not empty uploadList}">
+                            <hr/>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label m-b">已有附件:</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-8">
                                     <c:forEach items="${uploadList}" var="fileDown">
+                                        <div class="col-sm-8"
+                                             style="font-size: 16px;color: black">${fileDown.name}</div>
                                         <button type="button" onclick="downThis(this)"
-                                                class="btn btn-success" id="${fileDown.id}">${fileDown.name}</button>
+                                                class="btn btn-success col-sm-2" id="${fileDown.id}">
+                                            下载
+                                        </button>
+                                        <c:if test="${params  != 1}">
+                                            <button type="button" onclick="delFile(this)"
+                                                    class="btn btn-success col-sm-2 " id="${fileDown.id}">
+                                                删除
+                                            </button>
+                                        </c:if>
                                     </c:forEach>
                                 </div>
                             </div>
@@ -262,12 +273,34 @@
 </body>
 <script type="text/javascript">
     var fileIds = '${oaTopic.fileId}';
+    var oaId = '${oaTopic.id}';
+    var fileIdForDel = '';
     var start = '<table><thead><tr><th style="width: 200px;">文件名</th><th style="width: 100px;">大小</th><th style="width: 100px;">状态</th></tr></thead>';
     var end = '</table>';
 
 
+    function delFile(dom) {
+        var fileId = $(dom).attr('id');
+        fileIdForDel = fileId;
+        console.log('删除')
+        console.log(fileId)
+        $.get("topicFile/remove?id=" + oaId + "&fileId=" + fileId, null, function (data) {
+            if (data.success) {
+                fileIds = data.obj;
+                $(dom)[0].onClick = "";
+                $(dom)[0].innerHTML = "已删除";
+            } else {
+                qhTipWarning(data.msg);
+            }
+        })
+    }
+
     function downThis(date) {
         var fileId = $(date).attr('id');
+        if (fileId == fileIdForDel) {
+            qhTipWarning('该文件已删除!');
+            return;
+        }
         var filename = '';
         $.get("topicFile/name?id=" + fileId, null, function (data) {
             if (data.success) {
