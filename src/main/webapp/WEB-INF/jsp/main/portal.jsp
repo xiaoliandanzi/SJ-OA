@@ -7,15 +7,101 @@
         color: #2F4050;
         text-decoration: none;
     }
+    .warning-msg {display:block; bottom:0px; right:0px; position:fixed;}
+    * html .warning-msg {position:absolute; right:18px}
+    .notification {
+        position: fixed;
+        z-index: 99999;
+        right: 0;
+        bottom: 0;
+        font-family:Digital,'Microsoft YaHei',STFangsong;
+        display: flex;
+        margin: 0 auto;
+        width: 600px;
+        min-height: 150px;
+    }
+    .notification .info {
+        flex: 1;
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        padding: 10px 10px 0 10px;
+        background: #FFFFFF;
+        border-radius: 3px 0 0 3px;
+        border-bottom: 3px solid #c0cdd1;
+    }
+    .notification .info span {
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+        color: #000;
+    }
+    .notification .info p {
+        margin: 0;
+        margin-top:20px;
+        padding: 5px 0;
+        font-size: 14px;
+        color: #c5bebe;
+    }
+    .notification .info .button {
+        display: inline-block;
+        margin: 30px 3px 5px 0;
+        padding: 3px 7px;
+        border-radius: 2px;
+        border-bottom: 1px solid;
+        font-size: 12px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #ecf0f1;
+    }
+    .notification .info .button.gray {
+        background: #95a5a6 ;
+        border-bottom-color: #798d8f;
+    }
+    .notification .info .button {
+        background: #435d8a;
+        border-bottom-color: #435d8a;
+    }
+    .gbspan{
+        position: absolute;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+        color: #000;
+        height: 36px;
+    }
+    .tzspan{
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+        color: #000;
+        height: 36px;
+    }
+    .ui-jqgrid .ui-jqgrid-titlebar {
+        position: relative;
+        border-left: 0 solid;
+        border-right: 0 solid;
+        border-top: 0 solid;
+        background: #FFFFFF;
+    }
+
+    .ui-jqgrid .table-bordered th.ui-th-ltr {
+        border-left: 0px none !important;
+        background: #FFF;
+    }
 </style>
 <head>
-    <t:base type="default"></t:base>
+    <t:base type="default,jqgrid"></t:base>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <script src="./vue.min.js"></script>
     <script src="./axios.min.js"></script>
     <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="./index.css">
 </head>
 
@@ -289,9 +375,60 @@
     </div>
 </div>
 </body>
+<div   id="rbbox"   hidden="true">
+    <div class="notification" style="width: 600px" >
+        <div class="info">
+            <div   class="gbspan" style="font-weight: bolder ";  onclick="closes()"><span >关闭</span></div>
+            <div class="tzspan"  style="font-weight: bolder" onclick="getAll()" >接收通知</div>
+            <div id="jqGrid_wrapper" class="jqGrid_wrapper"  style="width: 600px">
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- 脚本部分 -->
+<t:datagrid actionUrl="notificationform/tableAll" tableContentId="jqGrid_wrapper"
+            caption="议题会议通知"  multiSelect="true"  name="table_list_1"    height="200" pageSize="5" rownumbers="false"   >
+    <t:dgCol name="id" label="编号" hidden="true" key="true" ></t:dgCol>
+    <t:dgCol name="huiyidate" label="会议日期"  width="300" query="false"></t:dgCol>
+    <t:dgCol name="huiyihome" label="会议室"  width="300" query="false"></t:dgCol>
+</t:datagrid>
 <script type="text/javascript">
-
+    function closes(){
+        $("#rbbox").hide();
+    }
+    function jieshou() {
+        var rowIds = $("#table_list_1").jqGrid('getGridParam', 'selarrrow');
+        if (rowIds == "" || rowIds == null) {
+            qhAlert('请选择要接受的通知');
+            return;
+        }
+        //是
+        $.post("notificationform/jieshou", {ids: rowIds.toString()}, function (data) {
+            if (data.success) {
+                qhTipSuccess(data.msg);
+                //操作结束，刷新表格
+                reloadTable('table_list_1');
+            } else {
+                qhTipWarning(data.msg);
+            }
+        });
+    }
+    function getAll(){
+        //是
+        $.post("notificationform/tableAlls", function (data) {
+            if(data.obj.length==0){
+                $("#rbbox").hide();
+            }else{
+                $("#rbbox").show();
+                reloadTable('table_list_1');
+            }
+        });
+    }
+    setInterval(getAll,7200000);
+    window.onload=function(){    //加载
+        getAll();
+    }
     var dom = new Vue({
         el: "#app",
         data() {
@@ -379,9 +516,9 @@
         }
     })
     var scale = 'scale(0.8)';
-    document.body.style.webkitTransform = scale; // Chrome, Opera, Safari
-    document.body.style.msTransform = scale; // IE 9
-    document.body.style.transform = scale; // General
+    document.getElementById("app").style.webkitTransform = scale; // Chrome, Opera, Safari
+    document.getElementById("app").style.msTransform = scale; // IE 9
+    document.getElementById("app").style.transform = scale; // General
 
     /**
      *
