@@ -131,8 +131,9 @@ public class OaMeetingController {
                 idza=idza+","+huiyilist.get(i);
             }
         }
+        String str[]=idza.split(",");
         QueryWrapper<OaMeeting> queryWrappers = new QueryWrapper<>();
-        queryWrappers.in("ID",idza);
+        queryWrappers.in("ID",str);
         IPage<OaMeeting> page = meetingService.page(new Page<OaMeeting>(dataGrid.getPage(), dataGrid.getRows()), queryWrappers);
         ResponseUtil.writeJson(response, dataGrid, page);
     }
@@ -223,6 +224,7 @@ public class OaMeetingController {
         //
         SysDeptEntity dept = deptService.getById(userEntity.getDeptId());
         modelAndView.addObject("deptName", dept.getName());
+        modelAndView.addObject("depid", userEntity.getDeptId());
         //所属角色
         String roleId = "";
         String roleName = "";

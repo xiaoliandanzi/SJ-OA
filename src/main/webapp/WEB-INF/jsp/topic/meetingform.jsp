@@ -22,8 +22,8 @@
                             <div class="col-sm-4 m-b">
                                 <div class="input-group">
                                     <t:choose url="common/selectDepart" hiddenName="depId"
-                                              hiddenValue="${deptNo }"
-                                              textValue="${name }" textName="deptName" hiddenId="depId"
+                                              hiddenValue="${depid }"
+                                              textValue="${deptName }" textName="deptName" hiddenId="depId"
                                               textId="deptName"></t:choose>
                                 </div>
                             </div>

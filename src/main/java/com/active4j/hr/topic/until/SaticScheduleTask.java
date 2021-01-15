@@ -22,7 +22,7 @@ public class SaticScheduleTask {
     public  final OaTopicService topicService;
 
 
-    public SaticScheduleTask(OaMeetingService meetingService,OaTopicService topicService) {
+    public SaticScheduleTask(OaMeetingService meetingService, OaTopicService topicService) {
         this.meetingService = meetingService;
         this.topicService=topicService;
     }
@@ -57,7 +57,7 @@ public class SaticScheduleTask {
                 List<OaTopic> oalist=topicService.list(queryWrappers);
                 for(OaTopic oa:oalist){
                     oa.setIsHistory(1);
-                    topicService.saveOrUpdate(oa);
+                    topicService.savetopic(oa);
                 }
             }
             meetingService.savemeeting(oaMeeting);

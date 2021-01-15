@@ -151,7 +151,7 @@
     <t:dgCol name="isWorkingCommittee" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>
     <t:dgCol name="isHistory" label="历史议题" query="flase" replace="是_1, 否_0"></t:dgCol>
     <t:dgCol name="opt" label="操作" width="290"></t:dgCol>
-    <t:dgToolBar label="添加标题" icon="fa fa-clock-o" type="define" funName="addbt"></t:dgToolBar>
+    <t:dgToolBar label="添加议题" icon="fa fa-clock-o" type="define" funName="addbt"></t:dgToolBar>
     <t:dgToolBar label="批量打印" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
     <t:dgToolBar label="打印议题单" icon="fa fa-clock-o" type="define" funName="printIt"></t:dgToolBar>
     <t:dgToolBar label="打印签到表" icon="fa fa-clock-o" type="define" funName="printqd"></t:dgToolBar>

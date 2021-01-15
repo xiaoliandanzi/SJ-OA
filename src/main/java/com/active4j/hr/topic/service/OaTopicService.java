@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface OaTopicService extends IService<OaTopic> {
 
+    void savetopic(OaTopic oa);
 }
