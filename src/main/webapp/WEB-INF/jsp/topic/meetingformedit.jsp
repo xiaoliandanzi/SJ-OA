@@ -197,7 +197,7 @@
             elem: "#meetingTime",
             event: "focus",
             istime: true,
-            format: 'YYYY-MM-DD hh:mm:ss'
+            format: 'YYYY-MM-DD hh:mm:ss',
         });
 
         laydate({
