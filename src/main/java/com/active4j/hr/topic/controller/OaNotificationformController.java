@@ -86,6 +86,9 @@ public class OaNotificationformController {
         ResponseUtil.writeJson(response, dataGrid, page);
     }
 
+
+
+
     /**
      * 接收通知
      *
@@ -112,6 +115,61 @@ public class OaNotificationformController {
         }
         return j;
     }
+
+    /**
+     * 手动提醒
+     *
+     */
+    /**
+     * 接收通知
+     *
+     * @param
+     * @param
+     * @param
+     * @param
+     */
+    @RequestMapping(value = "updatetx")
+    public AjaxJson updatetx(OaNotificationform oaNotificationform) {
+        AjaxJson j = new AjaxJson();
+        try {
+            OaNotificationform  oano=notificationformService.getById(oaNotificationform.getId());
+            oano.setTixing("1");
+            notificationformService.updateById(oano);
+        } catch (Exception e) {
+            j.setSuccess(false);
+            j.setMsg("操作失败");
+            e.printStackTrace();
+        }
+        return j;
+    }
+    /**
+     * 接收通知
+     *
+     * @param
+     * @param
+     * @param
+     * @param
+     */
+    @RequestMapping(value = "updatetx0")
+    public AjaxJson updatetx0(OaNotificationform oaNotificationform) {
+        AjaxJson j = new AjaxJson();
+        ActiveUser user = ShiroUtils.getSessionUser();
+        try {
+            QueryWrapper<OaNotificationform> queryWrapper = new QueryWrapper<>();
+            queryWrapper.in("nameid",user.getId());
+            List<OaNotificationform> oano=notificationformService.list(queryWrapper);
+            for (OaNotificationform a:oano){
+                a.setTixing("0");
+                notificationformService.updateById(a);
+            }
+        } catch (Exception e) {
+            j.setSuccess(false);
+            j.setMsg("操作失败");
+            e.printStackTrace();
+        }
+        return j;
+    }
+
     /**
      * 多选接收
      *
@@ -161,6 +219,49 @@ public class OaNotificationformController {
         queryWrapper.orderByDesc("huiyidate");
         IPage<OaNotificationform> page = notificationformService.page(new Page<OaNotificationform>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
         ResponseUtil.writeJson(response, dataGrid, page);
+    }
+
+    /**
+     * 表格数据
+     *
+     * @param
+     * @param
+     * @param response
+     * @param dataGrid
+     */
+    @RequestMapping(value = "tablegroupbygr")
+    public void tablegroupbygr(OaNotificationform oaNotificationform, HttpServletResponse response, DataGrid dataGrid) {
+        ActiveUser user = ShiroUtils.getSessionUser();
+        QueryWrapper<OaNotificationform> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("nameid",user.getId());
+        queryWrapper.eq("tixing","1");
+        queryWrapper.orderByDesc("huiyidate");
+        IPage<OaNotificationform> page = notificationformService.page(new Page<OaNotificationform>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+        ResponseUtil.writeJson(response, dataGrid, page);
+    }
+
+
+    /**
+     * 表格数据
+     *
+     * @param
+     * @param
+     * @param
+     * @param
+     */
+    @RequestMapping(value = "tablegroupbygrs")
+    public AjaxJson tablegroupbygrs(OaNotificationform oaNotificationform) {
+        ActiveUser user = ShiroUtils.getSessionUser();
+        QueryWrapper<OaNotificationform> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("nameid",user.getId());
+        queryWrapper.eq("tixing","1");
+        queryWrapper.orderByDesc("huiyidate");
+        List<OaNotificationform> list=notificationformService.list(queryWrapper);
+        AjaxJson j = new AjaxJson();
+        j.setSuccess(true);
+        j.setMsg("操作成功");
+        j.setObj(list);
+        return j;
     }
 
     /**

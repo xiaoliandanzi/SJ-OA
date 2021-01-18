@@ -66,4 +66,7 @@ public class OaNotificationform implements Serializable {
     @TableField(exist = false)
     private String ids;
 
+    @TableField(value = "tixing")
+    private String tixing;
+
 }

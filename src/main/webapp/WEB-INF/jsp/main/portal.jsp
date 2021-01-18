@@ -379,13 +379,24 @@
     <div class="notification" style="width: 600px" >
         <div class="info">
             <div   class="gbspan" style="font-weight: bolder ";  onclick="closes()"><span >关闭</span></div>
-            <div class="tzspan"  style="font-weight: bolder" onclick="getAll()" >接收通知</div>
+            <div class="tzspan"  style="font-weight: bolder" onclick="jieshou()" >接收通知</div>
             <div id="jqGrid_wrapper" class="jqGrid_wrapper"  style="width: 600px">
             </div>
         </div>
     </div>
 </div>
-
+</div>
+<div   id="rbboxs"   hidden="true">
+    <div class="notification" style="width: 600px" >
+        <div class="info">
+            <div   class="gbspan" style="font-weight: bolder ";  onclick="closess()"><span >关闭</span></div>
+            <div class="tzspan"  style="font-weight: bolder" onclick="jieshou()" >接收通知</div>
+                <div id="jqGrid_wrappers" class="jqGrid_wrappers"  style="width: 600px">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="notificationform/tableAll" tableContentId="jqGrid_wrapper"
             caption="议题会议通知"  multiSelect="true"  name="table_list_1"    height="200" pageSize="5" rownumbers="false"   >
@@ -393,10 +404,31 @@
     <t:dgCol name="huiyidate" label="会议日期"  width="300" query="false"></t:dgCol>
     <t:dgCol name="huiyihome" label="会议室"  width="300" query="false"></t:dgCol>
 </t:datagrid>
+<!-- 脚本部分 -->
+<t:datagrid actionUrl="notificationform/tablegroupbygr" tableContentId="jqGrid_wrappers"
+            caption="议题会议通知"  multiSelect="true"  name="table_list_2"    height="200" pageSize="5" rownumbers="false"   >
+    <t:dgCol name="id" label="编号" hidden="true" key="true" ></t:dgCol>
+    <t:dgCol name="huiyidate" label="会议日期"  width="300" query="false"></t:dgCol>
+    <t:dgCol name="huiyihome" label="会议室"  width="300" query="false"></t:dgCol>
+</t:datagrid>
+
+
 <script type="text/javascript">
     function closes(){
         $("#rbbox").hide();
     }
+    function closess(){
+        $("#rbboxs").hide();
+        $.post("notificationform/updatetx0", function (data) {
+            if (data.success) {
+                //操作结束，刷新表格
+                reloadTable('table_list_2');
+            } else {
+                qhTipWarning(data.msg);
+            }
+        });
+    }
+
     function jieshou() {
         var rowIds = $("#table_list_1").jqGrid('getGridParam', 'selarrrow');
         if (rowIds == "" || rowIds == null) {
@@ -409,6 +441,7 @@
                 qhTipSuccess(data.msg);
                 //操作结束，刷新表格
                 reloadTable('table_list_1');
+                reloadTable('table_list_2');
             } else {
                 qhTipWarning(data.msg);
             }
@@ -419,15 +452,62 @@
         $.post("notificationform/tableAlls", function (data) {
             if(data.obj.length==0){
                 $("#rbbox").hide();
+                $("#rbboxs").hide();
             }else{
                 $("#rbbox").show();
+                $("#rbboxs").hide();
                 reloadTable('table_list_1');
             }
         });
     }
+
+    function getgr(){
+        //是
+        $.post("notificationform/tablegroupbygrs", function (data) {
+            if(data.obj.length==0){
+                $("#rbboxs").hide();
+                $.post("notificationform/tableAlls", function (data) {
+                    if(data.obj.length==0){
+                        $("#rbbox").hide();
+                    }else{
+                        $("#rbbox").show();
+                        reloadTable('table_list_1');
+                    }
+                });
+            }else{
+                   $("#rbbox").hide();
+                   reloadTable('table_list_1');
+                $("#rbboxs").show();
+                reloadTable('table_list_2');
+            }
+        });
+    }
+    function getgrS(){
+        //是
+        $.post("notificationform/tablegroupbygrs", function (data) {
+            if(data.obj.length==0){
+                $("#rbboxs").hide();
+                $.post("notificationform/tableAlls", function (data) {
+                    if(data.obj.length==0){
+                        $("#rbbox").hide();
+                    }else{
+                        $("#rbbox").hide();
+                        reloadTable('table_list_1');
+                    }
+                });
+            }else{
+                $("#rbbox").hide();
+                reloadTable('table_list_1');
+                $("#rbboxs").show();
+                reloadTable('table_list_2');
+            }
+        });
+    }
     setInterval(getAll,7200000);
+    setInterval(getgrS,9000);
     window.onload=function(){    //加载
         getAll();
+        getgr();
     }
     var dom = new Vue({
         el: "#app",
