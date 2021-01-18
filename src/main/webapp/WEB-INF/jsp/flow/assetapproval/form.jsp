@@ -55,6 +55,6 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">备注：</label>
     <div class="col-sm-6">
-        <textarea id="commit" name="commit" minlength="1" type="text" class="form-control" required="">${biz.commit }</textarea>
+        <textarea id="commit" name="commit" minlength="1" type="text" class="form-control">${biz.commit }</textarea>
     </div>
 </div>

@@ -68,7 +68,6 @@ public class MessageApplyController {
 
         List<WorkflowMngEntity> lstWorkflows = workflowMngService.findWorkflowMngByUserIdAndRoleIds(userId, roleIds);
 
-
         for (WorkflowMngEntity workflowMngEntity : lstWorkflows) {
             if (workflowMngEntity.getName().equals("信息发布")) {
                 WorkflowFormEntity form = workflowFormService.getById(workflowMngEntity.getFormId());
