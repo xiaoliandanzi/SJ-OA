@@ -164,12 +164,22 @@
         var meetingName=$("#meetingName").val();
         var meetingTime=$("#meetingTime").val();
         var id=$("#id").val();
-        var rowId = $('#toptable').jqGrid('getGridParam', 'selrow');
-        if (!rowId) {
+        var rowIds = $('#toptable').jqGrid('getGridParam', 'selarrrow');
+        if (rowIds==""||rowIds==null) {
             qhAlert('请选择要打印的议题');
             return;
         }
-        printTopic("toptable", "meeting/printTopic?issueId=" + rowId+"&meetingId="+meetingId+"&meetingName="+meetingName+"&meetingTime="+meetingTime+"&id="+id,"打印", "60%", "80%");
+        var x = new XMLHttpRequest();
+        x.open("GET", "topicFile/getMeetingHtml?issueId=" + rowIds+"&meetingId="+meetingId+"&meetingName="+meetingName+"&meetingTime="+meetingTime+"&id="+id, true);
+        x.responseType = 'blob';
+        x.onload = function (e) {
+            var url = window.URL.createObjectURL(x.response)
+            var a = document.createElement('a');
+            a.href = url
+            a.download = "议题单.doc"
+            a.click()
+        }
+        x.send();
     }
     function printqd() {
         var conferee=$("#conferee").val();
@@ -177,7 +187,18 @@
             qhAlert('参会人员为空不能打印');
             return;
         }
-        printTopic("toptable", "meeting/printqd?conferee="+conferee,"打印", "60%", "80%");
+        var x = new XMLHttpRequest();
+        x.open("GET", "topicFile/getprintqdHtml?conferee="+conferee,true);
+        x.responseType = 'blob';
+        x.onload = function (e) {
+            var url = window.URL.createObjectURL(x.response)
+            var a = document.createElement('a');
+            a.href = url
+            a.download = "签到表.doc"
+            a.click()
+        }
+        x.send();
+
     }
     function printItAll() {
         var meetingId=$("#meetingId").val();
@@ -189,7 +210,17 @@
             qhAlert('请选择要打印的议题');
             return;
         }
-        printTopic("toptable", "meeting/printTopicAll?issueId=" + rowIds+"&meetingId="+meetingId+"&meetingName="+meetingName+"&meetingTime="+meetingTime+"&id="+id,"打印", "60%", "80%");
+        var x = new XMLHttpRequest();
+        x.open("GET", "topicFile/getMeetingHtml?issueId=" + rowIds+"&meetingId="+meetingId+"&meetingName="+meetingName+"&meetingTime="+meetingTime+"&id="+id, true);
+        x.responseType = 'blob';
+        x.onload = function (e) {
+            var url = window.URL.createObjectURL(x.response)
+            var a = document.createElement('a');
+            a.href = url
+            a.download = "议题单.doc"
+            a.click()
+        }
+        x.send();
     }
     var start=    ({
         elem: "#meetingTime",

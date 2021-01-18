@@ -7,8 +7,10 @@ import com.active4j.hr.func.upload.entity.UploadAttachmentEntity;
 import com.active4j.hr.func.upload.service.UploadAttachmentService;
 import com.active4j.hr.system.service.SysDeptService;
 import com.active4j.hr.system.service.SysUserService;
+import com.active4j.hr.topic.entity.OaMeeting;
 import com.active4j.hr.topic.entity.OaTopic;
 import com.active4j.hr.topic.service.OaTopicService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.poifs.filesystem.DirectoryEntry;
@@ -17,11 +19,17 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -145,6 +153,189 @@ public class FileDownController extends BaseController {
         exportWord(request, response, getStr(oaTopic));
     }
 
+    /**
+     * @param
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping("getMeetingHtml")
+    public void getMeetingHtml(OaMeeting oaMeeting, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        exportWord(request, response, getMeetingStr(oaMeeting));
+    }
+    /**
+     * @param
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping("getprintqdHtml")
+    public void getprintqdHtml(OaMeeting oaMeeting, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        exportWord(request, response, getprintqdStr(oaMeeting));
+    }
+
+    private String getprintqdStr(OaMeeting oaMeeting) throws ParseException {
+        String meetingId=oaMeeting.getMeetingId();
+        String meetingName=oaMeeting.getMeetingName();
+        String str[] =oaMeeting.getConferee().split(",");
+        String   html="";
+        for(int i=0; i<str.length; i++){
+            String  THIS=    "   <tr  style=\"height: 60px\">\n" +
+                    "       <td >"+str[i]+"</td>\n" +
+                    "       <td ></td>\n" +
+                    "      </tr>\n";
+            html=html+THIS;
+        }
+        return "<!DOCTYPE html>\n" +
+                "<html lang=\"en\" style=\"overflow: auto\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>Title</title>\n" +
+                "</head>\n" +
+                "<body style=\"overflow: auto\">\n" +
+                " <div><h1 style=\"text-align: center\">签到表</h1></div><br><br>\n" +
+                " <table width=\"600px\" height=\"40px\" border=\"1px\" style=\"text-align: center\">\n" +
+                " <tr>\n" +
+        " <td style=\"width: 250px\">姓名</td>\n" +
+        "   <td style=\"width: 250px\">签到</td>\n" +
+        "  </tr>\n" +
+                "  "+html+" "+
+                "  </table>\n" +
+                "</div>\n" +
+                "</body>\n" +
+                "</html>";
+    }
+
+    private String getMeetingStr(OaMeeting oaMeeting) throws ParseException {
+        String meetingId=oaMeeting.getMeetingId();
+        String meetingName=oaMeeting.getMeetingName();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat sdd = new SimpleDateFormat("yyyy年MM月dd日");
+        Date date =sdf.parse(oaMeeting.getMeetingTime());
+        String datetime=sdd.format(date);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date); //放入
+        int hours= calendar.get(Calendar.HOUR_OF_DAY); //时（24小时制）
+        String weekday=getWeekOfDate(date);
+        String getDuringDay=getDuringDay(hours);
+        int hour= calendar.get(Calendar.HOUR_OF_DAY); //时（24小时制）
+        String  time=datetime+weekday+getDuringDay+":"+hour+":00";
+        QueryWrapper<OaTopic> queryWrapper= new QueryWrapper<>();
+        String  str[]=oaMeeting.getIssueId().split(",");
+        queryWrapper.in("id",str);
+        List<OaTopic> list=topicService.list(queryWrapper);
+        int rocunt=2;
+        String   html="";
+        for(OaTopic oaTopic:list){
+            rocunt++;
+          String  THIS=    "   <tr  style=\"height: 60px\">\n" +
+                    "       <td >"+rocunt+"</td>\n" +
+                    "        <td   style=\"text-align: left; vertical-align:middle;position: relative; width:600px\">"+oaTopic.getTopicName()+"</td>\n" +
+                    "       <td style=\"width: 150px\">"+oaTopic.getProposeLeaderName()+"</td>\n" +
+                    "       <td style=\"width: 150px\">"+oaTopic.getReportName()+"</td>\n" +
+                    "        <td style=\"width: 150px\"></td>\n" +
+                    "      </tr>\n";
+            html=html+THIS;
+
+        }
+        int rocount1=rocunt+1;
+        int rocount2=rocunt+2;
+        return "<!DOCTYPE html>\n" +
+                "<html lang=\"en\" style=\"overflow: auto\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>Title</title>\n" +
+                "</head>\n" +
+                "<body style=\"overflow: auto\">\n" +
+                "<div style=\"width: \"800px\";height: \"1000px\";margin: 10px auto;\">\n" +
+                " <div><h1 style=\"text-align: center\">年第&nbsp&nbsp&nbsp&nbsp次主任办公室议题</h1></div><br><br>\n" +
+        "<span>会议时间:"+time+"</span><br><br>\n" +
+        " <span>会议地点:" +meetingId+ "</span><br><br>\n" +
+        "<span>会议标题:" + meetingName + "</span><br><br>\n" +
+        " <table width=\"800px\" height=\"1000px\" border=\"1px\" style=\"text-align: center\">\n" +
+        "  <tr style=\"height: 60px\">\n" +
+        "  <td style=\"width: 150px\">序号</td>\n" +
+        "  <td style=\"width:600px\">议题\n" +
+        "         <td style=\"width: 150px\">提议领导</td>\n" +
+                "    <td style=\"width: 150px\">汇报人</td>\n" +
+        "    <td style=\"width: 150px\">列席</td>\n" +
+        " </tr>\n" +
+        "  <tr  style=\"height: 60px\">\n" +
+        "  <td >一</td>\n" +
+        "   <td  style=\"text-align: left; vertical-align:middle;position: relative;\"  colspan=\"5\">工作通报</td>\n" +
+        " </tr>\n" +
+        "  <tr style=\"height: 60px\">\n" +
+        "     <td style=\"\">1</td>\n" +
+        "     <td style=\"width:600px\"></td>\n" +
+        "     <td style=\"width: 150px\"></td>\n" +
+        "    <td style=\"width: 150px\"></td>\n" +
+                "    <td style=\"width: 150px\"></td>\n" +
+        "  </tr>\n" +
+        " <tr  style=\"height: 60px\">\n" +
+        "    <td style=\"\">2</td>\n" +
+        "   <td style=\"\"  style=\"width:600px\"></td>\n" +
+        "   <td style=\"width: 150px\"></td>\n" +
+        "   <td style=\"width: 150px\"></td>\n" +
+        "   <td style=\"width: 150px\"></td>\n" +
+        " </tr>\n" +
+        " <tr  style=\"height: 60px\">\n" +
+        "     <td style=\"\">二</td>\n" +
+        "    <td   style=\"text-align: left; vertical-align:middle;position: relative;\" colspan=\"5\">审议事项</td>\n" +
+        " </tr >\n"+
+                 "  "+html+" "+
+        " <tr style=\"height: 60px\">\n" +
+        "    <td >三</td>\n" +
+        "    <td   style=\"text-align: left; vertical-align:middle;position: relative;\" colspan=\"5\">研究部署</td>\n" +
+        " </tr>\n" +
+        "  <tr  style=\"height: 60px\">\n" +
+        "  <td >"+rocount1+"</td>\n" +
+        "   <td  style=\"width:600px\"></td>\n" +
+        "   <td style=\"width: 150px\"></td>\n" +
+        "    <td style=\"width: 150px\"></td>\n" +
+        "   <td style=\"width: 150px\"></td>\n" +
+        " </tr>\n" +
+        " <tr  style=\"height: 60px\">\n" +
+        "   <td >"+rocount2+"</td>\n" +
+        "   <td  style=\"width:600px;\"></td>\n" +
+        "   <td style=\"width: 150px\"></td>\n" +
+        "    <td style=\"width: 150px\"></td>\n" +
+        "   <td style=\"width: 150px\"></td>\n" +
+        "</tr>\n" +
+        "  </table>\n" +
+        "</div>\n" +
+                "</body>\n" +
+                "</html>";
+    }
+    /**
+     * 根据日期获得星期的方法
+     * @param date
+     * @return
+     * @author zhangsq
+     */
+    public static String getWeekOfDate(Date date) {
+        String[] weekDaysName = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+        //String[] weekDaysCode = { "0", "1", "2", "3", "4", "5", "6" };
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int intWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        return weekDaysName[intWeek];
+    }
+    /**
+     * 根据小时判断是否为上午、中午、下午
+     * @param hour
+     * @return
+     * @author zhangsq
+     */
+    public static String getDuringDay(int hour){
+        if (hour >= 7 && hour < 11) {
+            return "上午";
+        }if (hour >= 11 && hour <= 13) {
+            return "正午";
+        }if (hour >= 14 && hour <= 18) {
+            return "下午";
+        }
+        return null;
+    }
 
     public void exportWord(HttpServletRequest request, HttpServletResponse response, String content) throws Exception {
         try {
