@@ -174,22 +174,86 @@ public class OaMeetingController {
         try {
             if ("1".equals(oaMeeting.getCanHuitype())) {
                 //提议领导 查询主要领导
-                json.setObj( userList("", "1e3124100e45ed3e9ec99bf3e35be2c0"));
+                QueryWrapper<SysRoleEntity> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("ROLE_NAME","主要领导");
+                SysRoleEntity  role =roleService.list(queryWrapper).get(0);
+                json.setObj( userList("", role.getId()));
             } else if ("2".equals(oaMeeting.getCanHuitype())) {
-                //主管领导
-                DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
-                String leaderRole = deptLeaderRole.getRoleForDept().get(userEntity.getDeptId());
-                SysRoleEntity roleEntity = roleService.getById(leaderRole);
-                json.setObj(userList("", roleEntity.getParentId()));
+                QueryWrapper<SysRoleEntity> queryWrapper = new QueryWrapper<>();
+                queryWrapper.like("ROLE_NAME","主管领导");
+                List<SysRoleEntity> list= roleService.list(queryWrapper);
+                List<SysUserEntity> users = new ArrayList<>();
+                for(SysRoleEntity sys: list){
+                    QueryWrapper<SysUserRoleEntity> userRoleEntityQueryWrapper = new QueryWrapper<>();
+                    userRoleEntityQueryWrapper.eq("ROLE_ID", sys.getId());
+                    List<SysUserRoleEntity> URList = userRoleService.list(userRoleEntityQueryWrapper);
+                    if (URList.size() > 0)
+                        URList.forEach(URDao -> {
+                            SysUserEntity user = userService.getById(URDao.getUserId());
+                            users.add(user);
+                        });
+                }
+                json.setObj(users);
             } else if ("3".equals(oaMeeting.getCanHuitype())) {
-                //科室负责人
-                DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
-                String leaderRole = deptLeaderRole.getRoleForDept().get(userEntity.getDeptId());
-                json.setObj(userList("", leaderRole));
+                QueryWrapper<SysRoleEntity> queryWrapper = new QueryWrapper<>();
+                queryWrapper.like("ROLE_NAME","主管领导");
+                List<SysRoleEntity> list= roleService.list(queryWrapper);
+                List<SysRoleEntity> listks=new ArrayList<>();
+                List<SysUserEntity> users = new ArrayList<>();
+                for(SysRoleEntity sys: list){
+                    QueryWrapper<SysRoleEntity> queryWrapperks = new QueryWrapper<>();
+                    queryWrapperks.like("PARENT_ID",sys.getId());
+                    List<SysRoleEntity> listkss= roleService.list(queryWrapperks);
+                    for (SysRoleEntity l:listkss){
+                        listks.add(l);
+                    }
+                }
+                for(SysRoleEntity sys: listks){
+                    QueryWrapper<SysUserRoleEntity> userRoleEntityQueryWrapper = new QueryWrapper<>();
+                    userRoleEntityQueryWrapper.eq("ROLE_ID", sys.getId());
+                    List<SysUserRoleEntity> URList = userRoleService.list(userRoleEntityQueryWrapper);
+                    if (URList.size() > 0)
+                        URList.forEach(URDao -> {
+                            SysUserEntity user = userService.getById(URDao.getUserId());
+                            users.add(user);
+                        });
+                }
+                json.setObj(users);
             }
             else if ("4".equals(oaMeeting.getCanHuitype())) {
-                //科员
-                json.setObj(userListS(userEntity.getDeptId()));
+                QueryWrapper<SysRoleEntity> queryWrapper = new QueryWrapper<>();
+                queryWrapper.like("ROLE_NAME","主管领导");
+                List<SysRoleEntity> list= roleService.list(queryWrapper);
+                List<SysRoleEntity> listks=new ArrayList<>();
+                List<SysRoleEntity> listky=new ArrayList<>();
+                List<SysUserEntity> users = new ArrayList<>();
+                for(SysRoleEntity sys: list){
+                    QueryWrapper<SysRoleEntity> queryWrapperks = new QueryWrapper<>();
+                    queryWrapperks.like("PARENT_ID",sys.getId());
+                    List<SysRoleEntity> listkss= roleService.list(queryWrapperks);
+                    for (SysRoleEntity l:listkss){
+                        listks.add(l);
+                    }
+                }
+                for(SysRoleEntity sys: listks){
+                    QueryWrapper<SysRoleEntity> queryWrapperky = new QueryWrapper<>();
+                    queryWrapperky.like("PARENT_ID",sys.getId());
+                    List<SysRoleEntity> listkyy= roleService.list(queryWrapperky);
+                    for (SysRoleEntity l:listkyy){
+                        listky.add(l);
+                    }
+                }
+                for(SysRoleEntity sys: listky){
+                    QueryWrapper<SysUserRoleEntity> userRoleEntityQueryWrapper = new QueryWrapper<>();
+                    userRoleEntityQueryWrapper.eq("ROLE_ID", sys.getId());
+                    List<SysUserRoleEntity> URList = userRoleService.list(userRoleEntityQueryWrapper);
+                    if (URList.size() > 0)
+                        URList.forEach(URDao -> {
+                            SysUserEntity user = userService.getById(URDao.getUserId());
+                            users.add(user);
+                        });
+                }
+                json.setObj(users);
             }
         }catch(Exception e) {
             json.setSuccess(false);
@@ -251,7 +315,10 @@ public class OaMeetingController {
         List<OaTopic> oalist=topicService.list(queryWrappers);
         modelAndView.addObject("oalist", oalist);
         //提议领导 查询主要领导
-        modelAndView.addObject("dataList", userList("", "1e3124100e45ed3e9ec99bf3e35be2c0"));
+        QueryWrapper<SysRoleEntity> queryWrapperA = new QueryWrapper<>();
+        queryWrapperA.eq("ROLE_NAME","主要领导");
+        SysRoleEntity  role =roleService.list(queryWrapperA).get(0);
+        modelAndView.addObject("dataList", userList("", role.getId()));
         List<OaWorkMeetRoomEntity> lstRooms = oaWorkMeetRoomService.findNormalMeetRoom();
         modelAndView.addObject("roomList", lstRooms);
         return modelAndView;

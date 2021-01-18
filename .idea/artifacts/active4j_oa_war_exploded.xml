@@ -211,6 +211,15 @@
           <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.5.3" />
           <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.4.11" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.11" />
+          <element id="library" level="project" name="Maven: org.apache.poi:poi:3.10-beta2" />
+          <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml:3.10-beta2" />
+          <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
+          <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml-schemas:3.10-beta2" />
+          <element id="library" level="project" name="Maven: org.apache.xmlbeans:xmlbeans:2.3.0" />
+          <element id="library" level="project" name="Maven: stax:stax-api:1.0.1" />
+          <element id="library" level="project" name="Maven: org.apache.poi:poi-scratchpad:3.0.2-FINAL" />
+          <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.1" />
+          <element id="library" level="project" name="Maven: log4j:log4j:1.2.13" />
         </element>
       </element>
       <element id="directory" name="META-INF">
