@@ -1,9 +1,8 @@
 package com.active4j.hr.activiti.biz.controller;
 
 import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
-import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
-import com.active4j.hr.activiti.biz.service.FlowOfficalSealApprovalService;
-import com.active4j.hr.activiti.biz.service.FlowPaperApprovalService;
+import com.active4j.hr.activiti.biz.entity.FlowProcurementApprovalEntity;
+import com.active4j.hr.activiti.biz.service.FlowProcurementApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
 import com.active4j.hr.activiti.entity.WorkflowFormEntity;
 import com.active4j.hr.activiti.entity.WorkflowMngEntity;
@@ -17,9 +16,6 @@ import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
-import com.active4j.hr.officalSeal.entity.OaOfficalSealEntity;
-import com.active4j.hr.officalSeal.service.OaOfficalSealBookService;
-import com.active4j.hr.officalSeal.service.OaOfficalSealService;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -46,13 +42,13 @@ import java.util.Map;
  * Created with IntelliJ IDEA.
  *
  * @Auther: jinxin
- * @Date: 2020/12/14/23:50
+ * @Date: 2021/01/18/23:50
  * @Description:
  */
 @Controller
-@RequestMapping("flow/biz/sealapproval")
+@RequestMapping("flow/biz/procurementapproval")
 @Slf4j
-public class FlowOfficalSealApprovalController extends BaseController {
+public class FlowProcurementApprovalController extends BaseController{
     @Autowired
     private WorkflowBaseService workflowBaseService;
 
@@ -60,13 +56,10 @@ public class FlowOfficalSealApprovalController extends BaseController {
     private WorkflowMngService workflowMngService;
 
     @Autowired
-    private FlowOfficalSealApprovalService flowOfficalSealApprovalService;
+    private FlowProcurementApprovalService flowProcurementApprovalService;
 
     @Autowired
     private WorkflowService workflowService;
-
-    @Autowired
-    private OaOfficalSealService oaOfficalSealService;
 
     @Autowired
     private TaskService taskService;
@@ -89,17 +82,13 @@ public class FlowOfficalSealApprovalController extends BaseController {
      */
     @RequestMapping("/go")
     public ModelAndView go(String formId, String type, String workflowId, String id, HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("flow/sealapproval/apply");
+        ModelAndView view = new ModelAndView("flow/procurement/apply");
 
 
         //获取当前用户id
         String userId = ShiroUtils.getSessionUserId();
         //获取当前用户个人资料
         SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
-
-//        //查询可用的公章
-//        List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findNormalSeal();
-//        view.addObject("lstSeals", lstSeals);
 
         if(StringUtils.isEmpty(formId)) {
             view = new ModelAndView("system/common/warning");
@@ -115,9 +104,9 @@ public class FlowOfficalSealApprovalController extends BaseController {
          * 3： 审批时显示详情页面，并附带审批功能
          */
         if(StringUtils.equals("0", type)) {
-            view = new ModelAndView("flow/sealapproval/apply");
+            view = new ModelAndView("flow/procurement/apply");
         }else if(StringUtils.equals("1", type)) {
-            view = new ModelAndView("flow/sealapproval/applyshow");
+            view = new ModelAndView("flow/procurement/applyshow");
 
             //根据businessKey查询任务list
             String currentName = ShiroUtils.getSessionUserName();
@@ -129,15 +118,15 @@ public class FlowOfficalSealApprovalController extends BaseController {
             view.addObject("show", "0");
 
         }else if(StringUtils.equals("2", type)) {
-            view = new ModelAndView("officalSeal/officalSealApprove");
+            view = new ModelAndView("procurement/procurementApprove");
 
             //根据businessKey查询任务list
             String currentName = ShiroUtils.getSessionUserName();
             List<Task> lstTasks = workflowService.findTaskListByBusinessKey(id, currentName);
             view.addObject("lstTasks", lstTasks);
-            view.addObject("action", "flow/biz/sealapproval/doApprove");
+            view.addObject("action", "flow/biz/procurement/doApprove");
         }else if(StringUtils.equals("3", type)) {
-            view = new ModelAndView("flow/sealapproval/applyshow");
+            view = new ModelAndView("flow/procurement/applyshow");
 
             //根据businessKey查询任务list
             String currentName =ShiroUtils.getSessionUserName();
@@ -149,7 +138,7 @@ public class FlowOfficalSealApprovalController extends BaseController {
             view.addObject("lstComments", lstComments);
             view.addObject("currentName", currentName);
             view.addObject("show", "1");
-            view.addObject("action", "flow/biz/sealapproval/doApprove");
+            view.addObject("action", "flow/biz/procurementapproval/doApprove");
         }
 
 
@@ -158,7 +147,7 @@ public class FlowOfficalSealApprovalController extends BaseController {
             WorkflowBaseEntity base = workflowBaseService.getById(id);
             view.addObject("base", base);
 
-            FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
+            FlowProcurementApprovalEntity biz = flowProcurementApprovalService.getById(base.getBusinessId());
             view.addObject("biz", biz);
         } else {
             FlowOfficalSealApprovalEntity biz = new FlowOfficalSealApprovalEntity();
@@ -192,7 +181,7 @@ public class FlowOfficalSealApprovalController extends BaseController {
      */
     @RequestMapping("/doApprove")
     @ResponseBody
-    public AjaxJson doApprove(String id, String taskId, String comment,String result, HttpServletRequest request){
+    public AjaxJson doApprove(String id, String taskId, String comment, String result, HttpServletRequest request){
         AjaxJson j = new AjaxJson();
 
         try{
@@ -251,9 +240,9 @@ public class FlowOfficalSealApprovalController extends BaseController {
         WorkflowBaseEntity workflowBaseEntity = workflowBaseService.getById(businessKey);
         if (null != workflowBaseEntity){
             workflowBaseEntity.setStatus("3");
-            FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity = flowOfficalSealApprovalService.getById(workflowBaseEntity.getBusinessId());
-            flowOfficalSealApprovalEntity.setApplyStatus(1);
-            flowOfficalSealApprovalService.saveOrUpdate(flowOfficalSealApprovalEntity);
+            FlowProcurementApprovalEntity flowProcurementApprovalEntity = flowProcurementApprovalService.getById(workflowBaseEntity.getBusinessId());
+            flowProcurementApprovalEntity.setApplyStatus(1);
+            flowProcurementApprovalService.saveOrUpdate(flowProcurementApprovalEntity);
         }
         workflowBaseService.saveOrUpdate(workflowBaseEntity);
         log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
@@ -296,14 +285,14 @@ public class FlowOfficalSealApprovalController extends BaseController {
             if (pi == null) {
                 // 更新请假单表的状态从2变成3（审核中-->审核完成）
                 workflowBaseEntity.setStatus("3");
-                FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity = flowOfficalSealApprovalService.getById(workflowBaseEntity.getBusinessId());
-                flowOfficalSealApprovalEntity.setApplyStatus(1);
-                flowOfficalSealApprovalService.saveOrUpdate(flowOfficalSealApprovalEntity);
+                FlowProcurementApprovalEntity flowProcurementApprovalEntity = flowProcurementApprovalService.getById(workflowBaseEntity.getBusinessId());
+                flowProcurementApprovalEntity.setApplyStatus(1);
+                flowProcurementApprovalService.saveOrUpdate(flowProcurementApprovalEntity);
             } else {
                 workflowBaseEntity.setStatus("2");
-                FlowOfficalSealApprovalEntity flowOfficalSealAfpprovalEntity = flowOfficalSealApprovalService.getById(workflowBaseEntity.getBusinessId());
-                flowOfficalSealAfpprovalEntity.setApplyStatus(0);
-                flowOfficalSealApprovalService.saveOrUpdate(flowOfficalSealAfpprovalEntity);
+                FlowProcurementApprovalEntity flowProcurementApprovalEntity = flowProcurementApprovalService.getById(workflowBaseEntity.getBusinessId());
+                flowProcurementApprovalEntity.setApplyStatus(0);
+                flowProcurementApprovalService.saveOrUpdate(flowProcurementApprovalEntity);
             }
             workflowBaseService.saveOrUpdate(workflowBaseEntity);
             log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
@@ -312,7 +301,7 @@ public class FlowOfficalSealApprovalController extends BaseController {
 
     /**
      * 保存方法
-     * @param flowOfficalSealApprovalEntity
+     * @param flowProcurementApprovalEntity
      * @param optType  0 : 保存草稿   1:直接申请
      * @param flowId   流程管理中心ID
      * @param request
@@ -320,7 +309,7 @@ public class FlowOfficalSealApprovalController extends BaseController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public AjaxJson save(WorkflowBaseEntity workflowBaseEntity, FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity, String optType, HttpServletRequest request) {
+    public AjaxJson save(WorkflowBaseEntity workflowBaseEntity, FlowProcurementApprovalEntity flowProcurementApprovalEntity, String optType, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try {
             if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
@@ -331,40 +320,35 @@ public class FlowOfficalSealApprovalController extends BaseController {
             String userId = ShiroUtils.getSessionUserId();
             //获取当前用户个人资料
             SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
-            String departMentname = user.getDeptName();
-            List<OaOfficalSealEntity> lstSeals = oaOfficalSealService.findDepartmentSeal(departMentname);
-            if(!lstSeals.get(0).getStatus().equalsIgnoreCase("0")){
-                j.setSuccess(false);
-                j.setMsg("您所在科室已被限制公章申请，请科室及时提交公章签字表");
-                return j;
-            }
 
             workflowBaseEntity.setLevel("0");
 
-            if(null == flowOfficalSealApprovalEntity.getUseUnit()) {
-                j.setSuccess(false);
-                j.setMsg("主送单位不能为空");
-                return j;
-            }
 
-            if(null == flowOfficalSealApprovalEntity.getDepartmentName()) {
+            if(StringUtils.isBlank(flowProcurementApprovalEntity.getDepartmentName())) {
                 j.setSuccess(false);
-                j.setMsg("科室不能为空");
-                return j;
-            }
-
-            if(null == flowOfficalSealApprovalEntity.getUseDay()) {
-                j.setSuccess(false);
-                j.setMsg("使用日期不能为空");
+                j.setMsg("采购部门不能为空");
                 return j;
             }
 
 
-            if(StringUtils.isBlank(flowOfficalSealApprovalEntity.getContent())) {
+            if(StringUtils.isBlank(flowProcurementApprovalEntity.getAgent())) {
                 j.setSuccess(false);
-                j.setMsg("内容不能为空");
+                j.setMsg("经办人不能为空");
                 return j;
             }
+
+            if(StringUtils.isBlank(flowProcurementApprovalEntity.getTelephone())) {
+                j.setSuccess(false);
+                j.setMsg("电话不能为空");
+                return j;
+            }
+
+            if(null == flowProcurementApprovalEntity.getPrice()) {
+                j.setSuccess(false);
+                j.setMsg("总计价格不能为空");
+                return j;
+            }
+
 
             WorkflowMngEntity workflow = workflowMngService.getById(workflowBaseEntity.getWorkflowId());
             if(null == workflow) {
@@ -382,9 +366,9 @@ public class FlowOfficalSealApprovalController extends BaseController {
                     workflowBaseEntity.setCategoryId(workflow.getCategoryId());
                     workflowBaseEntity.setWorkflowId(workflow.getId());
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
-                    workflowBaseEntity.setStatus("1"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
+                    workflowBaseEntity.setStatus("1");
                     //保存业务数据
-                    flowOfficalSealApprovalService.saveNewSeal(workflowBaseEntity, flowOfficalSealApprovalEntity);
+                    flowProcurementApprovalService.saveNewProcurement(workflowBaseEntity, flowProcurementApprovalEntity);
 
                     //启动流程
                     //赋值流程变量
@@ -394,11 +378,11 @@ public class FlowOfficalSealApprovalController extends BaseController {
                     WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
                     MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
 
-                    FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
-                    MyBeanUtils.copyBeanNotNull2Bean(flowOfficalSealApprovalService, biz);
+                    FlowProcurementApprovalEntity biz = flowProcurementApprovalService.getById(base.getBusinessId());
+                    MyBeanUtils.copyBeanNotNull2Bean(flowProcurementApprovalService, biz);
                     //已申请
                     base.setStatus("1");
-                    flowOfficalSealApprovalService.saveUpdate(base, biz);
+                    flowProcurementApprovalService.saveUpdate(base, biz);
 
                     //启动流程
                     //赋值流程变量
@@ -419,15 +403,15 @@ public class FlowOfficalSealApprovalController extends BaseController {
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
                     workflowBaseEntity.setStatus("0"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
 
-                    flowOfficalSealApprovalService.saveNewSeal(workflowBaseEntity, flowOfficalSealApprovalEntity);
+                    flowProcurementApprovalService.saveNewProcurement(workflowBaseEntity, flowProcurementApprovalEntity);
                 }else {
                     WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
                     MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
 
-                    FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
-                    MyBeanUtils.copyBeanNotNull2Bean(flowOfficalSealApprovalEntity, biz);
+                    FlowProcurementApprovalEntity biz = flowProcurementApprovalService.getById(base.getBusinessId());
+                    MyBeanUtils.copyBeanNotNull2Bean(flowProcurementApprovalEntity, biz);
 
-                    flowOfficalSealApprovalService.saveUpdate(base, biz);
+                    flowProcurementApprovalService.saveUpdate(base, biz);
                 }
             }
 
@@ -447,43 +431,51 @@ public class FlowOfficalSealApprovalController extends BaseController {
      */
     @RequestMapping("/reSubmit")
     @ResponseBody
-    public AjaxJson reSubmit(WorkflowBaseEntity workflowBaseEntity, FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity, String taskId, HttpServletRequest request) {
+    public AjaxJson reSubmit(WorkflowBaseEntity workflowBaseEntity, FlowProcurementApprovalEntity flowProcurementApprovalEntity, String taskId, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try{
-            if(null == flowOfficalSealApprovalEntity.getUseUnit()) {
+
+            if(StringUtils.isBlank(flowProcurementApprovalEntity.getDepartmentName())) {
                 j.setSuccess(false);
-                j.setMsg("主送单位不能为空");
+                j.setMsg("采购部门不能为空");
                 return j;
             }
 
-            if(null == flowOfficalSealApprovalEntity.getDepartmentName()) {
+
+            if(StringUtils.isBlank(flowProcurementApprovalEntity.getAgent())) {
                 j.setSuccess(false);
-                j.setMsg("科室不能为空");
+                j.setMsg("经办人不能为空");
                 return j;
             }
 
-            if(null == flowOfficalSealApprovalEntity.getUseDay()) {
+            if(StringUtils.isBlank(flowProcurementApprovalEntity.getTelephone())) {
                 j.setSuccess(false);
-                j.setMsg("使用日期不能为空");
+                j.setMsg("电话不能为空");
                 return j;
             }
 
-            if(StringUtils.isBlank(flowOfficalSealApprovalEntity.getContent())) {
+            if(null == flowProcurementApprovalEntity.getPrice()) {
                 j.setSuccess(false);
-                j.setMsg("内容不能为空");
+                j.setMsg("总计价格不能为空");
+                return j;
+            }
+
+
+            WorkflowMngEntity workflow = workflowMngService.getById(workflowBaseEntity.getWorkflowId());
+            if(null == workflow) {
+                j.setSuccess(false);
+                j.setMsg("参数错误，系统中没有该流程");
                 return j;
             }
 
             WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
             MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
 
-            FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
-            biz.setDepartmentName(flowOfficalSealApprovalEntity.getDepartmentName());
-            biz.setCommit(flowOfficalSealApprovalEntity.getCommit());
-            biz.setUseUnit(flowOfficalSealApprovalEntity.getUseUnit());
+            FlowProcurementApprovalEntity biz = flowProcurementApprovalService.getById(base.getBusinessId());
+            biz.setDepartmentName(flowProcurementApprovalEntity.getDepartmentName());
             //已申请
             base.setStatus("1");
-            flowOfficalSealApprovalService.saveUpdate(base, biz);
+            flowProcurementApprovalService.saveUpdate(base, biz);
 
 
             Map<String, Object> map = new HashMap<String, Object>();
@@ -513,7 +505,7 @@ public class FlowOfficalSealApprovalController extends BaseController {
         AjaxJson j = new AjaxJson();
         try {
             if(StringUtils.isNotBlank(businessId)) {
-                flowOfficalSealApprovalService.removeById(businessId);
+                flowProcurementApprovalService.removeById(businessId);
             }
         }catch(Exception e) {
             j.setSuccess(false);

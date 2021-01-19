@@ -1,8 +1,6 @@
 package com.active4j.hr.activiti.biz.entity;
 
 import com.active4j.hr.common.entity.BaseEntity;
-import com.active4j.hr.core.annotation.QueryField;
-import com.active4j.hr.core.query.QueryCondition;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
