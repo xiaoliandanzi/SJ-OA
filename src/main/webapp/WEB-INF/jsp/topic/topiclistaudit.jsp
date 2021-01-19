@@ -41,8 +41,8 @@
     <t:dgCol name="isSecretary" label="书记会" dictionary="byesorno" query="false"></t:dgCol>
     <t:dgCol name="isDirector" label="主任会" dictionary="byesorno" query="flase"></t:dgCol>
     <t:dgCol name="isWorkingCommittee" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>
-    <t:dgCol name="allPass" label="通过审核" query="true" replace="是_1, 否_0"></t:dgCol>
-    <t:dgCol name="isHistory" label="历史议题" query="true" replace="是_1, 否_0"></t:dgCol>
+    <t:dgCol name="allPass" label="通过审核" query="true" replace="是_1,否_0"></t:dgCol>
+    <t:dgCol name="isHistory" label="历史议题" query="true" replace="是_1,否_0"></t:dgCol>
     <t:dgToolBar label="查看" type="define" funName="getOne"></t:dgToolBar>
     <t:dgToolBar label="审核" type="define" funName="auditOne"></t:dgToolBar>
     <t:dgToolBar label="二次审核" type="define" funName="secondAudit" operationCode="topic:second"></t:dgToolBar>

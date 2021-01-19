@@ -178,6 +178,12 @@ public class OaTopicController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("topic/topicaudit");
         modelAndView.addObject("lookOrAdu", oaTopic.getOpinion());
         oaTopic = topicService.getById(oaTopic.getId());
+        /**
+         * 得到用户级别
+         */
+        String auditLV = ShiroUtils.getSessionValue("auditLV");
+        //判断该级别是否已经进行审过
+        //modelAndView = getIsPassMV(modelAndView, oaTopic, auditLV);
         modelAndView = getMVForStaud(oaTopic, modelAndView);
         modelAndView = getFileList(modelAndView, oaTopic);
         if (ShiroUtils.hasRole("topicaudit"))
@@ -740,6 +746,29 @@ public class OaTopicController extends BaseController {
         list.addAll(userList("", leaderRole));
         list.addAll(userList("", roleEntity.getParentId()));
         return list;
+    }
+
+    /**
+     * 判断用户是否已经审核
+     *
+     * @param modelAndView
+     * @param oaTopic
+     * @param lv
+     * @return
+     */
+    private ModelAndView getIsPassMV(ModelAndView modelAndView, OaTopic oaTopic, String lv) {
+        if ("1".equals(lv) && oaTopic.getIsPassOne() == 0) {
+
+        } else if ("2".equals(lv)) {
+
+        } else if ("3".equals(lv)) {
+
+        } else if ("4".equals(lv)) {
+
+        } else if ("5".equals(lv)) {
+
+        }
+        return modelAndView;
     }
 }
 

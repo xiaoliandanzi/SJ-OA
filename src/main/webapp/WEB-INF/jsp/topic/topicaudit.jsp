@@ -141,15 +141,21 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">主任会：</label>
                                 <div class="col-sm-8">
-                                    <c:if test="${oaTopic.isDirector == 'false'}">不上会</c:if>
-                                    <c:if test="${oaTopic.isDirector == 'true'}">上会</c:if>
+                                        <%--<c:if test="${oaTopic.isDirector == 'false'}">不上会</c:if>
+                                        <c:if test="${oaTopic.isDirector == 'true'}">上会</c:if>--%>
+                                    <input id="" name="topicName" minlength="2" maxlength="20" type="text" disabled
+                                           class="form-control" required
+                                           value="<c:if test="${oaTopic.isDirector == 'false'}">不上会</c:if>
+                                    <c:if test="${oaTopic.isDirector == 'true'}">上会</c:if>">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">工委会：</label>
                                 <div class="col-sm-8">
-                                    <c:if test="${oaTopic.isWorkingCommittee == 'false'}">不上会</c:if>
-                                    <c:if test="${oaTopic.isWorkingCommittee == 'true'}">上会</c:if>
+                                    <input id="" name="topicName" minlength="2" maxlength="20" type="text" disabled
+                                           class="form-control" required
+                                           value="<c:if test="${oaTopic.isWorkingCommittee == 'false'}">不上会</c:if>
+                                    <c:if test="${oaTopic.isWorkingCommittee == 'true'}">上会</c:if>">
                                 </div>
                             </div>
                         </c:if>

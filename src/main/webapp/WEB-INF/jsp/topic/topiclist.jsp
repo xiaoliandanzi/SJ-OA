@@ -42,8 +42,8 @@
     <t:dgCol name="isSecretary" label="书记会" dictionary="byesorno" query="false"></t:dgCol>
     <t:dgCol name="isDirector" label="主任会" dictionary="byesorno" query="flase"></t:dgCol>
     <t:dgCol name="isWorkingCommittee" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>
-    <t:dgCol name="allPass" label="通过审核" query="true" replace="是_1, 否_0"></t:dgCol>
-    <t:dgCol name="isHistory" label="历史议题" query="true" replace="是_1, 否_0"></t:dgCol>
+    <t:dgCol name="allPass" label="通过审核" query="true" replace="是_1,否_0"></t:dgCol>
+    <t:dgCol name="isHistory" label="历史议题" query="true" replace="是_1,否_0"></t:dgCol>
     <t:dgToolBar url="topic/saveOrUpdateView" type="add" width="60%" operationCode="topic:add"></t:dgToolBar>
     <t:dgToolBar url="topic/saveOrUpdateView" type="edit" width="60%" operationCode="topic:add"></t:dgToolBar>
     <t:dgToolBar label="查看" type="define" funName="getOne"></t:dgToolBar>
@@ -95,31 +95,31 @@
         $.get("topic/getOne?id=" + rowId, null, function (data) {
             if (data.success) {
                 topic = data.obj;
+                if (topic.isPassOne == 1) {
+                    qhAlert('该议题禁止取消');
+                    return;
+                } else {
+                    qhConfirm("你确定要删除该议题吗?", function (index) {
+                        parent.layer.close(index);
+
+                        $.get("topic/remove?id=" + rowId, null, function (data) {
+                            if (data.success) {
+                                qhTipSuccess(data.msg);
+                                //操作结束，刷新表格
+                                reloadTable('topicAddList');
+                            } else {
+                                qhTipWarning(data.msg);
+                            }
+                        });
+                    }, function () {
+                        //否
+                    });
+                }
             } else {
                 qhTipWarning(data.msg);
             }
         })
-        console.log(topic)
-        if (topic.isPassOne != 0) {
-            qhAlert('该议题禁止取消');
-            return;
-        }
 
-        qhConfirm("你确定要删除该议题吗?", function (index) {
-            parent.layer.close(index);
-
-            $.get("topic/remove?id=" + rowId, null, function (data) {
-                if (data.success) {
-                    qhTipSuccess(data.msg);
-                    //操作结束，刷新表格
-                    reloadTable('topicAddList');
-                } else {
-                    qhTipWarning(data.msg);
-                }
-            });
-        }, function () {
-            //否
-        });
 
     }
 </script>
