@@ -17,6 +17,7 @@
             <div class="ibox">
                 <div class="ibox-content">
                     <div id="jqGrid_wrapper3" class="jqGrid_wrapper3"></div>
+                    <button id="add" onclick="add()" >议题会议发起</button>
                     <button id="chakanhuiyi" onclick="chakanhuiyi()" >查看议题</button>
                     <div id="jqGrid_wrapper" class="jqGrid_wrapper"></div>
                     <button id="chakan" onclick="chakan()" >查看</button>
@@ -30,7 +31,7 @@
 </div>
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="meeting/table" tableContentId="jqGrid_wrappers" searchGroupId="searchGroupId" fit="true"
-            multiSelect="true"    sortable="true"    rownumbers="true"    caption="会议列表" name="table_list_2"  pageSize="20" sortName="meetingTime" sortOrder="desc" >
+            multiSelect="false"    sortable="true"    rownumbers="true"    caption="会议列表" name="table_list_2"  pageSize="20" sortName="meetingTime" sortOrder="desc" >
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="stateId" label="状态" width="150" query="false"></t:dgCol>
     <t:dgCol name="deptName" label="使用科室" width="150" query="false"></t:dgCol>
@@ -44,7 +45,7 @@
 <t:datagrid actionUrl="meeting/tableAll" tableContentId="jqGrid_wrapper" searchGroupId="searchGroupId" fit="true"
             multiSelect="true"    sortable="true"    rownumbers="true"    caption="议题列表" name="table_list_1"  pageSize="20" sortName="creatTime" sortOrder="desc" >
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="creatTime" label="申报日期" width="300" query="false"></t:dgCol>
+    <t:dgCol name="creatTime" label="申报日期" width="300" query="true"></t:dgCol>
     <t:dgCol name="topicName" label="议题名称" width="150" query="true"></t:dgCol>
     <t:dgCol name="proposeLeaderName" label="提议领导" query="false"></t:dgCol>
     <t:dgCol name="reportName" label="汇报人" query="false"></t:dgCol>
@@ -81,7 +82,6 @@
     <t:dgCol name="isHistory" label="历史议题" query="false" replace="是_1, 否_0"></t:dgCol>
     <t:dgCol name="isWorkingCommittee" label="工委会" replace="○_1, _0" query="false"></t:dgCol>
     <t:dgCol name="opt" label="操作" width="290"></t:dgCol>
-    <t:dgToolBar label="议题会议发起"  type="define" funName="add"></t:dgToolBar>
     <t:dgToolBar label="议题列表"    type="define" funName="yitilb"></t:dgToolBar>
     <t:dgToolBar label="会议列表"  type="define" funName="huiyilb"></t:dgToolBar>
 </t:datagrid>
@@ -92,6 +92,7 @@
         $("#jqGrid_wrapper3").hide();
         $("#chakan").hide();
         $("#chakanhuiyi").show();
+        $("#add").show();
         $("#tongzhi").hide();
         $("#bianji").hide();
     }
@@ -122,6 +123,7 @@
         $("#chakan").hide();
         $("#tongzhi").hide();
         $("#chakanhuiyi").show();
+        $("#add").show();
         $("#bianji").hide();
     }
     //会议列表
@@ -133,12 +135,14 @@
         $("#chakan").show();
         $("#tongzhi").show();
         $("#chakanhuiyi").hide();
+        $("#add").hide();
         $("#bianji").show();
     }
     //会议查看
     function chakan(){
-        var rowIds = $("#table_list_2").jqGrid('getGridParam', 'selarrrow');
+        var rowIds = $("#table_list_2").jqGrid('getGridParam', 'selrow');
         var list=$("#table_list_2").jqGrid('getRowData',rowIds);
+        console.log(list)
         if(!list.id){
             qhAlert('请选择一条要查看的会议详情');
             return;
@@ -151,7 +155,7 @@
     }
     //通知详情
     function tongzhi(){
-        var rowIds = $("#table_list_2").jqGrid('getGridParam', 'selarrrow');
+        var rowIds = $("#table_list_2").jqGrid('getGridParam', 'selrow');
         var list=$("#table_list_2").jqGrid('getRowData',rowIds);
         if(!list.id){
             qhAlert('请选择一条要查看的通知详情');
@@ -161,7 +165,7 @@
     }
     //会议编辑
     function bianji(){
-        var rowIds = $("#table_list_2").jqGrid('getGridParam', 'selarrrow');
+        var rowIds = $("#table_list_2").jqGrid('getGridParam', 'selrow');
         var list=$("#table_list_2").jqGrid('getRowData',rowIds);
         if(!list.id){
             qhAlert('请选择一条要编辑的会议详情');

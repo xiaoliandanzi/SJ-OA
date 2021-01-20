@@ -2,6 +2,7 @@ package com.active4j.hr.topic.service;
 
 import com.active4j.hr.topic.entity.OaMeeting;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author weizihao
  * @since 2021-01-04
  */
+@Transactional
 public interface OaMeetingService extends IService<OaMeeting> {
 
     void savemeeting(OaMeeting oaMeeting);

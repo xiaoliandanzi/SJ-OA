@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@EnableTransactionManagement
 public class SaticScheduleTask {
     public  final OaMeetingService meetingService;
     public  final OaTopicService topicService;
@@ -43,9 +45,9 @@ public class SaticScheduleTask {
             int compareTo =date.compareTo(new Date());
             int compareTo2 =date1.compareTo(new Date());
             if(compareTo==-1){
-                oaMeeting.setStateId("未开始");
-            }else if(compareTo==1){
                 oaMeeting.setStateId("进行中");
+            }else if(compareTo==1){
+                oaMeeting.setStateId("未开始");
             }
             if (compareTo2==-1){
                 oaMeeting.setStateId("已结束");
@@ -61,6 +63,7 @@ public class SaticScheduleTask {
                 }
             }
             meetingService.savemeeting(oaMeeting);
+            //meetingService.saveOrUpdate(oaMeeting);
         }
     }
 }
