@@ -18,6 +18,7 @@ import org.apache.poi.poifs.filesystem.DocumentEntry;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -149,6 +150,7 @@ public class FileDownController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("getHtml")
+    @ResponseBody
     public void test(OaTopic oaTopic, HttpServletRequest request, HttpServletResponse response) throws Exception {
         exportWord(request, response, getStr(oaTopic));
     }
@@ -344,25 +346,37 @@ public class FileDownController extends BaseController {
         return null;
     }
 
+    String wordHtmlHead = "<html xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\"\n" +
+            "xmlns:w=\"urn:schemas-microsoft-com:office:word\" xmlns:m=\"http://schemas.microsoft.com/office/2004/12/omml\"\n" +
+            "xmlns=\"http://www.w3.org/TR/REC-html40\"><head>\n" +
+            "    <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:TrackMoves>false</w:TrackMoves><w:TrackFormatting/><w:ValidateAgainstSchemas/><w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid><w:IgnoreMixedContent>false</w:IgnoreMixedContent><w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText><w:DoNotPromoteQF/><w:LidThemeOther>EN-US</w:LidThemeOther><w:LidThemeAsian>ZH-CN</w:LidThemeAsian><w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript><w:Compatibility><w:BreakWrappedTables/><w:SnapToGridInCell/><w:WrapTextWithPunct/><w:UseAsianBreakRules/><w:DontGrowAutofit/><w:SplitPgBreakAndParaMark/><w:DontVertAlignCellWithSp/><w:DontBreakConstrainedForcedTables/><w:DontVertAlignInTxbx/><w:Word11KerningPairs/><w:CachedColBalance/><w:UseFELayout/></w:Compatibility><w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel><m:mathPr><m:mathFont m:val=\"Cambria Math\"/><m:brkBin m:val=\"before\"/><m:brkBinSub m:val=\"--\"/><m:smallFrac m:val=\"off\"/><m:dispDef/><m:lMargin m:val=\"0\"/> <m:rMargin m:val=\"0\"/><m:defJc m:val=\"centerGroup\"/><m:wrapIndent m:val=\"1440\"/><m:intLim m:val=\"subSup\"/><m:naryLim m:val=\"undOvr\"/></m:mathPr></w:WordDocument></xml><![endif]-->\n" +
+            "</head>";
+
     public void exportWord(HttpServletRequest request, HttpServletResponse response, String content) throws Exception {
+        OutputStream ostream = response.getOutputStream();
+        content = wordHtmlHead + "<body>" + content + "</body></html>";
+        String fileName = "议题申请审批表.doc";
         try {
-            byte b[] = content.getBytes("utf-8");  //这里是必须要设置编码的，不然导出中文就会乱码。
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("application/msword");
+            response.setHeader("Content-disposition", "attachment;filename=" + new String(fileName.getBytes("utf-8"), "ISO8859-1"));
+            ostream.write(content.getBytes("utf-8"));
+            ostream.flush();
+            /*byte b[] = content.getBytes("UTF-8");  //这里是必须要设置编码的，不然导出中文就会乱码。
             ByteArrayInputStream bais = new ByteArrayInputStream(b);//将字节数组包装到流中
             //生成word
             POIFSFileSystem poifs = new POIFSFileSystem();
             DirectoryEntry directory = poifs.getRoot();
-            DocumentEntry documentEntry = directory.createDocument("exportWord", bais);
+            DocumentEntry documentEntry = directory.createDocument("WordDocument", bais);
             //输出文件
-            response.setCharacterEncoding("utf-8");
+            response.setCharacterEncoding("UTF-8");
             //设置word格式
             response.setContentType("application/msword");
-            String filename = "exportWord.docx";
-            response.setHeader("Content-disposition", "attachment;filename=" + new String(filename.getBytes("utf-8"), "ISO8859-1"));
+            response.setHeader("Content-disposition", "attachment;filename=WordDocument.doc");
             OutputStream ostream = response.getOutputStream();
-            ostream.write(b);
             poifs.writeFilesystem(ostream);
             bais.close();
-            ostream.close();
+            ostream.close();*/
         } catch (Exception e) {
             //异常处理
             System.err.println(e);
@@ -379,14 +393,7 @@ public class FileDownController extends BaseController {
         String topicName = oaTopic.getTopicName();
         String topicContent = oaTopic.getTopicContent();
         String topicRemark = oaTopic.getTopicRemark();
-        return "<!DOCTYPE html>\n" +
-                "<html lang=\"en\" style=\"overflow: auto\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Title</title>\n" +
-                "</head>\n" +
-                "<body style=\"overflow: auto\">\n" +
-                "<div style=\"width: 680px;height: 750px;margin: 10px auto;\">\n" +
+        return "<div style=\"width: 680px;height: 750px;margin: 10px auto;\">\n" +
                 "    <div><h1 style=\"text-align: center\">议 题 申 请 审 批 表</h1></div>\n" +
                 "    <table width=\"670px\" hight=\"978px\" border=\"1px\"\n" +
                 "           style=\"text-align: center;border: 1px black;color: black;border-collapse: collapse\">\n" +
@@ -414,7 +421,7 @@ public class FileDownController extends BaseController {
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">\n" +
-                "                    &nbsp&nbsp&nbsp&nbsp年&nbsp&nbsp&nbsp&nbsp月&nbsp&nbsp&nbsp&nbsp日\n" +
+                "      年  月  日\n" +
                 "                </div>\n" +
                 "            </td>\n" +
                 "            <td colspan=\"2\"\n" +
@@ -425,7 +432,7 @@ public class FileDownController extends BaseController {
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">\n" +
-                "                    &nbsp&nbsp&nbsp&nbsp年&nbsp&nbsp&nbsp&nbsp月&nbsp&nbsp&nbsp&nbsp日\n" +
+                "      年  月  日\n" +
                 "                </div>\n" +
                 "            </td>\n" +
                 "            <td colspan=\"2\"\n" +
@@ -436,7 +443,7 @@ public class FileDownController extends BaseController {
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">\n" +
-                "                    &nbsp&nbsp&nbsp&nbsp年&nbsp&nbsp&nbsp&nbsp月&nbsp&nbsp&nbsp&nbsp日\n" +
+                "      年  月  日\n" +
                 "                </div>\n" +
                 "            </td>\n" +
                 "        </tr>\n" +
@@ -450,7 +457,7 @@ public class FileDownController extends BaseController {
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">\n" +
-                "                    &nbsp&nbsp&nbsp&nbsp年&nbsp&nbsp&nbsp&nbsp月&nbsp&nbsp&nbsp&nbsp日\n" +
+                "          年  月  日\n" +
                 "                </div>\n" +
                 "            </td>\n" +
                 "            <td colspan=\"3\"\n" +
@@ -461,7 +468,7 @@ public class FileDownController extends BaseController {
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">\n" +
-                "                    &nbsp&nbsp&nbsp&nbsp年&nbsp&nbsp&nbsp&nbsp月&nbsp&nbsp&nbsp&nbsp日\n" +
+                "          年  月  日\n" +
                 "                </div>\n" +
                 "            </td>\n" +
                 "        </tr>\n" +
@@ -476,8 +483,6 @@ public class FileDownController extends BaseController {
                 "            <td colspan=\"6\">备注:" + topicRemark + "</td>\n" +
                 "        </tr>\n" +
                 "    </table>\n" +
-                "</div>\n" +
-                "</body>\n" +
-                "</html>";
+                "</div>\n";
     }
 }
