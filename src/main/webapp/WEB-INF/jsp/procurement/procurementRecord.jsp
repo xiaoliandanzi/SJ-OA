@@ -31,7 +31,7 @@
 </div>
 
 <!-- 脚本部分 -->
-<t:datagrid actionUrl="officalSeal/return/datagrid" tableContentId="officalSealRecordTable" searchGroupId="searchGroupId" fit="true" caption="公章借用记录" name="sealsRecordList" pageSize="20" sortName="createDate" sortOrder="desc">
+<t:datagrid actionUrl="govprocurement/return/datagrid" tableContentId="officalSealRecordTable" searchGroupId="searchGroupId" fit="true" caption="政采申请记录" name="sealsRecordList" pageSize="20" sortName="createDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="userName" label="借用人" width="80" query="true"></t:dgCol>
     <t:dgCol name="departmentName" label="科室" width="80" query="true"></t:dgCol>

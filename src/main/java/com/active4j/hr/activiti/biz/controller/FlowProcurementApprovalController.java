@@ -1,6 +1,5 @@
 package com.active4j.hr.activiti.biz.controller;
 
-import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
 import com.active4j.hr.activiti.biz.entity.FlowProcurementApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowProcurementApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
@@ -150,7 +149,7 @@ public class FlowProcurementApprovalController extends BaseController{
             FlowProcurementApprovalEntity biz = flowProcurementApprovalService.getById(base.getBusinessId());
             view.addObject("biz", biz);
         } else {
-            FlowOfficalSealApprovalEntity biz = new FlowOfficalSealApprovalEntity();
+            FlowProcurementApprovalEntity biz = new FlowProcurementApprovalEntity();
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
             WorkflowBaseEntity base = new WorkflowBaseEntity();
@@ -158,7 +157,6 @@ public class FlowProcurementApprovalController extends BaseController{
             base.setName("公章&物品&政采申请");
             view.addObject("base", base);
 
-            biz.setUserName(user.getRealName());
             biz.setDepartmentName(user.getDeptName());
             view.addObject("biz", biz);
         }

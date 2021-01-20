@@ -6,39 +6,74 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%--<div class="form-group">--%>
+<%--    <label class="col-sm-3 control-label m-b">使用日期：</label>--%>
+<%--    <div class="col-sm-4 m-b">--%>
+<%--        <input class="laydate-icon form-control layer-date" id="useDay" name="useDay"  value='<fmt:formatDate value="${biz.useDay }" type="both" pattern="yyyy-MM-dd"/>'>--%>
+<%--    </div>--%>
+<%--</div>--%>
 <div class="form-group">
-    <label class="col-sm-3 control-label m-b">使用日期：</label>
-    <div class="col-sm-4 m-b">
-        <input class="laydate-icon form-control layer-date" id="useDay" name="useDay"  value='<fmt:formatDate value="${biz.useDay }" type="both" pattern="yyyy-MM-dd"/>'>
+    <label class="col-sm-3 control-label">采购部门*：</label>
+    <div class="col-sm-5">
+        <textarea id="departmentName" name="departmentName" required="" class="form-control">${biz.departmentName }</textarea>
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-3 control-label">科室：</label>
+    <label class="col-sm-3 control-label">经办人*：</label>
     <div class="col-sm-5">
-        <textarea id="departmentName" name="departmentName" class="form-control">${biz.departmentName }</textarea>
+        <textarea id="agent" name="agent" required="" class="form-control">${biz.agent }</textarea>
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-3 control-label">主送单位：</label>
+    <label class="col-sm-3 control-label">电话*：</label>
     <div class="col-sm-5">
-        <textarea id="useUnit" name="useUnit" class="form-control">${biz.useUnit }</textarea>
+        <textarea id="telephone" name="telephone" required="" class="form-control">${biz.telephone }</textarea>
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-3 control-label">借用人：</label>
+    <label class="col-sm-3 control-label">采购项目明细*：</label>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">品名*：</label>
     <div class="col-sm-5">
-        <textarea id="userName" name="userName" class="form-control">${biz.userName }</textarea>
+        <textarea id="itemName" name="itemName" required="" class="form-control">${biz.itemName }</textarea>
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-3 control-label">用章内容：</label>
+    <label class="col-sm-3 control-label">品牌、规格型号*：</label>
     <div class="col-sm-5">
-        <textarea id="content" name="content" class="form-control">${biz.content }</textarea>
+        <textarea id="type" name="type" required="" class="form-control">${biz.type }</textarea>
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-3 control-label">备注：</label>
+    <label class="col-sm-3 control-label">数量*：</label>
     <div class="col-sm-5">
-        <textarea id="commit" name="commit" class="form-control">${biz.commit }</textarea>
+<%--        <textarea id="number" name="number" class="form-control">${biz.number }</textarea>--%>
+        <input id="number" name="number" type="number" class="form-control" required="" value="${biz.number }">
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">单价*：</label>
+    <div class="col-sm-5">
+        <input id="unitPrice" name="unitPrice" type="number" class="form-control" required="" value="${biz.unitPrice }">
+<%--        <textarea id="unitPrice" name="unitPrice" required="" class="form-control">${biz.unitPrice }</textarea>--%>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">用途*：</label>
+    <div class="col-sm-5">
+        <textarea id="purpose" name="purpose" required="" class="form-control">${biz.purpose }</textarea>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">合计*：</label>
+    <div class="col-sm-5">
+        <textarea id="price" name="price" required="" class="form-control">${biz.price }</textarea>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">资金来源*：</label>
+    <div class="col-sm-5">
+        <textarea id="foundSource" name="foundSource" required="" class="form-control">${biz.foundSource }</textarea>
     </div>
 </div>

@@ -103,7 +103,6 @@
                     $("#btnLabel").append("<button class='col-sm-2 btn btn-primary m-t' type='button' onclick='doBtnApproveAction();'>" +
                         "审批通过</button>");
                     $("#btnLabel").append("<button class='col-sm-1 btn btn-danger m-t' style='margin-left:20px;' type='button' onclick='doBtnBackAction();'>驳回</button>");
-                    $("#btnLabel").append("<button class='col-sm-2 btn btn-primary m-t' style='margin-left:20px;' type='button' onclick='doBtnOverApproveAction();'>通过&结束审批</button>");
                 }
             }
         });

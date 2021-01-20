@@ -48,23 +48,16 @@ public class TaskAssigneeProcurementListener implements TaskListener {
             roleName= WorkflowTaskUtil.getLeaderDept(applyName);
         }
 
-        if(taskName.equalsIgnoreCase("书记审批")){
-            roleName="书记";
-        }
-
-        if(taskName.equalsIgnoreCase("主任审批")){
-            roleName="主任";
+        if(taskName.equalsIgnoreCase("财务审批")){
+            roleName="财务科室负责人";
         }
 
         if(taskName.equalsIgnoreCase("综合办物品管理审批")){
-            roleName="物品管理员";
+            roleName="综合办公室科员";
         }
 
-        if(taskName.equalsIgnoreCase("车辆管理员审批")){
-            roleName="车辆管理员";
-        }
-        if ("监交人审批".equalsIgnoreCase(taskName)) {
-            roleName="综合办科员";
+        if(taskName.equalsIgnoreCase("经办人审批")){
+
         }
 
         List<String> lstUsers = WorkflowTaskUtil.getApprovalUserByRoleName(roleName);

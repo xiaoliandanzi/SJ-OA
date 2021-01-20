@@ -18,14 +18,14 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>用章审批流程</h5>
+                    <h5>政采审批流程</h5>
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal m-t" id="commonForm" action="flow/biz/sealapproval/save" method="post">
+                    <form class="form-horizontal m-t" id="commonForm" action="flow/biz/procurementapproval/save" method="post">
                         <input type="hidden" name="workflowId" id="workflowId" value="${workflowId }">
                         <input type="hidden" name="optType" id="optType">
                         <input type="hidden" name="id" id="id" value="${base.id }">
-                        <%@include file="/WEB-INF/jsp/flow/sealapproval/form.jsp" %>
+                        <%@include file="/WEB-INF/jsp/flow/procurement/form.jsp" %>
                         <div class="form-group" style="margin-top: 30px;">
                             <div class="col-sm-4 col-sm-offset-3">
                                 <button class="btn btn-primary" type="button" onclick="doBtnSaveApplyAction();">发起申请</button>

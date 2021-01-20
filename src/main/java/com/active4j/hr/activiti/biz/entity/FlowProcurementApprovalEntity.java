@@ -39,16 +39,57 @@ public class FlowProcurementApprovalEntity  extends BaseEntity {
     private String telephone;
 
     /**
+     * 品名
+     */
+    @TableField("ITEMNAME")
+    private String itemName;
+
+    /**
+     * 品牌规格 型号
+     */
+    @TableField("TYPE")
+    private String type;
+
+    /**
+     * 数量
+     */
+    @TableField("NUMBER")
+    private Integer number;
+
+    /**
+     * 单价
+     */
+    @TableField("UNITPRICE")
+    private Integer unitPrice;
+
+    /**
+     * 单价
+     */
+    @TableField("COUNT")
+    private Integer count;
+
+    /**
+     * 用途
+     */
+    @TableField("PURPOSE")
+    private String purpose;
+
+    /**
      * 总计（元）
      */
     @TableField("PRICE")
     private Integer price;
 
+    /**
+     * 资金来源
+     */
+    @TableField("FUNDSOURCE")
+    private String foundSource;
 
     /**
      * 审批状态 0:审批中 1：确认中 2：采购中 3：驳回
      */
-    @TableField("APPLY_STATUS")
+    @TableField("APPLYSTATUS")
     private Integer applyStatus;
 
 }
