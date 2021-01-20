@@ -21,7 +21,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>用章审批流程</h5>
+                    <h5>政采审批流程</h5>
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="commonForm" action="flow/biz/procurementapproval/save" method="post">

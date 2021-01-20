@@ -6,12 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%--<div class="form-group">--%>
-<%--    <label class="col-sm-3 control-label m-b">使用日期：</label>--%>
-<%--    <div class="col-sm-4 m-b">--%>
-<%--        <input class="laydate-icon form-control layer-date" id="useDay" name="useDay"  value='<fmt:formatDate value="${biz.useDay }" type="both" pattern="yyyy-MM-dd"/>'>--%>
-<%--    </div>--%>
-<%--</div>--%>
 <div class="form-group">
     <label class="col-sm-3 control-label">采购部门*：</label>
     <div class="col-sm-5">

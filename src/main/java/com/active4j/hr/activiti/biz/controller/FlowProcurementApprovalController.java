@@ -123,7 +123,7 @@ public class FlowProcurementApprovalController extends BaseController{
             String currentName = ShiroUtils.getSessionUserName();
             List<Task> lstTasks = workflowService.findTaskListByBusinessKey(id, currentName);
             view.addObject("lstTasks", lstTasks);
-            view.addObject("action", "flow/biz/procurement/doApprove");
+            view.addObject("action", "flow/biz/procurementapproval/doApprove");
         }else if(StringUtils.equals("3", type)) {
             view = new ModelAndView("flow/procurement/applyshow");
 

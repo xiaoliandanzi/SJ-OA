@@ -1,16 +1,22 @@
 package com.active4j.hr.activiti.listener;
 
 
+import com.active4j.hr.activiti.biz.entity.FlowProcurementApprovalEntity;
+import com.active4j.hr.activiti.biz.service.FlowProcurementApprovalService;
+import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
+import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.activiti.util.WorkflowConstant;
 import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.core.beanutil.ApplicationContextUtil;
 import com.active4j.hr.system.service.SysUserService;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 
 /**
@@ -23,7 +29,13 @@ import java.util.List;
 public class TaskAssigneeProcurementListener implements TaskListener {
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private WorkflowBaseService workflowBaseService;
+    @Autowired
+    private FlowProcurementApprovalService flowProcurementApprovalService;
 
+//    @Autowired
+//    RuntimeService runtimeService;
     /**
      *
      */
@@ -52,17 +64,29 @@ public class TaskAssigneeProcurementListener implements TaskListener {
             roleName="财务科室负责人";
         }
 
-        if(taskName.equalsIgnoreCase("综合办物品管理审批")){
+        if(taskName.equalsIgnoreCase("采购管理部门审批")){
             roleName="综合办公室科员";
         }
 
-        if(taskName.equalsIgnoreCase("经办人审批")){
+        if(!taskName.equalsIgnoreCase("经办人审批")){
 
+//            String taskId = delegateTask.getId();
+////            RuntimeService runtimeService = ProcessEngines.getProcessEngine(delegateTask.getName()).getRuntimeService();
+////            ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+////            Task task  =  taskService.createTaskQuery().taskId(taskId).singleResult();
+//            ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(taskId).singleResult();
+//            String business_key = pi.getBusinessKey();
+//            WorkflowBaseEntity base = workflowBaseService.getById(business_key);
+//            FlowProcurementApprovalEntity biz = flowProcurementApprovalService.getById(base.getBusinessId());
+//            String agent = biz.getAgent();
+//            taskService.setAssignee(delegateTask.getId(), agent);
+//            WorkflowTaskUtil.sendSystemMessage(agent, applyName);
+//            return;
         }
 
         List<String> lstUsers = WorkflowTaskUtil.getApprovalUserByRoleName(roleName);
 
-        if(null == lstUsers || lstUsers.size() <= 0) {
+         if(null == lstUsers || lstUsers.size() <= 0) {
             taskService.setAssignee(delegateTask.getId(), WorkflowConstant.Str_Admin);
         }else if(lstUsers.size() == 1) {
             taskService.setAssignee(delegateTask.getId(), lstUsers.get(0));

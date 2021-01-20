@@ -18,7 +18,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>我的审批</h5>
+                    <h5>政采审批</h5>
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="appForm" action="${action }" method="post">
@@ -117,12 +117,6 @@
     //驳回
     function doBtnBackAction() {
         $("#result").val('N');
-        $("#appForm").submit();
-    }
-
-    //结束流程
-    function doBtnOverApproveAction() {
-        $("#result").val('O');
         $("#appForm").submit();
     }
 
