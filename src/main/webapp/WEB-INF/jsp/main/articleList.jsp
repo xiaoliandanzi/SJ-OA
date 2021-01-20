@@ -321,20 +321,20 @@
     </div>
     <div class="tabs1Center" v-if="zhengwen">
         <div class="tab1Zhengwen" v-if="zhengwen">
-            <p class="tab1_zwTitle" style="text-align: center">
+            <p class="tab1_zwTitle" style="text-align: center;font-size: 30px;padding-bottom: 10px">
                 {{tab1zwMsg.title}}
             </p>
-            <p class="tab1_zwDate" style="text-align: center">
+            <p class="tab1_zwDate" style="text-align: center;padding-bottom: 10px">
                 {{tab1zwMsg.publicTime}}
             </p>
-            <p class="tab1_zwVal">
+            <p class="tab1_zwVal" style="font-size: 20px">
                 {{tab1zwMsg.content}}
             </p>
         </div>
     </div>
 
     <div class="friendBox">
-        <span class="friendTxt"> 连接</span>
+        <span class="friendTxt"> 链接</span>
         <a class="friendHerf" href="http://www.chy.egov.cn/"> 朝阳政务</a>
         <a class="friendHerf" href="http://www.bjchy.gov.cn/"> 朝阳区政务网</a>
         <a class="friendHerf" href="http://bgpc.beijing.gov.cn/"> 市政府采购中心</a>

@@ -145,17 +145,15 @@
                                         <c:if test="${oaTopic.isDirector == 'true'}">上会</c:if>--%>
                                     <input id="" name="topicName" minlength="2" maxlength="20" type="text" disabled
                                            class="form-control" required
-                                           value="<c:if test="${oaTopic.isDirector == 'false'}">不上会</c:if>
-                                    <c:if test="${oaTopic.isDirector == 'true'}">上会</c:if>">
+                                           value="<c:if test="${oaTopic.isDirector == 'false'}">不上会</c:if><c:if test="${oaTopic.isDirector == 'true'}">上会</c:if>">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">工委会：</label>
                                 <div class="col-sm-8">
-                                    <input id="" name="topicName" minlength="2" maxlength="20" type="text" disabled
+                                    <input i name="topicName" minlength="2" maxlength="20" type="text" disabled
                                            class="form-control" required
-                                           value="<c:if test="${oaTopic.isWorkingCommittee == 'false'}">不上会</c:if>
-                                    <c:if test="${oaTopic.isWorkingCommittee == 'true'}">上会</c:if>">
+                                           value="<c:if test="${oaTopic.isWorkingCommittee == 'false'}">不上会</c:if><c:if test="${oaTopic.isWorkingCommittee == 'true'}">上会</c:if>">
                                 </div>
                             </div>
                         </c:if>
@@ -217,87 +215,105 @@
                         <%--<c:if test="${params  == 1}">--%>
                         <c:if test="${oaTopic.isPassOne != 0}">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">科室负责人意见：</label>
-                                <div class="col-sm-5">
-                                <textarea name="opinionDeptLeader" class="form-control" disabled
-                                >${oaTopic.opinionDeptLeader}</textarea>
+                                <label class="col-sm-3 control-label">科室负责人意见：</label>
+                                <div class="col-sm-8">
+                                    <label class="control-label">审核结果：<c:choose>
+                                        <c:when test="${oaTopic.isPassOne == 1}">通过</c:when>
+                                        <c:when test="${oaTopic.isPassOne == 2}">不通过</c:when>
+                                    </c:choose></label>
+                                    <textarea name="opinionDeptLeader" class="form-control"
+                                              disabled>${oaTopic.opinionDeptLeader}</textarea>
                                 </div>
-                                <label class="col-sm-2 control-label">审核结果：</label>
-                                <div class="col-sm-3">
-                                    <p class="form-control-static" disabled>
-                                        <c:choose>
-                                            <c:when test="${oaTopic.isPassOne == 1}">通过</c:when>
-                                            <c:when test="${oaTopic.isPassOne == 2}">不通过</c:when>
-                                        </c:choose></p>
-                                </div>
+                                    <%--<label class="col-sm-3 control-label">审核结果：</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" disabled>
+                                            <c:choose>
+                                                <c:when test="${oaTopic.isPassOne == 1}">通过</c:when>
+                                                <c:when test="${oaTopic.isPassOne == 2}">不通过</c:when>
+                                            </c:choose></p>
+                                    </div>--%>
                             </div>
                         </c:if>
                         <c:if test="${oaTopic.isPassTwo != 0}">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">主管领导意见：</label>
-                                <div class="col-sm-5">
-                                <textarea name="opinionLeader" class="form-control" disabled
-                                >${oaTopic.opinionLeader}</textarea>
+                                <label class="col-sm-3 control-label">主管领导意见：</label>
+                                <div class="col-sm-8">
+                                    <label class="control-label">审核结果：<c:choose>
+                                        <c:when test="${oaTopic.isPassTwo == 1}">通过</c:when>
+                                        <c:when test="${oaTopic.isPassTwo == 2}">不通过</c:when>
+                                    </c:choose></label>
+                                    <textarea name="opinionLeader" class="form-control"
+                                              disabled>${oaTopic.opinionLeader}</textarea>
                                 </div>
-                                <label class="col-sm-2 control-label">审核结果：</label>
-                                <div class="col-sm-3">
-                                    <p class="form-control-static" disabled>
-                                        <c:choose>
-                                            <c:when test="${oaTopic.isPassTwo == 1}">通过</c:when>
-                                            <c:when test="${oaTopic.isPassTwo == 2}">不通过</c:when>
-                                        </c:choose></p>
-                                </div>
+                                    <%--<label class="col-sm-2 control-label">审核结果：</label>
+                                    <div class="col-sm-3">
+                                        <p class="form-control-static" disabled>
+                                            <c:choose>
+                                                <c:when test="${oaTopic.isPassTwo == 1}">通过</c:when>
+                                                <c:when test="${oaTopic.isPassTwo == 2}">不通过</c:when>
+                                            </c:choose></p>
+                                    </div>--%>
                             </div>
                         </c:if>
                         <c:if test="${oaTopic.isPassThree != 0}">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">综合办意见：</label>
-                                <div class="col-sm-5">
-                                <textarea name="opinionGeneralOffice" class="form-control" disabled
-                                >${oaTopic.opinionGeneralOffice}</textarea>
+                                <label class="col-sm-3 control-label">综合办意见：</label>
+                                <div class="col-sm-8">
+                                    <label class="control-label">审核结果：<c:choose>
+                                        <c:when test="${oaTopic.isPassThree == 1}">通过</c:when>
+                                        <c:when test="${oaTopic.isPassThree == 2}">不通过</c:when>
+                                    </c:choose></label>
+                                    <textarea name="opinionGeneralOffice" class="form-control"
+                                              disabled>${oaTopic.opinionGeneralOffice}</textarea>
                                 </div>
-                                <label class="col-sm-2 control-label">审核结果：</label>
-                                <div class="col-sm-3">
-                                    <p class="form-control-static" disabled>
-                                        <c:choose>
-                                            <c:when test="${oaTopic.isPassThree == 1}">通过</c:when>
-                                            <c:when test="${oaTopic.isPassThree == 2}">不通过</c:when>
-                                        </c:choose></p>
-                                </div>
+                                    <%--<label class="col-sm-2 control-label">审核结果：</label>
+                                    <div class="col-sm-3">
+                                        <p class="form-control-static" disabled>
+                                            <c:choose>
+                                                <c:when test="${oaTopic.isPassThree == 1}">通过</c:when>
+                                                <c:when test="${oaTopic.isPassThree == 2}">不通过</c:when>
+                                            </c:choose></p>
+                                    </div>--%>
                             </div>
                         </c:if>
                         <c:if test="${oaTopic.isPassFour != 0}">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">财务科意见：</label>
-                                <div class="col-sm-5">
-                                <textarea name="opinionFinanceOffice" class="form-control" disabled
-                                >${oaTopic.opinionFinanceOffice}</textarea>
+                                <label class="col-sm-3 control-label">财务科意见：</label>
+                                <div class="col-sm-8">
+                                    <label class="control-label">审核结果：<c:choose>
+                                        <c:when test="${oaTopic.isPassFour == 1}">通过</c:when>
+                                        <c:when test="${oaTopic.isPassFour == 2}">不通过</c:when>
+                                    </c:choose> </label>
+                                    <textarea name="opinionFinanceOffice" class="form-control"
+                                              disabled>${oaTopic.opinionFinanceOffice}</textarea>
                                 </div>
-                                <label class="col-sm-2 control-label">审核结果：</label>
-                                <div class="col-sm-3">
-                                    <p class="form-control-static">
-                                        <c:choose>
-                                            <c:when test="${oaTopic.isPassFour == 1}">通过</c:when>
-                                            <c:when test="${oaTopic.isPassFour == 2}">不通过</c:when>
-                                        </c:choose></p>
-                                </div>
+                                    <%--<label class="col-sm-2 control-label">审核结果：</label>
+                                    <div class="col-sm-3">
+                                        <p class="form-control-static">
+                                            <c:choose>
+                                                <c:when test="${oaTopic.isPassFour == 1}">通过</c:when>
+                                                <c:when test="${oaTopic.isPassFour == 2}">不通过</c:when>
+                                            </c:choose></p>
+                                    </div>--%>
                             </div>
                         </c:if>
+                        <%----%>
+                        <%----%>
                         <c:if test="${oaTopic.isPassFive != 0}">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">纪委意见：</label>
-                                <div class="col-sm-5">
-                                <textarea name="opinionDisciplineOffice" class="form-control" disabled
-                                >${oaTopic.opinionDisciplineOffice}</textarea>
+                                <label class="col-sm-3 control-label">纪委意见：</label>
+                                <div class="col-sm-8">
+                                    <label class="control-label">审核结果：<c:choose>
+                                        <c:when test="${oaTopic.isPassFive == 1}">通过</c:when>
+                                        <c:when test="${oaTopic.isPassFive == 2}">不通过</c:when>
+                                    </c:choose> </label>
+                                    <textarea name="opinionDisciplineOffice" class="form-control"
+                                              disabled>${oaTopic.opinionDisciplineOffice}</textarea>
                                 </div>
-                                <label class="col-sm-2 control-label">审核结果：</label>
-                                <div class="col-sm-3">
-                                    <p class="form-control-static">
-                                        <c:choose>
-                                            <c:when test="${oaTopic.isPassFive == 1}">通过</c:when>
-                                            <c:when test="${oaTopic.isPassFive == 2}">不通过</c:when>
-                                        </c:choose></p>
-                                </div>
+                                    <%--<div class="col-sm-1">
+                                        <p class="form-control-static">
+
+                                    </div>--%>
                             </div>
                         </c:if>
                         <c:if test="${lookOrAdu == null}">

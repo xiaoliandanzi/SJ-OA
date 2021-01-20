@@ -3,23 +3,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <style>
+    html body {
+        overflow: auto;
+    }
+
     .nava {
         color: #2F4050;
         text-decoration: none;
     }
-    .warning-msg {display:block; bottom:0px; right:0px; position:fixed;}
-    * html .warning-msg {position:absolute; right:18px}
+
+    .warning-msg {
+        display: block;
+        bottom: 0px;
+        right: 0px;
+        position: fixed;
+    }
+
+    * html .warning-msg {
+        position: absolute;
+        right: 18px
+    }
+
     .notification {
         position: fixed;
         z-index: 99999;
         right: 0;
         bottom: 0;
-        font-family:Digital,'Microsoft YaHei',STFangsong;
+        font-family: Digital, 'Microsoft YaHei', STFangsong;
         display: flex;
         margin: 0 auto;
         width: 600px;
         min-height: 150px;
     }
+
     .notification .info {
         flex: 1;
         position: fixed;
@@ -30,19 +46,22 @@
         border-radius: 3px 0 0 3px;
         border-bottom: 3px solid #c0cdd1;
     }
+
     .notification .info span {
         margin: 0;
         padding: 0;
         font-size: 16px;
         color: #000;
     }
+
     .notification .info p {
         margin: 0;
-        margin-top:20px;
+        margin-top: 20px;
         padding: 5px 0;
         font-size: 14px;
         color: #c5bebe;
     }
+
     .notification .info .button {
         display: inline-block;
         margin: 30px 3px 5px 0;
@@ -54,15 +73,18 @@
         text-decoration: none;
         color: #ecf0f1;
     }
+
     .notification .info .button.gray {
-        background: #95a5a6 ;
+        background: #95a5a6;
         border-bottom-color: #798d8f;
     }
+
     .notification .info .button {
         background: #435d8a;
         border-bottom-color: #435d8a;
     }
-    .gbspan{
+
+    .gbspan {
         position: absolute;
         right: 0;
         margin: 0;
@@ -71,13 +93,15 @@
         color: #000;
         height: 36px;
     }
-    .tzspan{
+
+    .tzspan {
         margin: 0;
         padding: 0;
         font-size: 16px;
         color: #000;
         height: 36px;
     }
+
     .ui-jqgrid .ui-jqgrid-titlebar {
         position: relative;
         border-left: 0 solid;
@@ -98,13 +122,14 @@
     <title></title>
     <script src="./vue.min.js"></script>
     <script src="./axios.min.js"></script>
+    <script src="./element.js"></script>
     <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
     <!-- 引入组件库 -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <%--<script src="https://unpkg.com/element-ui/lib/index.js"></script>--%>
+    <%--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>--%>
     <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./element.css">
 </head>
-
 <body>
 <div id="app">
     <div class="topNavber">
@@ -132,7 +157,7 @@
                 <input class="selectInp" v-model="selectMsg" type="text" @input="getSelectHold"/>
                 <div class="inpBack" v-if="selectHold">
                     <img class="selectIcon" src="./img/select.png" alt="">
-                    <span>123132</span>
+                    <span></span>
                 </div>
             </div>
             <div class="selectBtn">
@@ -375,49 +400,50 @@
     </div>
 </div>
 </body>
-<div   id="rbbox"   hidden="true">
-    <div class="notification" style="width: 600px" >
+<div id="rbbox" hidden="true">
+    <div class="notification" style="width: 600px">
         <div class="info">
-            <div   class="gbspan" style="font-weight: bolder ";  onclick="closes()"><span >关闭</span></div>
-            <div class="tzspan"  style="font-weight: bolder" onclick="jieshou()" >接收通知</div>
-            <div id="jqGrid_wrapper" class="jqGrid_wrapper"  style="width: 600px">
+            <div class="gbspan" style="font-weight: bolder " ; onclick="closes()"><span>关闭</span></div>
+            <div class="tzspan" style="font-weight: bolder" onclick="jieshou()">接收通知</div>
+            <div id="jqGrid_wrapper" class="jqGrid_wrapper" style="width: 600px">
             </div>
         </div>
     </div>
 </div>
 </div>
-<div   id="rbboxs"   hidden="true">
-    <div class="notification" style="width: 600px" >
+<div id="rbboxs" hidden="true">
+    <div class="notification" style="width: 600px">
         <div class="info">
-            <div   class="gbspan" style="font-weight: bolder ";  onclick="closess()"><span >关闭</span></div>
-            <div class="tzspan"  style="font-weight: bolder" onclick="jieshou()" >接收通知</div>
-                <div id="jqGrid_wrappers" class="jqGrid_wrappers"  style="width: 600px">
-                </div>
+            <div class="gbspan" style="font-weight: bolder " ; onclick="closess()"><span>关闭</span></div>
+            <div class="tzspan" style="font-weight: bolder" onclick="jieshou()">接收通知</div>
+            <div id="jqGrid_wrappers" class="jqGrid_wrappers" style="width: 600px">
             </div>
         </div>
     </div>
+</div>
 </div>
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="notificationform/tableAll" tableContentId="jqGrid_wrapper"
-            caption="议题会议通知"  multiSelect="true"  name="table_list_1"    height="200" pageSize="5" rownumbers="false"   >
-    <t:dgCol name="id" label="编号" hidden="true" key="true" ></t:dgCol>
-    <t:dgCol name="huiyidate" label="会议日期"  width="300" query="false"></t:dgCol>
-    <t:dgCol name="huiyihome" label="会议室"  width="300" query="false"></t:dgCol>
+            caption="议题会议通知" multiSelect="true" name="table_list_1" height="200" pageSize="5" rownumbers="false">
+    <t:dgCol name="id" label="编号" hidden="true" key="true"></t:dgCol>
+    <t:dgCol name="huiyidate" label="会议日期" width="300" query="false"></t:dgCol>
+    <t:dgCol name="huiyihome" label="会议室" width="300" query="false"></t:dgCol>
 </t:datagrid>
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="notificationform/tablegroupbygr" tableContentId="jqGrid_wrappers"
-            caption="议题会议通知"  multiSelect="true"  name="table_list_2"    height="200" pageSize="5" rownumbers="false"   >
-    <t:dgCol name="id" label="编号" hidden="true" key="true" ></t:dgCol>
-    <t:dgCol name="huiyidate" label="会议日期"  width="300" query="false"></t:dgCol>
-    <t:dgCol name="huiyihome" label="会议室"  width="300" query="false"></t:dgCol>
+            caption="议题会议通知" multiSelect="true" name="table_list_2" height="200" pageSize="5" rownumbers="false">
+    <t:dgCol name="id" label="编号" hidden="true" key="true"></t:dgCol>
+    <t:dgCol name="huiyidate" label="会议日期" width="300" query="false"></t:dgCol>
+    <t:dgCol name="huiyihome" label="会议室" width="300" query="false"></t:dgCol>
 </t:datagrid>
 
 
 <script type="text/javascript">
-    function closes(){
+    function closes() {
         $("#rbbox").hide();
     }
-    function closess(){
+
+    function closess() {
         $("#rbboxs").hide();
         $.post("notificationform/updatetx0", function (data) {
             if (data.success) {
@@ -447,13 +473,14 @@
             }
         });
     }
-    function getAll(){
+
+    function getAll() {
         //是
         $.post("notificationform/tableAlls", function (data) {
-            if(data.obj.length==0){
+            if (data.obj.length == 0) {
                 $("#rbbox").hide();
                 $("#rbboxs").hide();
-            }else{
+            } else {
                 $("#rbbox").show();
                 $("#rbboxs").hide();
                 reloadTable('table_list_1');
@@ -461,41 +488,20 @@
         });
     }
 
-    function getgr(){
+    function getgr() {
         //是
         $.post("notificationform/tablegroupbygrs", function (data) {
-            if(data.obj.length==0){
+            if (data.obj.length == 0) {
                 $("#rbboxs").hide();
                 $.post("notificationform/tableAlls", function (data) {
-                    if(data.obj.length==0){
+                    if (data.obj.length == 0) {
                         $("#rbbox").hide();
-                    }else{
+                    } else {
                         $("#rbbox").show();
                         reloadTable('table_list_1');
                     }
                 });
-            }else{
-                   $("#rbbox").hide();
-                   reloadTable('table_list_1');
-                $("#rbboxs").show();
-                reloadTable('table_list_2');
-            }
-        });
-    }
-    function getgrS(){
-        //是
-        $.post("notificationform/tablegroupbygrs", function (data) {
-            if(data.obj.length==0){
-                $("#rbboxs").hide();
-                $.post("notificationform/tableAlls", function (data) {
-                    if(data.obj.length==0){
-                        $("#rbbox").hide();
-                    }else{
-                        $("#rbbox").hide();
-                        reloadTable('table_list_1');
-                    }
-                });
-            }else{
+            } else {
                 $("#rbbox").hide();
                 reloadTable('table_list_1');
                 $("#rbboxs").show();
@@ -503,9 +509,32 @@
             }
         });
     }
-    setInterval(getAll,7200000);
-    setInterval(getgrS,9000);
-    window.onload=function(){    //加载
+
+    function getgrS() {
+        //是
+        $.post("notificationform/tablegroupbygrs", function (data) {
+            if (data.obj.length == 0) {
+                $("#rbboxs").hide();
+                $.post("notificationform/tableAlls", function (data) {
+                    if (data.obj.length == 0) {
+                        $("#rbbox").hide();
+                    } else {
+                        $("#rbbox").hide();
+                        reloadTable('table_list_1');
+                    }
+                });
+            } else {
+                $("#rbbox").hide();
+                reloadTable('table_list_1');
+                $("#rbboxs").show();
+                reloadTable('table_list_2');
+            }
+        });
+    }
+
+    setInterval(getAll, 7200000);
+    setInterval(getgrS, 9000);
+    window.onload = function () {    //加载
         getAll();
         getgr();
     }
