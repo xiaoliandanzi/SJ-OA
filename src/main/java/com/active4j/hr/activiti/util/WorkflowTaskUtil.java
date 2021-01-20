@@ -7,6 +7,7 @@ import com.active4j.hr.system.service.SysDeptService;
 import com.active4j.hr.system.service.SysRoleService;
 import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.system.util.MessageUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
  * @author xfzhang
  * @version 1.0
  */
+@Slf4j
 public class WorkflowTaskUtil {
 
 	private static SysUserService sysUserService = ApplicationContextUtil.getContext().getBean(SysUserService.class);
@@ -76,7 +78,12 @@ public class WorkflowTaskUtil {
 	}
 
 	public static void sendSystemMessage(String approvalName, String applyName) {
-		MessageUtils.SendSysMessage(sysUserService.getUserByUseName(approvalName).getId(),
-				"您收到一条来自" + sysUserService.getUserByUseName(applyName).getRealName() + "的审批需求");
+		try {
+			MessageUtils.SendSysMessage(sysUserService.getUserByUseName(approvalName).getId(),
+					"您收到一条来自" + sysUserService.getUserByUseName(applyName).getRealName() + "的审批需求");
+		} catch (Exception ex) {
+			log.error("发送信息", ex);
+		}
+
 	}
 }

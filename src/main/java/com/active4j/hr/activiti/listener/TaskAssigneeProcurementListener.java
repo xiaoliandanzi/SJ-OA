@@ -93,6 +93,7 @@ public class TaskAssigneeProcurementListener implements TaskListener {
             FlowProcurementApprovalEntity biz = flowProcurementApprovalService.getById(base.getBusinessId());
             String agent = biz.getAgent();
             taskService.setAssignee(delegateTask.getId(), agent);
+
             WorkflowTaskUtil.sendSystemMessage(agent, applyName);
             return;
         }
