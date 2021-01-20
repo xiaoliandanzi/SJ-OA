@@ -9,6 +9,7 @@ import com.active4j.hr.activiti.util.WorkflowConstant;
 import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.core.beanutil.ApplicationContextUtil;
 import com.active4j.hr.system.service.SysUserService;
+import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
@@ -34,8 +35,11 @@ public class TaskAssigneeProcurementListener implements TaskListener {
     @Autowired
     private FlowProcurementApprovalService flowProcurementApprovalService;
 
-//    @Autowired
-//    RuntimeService runtimeService;
+    @Autowired
+    ProcessEngine processEngine;
+
+    @Autowired
+    RuntimeService runtimeService;
     /**
      *
      */
@@ -68,20 +72,25 @@ public class TaskAssigneeProcurementListener implements TaskListener {
             roleName="综合办公室科员";
         }
 
-        if(!taskName.equalsIgnoreCase("经办人审批")){
+        if(taskName.equalsIgnoreCase("经办人审批")){
 
-//            String taskId = delegateTask.getId();
-////            RuntimeService runtimeService = ProcessEngines.getProcessEngine(delegateTask.getName()).getRuntimeService();
-////            ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-////            Task task  =  taskService.createTaskQuery().taskId(taskId).singleResult();
-//            ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(taskId).singleResult();
-//            String business_key = pi.getBusinessKey();
-//            WorkflowBaseEntity base = workflowBaseService.getById(business_key);
-//            FlowProcurementApprovalEntity biz = flowProcurementApprovalService.getById(base.getBusinessId());
-//            String agent = biz.getAgent();
-//            taskService.setAssignee(delegateTask.getId(), agent);
-//            WorkflowTaskUtil.sendSystemMessage(agent, applyName);
-//            return;
+            String processInstanceId = delegateTask.getProcessInstanceId();
+
+//            RuntimeService runtimeService = processEngine.getRuntimeService();
+//            TaskService taskServicetmp = processEngine.getTaskService();
+//            Task task = taskServicetmp.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+//            ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+//            Task task  =  taskService.createTaskQuery().taskId(taskId).singleResult();
+//            String pid = task.getProcessInstanceId();
+            ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+            String business_key = pi.getBusinessKey();
+
+            WorkflowBaseEntity base = workflowBaseService.getById(business_key);
+            FlowProcurementApprovalEntity biz = flowProcurementApprovalService.getById(base.getBusinessId());
+            String agent = biz.getAgent();
+            taskService.setAssignee(delegateTask.getId(), agent);
+            WorkflowTaskUtil.sendSystemMessage(agent, applyName);
+            return;
         }
 
         List<String> lstUsers = WorkflowTaskUtil.getApprovalUserByRoleName(roleName);
