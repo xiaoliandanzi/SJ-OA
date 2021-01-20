@@ -19,9 +19,6 @@ import java.util.List;
  */
 public class TaskAssigneeDepartManagerListener implements TaskListener {
 
-	@Autowired
-	private SysUserService sysUserService;
-
 	/**
 	 * 
 	 */

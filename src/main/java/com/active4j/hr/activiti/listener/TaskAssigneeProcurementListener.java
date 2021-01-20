@@ -15,9 +15,9 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 /**
@@ -48,7 +48,9 @@ public class TaskAssigneeProcurementListener implements TaskListener {
     @Override
     public void notify(DelegateTask delegateTask) {
         TaskService taskService = ApplicationContextUtil.getContext().getBean(TaskService.class);
-
+        RuntimeService runtimeService = ApplicationContextUtil.getContext().getBean(RuntimeService.class);
+        WorkflowBaseService workflowBaseService = ApplicationContextUtil.getContext().getBean(WorkflowBaseService.class);
+        FlowProcurementApprovalService flowProcurementApprovalService = ApplicationContextUtil.getContext().getBean(FlowProcurementApprovalService.class);
         // 获取节点名称
         String taskName = delegateTask.getName();
 
@@ -82,7 +84,9 @@ public class TaskAssigneeProcurementListener implements TaskListener {
 //            ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
 //            Task task  =  taskService.createTaskQuery().taskId(taskId).singleResult();
 //            String pid = task.getProcessInstanceId();
-            ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+            ProcessInstance pi = runtimeService.createProcessInstanceQuery()
+                    .processInstanceId(processInstanceId)
+                    .singleResult();
             String business_key = pi.getBusinessKey();
 
             WorkflowBaseEntity base = workflowBaseService.getById(business_key);

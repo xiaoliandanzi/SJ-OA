@@ -50,7 +50,9 @@
 </body>
 
 <script type="text/javascript">
-
+    function addasset() {
+        location.href = "asset/manage/apply/go";
+    }
 </script>
 
 </html>
