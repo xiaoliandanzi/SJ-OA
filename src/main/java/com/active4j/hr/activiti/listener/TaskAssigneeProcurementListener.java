@@ -8,6 +8,7 @@ import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.activiti.util.WorkflowConstant;
 import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.core.beanutil.ApplicationContextUtil;
+import com.active4j.hr.system.entity.SysUserEntity;
 import com.active4j.hr.system.service.SysUserService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RuntimeService;
@@ -19,6 +20,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @title TaskAssigneeRoleNameListener.java
@@ -51,6 +54,7 @@ public class TaskAssigneeProcurementListener implements TaskListener {
         RuntimeService runtimeService = ApplicationContextUtil.getContext().getBean(RuntimeService.class);
         WorkflowBaseService workflowBaseService = ApplicationContextUtil.getContext().getBean(WorkflowBaseService.class);
         FlowProcurementApprovalService flowProcurementApprovalService = ApplicationContextUtil.getContext().getBean(FlowProcurementApprovalService.class);
+        SysUserService sysUserService = ApplicationContextUtil.getContext().getBean(SysUserService.class);
         // 获取节点名称
         String taskName = delegateTask.getName();
 
@@ -92,6 +96,12 @@ public class TaskAssigneeProcurementListener implements TaskListener {
             WorkflowBaseEntity base = workflowBaseService.getById(business_key);
             FlowProcurementApprovalEntity biz = flowProcurementApprovalService.getById(base.getBusinessId());
             String agent = biz.getAgent();
+            Pattern p_str = Pattern.compile("[\\u4e00-\\u9fa5]+");
+            Matcher m = p_str.matcher(agent);
+            if(m.matches()){
+                SysUserEntity egentUser = sysUserService.getUserByRealName(agent);
+                agent = egentUser.getUserName();
+            }
             taskService.setAssignee(delegateTask.getId(), agent);
 
             WorkflowTaskUtil.sendSystemMessage(agent, applyName);

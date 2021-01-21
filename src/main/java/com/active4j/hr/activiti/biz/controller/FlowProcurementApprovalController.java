@@ -15,6 +15,8 @@ import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
+import com.active4j.hr.system.entity.SysRoleEntity;
+import com.active4j.hr.system.entity.SysUserEntity;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,9 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -335,9 +340,16 @@ public class FlowProcurementApprovalController extends BaseController{
                 return j;
             }
 
-            if(StringUtils.isBlank(flowProcurementApprovalEntity.getTelephone())) {
+            String egent = flowProcurementApprovalEntity.getAgent();
+            if(!isGeneralOfficer(egent)) {
                 j.setSuccess(false);
-                j.setMsg("电话不能为空");
+                j.setMsg("经办人错误，请指定综合办科员");
+                return j;
+            }
+
+            if(StringUtils.isBlank(flowProcurementApprovalEntity.getTelephone()) || !isChinaPhoneLegal(flowProcurementApprovalEntity.getTelephone())) {
+                j.setSuccess(false);
+                j.setMsg("电话格式错误，请输入11位中国电话号码");
                 return j;
             }
 
@@ -421,6 +433,59 @@ public class FlowProcurementApprovalController extends BaseController{
         }
 
         return j;
+    }
+
+    /**
+     * 经办人校验
+     *
+     */
+    public boolean isGeneralOfficer(String egent) {
+        Pattern p_str = Pattern.compile("[\\u4e00-\\u9fa5]+");
+        Matcher m = p_str.matcher(egent);
+//        SysUserEntity egentUser =new SysUserEntity();
+//        if(m.matches()){
+//            egentUser = sysUserService.getUserByRealName(egent);
+//        }else{
+//            egentUser = sysUserService.getUserByUseName(egent);
+//        }
+        SysUserEntity egentUser = sysUserService.getUserByUseName(egent);
+        if(m.matches()){
+            egentUser = sysUserService.getUserByRealName(egent);
+        }
+        if(egentUser == null) {
+            return false;
+        }
+        List<SysRoleEntity> sysRoles = sysUserService.getUserRoleByUserId(egentUser.getId());
+        if(sysRoles.size() == 0){
+            return false;
+        }else if (sysRoles.size() == 1){
+            if(sysRoles.get(0).getRoleName().equals("综合办科员") || sysRoles.get(0).getRoleName().equals("综合办公室科室负责人")){
+                return true;
+            }
+        }else{
+            for(SysRoleEntity role : sysRoles){
+                if(role.getRoleName().equals("综合办科员") || role.getRoleName().equals("综合办公室科室负责人")){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 电话号码校验
+     *
+     */
+    public static boolean isChinaPhoneLegal(String str) throws PatternSyntaxException {
+        // ^ 匹配输入字符串开始的位置
+        // \d 匹配一个或多个数字，其中 \ 要转义，所以是 \\d
+        // $ 匹配输入字符串结尾的位置
+        String regExp = "^((13[0-9])|(14[5,7,9])|(15[0-3,5-9])|(166)|(17[3,5,6,7,8])" +
+                "|(18[0-9])|(19[8,9]))\\d{8}$";
+        Pattern p = Pattern.compile(regExp);
+        Matcher m = p.matcher(str);
+        return m.matches();
     }
 
     /**

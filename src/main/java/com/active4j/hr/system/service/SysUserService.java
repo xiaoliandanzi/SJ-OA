@@ -36,6 +36,15 @@ public interface SysUserService extends IService<SysUserEntity> {
      */
     public SysUserEntity getUserByUseName(String userName);
 
+
+    /**
+     * 根据真实姓名取得用户
+     *
+     * @param userName
+     * @return
+     */
+    public SysUserEntity getUserByRealName(String userName);
+
     /**
      * @return List<SysUserEntity>
      * @description 根据部门获取用户

@@ -62,7 +62,7 @@
 <div class="form-group">
     <label class="col-sm-3 control-label">合计*：</label>
     <div class="col-sm-5">
-        <textarea id="price" name="price" required="" class="form-control">${biz.price }</textarea>
+        <input id="price" name="price" type="number" class="form-control" required="" value="${biz.price }">
     </div>
 </div>
 <div class="form-group">

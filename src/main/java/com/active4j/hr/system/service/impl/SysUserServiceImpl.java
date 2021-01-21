@@ -89,6 +89,24 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     }
 
     /**
+     * 根据用户真实名取得用户
+     *
+     * @param userName
+     * @return
+     */
+    public SysUserEntity getUserByRealName(String userName) {
+        QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<SysUserEntity>();
+        queryWrapper.eq("REAL_NAME", userName);
+        List<SysUserEntity> lstUserRoles = this.list(queryWrapper);
+
+        if (null != lstUserRoles && lstUserRoles.size() > 0) {
+            return lstUserRoles.get(0);
+        }
+
+        return null;
+    }
+
+    /**
      * @return List<SysUserEntity>
      * @description 根据部门获取用户
      * @author xfzhang
