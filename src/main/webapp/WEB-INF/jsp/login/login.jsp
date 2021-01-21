@@ -23,21 +23,34 @@
         window.top.location = window.location;
     }</script>
 </head>
-<body class="gray-bg">
-<div class="middle-box text-center loginscreen  animated fadeInDown">
-    <div>
+<body class="gray-bg" style="background: url(static/bootstrap/image/login-bg.jpg) no-repeat;background-position: center;background-size: cover;">
+<div style="margin-top: 370px !important;
+    height: 260px;
+    width: 370px;
+    border-radius: 20px;
+    margin: 0 auto;
+    background: #ffff;
+    margin-left: 680px;">
+<div class="middle-box text-center loginscreen  animated fadeInDown" style="width: 500px !important;">
         <div>
-            <h3 class="logo-name">OA</h3>
-        </div>
-        <h3>双井智慧办公系统</h3>
-        <form class="form-horizontal m-t" id="signupForm" action="login" method="post">
-            <div class="form-group">
+        <form class="form-horizontal m-t" id="signupForm" action="login" method="post" style="margin-left: 100px;">
+            <div class="form-group" style="position: relative;">
+		<i style="width: 30px;
+		    position: absolute;
+		    height: 34px;
+		    border: 1px solid #e5e6e7;
+		    left: -30px;"><img src="static/bootstrap/image/admin.png" style="margin-top: 6px;"></i>
                 <input type="text" name="userName" id="userName" value="suming" class="form-control" placeholder="用户名"
-                       required="">
+                       required="" style="width: 210px;">
             </div>
-            <div class="form-group">
+            <div class="form-group" style="position: relative;">
+                    <i style="width: 30px;top: 20px;
+    position: absolute;
+    height: 34px;
+    border: 1px solid #e5e6e7;
+    left: -30px;"><img src="static/bootstrap/image/password.png" style="margin-top: 6px;"></i>
                 <input type="password" name="password" id="password" value="123456" class="form-control"
-                       placeholder="密码" required="">
+                       placeholder="密码" required="" style="width: 210px;margin: 20px 0">
             </div>
             <%--<div class="form-group">--%>
             <%--<input id="randCode" name="randCode" type="text" class="form-control" placeholder="验证码" required="" style="width: 60%">--%>
@@ -45,7 +58,7 @@
             <%--<img id="randCodeImage" src="" />--%>
             <%--</div>--%>
             <%--</div>--%>
-            <button type="button" class="btn btn-primary block full-width m-b" onclick="doSubmit()">登 录</button>
+            <button type="button" class="btn btn-primary block full-width m-b" onclick="doSubmit()"style="width: 60% !important;background-color:#47b6b5;border-color:#47b6b5">登 录</button>
 
             <%--<p class="text-muted text-center"> <a href="https://github.com/yunchaoyun/active4j-oa">github</a> | <a href="https://gitee.com/active4j/active4j-oa">码云</a>--%>
             </p>
