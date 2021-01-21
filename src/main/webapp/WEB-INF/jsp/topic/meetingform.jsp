@@ -18,8 +18,8 @@
                 <div class="ibox-content">
                     <t:formvalid action="meeting/save">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label m-b">科室*：</label>
-                            <div class="col-sm-4 m-b">
+                                <label class="col-sm-2 control-label">科室*：</label>
+                                <div class="col-sm-8">
                                 <div class="input-group">
                                     <t:choose url="common/selectDepart" hiddenName="depId"
                                               hiddenValue="${depid }"
@@ -29,26 +29,26 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label m-b">登记人*：</label>
-                            <div class="col-sm-4 m-b">
+                            <label class="col-sm-2 control-label">登记人*：</label>
+                            <div class="col-sm-8">
                                 <input id="registrantName"  name="registrantName"    value="${user.realName }"   minlength="2" type="text" class="form-control" required="" >
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label m-b">会议开始时间*：</label>
-                            <div class="col-sm-4 m-b">
+                            <label class="col-sm-2 control-label">会议开始时间*：</label>
+                            <div class="col-sm-8">
                                 <input class="laydate-icon form-control layer-date" id="meetingTime" name="meetingTime" required="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label m-b">会议结束时间*：</label>
-                            <div class="col-sm-4 m-b">
+                            <label class="col-sm-2 control-label">会议结束时间*：</label>
+                            <div class="col-sm-8">
                                 <input class="laydate-icon form-control layer-date" id="meetingendTime" name="meetingendTime" required="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">会议室：</label>
-                            <div class="col-sm-4">
+                            <label class="col-sm-2 control-label">会议室*：</label>
+                            <div class="col-sm-8">
                                 <select class="form-control m-b select2" name="meetingId" id="meetingId" multiple="multiple" >
                                     <c:forEach items="${roomList}" var="room">
                                         <option value="${room.name }">${room.name }</option>
@@ -57,20 +57,20 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label m-b">议题会议类型：</label>
-                            <div class="col-sm-4 m-b">
+                            <label class="col-sm-2 control-label">议题会议类型*：</label>
+                            <div class="col-sm-8">
                                 <t:dictSelect name="meetingType" type="select" typeGroupCode="meetingtype" defaultVal="1"></t:dictSelect>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label m-b">会议名称*：</label>
-                            <div class="col-sm-4 m-b">
+                            <label class="col-sm-2 control-label">会议名称*：</label>
+                            <div class="col-sm-8">
                                 <input id="meetingName" name="meetingName" minlength="2" maxlength="10" type="text" class="form-control" required=""  >
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">议题列表：</label>
-                            <div class="col-sm-4">
+                            <label class="col-sm-2 control-label">议题列表*：</label>
+                            <div class="col-sm-8">
                                 <select class="form-control m-b select2" name="topid" id="topid" multiple="multiple" >
                                     <c:forEach items="${oalist}" var="top">
                                         <option value="${top.id }">${top.topicName}</option>
@@ -84,20 +84,20 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label m-b">参会人员：</label>
-                            <div class="col-sm-4 m-b">
-                        <select   name="canhuipeo" id="canhuipeo"  >
-                            <option value="1" onclick="func(1)">主要领导</option>
-                            <option value="2" onclick="func(2)">主管领导</option>
-                            <option value="3" onclick="func(3)">科室负责人</option>
-                            <option value="4" onclick="func(4)">科员</option>
+                            <label class="col-sm-2 control-label">参会人员*：</label>
+                            <div class="col-sm-8">
+                        <select   class="col-sm-8"  name="canhuipeo" id="canhuipeo"   style=" width:654.4px;height: 32px" >
+                            <option class="col-sm-8"  value="1" onclick="func(1)">主要领导</option>
+                            <option  class="col-sm-8" value="2" onclick="func(2)">主管领导</option>
+                            <option  class="col-sm-8"  value="3" onclick="func(3)">科室负责人</option>
+                            <option  class="col-sm-8"  value="4" onclick="func(4)">科员</option>
                         </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">人员：</label>
-                            <div class="col-sm-4">
-                                <select class="form-control m-b select2" name="conferee" id="conferee" multiple="multiple" >
+                            <label class="col-sm-2 control-label">人员*：</label>
+                            <div class="col-sm-8" >
+                                <select class="form-control m-b select2" name="conferee" id="conferee" multiple="multiple"  style="height: 100px" >
                                     <c:forEach items="${dataList}" var="peo">
                                         <option value="${peo.realName }">${peo.realName}</option>
                                     </c:forEach>
@@ -141,13 +141,36 @@
     <t:dgCol name="isHistory" label="历史议题" query="flase" replace="是_1, 否_0"></t:dgCol>
     <t:dgCol name="opt" label="操作" width="290"></t:dgCol>
     <t:dgToolBar label="添加议题" icon="fa fa-clock-o" type="define" funName="addbt"></t:dgToolBar>
+    <t:dgToolBar label="批量打印" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
+    <t:dgToolBar label="打印议题单" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
     <t:dgDelOpt label="删除" url="meeting/tablesdel?id={id}" />
 </t:datagrid>
 
 </body>
 <script type="text/javascript">
     //$(function() {
-
+    function printItAll() {
+        var meetingId=$("#meetingId").val();
+        var meetingName=$("#meetingName").val();
+        var meetingTime=$("#meetingTime").val();
+        var id=$("#id").val();
+        var rowIds = $('#toptable').jqGrid('getGridParam', 'selarrrow');
+        if (rowIds==""||rowIds==null) {
+            qhAlert('请选择要打印的议题');
+            return;
+        }
+        var x = new XMLHttpRequest();
+        x.open("GET", "topicFile/getMeetingHtml?issueId=" + rowIds+"&meetingId="+meetingId+"&meetingName="+meetingName+"&meetingTime="+meetingTime+"&id="+id, true);
+        x.responseType = 'blob';
+        x.onload = function (e) {
+            var url = window.URL.createObjectURL(x.response)
+            var a = document.createElement('a');
+            a.href = url
+            a.download = "议题单.doc"
+            a.click()
+        }
+        x.send();
+    }
      var start=    ({
             elem: "#meetingTime",
             event: "focus",

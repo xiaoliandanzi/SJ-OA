@@ -15,5 +15,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface OaMeetingService extends IService<OaMeeting> {
 
-    void savemeeting(OaMeeting oaMeeting);
+    public void savemeeting(OaMeeting oaMeeting);
 }

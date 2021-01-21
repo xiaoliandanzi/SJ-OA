@@ -72,7 +72,6 @@ public class OaMeetingController {
     private SysRoleService roleService;
 
 
-
     @Autowired
     private OaTopicService topicService;
 
@@ -82,7 +81,8 @@ public class OaMeetingController {
     private SysDeptService deptService;
 
     @Autowired
-    private OaNotificationformService  notificationformService;
+    private OaNotificationformService notificationformService;
+
     /**
      * list视图
      *
@@ -92,7 +92,6 @@ public class OaMeetingController {
     public ModelAndView meetingList() {
         return new ModelAndView("topic/meeting");
     }
-
 
 
     /**
@@ -105,6 +104,7 @@ public class OaMeetingController {
 
         return new ModelAndView("topic/mymeeting");
     }
+
     /**
      * 我的会议
      *
@@ -114,30 +114,65 @@ public class OaMeetingController {
      * @param dataGrid
      */
     @RequestMapping(value = "mytablelist")
-    public void topicTable(HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+    public void mytablelist(OaMeeting oaMeeting, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
         ActiveUser user = ShiroUtils.getSessionUser();
-        String  id=user.getId();
+        String id = user.getId();
         QueryWrapper<OaNotificationform> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("nameid",id);
-        List<OaNotificationform> list=notificationformService.list(queryWrapper);
-        List<String> huiyilist=new ArrayList<>();
-        for (OaNotificationform oano:list){
+        queryWrapper.eq("nameid", id);
+        List<OaNotificationform> list = notificationformService.list(queryWrapper);
+        List<String> huiyilist = new ArrayList<>();
+        for (OaNotificationform oano : list) {
             huiyilist.add(oano.getHuiyiid());
         }
-        String   idza="";
-        for(int i=0; i<huiyilist.size(); i++){
-            if(i==0){
-                idza=huiyilist.get(i);
-            }else{
-                idza=idza+","+huiyilist.get(i);
+        String idza = "";
+        for (int i = 0; i < huiyilist.size(); i++) {
+            if (i == 0) {
+                idza = huiyilist.get(i);
+            } else {
+                idza = idza + "," + huiyilist.get(i);
             }
         }
-        String str[]=idza.split(",");
+        String str[] = idza.split(",");
         QueryWrapper<OaMeeting> queryWrappers = new QueryWrapper<>();
-        queryWrappers.in("ID",str);
+        queryWrappers.in("ID", str);
+        if ("".equals(oaMeeting.getMeetingName())) {
+            oaMeeting.setMeetingName(null);
+        }
+        if ("".equals(oaMeeting.getMeetingTime())) {
+            oaMeeting.setMeetingTime(null);
+        }
+        if ("".equals(oaMeeting.getMeetingType())) {
+            oaMeeting.setMeetingType(null);
+        }
+        //名称模糊查询
+        if (!StringUtil.isEmpty(oaMeeting.getMeetingName())) {
+            queryWrappers.like("Meeting_Name", oaMeeting.getMeetingName());
+            oaMeeting.setMeetingName(null);
+        }
+        //日期查询
+        if (!StringUtil.isEmpty(oaMeeting.getMeetingTime())) {
+            queryWrappers.eq("Meeting_Time", oaMeeting.getMeetingTime());
+            oaMeeting.setMeetingTime(null);
+        }
+        //会议查询
+        if (!StringUtil.isEmpty(oaMeeting.getMeetingType())&&"书记会".equals(oaMeeting.getMeetingType())) {
+            queryWrappers.eq("Meeting_type", "1");
+            oaMeeting.setMeetingTime(null);
+        }
+        //会议查询
+        if (!StringUtil.isEmpty(oaMeeting.getMeetingType())&&"主任会".equals(oaMeeting.getMeetingType())) {
+            queryWrappers.eq("Meeting_type", "2");
+            oaMeeting.setMeetingTime(null);
+        }
+        //会议查询
+        if (!StringUtil.isEmpty(oaMeeting.getMeetingType())&&"工委会".equals(oaMeeting.getMeetingType())) {
+            queryWrappers.eq("Meeting_type", "3");
+            oaMeeting.setMeetingTime(null);
+        }
         IPage<OaMeeting> page = meetingService.page(new Page<OaMeeting>(dataGrid.getPage(), dataGrid.getRows()), queryWrappers);
         ResponseUtil.writeJson(response, dataGrid, page);
     }
+
 
     /**
      * 表格数据

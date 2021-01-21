@@ -33,7 +33,7 @@ public class SaticScheduleTask {
     //3.添加定时任务
     @Scheduled(cron = "0 */1 * * * ?")
     //@Scheduled(fixedRate=5000)
-    private void updatestatus() throws ParseException {
+    public void updatestatus() throws ParseException {
         //查询会议表
         QueryWrapper<OaMeeting> queryWrapper = new QueryWrapper<>();
         queryWrapper.ne("STATE_ID","已结束");

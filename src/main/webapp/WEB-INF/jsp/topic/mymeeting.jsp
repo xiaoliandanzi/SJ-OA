@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,select2,jqgrid"></t:base>
+    <t:base type="default,select2,jqgrid,laydate"></t:base>
 </head>
 <body class="gray-bg">
 <!-- 页面部分 -->
@@ -24,19 +24,23 @@
 </div>
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="meeting/mytablelist" tableContentId="jqGrid_wrapper" searchGroupId="searchGroupId" fit="true"
-            multiSelect="true"     rownumbers="true"    caption="会议列表" name="table_list_1"  pageSize="20" sortName="creatTime" sortOrder="desc" >
+            multiSelect="false"     rownumbers="true"    caption="会议列表" name="table_list_1"  pageSize="20" sortName="creatTime" sortOrder="desc" >
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="stateId" label="状态" width="150" query="false"></t:dgCol>
     <t:dgCol name="deptName" label="使用科室" width="150" query="false"></t:dgCol>
     <t:dgCol name="registrantName" label="登记人" query="false"></t:dgCol>
     <t:dgCol name="meetingId" label="会议室" query="false"></t:dgCol>
-    <t:dgCol name="meetingTime" label="会议开始时间" query="false"></t:dgCol>
+    <t:dgCol name="meetingTime" label="会议开始时间" query="true"  datefmt="yyyy-MM-dd HH:mm:ss" datePlugin="laydate"></t:dgCol>
     <t:dgCol name="meetingendTime" label="会议结束时间" query="false"></t:dgCol>
-    <t:dgCol name="meetingName" label="会议名称" query="false"></t:dgCol>
+    <t:dgCol name="meetingName" label="会议名称" query="true"></t:dgCol>
+    <t:dgCol name="meetingType" label="会议类型" query="true"></t:dgCol>
     <t:dgToolBar label="查看" type="define" funName="getOne"></t:dgToolBar>
     <t:dgToolBar label="接收通知" type="define" funName="gettongzhi"></t:dgToolBar>
 </t:datagrid>
 <script type="text/javascript">
+    $(function () {
+        laydate({elem: "#meetingTime", event: "focus", istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
+    });
     function getOne() {
         var rowIds = $('#table_list_1').jqGrid('getGridParam', 'selrow');
         if (!rowIds) {
