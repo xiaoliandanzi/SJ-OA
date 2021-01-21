@@ -45,7 +45,7 @@ public class BaseTag extends TagSupport {
 			sb.append("<meta name=\"description\" content=\"active4j-oa演示系统\">");
 			sb.append("<!--[if lt IE 9]><meta http-equiv=\"refresh\" content=\"0;ie.html\" /><![endif]-->");
 			//基础包含
-			sb.append("<link rel=\"shortcut icon\" href=\"favicon.ico\">");
+			sb.append("<link rel=\"shortcut icon\" href=\"static/bootstrap/image/favicon.ico\">");
 			sb.append("<link href=\"static/bootstrap/css/bootstrap.min.css\" rel=\"stylesheet\">");
 			sb.append("<link href=\"static/bootstrap/css/font-awesome.min.css\" rel=\"stylesheet\">");
 			sb.append("<link href=\"static/bootstrap/css/animate.min.css\" rel=\"stylesheet\">");
