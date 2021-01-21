@@ -28,6 +28,7 @@ import com.active4j.hr.work.service.OaWorkMeetRoomService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -384,6 +385,7 @@ public class OaMeetingController {
         else  if("3".equals(oaMeeting.getMeetingType())){
             modelAndView.addObject("meetingType","工委会");
         }
+        //会议室
         List<OaWorkMeetRoomEntity> lstRooms = oaWorkMeetRoomService.findNormalMeetRoom();
         modelAndView.addObject("roomList", lstRooms);
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.
@@ -849,9 +851,42 @@ public class OaMeetingController {
      */
     @RequestMapping(value = "tableAll")
     public void tableAll(OaTopic oaTopic, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        if ("".equals(oaTopic.getTopicName())) {
+            oaTopic.setTopicName(null);
+        }
         QueryWrapper<OaTopic> queryWrapper = new QueryWrapper<>();
         oaTopic.setStateId(4);
         queryWrapper.setEntity(oaTopic);
+        //名称模糊查询
+        if (!StringUtil.isEmpty(oaTopic.getTopicName())) {
+            queryWrapper.like("TOPIC_NAME", oaTopic.getTopicName());
+            oaTopic.setTopicName(null);
+        }
+        //处理时间查询
+        Map<String, String[]> paramsMap = request.getParameterMap();
+        if (null != paramsMap) {
+            String[] beginValue = paramsMap.get("creatTime_begin");
+            if (null != beginValue && beginValue.length > 0) {
+                if (StringUtils.isNotEmpty(beginValue[0].trim())) {
+                    queryWrapper.ge("CREAT_TIME", beginValue[0].trim());
+                }
+            }
+            String[] endValue = paramsMap.get("creatTime_end");
+            if (null != endValue && endValue.length > 0) {
+                if (StringUtils.isNotEmpty(endValue[0].trim())) {
+                    queryWrapper.le("CREAT_TIME", endValue[0].trim());
+                }
+            }
+        }
+        if ("".equals(oaTopic.getOpinion())) {
+            oaTopic.setOpinion(null);
+        }
+        if ("工委会".equals(oaTopic.getOpinion())) {
+            queryWrapper.eq("IS_WORKING_COMMITTEE","true");
+        }
+        if ("主任会".equals(oaTopic.getOpinion())) {
+            queryWrapper.eq("IS_DIRECTOR","true");
+        }
         queryWrapper.orderByDesc("CREAT_TIME");
         IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
         ResponseUtil.writeJson(response, dataGrid, page);

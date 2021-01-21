@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,select2,jqgrid"></t:base>
+    <t:base type="default,select2,jqgrid,datetimePicker,laydate"></t:base>
 </head>
 <body class="gray-bg">
 <!-- 页面部分 -->
@@ -45,9 +45,10 @@
 <t:datagrid actionUrl="meeting/tableAll" tableContentId="jqGrid_wrapper" searchGroupId="searchGroupId" fit="true"
             multiSelect="true"    sortable="true"    rownumbers="true"    caption="议题列表" name="table_list_1"  pageSize="20" sortName="creatTime" sortOrder="desc" >
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="creatTime" label="申报日期" width="300" query="true"></t:dgCol>
+    <t:dgCol name="creatTime" label="申报日期" width="300" query="true" datefmt="yyyy-MM-dd HH:mm:ss" datePlugin="laydate"  queryModel="group"></t:dgCol>
     <t:dgCol name="topicName" label="议题名称" width="150" query="true"></t:dgCol>
     <t:dgCol name="proposeLeaderName" label="提议领导" query="false"></t:dgCol>
+    <t:dgCol name="opinion" label="会议类型" hidden="true" query="true"></t:dgCol>
     <t:dgCol name="reportName" label="汇报人" query="false"></t:dgCol>
     <t:dgCol name="isPassOne" label="科室负责人" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
     <t:dgCol name="isPassTwo" label="主管领导" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
@@ -65,9 +66,8 @@
 </t:datagrid>
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="meeting/tableAll" tableContentId="jqGrid_wrapper3" searchGroupId="searchGroupId" fit="true"
-            multiSelect="true"     rownumbers="true"   caption="议题列表11" name="table_list_3"  pageSize="20" sortName="creatTime" sortOrder="desc" >
+            multiSelect="true"     rownumbers="true"   caption="议题列表11" name="table_list_3"  pageSize="20" sortOrder="desc" >
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="creatTime" label="申报日期" width="300" query="false"></t:dgCol>
     <t:dgCol name="topicName" label="议题名称" width="150" query="false"></t:dgCol>
     <t:dgCol name="proposeLeaderName" label="提议领导" query="false"></t:dgCol>
     <t:dgCol name="reportName" label="汇报人" query="false"></t:dgCol>
@@ -86,6 +86,10 @@
     <t:dgToolBar label="会议列表"  type="define" funName="huiyilb"></t:dgToolBar>
 </t:datagrid>
 <script type="text/javascript">
+    $(function () {
+        laydate({elem: "#creatTime_begin", event: "focus", istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
+        laydate({elem: "#creatTime_end", event: "focus", istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
+    });
     //自动加载
     window.onload = function(){
         $("#jqGrid_wrappers").hide();

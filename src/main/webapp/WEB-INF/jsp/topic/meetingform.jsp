@@ -24,14 +24,14 @@
                                     <t:choose url="common/selectDepart" hiddenName="depId"
                                               hiddenValue="${depid }"
                                               textValue="${deptName }" textName="deptName" hiddenId="depId"
-                                              textId="deptName"></t:choose>
+                                              textId="deptName" ></t:choose>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">登记人*：</label>
                             <div class="col-sm-8">
-                                <input id="registrantName"  name="registrantName"    value="${user.realName }"   minlength="2" type="text" class="form-control" required="" >
+                                <input id="registrantName"  name="registrantName"    value="${user.realName }"   required="" minlength="2" type="text" class="form-control" required="" >
                             </div>
                         </div>
                         <div class="form-group">
@@ -49,7 +49,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">会议室*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2" name="meetingId" id="meetingId" multiple="multiple" >
+                                <select class="form-control m-b select2" name="meetingId" id="meetingId" multiple="multiple"  required="" >
                                     <c:forEach items="${roomList}" var="room">
                                         <option value="${room.name }">${room.name }</option>
                                     </c:forEach>
@@ -97,7 +97,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">人员*：</label>
                             <div class="col-sm-8" >
-                                <select class="form-control m-b select2" name="conferee" id="conferee" multiple="multiple"  style="height: 100px" >
+                                <select class="form-control m-b select2" name="conferee"  style=" height: 80px" id="conferee" multiple="multiple"  style="height: 100px"  required="">
                                     <c:forEach items="${dataList}" var="peo">
                                         <option value="${peo.realName }">${peo.realName}</option>
                                     </c:forEach>

@@ -33,7 +33,7 @@
     <t:dgCol name="meetingTime" label="会议开始时间" query="true"  datefmt="yyyy-MM-dd HH:mm:ss" datePlugin="laydate"></t:dgCol>
     <t:dgCol name="meetingendTime" label="会议结束时间" query="false"></t:dgCol>
     <t:dgCol name="meetingName" label="会议名称" query="true"></t:dgCol>
-    <t:dgCol name="meetingType" label="会议类型" query="true"></t:dgCol>
+    <t:dgCol name="meetingType" label="会议类型" hidden="true" query="true"></t:dgCol>
     <t:dgToolBar label="查看" type="define" funName="getOne"></t:dgToolBar>
     <t:dgToolBar label="接收通知" type="define" funName="gettongzhi"></t:dgToolBar>
 </t:datagrid>
