@@ -49,9 +49,13 @@ public class OaTopic {
     @TableField("TOPIC_REMARK")
     private String topicRemark;
 
-    @ApiModelProperty(value = "议题创建人姓名")
+    @ApiModelProperty(value = "议题创建人ID")
     @TableField("CREATE_USER_ID")
     private String createUserId;
+
+    @ApiModelProperty(value = "议题创建人姓名")
+    @TableField("CREATE_USER_NAME")
+    private String createUserName;
 
     @ApiModelProperty(value = "科室ID")
     @TableField("DEPT_ID")

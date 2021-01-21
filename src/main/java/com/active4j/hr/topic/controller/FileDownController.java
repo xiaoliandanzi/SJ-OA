@@ -388,7 +388,7 @@ public class FileDownController extends BaseController {
         oaTopic = topicService.getById(oaTopic.getId());
         String deptName = deptService.getById(oaTopic.getDeptId()).getName();
         String proposeLeaderName = oaTopic.getProposeLeaderName();
-        String createUser = oaTopic.getCreateUserId();
+        String createUser = oaTopic.getCreateUserName();
         String reportName = oaTopic.getReportName();
         String topicName = oaTopic.getTopicName();
         String topicContent = oaTopic.getTopicContent();

@@ -72,7 +72,7 @@
         </tr>
         <tr>
             <td style="width: 150px">负责人</td>
-            <td style="width: 150px" id="company">${oaTopic.createUserId}</td>
+            <td style="width: 150px" id="company">${oaTopic.createUserName}</td>
             <td style="width: 150px">汇报人</td>
             <td style="width: 150px">${oaTopic.reportName}</td>
         </tr>

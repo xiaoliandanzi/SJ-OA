@@ -275,13 +275,16 @@ public class OaTopicController extends BaseController {
         AjaxJson ajaxJson = new AjaxJson();
         ActiveUser user = ShiroUtils.getSessionUser();
         try {
-            oaTopic.setCreateUserId(user.getRealName());
+            oaTopic.setCreateUserId(user.getId());
+            oaTopic.setCreateUserName(user.getRealName());
             oaTopic = getUserName(oaTopic);
             //判断是否是 纪委与财务创建的议题
             oaTopic = ifJWOrCW(oaTopic);
             if (StringUtil.isEmpty(oaTopic.getId())) {
                 oaTopic.setStateId(0);
                 oaTopic.setCreatTime(new Date());
+                //申请消息发送
+
             }
             topicService.saveOrUpdate(oaTopic);
         } catch (Exception e) {
