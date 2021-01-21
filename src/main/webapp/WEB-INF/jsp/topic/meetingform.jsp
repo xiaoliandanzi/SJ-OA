@@ -110,11 +110,6 @@
                                 <textarea name="memo" class="form-control"></textarea>
                             </div>
                         </div>
-
-
-
-
-
                     </t:formvalid>
                 </div>
             </div>
@@ -142,6 +137,7 @@
     <t:dgCol name="opt" label="操作" width="290"></t:dgCol>
     <t:dgToolBar label="添加议题" icon="fa fa-clock-o" type="define" funName="addbt"></t:dgToolBar>
     <t:dgToolBar label="批量打印" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
+    <t:dgToolBar label="批量删除" icon="fa fa-clock-o" type="define" funName="deleteAll"></t:dgToolBar>
     <t:dgToolBar label="打印议题单" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
     <t:dgDelOpt label="删除" url="meeting/tablesdel?id={id}" />
 </t:datagrid>
@@ -171,6 +167,24 @@
         }
         x.send();
     }
+    function deleteAll() {
+        var rowIds = $('#toptable').jqGrid('getGridParam', 'selarrrow');
+        if (rowIds==""||rowIds==null) {
+            qhAlert('请选择要删除的数据');
+            return;
+        }
+        //是
+        $.post("meeting/deleteAll", {id: rowIds}, function (data) {
+            if (data.success) {
+                qhTipSuccess(data.msg);
+                //操作结束，刷新表格
+                reloadTable('toptable');
+            } else {
+                qhTipWarning(data.msg);
+            }
+        });
+    }
+
      var start=    ({
             elem: "#meetingTime",
             event: "focus",

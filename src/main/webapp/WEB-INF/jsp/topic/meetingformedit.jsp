@@ -154,11 +154,30 @@
     <t:dgToolBar label="添加议题" icon="fa fa-clock-o" type="define" funName="addbt"></t:dgToolBar>
     <t:dgToolBar label="批量打印" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
     <t:dgToolBar label="打印议题单" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
+    <t:dgToolBar label="批量删除" icon="fa fa-clock-o" type="define" funName="editdeleteAll"></t:dgToolBar>
     <t:dgToolBar label="打印签到表" icon="fa fa-clock-o" type="define" funName="printqd"></t:dgToolBar>
     <t:dgDelOpt label="删除" url="meeting/bjtablesdel?id={id}" />
 </t:datagrid>
 </body>
 <script type="text/javascript">
+    function editdeleteAll() {
+        var rowIds = $('#topictable').jqGrid('getGridParam', 'selarrrow');
+        if (rowIds==""||rowIds==null) {
+            qhAlert('请选择要删除的数据');
+            return;
+        }
+        //是
+        $.post("meeting/editdeleteAll", {id: rowIds}, function (data) {
+            if (data.success) {
+                qhTipSuccess(data.msg);
+                //操作结束，刷新表格
+                reloadTable('topictable');
+            } else {
+                qhTipWarning(data.msg);
+            }
+        });
+    }
+
     function printIt() {
         var meetingId=$("#meetingId").val();
         var meetingName=$("#meetingName").val();

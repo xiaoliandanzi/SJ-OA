@@ -608,6 +608,50 @@ public class OaMeetingController {
            return j;
        }
     }
+
+    /**
+     * 页面批量删除
+     *
+     * @return
+     */
+    @RequestMapping(value = "deleteAll")
+    private AjaxJson deleteAll(OaTopic oaTopic,HttpServletRequest request, HttpServletResponse response) {
+        String idsall=oaTopic.getIds();
+        String str [] =idsall.split(",");
+        AjaxJson j = new AjaxJson();
+        HttpSession session = request.getSession();
+        String ids =  (String)session.getAttribute("ids");
+        List<String> list = Arrays.asList(ids.split(","));
+        List<String> newlist = new ArrayList<>();
+        try{
+            for(int i=0; i<list.size(); i++){
+                if(!Arrays.asList(str).contains(list.get(i))){
+                    newlist.add(list.get(i));
+                }
+            }
+            System.out.println(newlist.toString());
+            String   idza="";
+            for(int i=0; i<newlist.size(); i++){
+                if(i==0){
+                    idza=newlist.get(i);
+                }else{
+                    idza=idza+","+newlist.get(i);
+                }
+            }
+            System.out.println(idza);
+            session.setAttribute("ids",idza);
+            j.setSuccess(true);
+            session.setAttribute("true","OK");
+            j.setMsg("删除成功");
+            return j;
+        }catch (Exception e){
+            j.setSuccess(false);
+            j.setMsg("删除用户错误");
+            e.printStackTrace();
+            return j;
+        }
+    }
+
     /**
      * 编辑页面删除
      *
@@ -649,6 +693,51 @@ public class OaMeetingController {
             return j;
         }
     }
+
+
+    /**
+     * 编辑页面批量删除
+     *
+     * @return
+     */
+    @RequestMapping(value = "editdeleteAll")
+    private AjaxJson editdeleteAll(OaTopic oaTopic,HttpServletRequest request, HttpServletResponse response) {
+        String idsAll=oaTopic.getIds();
+        String str[] =idsAll.split(",");
+        AjaxJson j = new AjaxJson();
+        HttpSession session = request.getSession();
+        String ids =  (String)session.getAttribute("bianid");
+        List<String> list = Arrays.asList(ids.split(","));
+        List<String> newlist = new ArrayList<>();
+        try{
+            for(int i=0; i<list.size(); i++){
+                if(!Arrays.asList(str).contains(list.get(i))){
+                    newlist.add(list.get(i));
+                }
+            }
+            System.out.println(newlist.toString());
+            String   idza="";
+            for(int i=0; i<newlist.size(); i++){
+                if(i==0){
+                    idza=newlist.get(i);
+                }else{
+                    idza=idza+","+newlist.get(i);
+                }
+            }
+            System.out.println(idza);
+            session.setAttribute("bianid",idza);
+            j.setSuccess(true);
+            session.setAttribute("trues","OK");
+            j.setMsg("删除成功");
+            return j;
+        }catch (Exception e){
+            j.setSuccess(false);
+            j.setMsg("删除用户错误");
+            e.printStackTrace();
+            return j;
+        }
+    }
+
     /**
      * 重新操作session
      *
