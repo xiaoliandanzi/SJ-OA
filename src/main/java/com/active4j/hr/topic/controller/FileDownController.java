@@ -189,13 +189,7 @@ public class FileDownController extends BaseController {
                     "      </tr>\n";
             html = html + THIS;
         }
-        return "<!DOCTYPE html>\n" +
-                "<html lang=\"en\" style=\"overflow: auto\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Title</title>\n" +
-                "</head>\n" +
-                "<body style=\"overflow: auto\">\n" +
+        return
                 " <div><h1 style=\"text-align: center\">签到表</h1></div><br><br>\n" +
                 " <table width=\"600px\" height=\"40px\" border=\"1px\" style=\"text-align: center\">\n" +
                 " <tr>\n" +
@@ -204,9 +198,7 @@ public class FileDownController extends BaseController {
                 "  </tr>\n" +
                 "  " + html + " " +
                 "  </table>\n" +
-                "</div>\n" +
-                "</body>\n" +
-                "</html>";
+                "</div>\n" ;
     }
 
     private String getMeetingStr(OaMeeting oaMeeting) throws ParseException {
@@ -243,13 +235,7 @@ public class FileDownController extends BaseController {
         }
         int rocount1 = rocunt + 1;
         int rocount2 = rocunt + 2;
-        return "<!DOCTYPE html>\n" +
-                "<html lang=\"en\" style=\"overflow: auto\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Title</title>\n" +
-                "</head>\n" +
-                "<body style=\"overflow: auto\">\n" +
+        return
                 "<div style=\"width: \"800px\";height: \"1000px\";margin: 10px auto;\">\n" +
                 " <div><h1 style=\"text-align: center\">年第&nbsp&nbsp&nbsp&nbsp次主任办公室议题</h1></div><br><br>\n" +
                 "<span>会议时间:" + time + "</span><br><br>\n" +
@@ -305,9 +291,7 @@ public class FileDownController extends BaseController {
                 "   <td style=\"width: 150px\"></td>\n" +
                 "</tr>\n" +
                 "  </table>\n" +
-                "</div>\n" +
-                "</body>\n" +
-                "</html>";
+                "</div>\n";
     }
 
     /**

@@ -137,8 +137,8 @@
     <t:dgCol name="opt" label="操作" width="290"></t:dgCol>
     <t:dgToolBar label="添加议题" icon="fa fa-clock-o" type="define" funName="addbt"></t:dgToolBar>
     <t:dgToolBar label="批量打印" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
-    <t:dgToolBar label="批量删除" icon="fa fa-clock-o" type="define" funName="deleteAll"></t:dgToolBar>
     <t:dgToolBar label="打印议题单" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
+    <t:dgToolBar label="批量删除" icon="fa fa-clock-o" type="define" funName="deleteAll"></t:dgToolBar>
     <t:dgDelOpt label="删除" url="meeting/tablesdel?id={id}" />
 </t:datagrid>
 
@@ -151,6 +151,18 @@
         var meetingTime=$("#meetingTime").val();
         var id=$("#id").val();
         var rowIds = $('#toptable').jqGrid('getGridParam', 'selarrrow');
+        if (meetingId==""||meetingId==null) {
+            qhAlert('会议室未未选择不能打印');
+            return;
+        }
+        if (meetingName==""||meetingName==null) {
+            qhAlert('会议名称未填写不能打印');
+            return;
+        }
+        if (meetingTime==""||meetingTime==null) {
+            qhAlert('会议时间未填写不能打印');
+            return;
+        }
         if (rowIds==""||rowIds==null) {
             qhAlert('请选择要打印的议题');
             return;
