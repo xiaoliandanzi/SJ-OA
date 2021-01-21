@@ -179,13 +179,17 @@ public class OaTopic {
     @JsonFormat(pattern = "yyyy年MM月dd日HH:mm", timezone = "GMT+8")
     private Date creatTime;
 
-    @ApiModelProperty(value = "是否需经过财务审核 或由财务科员创建")
+    @ApiModelProperty(value = "是否需经过财务审核 或由财务科员创建 true false")
     @TableField("CHOICE_PASS_FOUR")
     private String choicePassFour;
 
     @ApiModelProperty(value = "是否经需过纪委审核  或由纪检科员创建")
     @TableField("CHOICE_PASS_FIVE")
     private String choicePassFive;
+
+    @ApiModelProperty(value = "0一次审核 1二次审核")
+    @TableField("AUDIT_SECOND")
+    private Integer auditSecond;
 
     //历史议题 0否 1是
     @TableField("IS_HISTORY")

@@ -52,7 +52,7 @@
                             <label class="col-sm-3 control-label">提议领导*：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
-                                        id="proposeLeader" name="proposeLeader" multiple="multiple">
+                                        id="proposeLeader" name="proposeLeader">
                                     <c:forEach items="${proposeLeaderList}" var="propose">
                                         <option value="${propose.id }">${propose.realName}</option>
                                     </c:forEach>
@@ -63,7 +63,7 @@
                             <label class="col-sm-3 control-label">汇报人*：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
-                                        id="reportId" name="reportId" multiple="multiple">
+                                        id="reportId" name="reportId">
                                     <c:forEach items="${reportList}" var="report">
                                         <option value="${report.id }">${report.realName}</option>
                                     </c:forEach>
@@ -136,7 +136,7 @@
                             <label class="col-sm-3 control-label">综合办*：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
-                                        id="generalOffice" name="generalOffice" multiple="multiple">
+                                        id="generalOffice" name="generalOffice">
                                     <c:forEach items="${generalOffice}" var="genera">
                                         <option value="${genera.id }">${genera.realName}</option>
                                     </c:forEach>
@@ -156,7 +156,7 @@
                             <label class="col-sm-3 control-label">财务科*：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
-                                        id="financeOffice" name="financeOffice" multiple="multiple">
+                                        id="financeOffice" name="financeOffice">
                                     <c:forEach items="${financeOffice}" var="finance">
                                         <option value="${finance.id }">${finance.realName}</option>
                                     </c:forEach>
@@ -176,7 +176,7 @@
                             <label class="col-sm-3 control-label">纪委*：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
-                                        id="disciplineOffice" name="disciplineOffice" multiple="multiple">
+                                        id="disciplineOffice" name="disciplineOffice">
                                     <c:forEach items="${disciplineOffice}" var="discipline">
                                         <option value="${discipline.id }">${discipline.realName}</option>
                                     </c:forEach>
