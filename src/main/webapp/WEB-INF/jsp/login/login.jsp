@@ -24,7 +24,7 @@
     }</script>
 </head>
 <body class="gray-bg" style="background: url(static/bootstrap/image/login-bg.jpg) no-repeat;background-position: center;background-size: cover;">
-<div style="margin-top: 370px !important;
+<div style="position: absolute;top: 41%;
     height: 260px;
     width: 370px;
     border-radius: 20px;
