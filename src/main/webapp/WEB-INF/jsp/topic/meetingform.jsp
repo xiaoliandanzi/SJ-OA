@@ -8,6 +8,12 @@
         $(function () {
             $("#roleid").val("${roleId}".split(",")).trigger("change");
         });
+        $(function(){
+            $('#meetingId').attr('disabled', 'disabled');
+        });
+        $(function () {
+            $("#meetingId").val("111".split(",")).trigger("change");
+        });
     </script>
 </head>
 <body class="gray-bg">
@@ -37,7 +43,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">会议开始时间*：</label>
                             <div class="col-sm-8">
-                                <input class="laydate-icon form-control layer-date" id="meetingTime" name="meetingTime" required="">
+                                <input class="laydate-icon form-control layer-date" id="meetingTime" name="meetingTime"   required="">
                             </div>
                         </div>
                         <div class="form-group">
@@ -49,13 +55,14 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">会议室*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2" name="meetingId" id="meetingId" multiple="multiple"  required="" >
+                                <select class="form-control m-b select2" name="meetingId" id="meetingId"    onchange="funchy()" required="" >
                                     <c:forEach items="${roomList}" var="room">
                                         <option value="${room.name }">${room.name }</option>
                                     </c:forEach>
                                 </select>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="col-sm-2 control-label">议题会议类型*：</label>
                             <div class="col-sm-8">
@@ -144,7 +151,40 @@
 
 </body>
 <script type="text/javascript">
-    //$(function() {
+   /* function funtimes(){
+        var meetingTime=$("#meetingTime").val();
+        var meetingendTime=$("#meetingendTime").val();
+        alert(meetingTime)
+        alert(meetingendTime)
+        alert(3)
+        if (meetingTime==""||meetingTime==null||meetingendTime==""||meetingendTime==null) {
+            alert(2)
+            $('#meetingId').attr('disabled', 'disabled');
+        }else{
+            alert(1)
+            $("#meetingId").removeAttr("disabled");
+        }
+    }
+    function funtime(){
+        var meetingTime=$("#meetingTime").val();
+        var meetingendTime=$("#meetingendTime").val();
+        if (meetingTime==""||meetingTime==null||meetingendTime==""||meetingendTime==null) {
+            $('#meetingId').attr('disabled', 'disabled');
+        }else{
+            $("#meetingId").removeAttr("disabled");
+        }
+    }*/
+    function funchy(){
+        var meetingTime=$("#meetingTime").val();
+        var meetingendTime=$("#meetingendTime").val();
+        var meetingId=$("#meetingId").val();
+        //是
+        $.post("meeting/isoccUpy", {meetingTime: meetingTime,meetingendTime:meetingendTime,meetingId:meetingId}, function (data) {
+            if ("111"==data.obj) {
+                qhAlert('会议室被占用');
+            }
+        });
+    }
     function printItAll() {
         var meetingId=$("#meetingId").val();
         var meetingName=$("#meetingName").val();
@@ -205,13 +245,29 @@
             min: laydate.now(), //最大日期,
             choose: function(datas){
                 end.min = datas; //开始日选好后，重置结束日的最小日期
+                var meetingTime=datas;
+                var meetingendTime=$("#meetingendTime").val();
+                if (meetingTime==""||meetingTime==null||meetingendTime==""||meetingendTime==null) {
+                    $('#meetingId').attr('disabled', 'disabled');
+                }else{
+                    $("#meetingId").removeAttr("disabled");
+                };
                 }
         });
         var end=   ({
             elem: "#meetingendTime",
             event: "focus",
             istime: true,
-            format: 'YYYY-MM-DD hh:mm:ss'
+            format: 'YYYY-MM-DD hh:mm:ss',
+            choose: function(datas){
+                var meetingTime=$("#meetingTime").val();
+                var meetingendTime=datas;
+    if (meetingTime==""||meetingTime==null||meetingendTime==""||meetingendTime==null) {
+        $('#meetingId').attr('disabled', 'disabled');
+    }else{
+        $("#meetingId").removeAttr("disabled");
+    };
+            }
         });
   //  });
   function addbt(){

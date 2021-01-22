@@ -23,7 +23,9 @@ import com.active4j.hr.topic.service.OaMeetingService;
 import com.active4j.hr.topic.service.OaNotificationformService;
 import com.active4j.hr.topic.service.OaTopicService;
 import com.active4j.hr.topic.until.DeptLeaderRole;
+import com.active4j.hr.work.entity.OaWorkMeetRoomBooksEntity;
 import com.active4j.hr.work.entity.OaWorkMeetRoomEntity;
+import com.active4j.hr.work.service.OaWorkMeetRoomBooksService;
 import com.active4j.hr.work.service.OaWorkMeetRoomService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -83,6 +85,9 @@ public class OaMeetingController {
 
     @Autowired
     private OaNotificationformService notificationformService;
+
+    @Autowired
+    private OaWorkMeetRoomBooksService oaWorkMeetRoomBooksService;
 
     /**
      * list视图
@@ -1183,6 +1188,53 @@ public class OaMeetingController {
         }
         return null;
     }
+    /**
+     * 判断会议室内占用状态
+     */
+    @RequestMapping(value = "isoccUpy")
+    private AjaxJson isoccUpy(OaMeeting oaMeeting,HttpServletRequest request, HttpServletResponse response) {
+        AjaxJson j =new AjaxJson();
+        try{
+            String meettime=oaMeeting.getMeetingTime();
+            String meetendtime=oaMeeting.getMeetingendTime();
 
+            String MeetingId =oaMeeting.getMeetingId();
+            QueryWrapper<OaWorkMeetRoomEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("NAME",MeetingId);
+            OaWorkMeetRoomEntity oaworkroom=oaWorkMeetRoomService.list(queryWrapper).get(0);
+            QueryWrapper<OaWorkMeetRoomBooksEntity> queryWrapperbook = new QueryWrapper<>();
+            queryWrapperbook.eq("MEET_ROOM_ID",oaworkroom.getId());
+            List<OaWorkMeetRoomBooksEntity> list=oaWorkMeetRoomBooksService.list(queryWrapperbook);
+            if(list.size()<=0){
+                return j;
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date  meettimes=sdf.parse(meettime);
+            Date  meetendtimes=sdf.parse(meetendtime);
+            SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
+            SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");
+            for (OaWorkMeetRoomBooksEntity oaworkbook:list){
+                String  state=sdf2.format(oaworkbook.getStartDate());
+                String time=oaworkbook.getStrBookDate();
+                String  statedate=time+" "+state;
+                Date  statedatea=sdf.parse(statedate);
+                String  end=sdf3.format(oaworkbook.getBookDate());
+                String endtime=sdf2.format(oaworkbook.getEndDate());
+                String  enddate=end+" "+endtime;
+                Date  enddatea=sdf.parse(enddate);
+                if((meettimes.before(statedatea)&&meetendtimes.before(enddatea))||(statedatea.before(meettimes)&&enddatea.before(meetendtimes)) ){
+                String A="1";
+
+                }else{
+                    j.setObj("111");
+                    j.setMsg("会议室已被占用");
+                }
+            }
+         }catch (Exception exception){
+            j.setSuccess(false);
+            j.setMsg("操作失败");
+         }
+         return j;
+    }
 }
 
