@@ -62,12 +62,14 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">汇报人*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2"
-                                        id="reportId" name="reportId">
-                                    <c:forEach items="${reportList}" var="report">
-                                        <option value="${report.id }">${report.realName}</option>
-                                    </c:forEach>
-                                </select>
+                                    <%--<select class="form-control m-b select2"
+                                            id="reportId" name="reportId">
+                                        <c:forEach items="${reportList}" var="report">
+                                            <option value="${report.id }">${report.realName}</option>
+                                        </c:forEach>
+                                    </select>--%>
+                                <input id="reportName" name="reportName" minlength="2" maxlength="20" type="text"
+                                       class="form-control" required value="${oaTopic.reportName}">
                             </div>
                         </div>
                         <div class="form-group">

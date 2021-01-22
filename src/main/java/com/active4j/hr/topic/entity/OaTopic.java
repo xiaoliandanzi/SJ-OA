@@ -77,6 +77,7 @@ public class OaTopic {
     @TableField("PROPOSE_LEADER_NAME")
     private String proposeLeaderName;
 
+    //废弃
     @ApiModelProperty(value = "汇报人ID")
     @TableField("REPORT_ID")
     private String reportId;

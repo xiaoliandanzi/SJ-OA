@@ -657,9 +657,9 @@ public class OaTopicController extends BaseController {
         if (!StringUtil.isEmpty(oaTopic.getProposeLeader())) {
             oaTopic.setProposeLeaderName(userService.findNameById(oaTopic.getProposeLeader()));
         }
-        if (!StringUtil.isEmpty(oaTopic.getReportId())) {
+        /*if (!StringUtil.isEmpty(oaTopic.getReportId())) {
             oaTopic.setReportName(userService.findNameById(oaTopic.getReportId()));
-        }
+        }*/
         if (!StringUtil.isEmpty(oaTopic.getDeptLeaderId())) {
             oaTopic.setDeptLeaderName(userService.findNameById(oaTopic.getDeptLeaderId()));
         }
@@ -704,8 +704,8 @@ public class OaTopicController extends BaseController {
         String leaderRole = deptLeaderRole.getRoleForDept().get(userEntity.getDeptId());
         //汇报人
         modelAndView.addObject("reportList", users);
-        //提议领导 查询主要领导
-        modelAndView.addObject("proposeLeaderList", getAllLeader(leaderRole));
+        //提议领导 各处主管领导
+        modelAndView.addObject("proposeLeaderList", userList("", "e30ab91d21471d32f425950a60bd1eaa"));
         //科室负责人
         modelAndView.addObject("deptLeader", userList("", leaderRole));
         //主管领导
@@ -736,7 +736,7 @@ public class OaTopicController extends BaseController {
         //汇报人
         modelAndView.addObject("reportList", users);
         //提议领导 查询主要领导
-        modelAndView.addObject("proposeLeaderList", getAllLeader(leaderRole));
+        modelAndView.addObject("proposeLeaderList", userList("", "e30ab91d21471d32f425950a60bd1eaa"));
         //科室负责人
         modelAndView.addObject("deptLeader", userList("", leaderRole));
         //主管领导

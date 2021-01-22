@@ -8,9 +8,9 @@
         $(function () {
             $("#proposeLeader").val("${oaTopic.proposeLeader}".split(",")).trigger("change");
         });
-        $(function () {
+        /*$(function () {
             $("#reportId").val("${oaTopic.reportId}".split(",")).trigger("change");
-        });
+        });*/
         $(function () {
             $("#deptLeaderId").val("${oaTopic.deptLeaderId}".split(",")).trigger("change");
         });
@@ -51,7 +51,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">提议领导*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2"
+                                <select class="form-control m-b select2" required
                                         id="proposeLeader" name="proposeLeader">
                                     <c:forEach items="${proposeLeaderList}" var="propose">
                                         <option value="${propose.id }">${propose.realName}</option>
@@ -62,12 +62,14 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">汇报人*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2"
-                                        id="reportId" name="reportId">
-                                    <c:forEach items="${reportList}" var="report">
-                                        <option value="${report.id }">${report.realName}</option>
-                                    </c:forEach>
-                                </select>
+                                    <%--<select class="form-control m-b select2"
+                                            id="reportId" name="reportId">
+                                        <c:forEach items="${reportList}" var="report">
+                                            <option value="${report.id }">${report.realName}</option>
+                                        </c:forEach>
+                                    </select>--%>
+                                <input id="reportName" name="reportName" minlength="2" maxlength="20" type="text"
+                                       class="form-control" required value="${oaTopic.reportName}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -126,7 +128,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">科室负责人*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2"
+                                <select class="form-control m-b select2" required
                                         id="deptLeaderId" name="deptLeaderId">
                                     <c:forEach items="${deptLeader}" var="deptL">
                                         <option value="${deptL.id }">${deptL.realName}</option>
@@ -137,7 +139,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">主管领导*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2"
+                                <select class="form-control m-b select2" required
                                         id="leaderId" name="leaderId">
                                     <c:forEach items="${lv2Leader}" var="lv2l">
                                         <option value="${lv2l.id }">${lv2l.realName}</option>
@@ -148,7 +150,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">综合办*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2"
+                                <select class="form-control m-b select2" required
                                         id="generalOffice" name="generalOffice">
                                     <c:forEach items="${generalOffice}" var="genera">
                                         <option value="${genera.id }">${genera.realName}</option>
