@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
+import com.active4j.hr.activiti.biz.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,7 +64,30 @@ public class FlowBaseController extends BaseController {
 	
 	@Autowired
 	private WorkflowService workflowService;
-	
+
+	@Autowired
+	private FlowTmpCardApprovalService flowTmpCardApprovalService;
+
+	@Autowired
+	private FlowProcurementApprovalService flowProcurementApprovalService;
+
+	@Autowired
+	private FlowPaperApprovalService flowPaperApprovalService;
+
+	@Autowired
+	private FlowOfficalSealApprovalService flowOfficalSealApprovalService;
+
+	@Autowired
+	private FlowMessageApprovalService flowMessageApprovalService;
+
+	@Autowired
+	private FlowItemBorrowApprovalService flowItemBorrowApprovalService;
+
+	@Autowired
+	private FlowAssetApprovalService flowAssetApprovalService;
+
+	@Autowired
+	private FlowCarApprovalService fowCarApprovalService;
 	/**
 	 * 跳转到我的流程草稿页面
 	 * @param req
@@ -269,6 +294,21 @@ public class FlowBaseController extends BaseController {
 		
 		return view;
 	}
+
+	/**
+	 * 跳转到流程取消页面
+	 * @param baseActivitiEntity
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/goCancle")
+	public ModelAndView goCancle(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request) {
+		ModelAndView view = new ModelAndView("flow/my/cancle");
+
+		view.addObject("baseId", workflowBaseEntity.getId());
+
+		return view;
+	}
 	
 	/**
 	 * 删除流程实例
@@ -312,6 +352,79 @@ public class FlowBaseController extends BaseController {
 			log.error("删除流程实例失败，错误信息:{}", e);
 		}
 		
+		return j;
+	}
+
+	/**
+	 * 删除流程实例
+	 * @return
+	 */
+	@RequestMapping("/cancle")
+	@ResponseBody
+	public AjaxJson cancle(WorkflowBaseEntity workflowBaseEntity, String reason, HttpServletRequest request) {
+		AjaxJson j = new AjaxJson();
+		try{
+			if(StringUtils.isEmpty(reason)){
+				j.setSuccess(false);
+				j.setMsg("取消理由不能为空!");
+				return j;
+			}
+
+			if(StringUtils.isNotEmpty(workflowBaseEntity.getId())) {
+				workflowService.deleteProcessInstranceByBusinessKey(workflowBaseEntity.getId(), reason);
+
+				workflowBaseEntity = workflowBaseService.getById(workflowBaseEntity.getId());
+
+				//根据主表中的流程ID，查询流程中心的流程配置
+				WorkflowMngEntity workflow = workflowMngService.getById(workflowBaseEntity.getWorkflowId());
+
+				if(null != workflow) {
+					//查询表单
+					WorkflowFormEntity form = workflowFormService.getById(workflow.getFormId());
+					//系统表单
+					if(StringUtils.equals("0", form.getType())) {
+						String url = StringUtils.substringBefore(form.getPath(), "go") + "del?businessId=" + workflowBaseEntity.getBusinessId();
+						j.setObj(StringUtils.substring(url, 1));
+					}
+				}
+//				if(workflowBaseEntity.getWorkFlowName().equals("双井公章申请")){
+//					FlowOfficalSealApprovalEntity entity = flowOfficalSealApprovalService.getById(workflowBaseEntity.getBusinessId());
+//					if(entity.getApplyStatus()==1){
+//						j.setSuccess(false);
+//						j.setMsg("取消理由不能为空!");
+//						return j;
+//					}
+//
+//
+//				}else if(workflowBaseEntity.getWorkFlowName().equals("物品借用申请")){
+//
+//				}else if(workflowBaseEntity.getWorkFlowName().equals("临时餐卡申请")){
+//
+//				}else if(workflowBaseEntity.getWorkFlowName().equals("发文申请")){
+//
+//				}else if(workflowBaseEntity.getWorkFlowName().equals("固定资产移交申请")){
+//
+//				}else if(workflowBaseEntity.getWorkFlowName().equals("车辆申请")){
+//
+//				}else if(workflowBaseEntity.getWorkFlowName().equals("信息发布")){
+//
+//				}else if(workflowBaseEntity.getWorkFlowName().equals("政采申请")){
+//
+//				}
+				if(workflowBaseEntity.getStatus().equals("3")){
+					j.setSuccess(false);
+					j.setMsg("申请已完成，无法撤回!");
+					return j;
+				}
+				workflowBaseService.removeById(workflowBaseEntity.getId());
+			}
+
+		}catch(Exception e) {
+			j.setSuccess(false);
+			j.setMsg(GlobalConstant.ERROR_MSG);
+			log.error("删除流程实例失败，错误信息:{}", e);
+		}
+
 		return j;
 	}
 	

@@ -311,10 +311,15 @@ public class FlowCarApprovalController extends BaseController {
 
             if(null == flowCarApprovalEntity.getUseTime()) {
                 j.setSuccess(false);
-                j.setMsg("使用时间不能为空");
+                j.setMsg("使用日期不能为空");
                 return j;
             }
 
+            if(null == flowCarApprovalEntity.getMorningOrAfternoon()) {
+                j.setSuccess(false);
+                j.setMsg("使用时段不能为空");
+                return j;
+            }
 
             if(StringUtils.isBlank(flowCarApprovalEntity.getReason())) {
                 j.setSuccess(false);

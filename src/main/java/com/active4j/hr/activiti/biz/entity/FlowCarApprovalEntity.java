@@ -46,10 +46,16 @@ public class FlowCarApprovalEntity extends BaseEntity {
     private String reason ;
 
     /**
-     * 开始日期
+     * 用车时间
      */
     @TableField("USETIME")
     private Date useTime;
+
+    /**
+     * 上午或下午
+     */
+    @TableField("MORNINGORAFTERNOON")
+    private Integer  morningOrAfternoon;
 
     /**
      * 途径地点

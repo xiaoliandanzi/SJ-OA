@@ -52,6 +52,7 @@
 <%--    <t:dgCol name="commit" label="备注" width="120" query="true"></t:dgCol>--%>
     <t:dgToolBar label="查看详情" icon="fa fa-eye" url="flow/biz/task/view" type="read" width="90%" height="90%"></t:dgToolBar>
     <t:dgToolBar label="查看流程图" icon="fa fa-binoculars" url="flow/biz/my/viewImage" type="read" width="80%" height="80%"></t:dgToolBar>
+    <t:dgToolBar label="取消申请" icon="fa fa-remove" url="flow/biz/my/goCancle" type="pop" width="40%" height="50%"></t:dgToolBar>
     <t:dgToolBar type="refresh" ></t:dgToolBar>
 </t:datagrid>
 

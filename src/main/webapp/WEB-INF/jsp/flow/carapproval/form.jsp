@@ -31,9 +31,15 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-3 control-label m-b">用车时间*：</label>
+    <label class="col-sm-3 control-label m-b">用车日期*：</label>
     <div class="col-sm-4 m-b">
         <input class="laydate-icon form-control layer-date" id="useTime" name="useTime"  value='<fmt:formatDate value="${biz.useTime }" type="both" pattern="yyyy-MM-dd"/>'>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">时间段*：</label>
+    <div class="col-sm-4 m-b">
+        <t:dictSelect name="morningOrAfternoon" type="select" typeGroupCode="morningroafternoon" defaultVal="${biz.morningOrAfternoon}"></t:dictSelect>
     </div>
 </div>
 <div class="form-group">
