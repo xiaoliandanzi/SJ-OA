@@ -277,7 +277,7 @@
         </div>
     </div>
     <div class="tab1">
-        <div class="tabTitle">
+        <%--<div class="tabTitle">
                 <span class="tabPath">
                     您现在的位置：
                 </span>
@@ -297,7 +297,7 @@
 
                 </span>
 
-        </div>
+        </div>--%>
         <div class="tabs1Center" v-if="!zhengwen">
             <div class="tabs1List" v-for="(item,index) in titleList" :key="index" @click="listClick(item)">
                 <div class="tabs1List_dian">
@@ -351,6 +351,10 @@
 
     var massages = [];
 
+   /* {
+        name: "双井图库"
+    },
+*/
     var dom = new Vue({
         el: '#app',
         data() {
@@ -359,9 +363,6 @@
                 isActive: 1,
                 loginName: '',
                 tabs: [{
-                    name: "双井图库"
-                },
-                    {
                         name: "公式文件",
                         messageType: 1,
                     },

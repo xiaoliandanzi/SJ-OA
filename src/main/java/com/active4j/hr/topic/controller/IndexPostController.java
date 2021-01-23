@@ -8,12 +8,15 @@ import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.StringUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.func.timer.entity.QuartzJobEntity;
+import com.active4j.hr.system.entity.SysMessageEntity;
 import com.active4j.hr.system.model.ActiveUser;
+import com.active4j.hr.system.service.SysMessageService;
 import com.active4j.hr.topic.entity.OaTopic;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.manager.util.SessionUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
@@ -43,6 +46,37 @@ public class IndexPostController extends BaseController {
     @Autowired
     private FlowMessageApprovalService flowMessageApprovalService;
 
+    @Autowired
+    private SysMessageService sysMessageService;
+
+    /**
+     * @return
+     */
+    @RequestMapping("/index/msgList")
+    public AjaxJson getIndexMsg(DataGrid dataGrid) {
+        AjaxJson ajaxJson = new AjaxJson();
+        try {
+            QueryWrapper<SysMessageEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("USER_ID", ShiroUtils.getSessionUserId());
+            queryWrapper.eq("STATUS", "0");
+            queryWrapper.orderByDesc("SEND_TIME");
+            IPage<SysMessageEntity> page = sysMessageService.page(new Page<>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+            ajaxJson.setObj(page);
+        } catch (Exception e) {
+            log.error("获取系统消息失败,错误信息:" + e.getMessage());
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg("获取系统消息失败");
+            e.printStackTrace();
+        }
+        return ajaxJson;
+    }
+
+    /**
+     * 视图
+     *
+     * @param flowMessageApprovalEntity
+     * @return
+     */
     //  /oa/index/viewArticleList
     @RequestMapping(value = "/index/viewArticleList")
     public ModelAndView viewArticleList(FlowMessageApprovalEntity flowMessageApprovalEntity) {
@@ -61,7 +95,12 @@ public class IndexPostController extends BaseController {
         return new ModelAndView("main/topiclist");
     }
 
-
+    /**
+     * 阅文
+     *
+     * @param flowMessageApprovalEntity
+     * @return
+     */
     @RequestMapping(value = "/login/getArticle")
     @Transactional(propagation = Propagation.REQUIRED)
     public AjaxJson getOne(FlowMessageApprovalEntity flowMessageApprovalEntity) {
@@ -80,6 +119,13 @@ public class IndexPostController extends BaseController {
         return json;
     }
 
+    /**
+     * 文章列
+     *
+     * @param flowMessageApprovalEntity
+     * @param dataGrid
+     * @return
+     */
     @RequestMapping(value = "/login/messageList")
     public AjaxJson getMessage(FlowMessageApprovalEntity flowMessageApprovalEntity, DataGrid dataGrid) {
         AjaxJson json = new AjaxJson();
@@ -117,6 +163,11 @@ public class IndexPostController extends BaseController {
         return json;
     }
 
+    /**
+     * 用户信息
+     *
+     * @return
+     */
     @RequestMapping(value = "/portal/user")
     public AjaxJson getUser() {
         AjaxJson ajaxJson = new AjaxJson();

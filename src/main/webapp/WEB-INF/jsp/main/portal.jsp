@@ -355,7 +355,7 @@
                 </div>
                 <div>
                     <div class="articleItem" v-for="(item,index) in shijian" :key="index">
-                        <div class="eventIndex">{{index+1}}、{{item.title}}取消原因：{{item.msg}}</div>
+                        <div class="eventIndex">{{index+1}}、{{item.content}}</div>
                         <!-- <div class="eventTitle"></div>
                         <div class="eventMsg"></div> -->
                     </div>
@@ -550,21 +550,7 @@
                 fourList: [],
                 fiveList: [],
                 relName: '',
-                shijian: [{
-                    title: "您好，xx于x年x月x日x时x分取消了x年x月x日的发文申请。",
-                    msg: "这是原因"
-                },
-                    {
-                        title: "您好，xx于x年x月x日x时x分取消了x年x月x日的发文申请。",
-                        msg: "这是原因"
-                    }, {
-                        title: "您好，xx于x年x月x日x时x分取消了x年x月x日的发文申请。",
-                        msg: "这是原因"
-                    }, /*{
-                        title: "您好，xx于x年x月x日x时x分取消了x年x月x日的发文申请。",
-                        msg: "这是原因"
-                    }*/
-                ]
+                shijian: [],
             }
         },
         mounted() {
@@ -573,9 +559,15 @@
                 this.threeMounted(),
                 this.fourMounted(),
                 this.fiveMounted(),
+                this.shijianMounted(),
                 this.getUser()
         },
         methods: {
+            shijianMounted() {
+                axios.get('oa/index/msgList?rows=' + 6).then((msg) => {
+                    this.shijian = msg.data.obj.records
+                })
+            },
             oneMounted() {
                 axios.get('oa/login/messageList?messageType=' + 1 + '&rows=' + 6).then((msg) => {
                     this.oneList = msg.data.obj.records

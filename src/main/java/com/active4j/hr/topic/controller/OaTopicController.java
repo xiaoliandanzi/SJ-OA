@@ -18,6 +18,7 @@ import com.active4j.hr.system.service.SysDeptService;
 import com.active4j.hr.system.service.SysRoleService;
 import com.active4j.hr.system.service.SysUserRoleService;
 import com.active4j.hr.system.service.SysUserService;
+import com.active4j.hr.system.util.MessageUtils;
 import com.active4j.hr.topic.entity.OaTopic;
 import com.active4j.hr.topic.service.OaTopicService;
 import com.active4j.hr.topic.until.DeptLeaderRole;
@@ -42,6 +43,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -209,12 +211,13 @@ public class OaTopicController extends BaseController {
     }
 
     /**
-     * 二次审核
+     * 开启二次审核
      *
      * @param oaTopic
      * @return
      */
     @RequestMapping(value = "auditSecond")
+    @Transactional(propagation = Propagation.REQUIRED)
     public AjaxJson auditSecond(OaTopic oaTopic) {
         AjaxJson ajaxJson = new AjaxJson();
         try {
@@ -234,6 +237,8 @@ public class OaTopicController extends BaseController {
             //覆盖 原有 财务 与 纪检
             oaTopic = ifHaveJWOrCW(oaTopic);
             topicService.saveOrUpdate(oaTopic);
+            //发消息
+            sendSecondAuditMsg(topicService.getById(oaTopic.getId()));
         } catch (Exception e) {
             log.error("提交二次审核失败,错误信息:" + e.getMessage());
             ajaxJson.setSuccess(false);
@@ -284,6 +289,17 @@ public class OaTopicController extends BaseController {
         AjaxJson ajaxJson = new AjaxJson();
         ActiveUser user = ShiroUtils.getSessionUser();
         try {
+            //判断是否已经经过科室领导审核
+            if (!StringUtil.isEmpty(oaTopic.getId())) {
+                OaTopic dao = topicService.getById(oaTopic.getId());
+                if (dao.getIsPassOne() == 1)
+                    throw new OaTopicException("审核已在进行,不可修改");
+            }
+            oaTopic.setIsPassOne(0);
+            oaTopic.setIsPassTwo(0);
+            oaTopic.setIsPassThree(0);
+            oaTopic.setIsPassFour(0);
+            oaTopic.setIsPassFive(0);
             oaTopic.setCreateUserId(user.getId());
             oaTopic.setCreateUserName(user.getRealName());
             oaTopic = getUserName(oaTopic);
@@ -292,10 +308,13 @@ public class OaTopicController extends BaseController {
             if (StringUtil.isEmpty(oaTopic.getId())) {
                 oaTopic.setStateId(0);
                 oaTopic.setCreatTime(new Date());
-                //申请消息发送
-
             }
             topicService.saveOrUpdate(oaTopic);
+            //审核消息发送
+            sendAuditMsg(oaTopic.getDeptLeaderId(), topicService.getById(oaTopic.getId()));
+        } catch (OaTopicException e) {
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg(e.getMessage());
         } catch (Exception e) {
             log.error("提交议题失败,错误信息:" + e.getMessage());
             ajaxJson.setSuccess(false);
@@ -366,8 +385,9 @@ public class OaTopicController extends BaseController {
      * @param isDirector         是否主任会
      * @return
      */
-    private OaTopic topicAndAuditLV(OaTopic oaTopic, String auditLV, String opinion,
-                                    Integer isOk, String isWorkingCommittee, String isDirector) {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public OaTopic topicAndAuditLV(OaTopic oaTopic, String auditLV, String opinion,
+                                   Integer isOk, String isWorkingCommittee, String isDirector) {
         //五阶段审核
         Integer lv = Integer.parseInt(auditLV);
         if (lv == 1) {
@@ -383,10 +403,14 @@ public class OaTopicController extends BaseController {
                 oaTopic.setIsPassTwo(1);
                 oaTopic.setOpinionLeader(opinion);
                 oaTopic.setStateId(2);
+                //向综合办发送审核消息
+                sendAuditMsg(oaTopic.getGeneralOffice(), oaTopic);
             } else {
                 oaTopic.setIsPassTwo(2);
                 oaTopic.setOpinionLeader(opinion);
                 oaTopic.setStateId(1);
+                //拒绝消息
+                sendRejectMsg(oaTopic, oaTopic.getLeaderName());
             }
         } else if (lv == 3) {
             //综合办
@@ -399,6 +423,7 @@ public class OaTopicController extends BaseController {
                 oaTopic.setOpinionGeneralOffice(opinion);
                 oaTopic.setStateId(3);
                 //判断是否需要 纪委或综合办参与审核  根据是否选中两个科室的负责人id
+                //发送审核通知
                 oaTopic = ifNeedJWOrCW(oaTopic);
                 //修改上会建议
                 oaTopic.setIsWorkingCommittee(isWorkingCommittee);
@@ -407,6 +432,8 @@ public class OaTopicController extends BaseController {
                 oaTopic.setIsPassThree(2);
                 oaTopic.setOpinionGeneralOffice(opinion);
                 oaTopic.setStateId(1);
+                //驳回通知
+                sendRejectMsg(oaTopic, oaTopic.getGeneralOfficeName());
             }
         } else if (lv == 4) {
             //财务
@@ -420,17 +447,23 @@ public class OaTopicController extends BaseController {
                         //纪委ID不为空 且通过审核
                         oaTopic.setStateId(4);
                         oaTopic.setAllPass(1);
+                        //发审核通过通知
+                        sendAllPassMsg(oaTopic);
                         //oaTopic.setIsHistory(1);
                     } else if ("".equals(oaTopic.getDisciplineOffice())) {
                         //纪委ID空 通过审核  其他不修改状态
                         oaTopic.setStateId(4);
                         oaTopic.setAllPass(1);
+                        //发审核通过通知
+                        sendAllPassMsg(oaTopic);
                         //oaTopic.setIsHistory(1);
                     }
                 } else {
                     oaTopic.setIsPassFour(2);
                     oaTopic.setOpinionFinanceOffice(opinion);
                     oaTopic.setStateId(1);
+                    //审核不通过信息
+                    sendRejectMsg(oaTopic, oaTopic.getFinanceName());
                 }
             } else {
                 //没通过综合办审核的 是作为科室负责人 审核本科室提交议题
@@ -449,17 +482,23 @@ public class OaTopicController extends BaseController {
                         //纪委ID不为空 且通过审核
                         oaTopic.setStateId(4);
                         oaTopic.setAllPass(1);
+                        //发审核通过通知
+                        sendAllPassMsg(oaTopic);
                         //oaTopic.setIsHistory(1);
                     } else if ("".equals(oaTopic.getFinanceOffice())) {
                         //纪委ID空 通过审核  其他不修改状态
                         oaTopic.setStateId(4);
                         oaTopic.setAllPass(1);
+                        //发审核通过通知
+                        sendAllPassMsg(oaTopic);
                         //oaTopic.setIsHistory(1);
                     }
                 } else {
                     oaTopic.setIsPassFive(2);
                     oaTopic.setOpinionDisciplineOffice(opinion);
                     oaTopic.setStateId(1);
+                    //审核不通过信息
+                    sendRejectMsg(oaTopic, oaTopic.getDisciplineName());
                 }
             } else {
                 //没通过综合办审核的 是作为科室负责人 审核本科室提交议题
@@ -478,7 +517,8 @@ public class OaTopicController extends BaseController {
      * @param isOk
      * @return
      */
-    private OaTopic deptLeaderAudit(OaTopic oaTopic, String opinion, Integer isOk) {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public OaTopic deptLeaderAudit(OaTopic oaTopic, String opinion, Integer isOk) {
         //一次审核 上级已审核通过 禁止修改
         if (oaTopic.getIsPassTwo() == 1 && oaTopic.getAuditSecond() == 0) {
             throw new OaTopicException("审核已提交,禁止修改");
@@ -490,17 +530,23 @@ public class OaTopicController extends BaseController {
             oaTopic.setIsPassOne(1);
             oaTopic.setOpinionDeptLeader(opinion);
             oaTopic.setStateId(1);
+            //审核通过 向主管领导发送审核消息
+            sendAuditMsg(oaTopic.getLeaderId(), oaTopic);
             //如果是二次审核 默认通过主管领导审核
             if (oaTopic.getAuditSecond() == 1) {
                 oaTopic.setIsPassTwo(1);
                 oaTopic.setStateId(2);
                 oaTopic.setOpinionLeader("二次审核,默认通过");
+                //向综合办发送 审核信息
+                sendAuditMsg(oaTopic.getGeneralOffice(), oaTopic);
             }
         } else {
             //负责人拒绝后直接打回
             oaTopic.setIsPassOne(2);
             oaTopic.setOpinionDeptLeader(opinion);
             oaTopic.setStateId(0);
+            //驳回消息
+            sendRejectMsg(oaTopic, oaTopic.getDeptLeaderName());
         }
         return oaTopic;
     }
@@ -600,12 +646,17 @@ public class OaTopicController extends BaseController {
      * @param oaTopic
      * @return
      */
-    private OaTopic ifNeedJWOrCW(OaTopic oaTopic) {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public OaTopic ifNeedJWOrCW(OaTopic oaTopic) {
         if (!StringUtil.isEmpty(oaTopic.getFinanceOffice()) && !"".equals(oaTopic.getFinanceOffice())) {
             oaTopic.setChoicePassFour("true");
+            //向财务办发送审核通知
+            sendAuditMsg(oaTopic.getFinanceOffice(), oaTopic);
         }
         if (!StringUtil.isEmpty(oaTopic.getDisciplineOffice()) || !"".equals(oaTopic.getDisciplineOffice())) {
             oaTopic.setChoicePassFive("true");
+            //向纪委办发送审核通知
+            sendAuditMsg(oaTopic.getDisciplineOffice(), oaTopic);
         }
         return oaTopic;
     }
@@ -806,5 +857,72 @@ public class OaTopicController extends BaseController {
         }
         return modelAndView;
     }
+
+    /**
+     * 向审核人发布消息
+     *
+     * @param id      审核人Id 发往审核人
+     * @param oaTopic createUserName creatTime
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void sendAuditMsg(String id, OaTopic oaTopic) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        String date = simpleDateFormat.format(oaTopic.getCreatTime());
+        try {
+            MessageUtils.SendSysMessage(id, String.format("您好,%s于%s提出议题申请,请审批", oaTopic.getCreateUserName(), date));
+        } catch (Exception e) {
+            log.error("sendAuditMsg", e.getMessage());
+        }
+    }
+
+    /**
+     * 全部审批通过的消息
+     *
+     * @param oaTopic 发往申请人
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void sendAllPassMsg(OaTopic oaTopic) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        String date = simpleDateFormat.format(oaTopic.getCreatTime());
+        try {
+            MessageUtils.SendSysMessage(oaTopic.getCreateUserId(), String.format("您好,您于%s提出的议题申请,已审批通过", date));
+        } catch (Exception e) {
+            log.error("sendAuditMsg", e.getMessage());
+        }
+    }
+
+    /**
+     * 申请被驳回
+     *
+     * @param oaTopic  发往申请人
+     * @param thisUser
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void sendRejectMsg(OaTopic oaTopic, String thisUser) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        String date = simpleDateFormat.format(oaTopic.getCreatTime());
+        try {
+            MessageUtils.SendSysMessage(oaTopic.getCreateUserId(), String.format("您好,您于%s提出的议题申请,被%s驳回", date, thisUser));
+        } catch (Exception e) {
+            log.error("sendAuditMsg", e.getMessage());
+        }
+    }
+
+    /**
+     * 二次审核开启
+     *
+     * @param oaTopic 发往申请人
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void sendSecondAuditMsg(OaTopic oaTopic) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        String date = simpleDateFormat.format(oaTopic.getCreatTime());
+        try {
+            MessageUtils.SendSysMessage(oaTopic.getCreateUserId(), String.format("您好,您于%s提出的议题申请,已开启二次审核", date));
+        } catch (Exception e) {
+            log.error("sendAuditMsg", e.getMessage());
+        }
+    }
+
 }
 
