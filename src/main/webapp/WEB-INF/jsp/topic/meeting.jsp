@@ -48,7 +48,7 @@
     <t:dgCol name="creatTime" label="申报日期" width="300" query="true" datefmt="yyyy-MM-dd HH:mm:ss" datePlugin="laydate"  queryModel="group"></t:dgCol>
     <t:dgCol name="topicName" label="议题名称" width="150" query="true"></t:dgCol>
     <t:dgCol name="proposeLeaderName" label="提议领导" query="false"></t:dgCol>
-    <t:dgCol name="opinion" label="会议类型" hidden="true" query="true"></t:dgCol>
+    <t:dgCol name="opinion" label="会议类型" hidden="true" query="true"   replace="书记会_书记会,工委会_工委会,主任会_主任会"></t:dgCol>
     <t:dgCol name="reportName" label="汇报人" query="false"></t:dgCol>
     <t:dgCol name="isPassOne" label="科室负责人" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
     <t:dgCol name="isPassTwo" label="主管领导" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
