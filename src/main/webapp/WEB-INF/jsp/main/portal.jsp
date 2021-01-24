@@ -218,7 +218,7 @@
                 <div class="circularBigBox">
                     <div class="circularBox">
                         <div class="circular">
-                            <div style="font-size: 22px;font-weight: bold">3</div>
+                            <div style="font-size: 22px;font-weight: bold">{{shenhe}}</div>
                         </div>
                         <div class="circularTitle">
                             待审核申请
@@ -226,7 +226,7 @@
                     </div>
                     <div class="circularBox">
                         <div class="circular">
-                            <div style="font-size: 22px;font-weight: bold">3</div>
+                            <div style="font-size: 22px;font-weight: bold">{{duban}}</div>
                         </div>
                         <div class="circularTitle">
                             待督办事项
@@ -234,7 +234,7 @@
                     </div>
                     <div class="circularBox">
                         <div class="circular">
-                            <div style="font-size: 22px;font-weight: bold">8</div>
+                            <div style="font-size: 22px;font-weight: bold">{{bohui}}</div>
                         </div>
                         <div class="circularTitle">
                             被驳回事项
@@ -551,6 +551,10 @@
                 fiveList: [],
                 relName: '',
                 shijian: [],
+                count: [],
+                duban: 0,
+                shenhe: 0,
+                bohui: 0,
             }
         },
         mounted() {
@@ -560,9 +564,20 @@
                 this.fourMounted(),
                 this.fiveMounted(),
                 this.shijianMounted(),
-                this.getUser()
+                this.getUser(),
+                this.getCounts()
         },
         methods: {
+            getCounts(){
+                axios.get('oa/index/workCount').then((msg) => {
+                    console.log(msg)
+                    console.log(msg.data.obj)
+
+                    this.duban = msg.data.obj[0]
+                    this.shenhe = msg.data.obj[1]
+                    this.bohui = msg.data.obj[2]
+                })
+            },
             shijianMounted() {
                 axios.get('oa/index/msgList?rows=' + 6).then((msg) => {
                     this.shijian = msg.data.obj.records

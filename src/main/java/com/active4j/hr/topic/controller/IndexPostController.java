@@ -2,6 +2,10 @@ package com.active4j.hr.topic.controller;
 
 import com.active4j.hr.activiti.biz.entity.FlowMessageApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowMessageApprovalService;
+import com.active4j.hr.activiti.dao.WorkflowDao;
+import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
+import com.active4j.hr.activiti.service.WorkflowBaseService;
+import com.active4j.hr.activiti.service.WorkflowService;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.shiro.ShiroUtils;
@@ -12,6 +16,8 @@ import com.active4j.hr.system.entity.SysMessageEntity;
 import com.active4j.hr.system.model.ActiveUser;
 import com.active4j.hr.system.service.SysMessageService;
 import com.active4j.hr.topic.entity.OaTopic;
+import com.active4j.hr.work.entity.OaWorkTaskEntity;
+import com.active4j.hr.work.service.OaWorkTaskService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -25,6 +31,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.apache.poi.hssf.record.formula.functions.Int;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +40,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author weiZiHao
@@ -49,7 +58,49 @@ public class IndexPostController extends BaseController {
     @Autowired
     private SysMessageService sysMessageService;
 
+    @Autowired
+    private OaWorkTaskService oaWorkTaskService;
+
+    @Autowired
+    private WorkflowBaseService workflowBaseService;
+
     /**
+     * 待办事项
+     *
+     * @return
+     */
+    @RequestMapping("/index/workCount")
+    public AjaxJson getIndexWork() {
+        AjaxJson ajaxJson = new AjaxJson();
+        try {
+            List<Integer> count = new ArrayList<>();
+            //督办
+            QueryWrapper<OaWorkTaskEntity> workTaskEntityQueryWrapper = new QueryWrapper<>();
+            workTaskEntityQueryWrapper.eq("USER_ID", ShiroUtils.getSessionUserId());
+            List<OaWorkTaskEntity> oaWorkTaskEntities = oaWorkTaskService.list(workTaskEntityQueryWrapper);
+            count.add(0, oaWorkTaskEntities.size());
+            //审核
+            QueryWrapper<WorkflowBaseEntity> workflowBaseEntityQueryWrapper = new QueryWrapper<>();
+            workflowBaseEntityQueryWrapper.eq("USER_NAME", ShiroUtils.getSessionUserName());
+            List<WorkflowBaseEntity> workflowBaseEntities = workflowBaseService.list(workflowBaseEntityQueryWrapper);
+            count.add(1, workflowBaseEntities.size());
+            //驳回
+            workflowBaseEntityQueryWrapper.eq("STATUS", 5);
+            workflowBaseEntities = workflowBaseService.list(workflowBaseEntityQueryWrapper);
+            count.add(2, workflowBaseEntities.size());
+            ajaxJson.setObj(count);
+        } catch (Exception e) {
+            log.error("获取待办事项失败,错误信息:" + e.getMessage());
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg("获取待办事项失败");
+            e.printStackTrace();
+        }
+        return ajaxJson;
+    }
+
+    /**
+     * 事件通知
+     *
      * @return
      */
     @RequestMapping("/index/msgList")
