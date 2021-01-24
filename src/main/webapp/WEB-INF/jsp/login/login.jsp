@@ -40,7 +40,7 @@
 		    height: 34px;
 		    border: 1px solid #e5e6e7;
 		    left: -30px;"><img src="static/bootstrap/image/admin.png" style="margin-top: 6px;"></i>
-                <input type="text" name="userName" id="userName" value="suming" class="form-control" placeholder="用户名"
+                <input type="text" name="userName" id="userName" value="" class="form-control" placeholder="用户名"
                        required="" style="width: 210px;">
             </div>
             <div class="form-group" style="position: relative;">
@@ -49,7 +49,7 @@
     height: 34px;
     border: 1px solid #e5e6e7;
     left: -30px;"><img src="static/bootstrap/image/password.png" style="margin-top: 6px;"></i>
-                <input type="password" name="password" id="password" value="123456" class="form-control"
+                <input type="password" name="password" id="password" value="" class="form-control"
                        placeholder="密码" required="" style="width: 210px;margin: 20px 0">
             </div>
             <%--<div class="form-group">--%>
