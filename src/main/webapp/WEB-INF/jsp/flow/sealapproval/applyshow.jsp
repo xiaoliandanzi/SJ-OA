@@ -38,7 +38,8 @@
     <%@include file="/WEB-INF/jsp/flow/include/apphis.jsp" %>
 
     <c:if test="${show == '1' }">
-        <%@include file="/WEB-INF/jsp/flow/include/inputapp.jsp" %>
+<%--        <%@include file="/WEB-INF/jsp/flow/include/inputapp.jsp" %>--%>
+        <%@include file="/WEB-INF/jsp/officalSeal/officalSealApprove.jsp" %>
     </c:if>
 
     <div class="form-group" style="margin-top: 30px;">
