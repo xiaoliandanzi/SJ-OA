@@ -21,7 +21,7 @@
                     <form class="form-horizontal m-t" id="commonForm" action="flow/biz/my/cancle" method="post">
                         <input type="hidden" name="id" id="id" value="${baseId }">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">取消理由：</label>
+                            <label class="col-sm-3 control-label">撤销理由*：</label>
                             <div class="col-sm-8">
                                 <textarea id="reason" name="reason" class="form-control"></textarea>
                             </div>

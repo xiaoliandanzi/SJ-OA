@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
 import com.active4j.hr.activiti.biz.service.*;
+import com.active4j.hr.system.model.SysUserModel;
+import com.active4j.hr.system.service.SysUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,28 +68,8 @@ public class FlowBaseController extends BaseController {
 	private WorkflowService workflowService;
 
 	@Autowired
-	private FlowTmpCardApprovalService flowTmpCardApprovalService;
+	private SysUserService sysUserService;
 
-	@Autowired
-	private FlowProcurementApprovalService flowProcurementApprovalService;
-
-	@Autowired
-	private FlowPaperApprovalService flowPaperApprovalService;
-
-	@Autowired
-	private FlowOfficalSealApprovalService flowOfficalSealApprovalService;
-
-	@Autowired
-	private FlowMessageApprovalService flowMessageApprovalService;
-
-	@Autowired
-	private FlowItemBorrowApprovalService flowItemBorrowApprovalService;
-
-	@Autowired
-	private FlowAssetApprovalService flowAssetApprovalService;
-
-	@Autowired
-	private FlowCarApprovalService fowCarApprovalService;
 	/**
 	 * 跳转到我的流程草稿页面
 	 * @param req
@@ -387,35 +369,24 @@ public class FlowBaseController extends BaseController {
 						j.setObj(StringUtils.substring(url, 1));
 					}
 				}
-//				if(workflowBaseEntity.getWorkFlowName().equals("双井公章申请")){
-//					FlowOfficalSealApprovalEntity entity = flowOfficalSealApprovalService.getById(workflowBaseEntity.getBusinessId());
-//					if(entity.getApplyStatus()==1){
-//						j.setSuccess(false);
-//						j.setMsg("取消理由不能为空!");
-//						return j;
-//					}
-//
-//
-//				}else if(workflowBaseEntity.getWorkFlowName().equals("物品借用申请")){
-//
-//				}else if(workflowBaseEntity.getWorkFlowName().equals("临时餐卡申请")){
-//
-//				}else if(workflowBaseEntity.getWorkFlowName().equals("发文申请")){
-//
-//				}else if(workflowBaseEntity.getWorkFlowName().equals("固定资产移交申请")){
-//
-//				}else if(workflowBaseEntity.getWorkFlowName().equals("车辆申请")){
-//
-//				}else if(workflowBaseEntity.getWorkFlowName().equals("信息发布")){
-//
-//				}else if(workflowBaseEntity.getWorkFlowName().equals("政采申请")){
-//
-//				}
+
+				//获取当前用户id
+				String userId = ShiroUtils.getSessionUserId();
+				//获取当前用户个人资料
+				SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
+
+				if(user.getUserName() != workflowBaseEntity.getUserName()){
+					j.setSuccess(false);
+					j.setMsg("撤销失败，仅申请人本人可撤销申请!");
+					return j;
+				}
+				
 				if(workflowBaseEntity.getStatus().equals("3")){
 					j.setSuccess(false);
 					j.setMsg("申请已完成，无法撤回!");
 					return j;
 				}
+
 				workflowBaseService.removeById(workflowBaseEntity.getId());
 			}
 
