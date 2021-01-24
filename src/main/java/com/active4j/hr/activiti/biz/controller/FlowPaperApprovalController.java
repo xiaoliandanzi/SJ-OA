@@ -7,6 +7,7 @@ import com.active4j.hr.activiti.entity.WorkflowMngEntity;
 import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.activiti.service.WorkflowService;
+import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
@@ -219,7 +220,6 @@ public class FlowPaperApprovalController extends BaseController {
         Task task = taskService.createTaskQuery()//
                 .taskId(taskId)// 使用任务ID查询
                 .singleResult();
-
         // 获取流程实例ID
         String processInstanceId = task.getProcessInstanceId();
 
@@ -245,21 +245,23 @@ public class FlowPaperApprovalController extends BaseController {
             ProcessInstance pi = runtimeService.createProcessInstanceQuery()//
                     .processInstanceId(processInstanceId)// 使用流程实例ID查询
                     .singleResult();
+            FlowPaperApprovalEntity flowPaperApprovalEntity = flowPaperApprovalService.getById(workflowBaseEntity.getBusinessId());
             // 流程结束了
             if (pi == null) {
                 // 更新请假单表的状态从2变成3（审核中-->审核完成）
                 workflowBaseEntity.setStatus("3");
-                FlowPaperApprovalEntity flowPaperApprovalEntity = flowPaperApprovalService.getById(workflowBaseEntity.getBusinessId());
+
                 flowPaperApprovalEntity.setApplyStatus(1);
                 flowPaperApprovalService.saveOrUpdate(flowPaperApprovalEntity);
             } else {
                 workflowBaseEntity.setStatus("2");
-                FlowPaperApprovalEntity flowPaperApprovalEntity = flowPaperApprovalService.getById(workflowBaseEntity.getBusinessId());
                 flowPaperApprovalEntity.setApplyStatus(0);
                 flowPaperApprovalService.saveOrUpdate(flowPaperApprovalEntity);
             }
-            workflowBaseService.saveOrUpdate(workflowBaseEntity);
             log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
+            workflowBaseService.saveOrUpdate(workflowBaseEntity);
+            WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getApplyName(), task.getAssignee(),
+                    workflowBaseEntity.getCreateDate(), workflowBaseEntity.getName());
         }
     }
 

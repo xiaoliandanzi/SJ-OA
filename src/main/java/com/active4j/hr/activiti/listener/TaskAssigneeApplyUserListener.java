@@ -1,12 +1,11 @@
 package com.active4j.hr.activiti.listener;
 
+import com.active4j.hr.activiti.util.WorkflowConstant;
+import com.active4j.hr.core.beanutil.ApplicationContextUtil;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 import org.apache.commons.lang3.StringUtils;
-
-import com.active4j.hr.activiti.util.WorkflowConstant;
-import com.active4j.hr.core.beanutil.ApplicationContextUtil;
 
 /**
  * @title TaskAssigneeApplyUserListener.java

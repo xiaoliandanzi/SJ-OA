@@ -7,6 +7,7 @@ import com.active4j.hr.activiti.entity.WorkflowMngEntity;
 import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.activiti.service.WorkflowService;
+import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
@@ -247,21 +248,22 @@ public class FlowMessageApprovalController extends BaseController {
                     .processInstanceId(processInstanceId)// 使用流程实例ID查询
                     .singleResult();
             // 流程结束了
+            FlowMessageApprovalEntity flowMessageApprovalEntity = flowMessageApprovalService.getById(workflowBaseEntity.getBusinessId());
             if (pi == null) {
                 // 更新请假单表的状态从2变成3（审核中-->审核完成）
                 workflowBaseEntity.setStatus("3");
-                FlowMessageApprovalEntity flowMessageApprovalEntity = flowMessageApprovalService.getById(workflowBaseEntity.getBusinessId());
                 flowMessageApprovalEntity.setPublicTime(DateUtils.getDate());
                 flowMessageApprovalEntity.setApplyStatus(1);
                 flowMessageApprovalService.saveOrUpdate(flowMessageApprovalEntity);
             } else {
                 workflowBaseEntity.setStatus("2");
-                FlowMessageApprovalEntity flowMessageApprovalEntity = flowMessageApprovalService.getById(workflowBaseEntity.getBusinessId());
                 flowMessageApprovalEntity.setApplyStatus(0);
                 flowMessageApprovalService.saveOrUpdate(flowMessageApprovalEntity);
             }
             workflowBaseService.saveOrUpdate(workflowBaseEntity);
             log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
+            WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getApplyName(), task.getAssignee(),
+                    workflowBaseEntity.getCreateDate(), workflowBaseEntity.getName());
         }
     }
 

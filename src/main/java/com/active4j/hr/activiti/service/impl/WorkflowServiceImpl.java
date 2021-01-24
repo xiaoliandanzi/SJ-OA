@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.zip.ZipInputStream;
 
+import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.ExclusiveGateway;
 import org.activiti.bpmn.model.FlowElement;
@@ -530,6 +531,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 			}
 			workflowBaseService.saveOrUpdate(workflowBaseEntity);
 			log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
+			WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getApplyName(), task.getAssignee(),
+					workflowBaseEntity.getCreateDate(), workflowBaseEntity.getName());
 		}
 
 	}
@@ -582,6 +585,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 			}
 			workflowBaseService.saveOrUpdate(workflowBaseEntity);
 			log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
+			WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getApplyName(), task.getAssignee(),
+					workflowBaseEntity.getCreateDate(), workflowBaseEntity.getName());
 		}
 	}
 	
@@ -623,6 +628,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 		baseActivitiEntity.setStatus("5");
 		workflowBaseService.saveOrUpdate(baseActivitiEntity);
 		log.info("流程:" + baseActivitiEntity.getName() + "打回审批，审批任务ID:" + taskId + "， 审批状态:" + baseActivitiEntity.getStatus());
+		WorkflowTaskUtil.sendRejectMessage(baseActivitiEntity.getApplyName(), task.getAssignee(),
+				baseActivitiEntity.getCreateDate(), baseActivitiEntity.getName());
 	}
 
 	/**

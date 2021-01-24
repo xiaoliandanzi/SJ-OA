@@ -10,6 +10,8 @@ import com.active4j.hr.system.util.MessageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,7 @@ public class WorkflowTaskUtil {
 	private static SysDeptService sysDeptService = ApplicationContextUtil.getContext().getBean(SysDeptService.class);
 	private static SysRoleService sysRoleService = ApplicationContextUtil.getContext().getBean(SysRoleService.class);
 
+	private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	/**
 	 * 
@@ -85,5 +88,38 @@ public class WorkflowTaskUtil {
 			log.error("发送信息", ex);
 		}
 
+	}
+
+	//申请
+	public static void sendApplyMessage(String approvalName, String applyName, Date taskTime , String taskName) {
+		try {
+			MessageUtils.SendSysMessage(sysUserService.getUserByUseName(approvalName).getId(),
+					String.format("您好，%s于%s提出%s，请审批。",
+							sysUserService.getUserByUseName(applyName).getRealName(), formatter.format(taskTime), taskName));
+		} catch (Exception ex) {
+			log.error("sendApplyMessage", ex);
+		}
+	}
+
+	//审批通过
+	public static void sendApprovalMessage(String applyName, String approvalName, Date taskTime, String taskName) {
+		try {
+			MessageUtils.SendSysMessage(sysUserService.getUserByUseName(applyName).getId(),
+					String.format("您好，您于%s提出的%s，%s已审批通过，请查收",
+							formatter.format(taskTime), taskName, sysUserService.getUserByUseName(approvalName).getRealName()));
+		} catch (Exception ex) {
+			log.error("sendApprovalMessgae", ex);
+		}
+	}
+
+	//审批驳回
+	public static void sendRejectMessage(String applyName, String approvalName, Date taskTime, String taskName) {
+		try {
+			MessageUtils.SendSysMessage(sysUserService.getUserByUseName(applyName).getId(),
+					String.format("您好，您于%s提出的%s，被%s驳回，请查收",
+							formatter.format(taskTime), taskName, sysUserService.getUserByUseName(approvalName).getRealName()));
+		} catch (Exception ex) {
+			log.error("sendRejectMessage", ex);
+		}
 	}
 }

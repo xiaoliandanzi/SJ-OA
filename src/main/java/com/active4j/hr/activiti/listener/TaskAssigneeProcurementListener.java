@@ -114,7 +114,8 @@ public class TaskAssigneeProcurementListener implements TaskListener {
             taskService.setAssignee(delegateTask.getId(), WorkflowConstant.Str_Admin);
         }else if(lstUsers.size() == 1) {
             taskService.setAssignee(delegateTask.getId(), lstUsers.get(0));
-            WorkflowTaskUtil.sendSystemMessage(lstUsers.get(0), applyName);
+//            WorkflowTaskUtil.sendSystemMessage(lstUsers.get(0), applyName);
+             WorkflowTaskUtil.sendApplyMessage(applyName,lstUsers.get(0),delegateTask.getCreateTime(), delegateTask.getName());
         }else {
             for(String user : lstUsers) {
                 taskService.addCandidateUser(delegateTask.getId(), user);

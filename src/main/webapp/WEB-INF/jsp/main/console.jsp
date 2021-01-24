@@ -98,7 +98,7 @@
     </div>
     <div id="boder1">
         <ul>
-            <li id="cor1"><b style="font-size: 12px">事件通知</b></li>
+            <li id="cor1"><b style="font-size: 12px">事件通知事件通知</b></li>
             <li class="cor2"><a href="#" id="more" style="font-size: 10px">更多+</a></li>
             <li class="font1">双井街道通知(2020-11-05 19: 00阅3次)</li>
 

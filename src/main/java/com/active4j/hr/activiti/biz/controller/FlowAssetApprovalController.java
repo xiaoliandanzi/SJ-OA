@@ -7,6 +7,7 @@ import com.active4j.hr.activiti.entity.WorkflowMngEntity;
 import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.activiti.service.WorkflowService;
+import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
@@ -238,21 +239,22 @@ public class FlowAssetApprovalController extends BaseController {
             ProcessInstance pi = runtimeService.createProcessInstanceQuery()//
                     .processInstanceId(processInstanceId)// 使用流程实例ID查询
                     .singleResult();
+            FlowAssetApprovalEntity flowAssetApprovalEntity = flowAssetApprovalService.getById(workflowBaseEntity.getBusinessId());
             // 流程结束了
             if (pi == null) {
                 // 更新请假单表的状态从2变成3（审核中-->审核完成）
                 workflowBaseEntity.setStatus("3");
-                FlowAssetApprovalEntity flowAssetApprovalEntity = flowAssetApprovalService.getById(workflowBaseEntity.getBusinessId());
                 flowAssetApprovalEntity.setApplyStatus(1);
                 flowAssetApprovalService.saveOrUpdate(flowAssetApprovalEntity);
             } else {
                 workflowBaseEntity.setStatus("2");
-                FlowAssetApprovalEntity flowAssetApprovalEntity = flowAssetApprovalService.getById(workflowBaseEntity.getBusinessId());
                 flowAssetApprovalEntity.setApplyStatus(0);
                 flowAssetApprovalService.saveOrUpdate(flowAssetApprovalEntity);
             }
             workflowBaseService.saveOrUpdate(workflowBaseEntity);
             log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
+            WorkflowTaskUtil.sendApprovalMessage(flowAssetApprovalEntity.getUserName(), task.getAssignee(),
+                    flowAssetApprovalEntity.getCreateDate(), workflowBaseEntity.getName());
         }
     }
 
