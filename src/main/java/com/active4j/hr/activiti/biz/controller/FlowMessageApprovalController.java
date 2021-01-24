@@ -262,8 +262,8 @@ public class FlowMessageApprovalController extends BaseController {
             }
             workflowBaseService.saveOrUpdate(workflowBaseEntity);
             log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
-            WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getApplyName(), task.getAssignee(),
-                    workflowBaseEntity.getCreateDate(), workflowBaseEntity.getName());
+            WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getCreateName(), task.getAssignee(),
+                    workflowBaseEntity.getApplyDate(), workflowBaseEntity.getWorkFlowName());
         }
     }
 

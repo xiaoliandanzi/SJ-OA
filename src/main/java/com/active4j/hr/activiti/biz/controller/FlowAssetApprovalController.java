@@ -253,8 +253,8 @@ public class FlowAssetApprovalController extends BaseController {
             }
             workflowBaseService.saveOrUpdate(workflowBaseEntity);
             log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
-            WorkflowTaskUtil.sendApprovalMessage(flowAssetApprovalEntity.getUserName(), task.getAssignee(),
-                    flowAssetApprovalEntity.getCreateDate(), workflowBaseEntity.getName());
+            WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getCreateName(), task.getAssignee(),
+                    workflowBaseEntity.getApplyDate(), workflowBaseEntity.getWorkFlowName());
         }
     }
 

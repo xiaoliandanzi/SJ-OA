@@ -1,11 +1,15 @@
 package com.active4j.hr.activiti.listener;
 
+import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
+import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.activiti.util.WorkflowConstant;
 import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.core.beanutil.ApplicationContextUtil;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -27,6 +31,8 @@ public class TaskAssigneeRoleNameListener implements TaskListener {
 	@Override
 	public void notify(DelegateTask delegateTask) {
 		TaskService taskService = ApplicationContextUtil.getContext().getBean(TaskService.class);
+		RuntimeService runtimeService = ApplicationContextUtil.getContext().getBean(RuntimeService.class);
+		WorkflowBaseService workflowBaseService = ApplicationContextUtil.getContext().getBean(WorkflowBaseService.class);
 
 		// 获取节点名称
 		String taskName = delegateTask.getName();
@@ -68,8 +74,13 @@ public class TaskAssigneeRoleNameListener implements TaskListener {
 			taskService.setAssignee(delegateTask.getId(), WorkflowConstant.Str_Admin);
 		}else if(lstUsers.size() == 1) {
 			taskService.setAssignee(delegateTask.getId(), lstUsers.get(0));
-//			WorkflowTaskUtil.sendSystemMessage(lstUsers.get(0), applyName);
-			WorkflowTaskUtil.sendApplyMessage(applyName,lstUsers.get(0),delegateTask.getCreateTime(), delegateTask.getName());
+
+			ProcessInstance pi = runtimeService.createProcessInstanceQuery()
+					.processInstanceId(delegateTask.getProcessInstanceId())
+					.singleResult();
+			String business_key = pi.getBusinessKey();
+			WorkflowBaseEntity base = workflowBaseService.getById(business_key);
+			WorkflowTaskUtil.sendApplyMessage(lstUsers.get(0),applyName,base.getApplyDate(), base.getWorkFlowName());
 		}else {
 			for(String user : lstUsers) {
 				taskService.addCandidateUser(delegateTask.getId(), user);

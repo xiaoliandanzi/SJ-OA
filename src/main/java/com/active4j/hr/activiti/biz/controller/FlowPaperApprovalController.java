@@ -260,8 +260,8 @@ public class FlowPaperApprovalController extends BaseController {
             }
             log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
             workflowBaseService.saveOrUpdate(workflowBaseEntity);
-            WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getApplyName(), task.getAssignee(),
-                    workflowBaseEntity.getCreateDate(), workflowBaseEntity.getName());
+            WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getCreateName(), task.getAssignee(),
+                    workflowBaseEntity.getApplyDate(), workflowBaseEntity.getWorkFlowName());
         }
     }
 

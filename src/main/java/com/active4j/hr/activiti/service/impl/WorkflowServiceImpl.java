@@ -531,8 +531,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 			}
 			workflowBaseService.saveOrUpdate(workflowBaseEntity);
 			log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
-			WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getApplyName(), task.getAssignee(),
-					workflowBaseEntity.getCreateDate(), workflowBaseEntity.getName());
+			WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getCreateName(), task.getAssignee(),
+					workflowBaseEntity.getApplyDate(), workflowBaseEntity.getWorkFlowName());
 		}
 
 	}
@@ -585,8 +585,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 			}
 			workflowBaseService.saveOrUpdate(workflowBaseEntity);
 			log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
-			WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getApplyName(), task.getAssignee(),
-					workflowBaseEntity.getCreateDate(), workflowBaseEntity.getName());
+			WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getCreateName(), task.getAssignee(),
+					workflowBaseEntity.getApplyDate(), workflowBaseEntity.getWorkFlowName());
 		}
 	}
 	
@@ -628,8 +628,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 		baseActivitiEntity.setStatus("5");
 		workflowBaseService.saveOrUpdate(baseActivitiEntity);
 		log.info("流程:" + baseActivitiEntity.getName() + "打回审批，审批任务ID:" + taskId + "， 审批状态:" + baseActivitiEntity.getStatus());
-		WorkflowTaskUtil.sendRejectMessage(baseActivitiEntity.getApplyName(), task.getAssignee(),
-				baseActivitiEntity.getCreateDate(), baseActivitiEntity.getName());
+		WorkflowTaskUtil.sendRejectMessage(baseActivitiEntity.getCreateName(), task.getAssignee(),
+				baseActivitiEntity.getApplyDate(), baseActivitiEntity.getWorkFlowName());
 	}
 
 	/**

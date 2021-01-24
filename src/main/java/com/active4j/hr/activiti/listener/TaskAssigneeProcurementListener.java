@@ -10,14 +10,12 @@ import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.core.beanutil.ApplicationContextUtil;
 import com.active4j.hr.system.entity.SysUserEntity;
 import com.active4j.hr.system.service.SysUserService;
-import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -31,18 +29,6 @@ import java.util.regex.Pattern;
  * @version 1.0
  */
 public class TaskAssigneeProcurementListener implements TaskListener {
-    @Autowired
-    private SysUserService sysUserService;
-    @Autowired
-    private WorkflowBaseService workflowBaseService;
-    @Autowired
-    private FlowProcurementApprovalService flowProcurementApprovalService;
-
-    @Autowired
-    ProcessEngine processEngine;
-
-    @Autowired
-    RuntimeService runtimeService;
     /**
      *
      */
@@ -78,22 +64,15 @@ public class TaskAssigneeProcurementListener implements TaskListener {
             roleName="综合办公室科员";
         }
 
+        String processInstanceId = delegateTask.getProcessInstanceId();
+        ProcessInstance pi = runtimeService.createProcessInstanceQuery()
+                .processInstanceId(processInstanceId)
+                .singleResult();
+        String business_key = pi.getBusinessKey();
+        WorkflowBaseEntity base = workflowBaseService.getById(business_key);
+
         if(taskName.equalsIgnoreCase("经办人审批")){
 
-            String processInstanceId = delegateTask.getProcessInstanceId();
-
-//            RuntimeService runtimeService = processEngine.getRuntimeService();
-//            TaskService taskServicetmp = processEngine.getTaskService();
-//            Task task = taskServicetmp.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-//            ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-//            Task task  =  taskService.createTaskQuery().taskId(taskId).singleResult();
-//            String pid = task.getProcessInstanceId();
-            ProcessInstance pi = runtimeService.createProcessInstanceQuery()
-                    .processInstanceId(processInstanceId)
-                    .singleResult();
-            String business_key = pi.getBusinessKey();
-
-            WorkflowBaseEntity base = workflowBaseService.getById(business_key);
             FlowProcurementApprovalEntity biz = flowProcurementApprovalService.getById(base.getBusinessId());
             String agent = biz.getAgent();
             Pattern p_str = Pattern.compile("[\\u4e00-\\u9fa5]+");
@@ -114,8 +93,7 @@ public class TaskAssigneeProcurementListener implements TaskListener {
             taskService.setAssignee(delegateTask.getId(), WorkflowConstant.Str_Admin);
         }else if(lstUsers.size() == 1) {
             taskService.setAssignee(delegateTask.getId(), lstUsers.get(0));
-//            WorkflowTaskUtil.sendSystemMessage(lstUsers.get(0), applyName);
-             WorkflowTaskUtil.sendApplyMessage(applyName,lstUsers.get(0),delegateTask.getCreateTime(), delegateTask.getName());
+             WorkflowTaskUtil.sendApplyMessage(lstUsers.get(0),applyName,base.getApplyDate(), base.getWorkFlowName());
         }else {
             for(String user : lstUsers) {
                 taskService.addCandidateUser(delegateTask.getId(), user);
