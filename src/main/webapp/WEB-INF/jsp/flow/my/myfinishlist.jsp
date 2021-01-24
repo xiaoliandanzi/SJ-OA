@@ -30,7 +30,7 @@
 		<t:dgCol name="categoryId" label="流程类别" replace="${categoryReplace}" query="true" queryId="categoryId" width="70"></t:dgCol>
 		<t:dgCol name="workFlowName" label="流程名称" width="100"></t:dgCol>
 		<t:dgCol name="projectNo" label="编号" width="120"></t:dgCol>
-		<t:dgCol name="name" label="标题名称" width="120" query="true"></t:dgCol>
+<%--		<t:dgCol name="name" label="标题名称" width="120" query="true"></t:dgCol>--%>
 		<t:dgCol name="status" label="状态" width="70" dictionary="actstatus" classes="text-navy"></t:dgCol>
 		<%--<t:dgCol name="level" label="紧急程度" width="70" dictionary="workflowlevel" display="level"></t:dgCol>--%>
 		<t:dgCol name="applyDate" label="申请时间" width="120" datefmt="yyyy-MM-dd HH:mm:ss" queryModel="group" datePlugin="laydate"></t:dgCol>

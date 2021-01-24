@@ -266,8 +266,17 @@ public class OfficalSealReturnController extends BaseController {
         if (endTime == null || endTime == "") {
             endTime = "2099-12-31";
         }
+
+
+        String userName = ShiroUtils.getSessionUserName();
+        SysUserEntity user = sysUserService.getUserByUseName(userName);
+        IPage<WorkflowBaseEntity> lstResult = new Page<>();
+        if(SystemUtils.getDeptNameById(user.getDeptId()).equals("综合办公室")){
+            lstResult = workflowService.findFinishedTaskByALL(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, WorkflowConstant.Task_Category_approval);
+        }else{
+            lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
+        }
         // 执行查询
-        IPage<WorkflowBaseEntity> lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
         long size = lstResult.getRecords().size();
         for (long i = size - 1; i >= 0; --i) {
             if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("双井公章申请")){

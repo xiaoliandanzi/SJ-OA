@@ -146,7 +146,14 @@ public interface WorkflowService {
 	 * @return
 	 */
 	public IPage<WorkflowBaseEntity> findFinishedTaskByUserName(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String userName, String category);
-	
+
+	/**
+	 * 获取业务表ID
+	 * @param WorkflowBaseEntity
+	 * @param category 区别审批还是办理
+	 * @return
+	 */
+	public IPage<WorkflowBaseEntity> findFinishedTaskByALL(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String category);
 	
 	/**
 	 * 完成任务提交

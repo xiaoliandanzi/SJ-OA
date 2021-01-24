@@ -43,7 +43,7 @@
 <%--    <t:dgCol name="commit" label="备注" width="120" query="true"></t:dgCol>--%>
     <t:dgCol name="workFlowName" label="流程名称" hidden="true" width="70"></t:dgCol>
     <t:dgCol name="projectNo" label="编号" width="120" query="true"></t:dgCol>
-    <t:dgCol name="name" label="标题名称" width="120" query="true"></t:dgCol>
+<%--    <t:dgCol name="name" label="标题名称" width="120" query="true"></t:dgCol>--%>
     <t:dgCol name="status" label="状态" width="70" dictionary="actstatus" classes="text-navy"></t:dgCol>
     <%--    <t:dgCol name="level" label="紧急程度" width="70" dictionary="workflowlevel" display="level"></t:dgCol>--%>
     <t:dgCol name="applyName" label="申请人" width="80" query="true"></t:dgCol>

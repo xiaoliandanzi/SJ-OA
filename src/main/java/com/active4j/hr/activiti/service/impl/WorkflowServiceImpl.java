@@ -365,6 +365,18 @@ public class WorkflowServiceImpl implements WorkflowService {
 	}
 
 	/**
+	 * 根据当前用户，获取业务表ID
+	 * @param userName
+	 * @param category 区别审批还是办理
+	 * @return
+	 */
+	public IPage<WorkflowBaseEntity> findFinishedTaskByALL(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String category){
+		//直接改为使用sql直接查询
+
+		return workflowDao.findFinishedTaskByALL(page, base.getCategoryId(), base.getProjectNo(),base.getName(),base.getApplyName(), startTime, endTime);
+	}
+
+	/**
 	 * 根据业务ID，查询当前流程实例所有审批意见信息列表
 	 * 
 	 * @param businesskey
