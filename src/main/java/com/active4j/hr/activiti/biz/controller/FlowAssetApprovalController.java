@@ -8,13 +8,18 @@ import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.activiti.service.WorkflowService;
 import com.active4j.hr.activiti.util.WorkflowTaskUtil;
+import com.active4j.hr.asset.entity.OaAssetStoreEntity;
+import com.active4j.hr.asset.service.OaAssetService;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
+import com.active4j.hr.system.entity.SysDeptEntity;
+import com.active4j.hr.system.entity.SysUserEntity;
 import com.active4j.hr.system.model.SysUserModel;
+import com.active4j.hr.system.service.SysDeptService;
 import com.active4j.hr.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RuntimeService;
@@ -24,6 +29,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,6 +69,10 @@ public class FlowAssetApprovalController extends BaseController {
 
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private OaAssetService oaAssetService;
+    @Autowired
+    private SysDeptService sysDeptService;
 
     /**
      * 跳转到表单页面
@@ -246,6 +256,7 @@ public class FlowAssetApprovalController extends BaseController {
                 workflowBaseEntity.setStatus("3");
                 flowAssetApprovalEntity.setApplyStatus(1);
                 flowAssetApprovalService.saveOrUpdate(flowAssetApprovalEntity);
+                updateAssetStore(flowAssetApprovalEntity);
             } else {
                 workflowBaseEntity.setStatus("2");
                 flowAssetApprovalEntity.setApplyStatus(0);
@@ -258,6 +269,30 @@ public class FlowAssetApprovalController extends BaseController {
         }
     }
 
+    private void updateAssetStore(FlowAssetApprovalEntity flowAssetApprovalEntity) {
+        try {
+            SysUserEntity receiver = sysUserService.getUserByRealName(flowAssetApprovalEntity.getReceiver());
+            SysDeptEntity dept = sysDeptService.getById(receiver.getDeptId());
+            OaAssetStoreEntity oaAssetStoreEntity = convert2StrotEntity(flowAssetApprovalEntity,dept.getName());
+            oaAssetService.saveOrUpdate(oaAssetStoreEntity);
+        } catch (Exception ex) {
+            log.error("updateAssetStore", ex);
+        }
+    }
+
+    private OaAssetStoreEntity convert2StrotEntity(FlowAssetApprovalEntity flowAssetApprovalEntity, String dept) {
+        OaAssetStoreEntity oaAssetStoreEntity = new OaAssetStoreEntity();
+        oaAssetStoreEntity.setDept(dept);
+        oaAssetStoreEntity.setAddress(flowAssetApprovalEntity.getAddress());
+        oaAssetStoreEntity.setAmount(flowAssetApprovalEntity.getAmount());
+        oaAssetStoreEntity.setAssetName(flowAssetApprovalEntity.getAssetName());
+        oaAssetStoreEntity.setChangeTime(DateTime.now().toDate());
+        oaAssetStoreEntity.setCommit(flowAssetApprovalEntity.getCommit());
+        oaAssetStoreEntity.setModel(flowAssetApprovalEntity.getModel());
+        oaAssetStoreEntity.setQuantity(flowAssetApprovalEntity.getQuantity());
+        oaAssetStoreEntity.setReceiver(flowAssetApprovalEntity.getReceiver());
+        return oaAssetStoreEntity;
+    }
 
 
     /**

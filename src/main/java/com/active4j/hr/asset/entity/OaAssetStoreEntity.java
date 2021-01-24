@@ -1,4 +1,4 @@
-package com.active4j.hr.activiti.biz.entity;
+package com.active4j.hr.asset.entity;
 
 import com.active4j.hr.common.entity.BaseEntity;
 import com.active4j.hr.core.annotation.QueryField;
@@ -8,31 +8,22 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 /**
  * @author xfzhang
  * @version 1.0
- * @date 2021/1/10 下午10:47
+ * @date 2021/1/24 下午5:15
  */
-@TableName("flow_asset_approval")
+@TableName("OA_ASSET_STORE")
 @Getter
 @Setter
-public class FlowAssetApprovalEntity extends BaseEntity {
-    private static final long serialVersionUID = 4068928535576332222L;
+public class OaAssetStoreEntity extends BaseEntity {
+    private static final long serialVersionUID = -9217585424356431457L;
 
     /**
-     * 移交人
-     */
-    @TableField("USERNAME")
-    private String userName;
-
-    /**
-     * 监交人
-     */
-    @TableField("MONITOR")
-    private String monitor;
-
-    /**
-     * 接受人
+     * 保管人
+     *
      */
     @TableField("RECEIVER")
     private String receiver;
@@ -82,8 +73,9 @@ public class FlowAssetApprovalEntity extends BaseEntity {
     private String commit;
 
     /**
-     * 状态
+     *
      */
-    @TableField("APPLYSTATUS")
-    private Integer applyStatus;
+    @TableField("CHANGE_TIME")
+    private Date changeTime;
+
 }

@@ -80,6 +80,7 @@ public class TaskAssigneeProcurementListener implements TaskListener {
             if(m.matches()){
                 SysUserEntity egentUser = sysUserService.getUserByRealName(agent);
                 agent = egentUser.getUserName();
+
             }
             taskService.setAssignee(delegateTask.getId(), agent);
             WorkflowTaskUtil.sendApplyMessage(agent,applyName,base.getApplyDate(), base.getWorkFlowName());

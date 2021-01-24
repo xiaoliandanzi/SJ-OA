@@ -1,6 +1,6 @@
 package com.active4j.hr.asset.dao;
 
-import com.active4j.hr.activiti.biz.entity.FlowAssetApprovalEntity;
+import com.active4j.hr.asset.entity.OaAssetStoreEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -8,5 +8,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @version 1.0
  * @date 2021/1/11 上午12:09
  */
-public interface OaAssetDao extends BaseMapper<FlowAssetApprovalEntity> {
+public interface OaAssetDao extends BaseMapper<OaAssetStoreEntity> {
 }

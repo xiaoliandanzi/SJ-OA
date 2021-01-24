@@ -1,6 +1,6 @@
 package com.active4j.hr.asset.service;
 
-import com.active4j.hr.activiti.biz.entity.FlowAssetApprovalEntity;
+import com.active4j.hr.asset.entity.OaAssetStoreEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -8,5 +8,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @version 1.0
  * @date 2021/1/11 上午12:07
  */
-public interface OaAssetService extends IService<FlowAssetApprovalEntity> {
+public interface OaAssetService extends IService<OaAssetStoreEntity> {
 }
