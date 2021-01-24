@@ -96,7 +96,6 @@ public class MessageApplyController {
         List<WorkflowBaseEntity> newList = new ArrayList<>();
         if (total > 0) {
             for(WorkflowBaseEntity entity : lstResult.getRecords()) {
-                //只显示审批完成的文件
                 if (entity.getWorkFlowName().equalsIgnoreCase("信息发布")) {
                     newList.add(entity);
                     tempTotal++;

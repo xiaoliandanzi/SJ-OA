@@ -33,6 +33,7 @@
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="asset/manage/approval/datagrid" tableContentId="assetManageTable" searchGroupId="searchGroupId" fit="true" caption="审核列表" name="assetManageList" pageSize="20" sortName="createDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
+    <t:dgCol name="categoryId" label="流程类别" hidden="true"  replace="${categoryReplace}" query="true" queryId="categoryId" width="90"></t:dgCol>
     <t:dgCol name="dept" label="所属科室" width="60" query="true"></t:dgCol>
     <t:dgCol name="assetName" label="移交固定资产名称" width="60" query="true"></t:dgCol>
     <t:dgCol name="quantity" label="数量" width="40"></t:dgCol>
@@ -42,7 +43,7 @@
     <t:dgCol name="userName" label="移交人" width="40"></t:dgCol>
     <t:dgCol name="monitor" label="监交人" width="40"></t:dgCol>
     <t:dgCol name="receiver" label="接收人" width="40"></t:dgCol>
-    <t:dgToolBar url="asset/manage/approval" label="审核" type="define" funName="approval" width="70%"></t:dgToolBar>
+    <t:dgToolBar label="审批" icon="fa fa-check-circle" url="flow/biz/task/approve" type="check" width="60%" height="80%"></t:dgToolBar>
     <t:dgToolBar type="refresh" ></t:dgToolBar>
 </t:datagrid>
 </body>

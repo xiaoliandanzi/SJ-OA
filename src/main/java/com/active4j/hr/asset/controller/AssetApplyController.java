@@ -80,6 +80,7 @@ public class AssetApplyController extends BaseController {
         IPage<FlowAssetApprovalEntity> lstResult = flowAssetApprovalService.page(new Page<FlowAssetApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
 
 
+
         ResponseUtil.writeJson(response, dataGrid, lstResult);
     }
 

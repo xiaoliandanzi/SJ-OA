@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @title FlowTaskController.java
- * @description 
+ * @description
 		  流程的审批
  * @time  2020年4月24日 下午2:16:13
  * @author xfzhang
@@ -192,7 +192,6 @@ public class FlowTaskController extends BaseController {
 		if(StringUtils.isNotEmpty(workflowBaseEntity.getId())) {
 			
 			workflowBaseEntity = workflowBaseService.getById(workflowBaseEntity.getId());
-			
 			//根据主表中的流程ID，查询流程中心的流程配置
 			WorkflowMngEntity workflow = workflowMngService.getById(workflowBaseEntity.getWorkflowId());
 			

@@ -53,6 +53,16 @@
     </div>
 </div>
 <div class="form-group">
+    <label class="col-sm-2 control-label">监交人：*</label>
+    <div class="col-sm-3">
+        <input id="monitor" name="monitor" type="text" class="form-control" required="" value="${biz.monitor }">
+    </div>
+    <label class="col-sm-2 control-label">接受人：*</label>
+    <div class="col-sm-3">
+        <input id="receiver" name="receiver" type="text" class="form-control" required="" value="${biz.receiver }">
+    </div>
+</div>
+<div class="form-group">
     <label class="col-sm-2 control-label">备注：</label>
     <div class="col-sm-6">
         <textarea id="commit" name="commit" minlength="1" type="text" class="form-control">${biz.commit }</textarea>

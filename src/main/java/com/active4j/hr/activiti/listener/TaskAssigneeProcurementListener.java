@@ -82,8 +82,7 @@ public class TaskAssigneeProcurementListener implements TaskListener {
                 agent = egentUser.getUserName();
             }
             taskService.setAssignee(delegateTask.getId(), agent);
-
-            WorkflowTaskUtil.sendSystemMessage(agent, applyName);
+            WorkflowTaskUtil.sendApplyMessage(agent,applyName,base.getApplyDate(), base.getWorkFlowName());
             return;
         }
 
@@ -93,7 +92,7 @@ public class TaskAssigneeProcurementListener implements TaskListener {
             taskService.setAssignee(delegateTask.getId(), WorkflowConstant.Str_Admin);
         }else if(lstUsers.size() == 1) {
             taskService.setAssignee(delegateTask.getId(), lstUsers.get(0));
-             WorkflowTaskUtil.sendApplyMessage(lstUsers.get(0),applyName,base.getApplyDate(), base.getWorkFlowName());
+            WorkflowTaskUtil.sendApplyMessage(lstUsers.get(0),applyName,base.getApplyDate(), base.getWorkFlowName());
         }else {
             for(String user : lstUsers) {
                 taskService.addCandidateUser(delegateTask.getId(), user);
