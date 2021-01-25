@@ -207,7 +207,7 @@
             <!-- 第三个 -->
             <div class="one_a">
                 <div class="borderTitle">
-                    <div class="border_left">代办事项</div>
+                    <div class="border_left">待办事项</div>
                     <div class="border_right">
                         <div>
                             <span class="jia">+</span>
@@ -247,7 +247,7 @@
         <div class="oneLine twoLine">
             <div class="one_a">
                 <div class="borderTitle">
-                    <div class="border_left">公式文件</div>
+                    <div class="border_left">公示文件</div>
                     <div class="border_right">
                         <div>
                             <span class="jia">+</span>
@@ -327,7 +327,7 @@
             </div>
             <div class="one_a borderCenter">
                 <div class="borderTitle">
-                    <div class="border_left">制度范围</div>
+                    <div class="border_left">制度规范</div>
                     <div class="border_right">
                         <div>
                             <span class="jia">+</span>
@@ -345,7 +345,7 @@
             </div>
             <div class="one_a">
                 <div class="borderTitle">
-                    <div class="border_left">事件通知</div>
+                    <div class="border_left">事项通知</div>
                     <div class="border_right">
                         <div>
                             <span class="jia">+</span>
