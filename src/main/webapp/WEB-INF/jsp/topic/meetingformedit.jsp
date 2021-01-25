@@ -302,11 +302,11 @@
           });
 
   }
-    function func(st){
+    function func(){
         $("#conferee").empty();
         $.ajax({
             url:"meeting/groupBycanhui" ,
-            data: {canHuitype:st},
+            data: {canHuitype:$('#canhuipeo option:selected').attr('id')},
             success: function(data){
                 var len=data.obj.length;
                 for(var i=0;i<len;i++){

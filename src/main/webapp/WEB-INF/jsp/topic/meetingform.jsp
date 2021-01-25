@@ -93,11 +93,11 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">参会人员*：</label>
                             <div class="col-sm-8">
-                        <select   class="col-sm-8"  name="canhuipeo" id="canhuipeo"   style=" width:654.4px;height: 32px" >
-                            <option class="col-sm-8"  value="1" onclick="func(1)">主要领导</option>
-                            <option  class="col-sm-8" value="2" onclick="func(2)">主管领导</option>
-                            <option  class="col-sm-8"  value="3" onclick="func(3)">科室负责人</option>
-                            <option  class="col-sm-8"  value="4" onclick="func(4)">科员</option>
+                        <select   class="col-sm-8"  name="canhuipeo" id="canhuipeo"  onchange="funcchui()"  style=" width:654.4px;height: 32px" >
+                            <option class="col-sm-8"  id="1">主要领导</option>
+                            <option  class="col-sm-8" id="2">主管领导</option>
+                            <option  class="col-sm-8"  id="3" >科室负责人</option>
+                            <option  class="col-sm-8"  id="4" >科员</option>
                         </select>
                             </div>
                         </div>
@@ -286,11 +286,11 @@
   }
     laydate(start);
     laydate(end);
-    function func(st){
+    function funcchui(){
         $("#conferee").empty();
         $.ajax({
             url:"meeting/groupBycanhui" ,
-            data: {canHuitype:st},
+            data: {canHuitype: $('#canhuipeo option:selected').attr('id')},
             success: function(data){
                 var len=data.obj.length;
                 for(var i=0;i<len;i++){
