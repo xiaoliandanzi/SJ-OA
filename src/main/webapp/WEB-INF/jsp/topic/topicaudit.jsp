@@ -321,7 +321,7 @@
                         <c:if test="${lookOrAdu == null}">
                             <hr/>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">是否通过审核：</label>
+                                <label class="col-sm-3 control-label" readonly="true">是否通过审核：</label>
                                 <div class="col-sm-8">
                                     <select name="isOk" class="form-control">
                                         <option value="1">是</option>
@@ -332,7 +332,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">审核意见：</label>
                                 <div class="col-sm-8">
-                                    <textarea name="opinion" class="form-control"></textarea>
+                                    <textarea name="opinion" class="form-control" readonly="true"></textarea>
                                 </div>
                             </div>
                         </c:if>
