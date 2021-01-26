@@ -288,7 +288,7 @@
                     <div class="border_right">
                         <div>
                             <span class="jia">+</span>
-                            <span class="gengduo">更多</span>
+                            <span class="gengduo" onclick="goto12345()">更多</span>
                         </div>
                     </div>
                 </div>
@@ -646,6 +646,8 @@
     search();
     getNum();
 
+
+
     function search() {
         $.ajax({
             type: "post",
@@ -653,6 +655,24 @@
             success: function (data) {
                 bingtu = JSON.parse(data.obj);
                 eac(bingtu);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+            }
+        })
+    }
+
+    function goto12345() {
+        $.ajax({
+            type: "get",
+            url: 'oa/goto12345',//目标地址
+            success: function (data) {
+                if(data.success){
+                    window.location.href = data.obj;
+                }else {
+                    qhTipWarning(data.msg);
+                }
+
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(textStatus)

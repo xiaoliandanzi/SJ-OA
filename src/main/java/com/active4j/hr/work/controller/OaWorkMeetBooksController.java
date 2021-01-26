@@ -144,6 +144,11 @@ public class OaWorkMeetBooksController extends BaseController {
 				j.setMsg("请填写完整的预定时间");
 				return j;
 			}
+			if (!oaWorkMeetRoomBooksEntity.getEndDate().after(oaWorkMeetRoomBooksEntity.getStartDate())){
+				j.setSuccess(false);
+				j.setMsg("请填写正确的预定时间");
+				return j;
+			}
 			
 			//日期赋值
 			oaWorkMeetRoomBooksEntity.setStrBookDate(DateUtils.date2Str(oaWorkMeetRoomBooksEntity.getBookDate(), DateUtils.SDF_YYYY_MM_DD));
@@ -152,6 +157,7 @@ public class OaWorkMeetBooksController extends BaseController {
 			List<OaWorkMeetRoomBooksEntity> lstRooms = oaWorkMeetRoomBooksService.findMeetBooks(meetRoomId, oaWorkMeetRoomBooksEntity.getStrBookDate());
 			if(null != lstRooms && lstRooms.size() > 0) {
 				for(OaWorkMeetRoomBooksEntity bookRoom : lstRooms) {
+					boolean isValid = false;
 					if(oaWorkMeetRoomBooksEntity.getStartDate().after(bookRoom.getStartDate()) && oaWorkMeetRoomBooksEntity.getStartDate().before(bookRoom.getEndDate())) {
 						j.setSuccess(false);
 						j.setMsg("当前会议室已经被预定");

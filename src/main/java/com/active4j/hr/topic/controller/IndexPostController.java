@@ -2,28 +2,26 @@ package com.active4j.hr.topic.controller;
 
 import com.active4j.hr.activiti.biz.entity.FlowMessageApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowMessageApprovalService;
-import com.active4j.hr.activiti.dao.WorkflowDao;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
 import com.active4j.hr.activiti.service.WorkflowBaseService;
-import com.active4j.hr.activiti.service.WorkflowService;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.shiro.ShiroUtils;
+import com.active4j.hr.core.util.HttpUtil;
 import com.active4j.hr.core.util.StringUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
-import com.active4j.hr.func.timer.entity.QuartzJobEntity;
 import com.active4j.hr.system.entity.SysMessageEntity;
 import com.active4j.hr.system.model.ActiveUser;
 import com.active4j.hr.system.service.SysMessageService;
-import com.active4j.hr.topic.entity.OaTopic;
+import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.topic.service.OaTopicService;
 import com.active4j.hr.work.entity.OaWorkTaskEntity;
 import com.active4j.hr.work.service.OaWorkTaskService;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.manager.util.SessionUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
@@ -32,15 +30,16 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.apache.poi.hssf.record.formula.functions.Int;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +66,9 @@ public class IndexPostController extends BaseController {
 
     @Autowired
     private OaTopicService topicService;
+
+    @Autowired
+    private SysUserService sysUserService;
 
     /**
      * 待办事项
@@ -215,6 +217,45 @@ public class IndexPostController extends BaseController {
         String url = "http://123.56.249.251:9001/admin/index/getIsOverByOA";
         json.setObj(postUrl(url));
         return json;
+    }
+
+    @RequestMapping(value = "/goto12345")
+    @ResponseBody
+    public AjaxJson goto12345(){
+        AjaxJson json = new AjaxJson();
+        try{
+            String userId = ShiroUtils.getSessionUserId();
+            //获取当前用户个人资料
+            String userName = sysUserService.getInfoByUserId(userId).get(0).getRealName();
+//            String userName = "安监";
+            String password = getPassword(userName);
+            if (password == null || password.isEmpty()){
+                json.setSuccess(false);
+                json.setMsg("12345系统没有您的账号");
+                return json;
+            }
+            json.setObj(String.format("http://8.131.95.226:9001/login/main2?username=%s&password=%s&rememberMe=ture",
+                    URLEncoder.encode(userName
+                            , "utf-8"), password));
+        }catch (Exception ex) {
+
+        }
+
+        return json;
+    }
+
+    private String getPassword(String userName) {
+        String password = "";
+        try{
+            String url = String.format("http://8.131.95.226:9001/login/getPassword?username=%s",
+                    URLEncoder.encode(userName
+                    , "utf-8"));
+            JSONObject jsonObject = HttpUtil.sendGet(url);
+            password = jsonObject.getString("password");
+        } catch (Exception ex) {
+            log.error("getPassword", ex);
+        }
+        return password;
     }
 
     /**
