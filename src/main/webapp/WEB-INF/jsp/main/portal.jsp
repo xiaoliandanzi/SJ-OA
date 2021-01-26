@@ -2,6 +2,7 @@
 <%@include file="/context/mytags.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
+<script src="./polyfill.min.js"></script>
 <style>
     html body {
         overflow: auto;
