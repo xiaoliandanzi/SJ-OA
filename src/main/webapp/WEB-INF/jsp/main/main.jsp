@@ -137,12 +137,12 @@
                     </div>
                 </li>--%>
 
-                <li>
-                    <a id="tabItem" class="J_menuItem" href="console" data-index="console">
-                        <i class="fa fa-home"></i>
-                        <span class="nav-label">门户首页</span>
-                    </a>
-                </li>
+<%--                <li>--%>
+<%--                    <a id="tabItem" class="J_menuItem" href="console" data-index="console">--%>
+<%--                        <i class="fa fa-home"></i>--%>
+<%--                        <span class="nav-label">门户首页</span>--%>
+<%--                    </a>--%>
+<%--                </li>--%>
 
                 <!-- 左侧导航菜单 -->
                 <t:menu></t:menu>
@@ -165,7 +165,7 @@
                         <a href="/oa/" class="cor-size">门户首页&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     </div>
                     <div style="float: left"><img src="img/办公.png" class="ban">
-                        <a href="/oa/index" class="cor-size">个人办公&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        <a href="/oa/index" class="cor-size">个人办公</a>
                     </div>
                     <div style="float: left"><img src="img/财务Finance.png" class="ban">
                         <a href="#" class="cor-size">财务系统&nbsp;&nbsp;&nbsp;&nbsp</a>
@@ -229,7 +229,7 @@
             </button>
             <nav class="page-tabs J_menuTabs">
                 <div class="page-tabs-content">
-                    <a href="javascript:;" class="active J_menuTab" data-id="console">门户首页</a>
+                    <a href="javascript:;" class="active J_menuTab" data-id="console">系统消息</a>
                 </div>
             </nav>
             <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
@@ -252,7 +252,7 @@
                     class="fa fa fa-sign-out"></i> 退出</a>
         </div>
         <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="console" frameborder="0"
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="/oa/sys/message/list" frameborder="0"
                     data-id="console" seamless></iframe>
         </div>
         <div class="footer">
