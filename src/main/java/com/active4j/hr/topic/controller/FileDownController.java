@@ -184,17 +184,17 @@ public class FileDownController extends BaseController {
         String html = "";
         for (int i = 0; i < str.length; i++) {
             String THIS = "   <tr  style=\"height: 60px\">\n" +
-                    "       <td >" + str[i] + "</td>\n" +
-                    "       <td ></td>\n" +
+                    "       <td style=\"border: 1px solid; \">" + str[i] + "</td>\n" +
+                    "       <td  style=\"border: 1px solid; \" ></td>\n" +
                     "      </tr>\n";
             html = html + THIS;
         }
         return
                 " <div><h1 style=\"text-align: center\">签到表</h1></div><br><br>\n" +
-                        " <table width=\"600px\" height=\"40px\" border=\"1px\" style=\"text-align: center\">\n" +
+                        " <table width=\"600px\" height=\"40px\" border=\"1px\" style=\"text-align: center; border: 1px solid;\">\n" +
                         " <tr>\n" +
-                        " <td style=\"width: 250px\">姓名</td>\n" +
-                        "   <td style=\"width: 250px\">签到</td>\n" +
+                        " <td style=\"width: 250px; border: 1px solid;\">姓名</td>\n" +
+                        "   <td style=\"width: 250px; border: 1px solid; \">签到</td>\n" +
                         "  </tr>\n" +
                         "  " + html + " " +
                         "  </table>\n" +
@@ -224,11 +224,11 @@ public class FileDownController extends BaseController {
         for (OaTopic oaTopic : list) {
             rocunt++;
             String THIS = "   <tr  style=\"height: 60px\">\n" +
-                    "       <td >" + rocunt + "</td>\n" +
-                    "        <td   style=\"text-align: left; vertical-align:middle;position: relative; width:600px\">" + oaTopic.getTopicName() + "</td>\n" +
-                    "       <td style=\"width: 150px\">" + oaTopic.getProposeLeaderName() + "</td>\n" +
-                    "       <td style=\"width: 150px\">" + oaTopic.getReportName() + "</td>\n" +
-                    "        <td style=\"width: 150px\"></td>\n" +
+                    "       <td  style=\"border: 1px solid;\" >" + rocunt + "</td>\n" +
+                    "        <td   style=\"text-align: left; vertical-align:middle;position: relative; width:600px; border: 1px solid; \">" + oaTopic.getTopicName() + "</td>\n" +
+                    "       <td style=\"width: 150px; border: 1px solid; \">" + oaTopic.getProposeLeaderName() + "</td>\n" +
+                    "       <td style=\"width: 150px; border: 1px solid; \">" + oaTopic.getReportName() + "</td>\n" +
+                    "        <td style=\"width: 150px; border: 1px solid; \"></td>\n" +
                     "      </tr>\n";
             html = html + THIS;
 
@@ -241,54 +241,54 @@ public class FileDownController extends BaseController {
                         "<span>会议时间:" + time + "</span><br><br>\n" +
                         " <span>会议地点:" + meetingId + "</span><br><br>\n" +
                         "<span>会议标题:" + meetingName + "</span><br><br>\n" +
-                        " <table width=\"800px\" height=\"1000px\" border=\"1px\" style=\"text-align: center\">\n" +
+                        " <table width=\"800px\" height=\"1000px\"  style=\"text-align: center;border: 1px solid;\">\n" +
                         "  <tr style=\"height: 60px\">\n" +
-                        "  <td style=\"width: 150px\">序号</td>\n" +
-                        "  <td style=\"width:600px\">议题\n" +
-                        "         <td style=\"width: 150px\">提议领导</td>\n" +
-                        "    <td style=\"width: 150px\">汇报人</td>\n" +
-                        "    <td style=\"width: 150px\">列席</td>\n" +
+                        "  <td style=\"width: 150px; border: 1px solid;\">序号</td>\n" +
+                        "  <td style=\"width:600px; border: 1px solid;\">议题\n" +
+                        "         <td style=\"width: 150px; border: 1px solid;\">提议领导</td>\n" +
+                        "    <td style=\"width: 150px; border: 1px solid;\">汇报人</td>\n" +
+                        "    <td style=\"width: 150px; border: 1px solid;\">列席</td>\n" +
                         " </tr>\n" +
                         "  <tr  style=\"height: 60px\">\n" +
-                        "  <td >一</td>\n" +
-                        "   <td  style=\"text-align: left; vertical-align:middle;position: relative;\"  colspan=\"5\">工作通报</td>\n" +
+                        "  <td  style=\"border: 1px solid; \">一</td>\n" +
+                        "   <td  style=\"text-align: left; vertical-align:middle;position: relative; border: 1px solid;\"  colspan=\"5\">工作通报</td>\n" +
                         " </tr>\n" +
                         "  <tr style=\"height: 60px\">\n" +
-                        "     <td style=\"\">1</td>\n" +
-                        "     <td style=\"width:600px\"></td>\n" +
-                        "     <td style=\"width: 150px\"></td>\n" +
-                        "    <td style=\"width: 150px\"></td>\n" +
-                        "    <td style=\"width: 150px\"></td>\n" +
+                        "     <td style=\" border: 1px solid;\">1</td>\n" +
+                        "     <td style=\"width:600px; border: 1px solid;\"></td>\n" +
+                        "     <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
+                        "    <td style=\"width: 150px;border: 1px solid;\"></td>\n" +
+                        "    <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
                         "  </tr>\n" +
                         " <tr  style=\"height: 60px\">\n" +
-                        "    <td style=\"\">2</td>\n" +
-                        "   <td style=\"\"  style=\"width:600px\"></td>\n" +
-                        "   <td style=\"width: 150px\"></td>\n" +
-                        "   <td style=\"width: 150px\"></td>\n" +
-                        "   <td style=\"width: 150px\"></td>\n" +
+                        "    <td style=\"border: 1px solid;\">2</td>\n" +
+                        "   <td style=\"border: 1px solid;\"  style=\"width:600px\"></td>\n" +
+                        "   <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
+                        "   <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
+                        "   <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
                         " </tr>\n" +
                         " <tr  style=\"height: 60px\">\n" +
-                        "     <td style=\"\">二</td>\n" +
-                        "    <td   style=\"text-align: left; vertical-align:middle;position: relative;\" colspan=\"5\">审议事项</td>\n" +
+                        "     <td style=\"border: 1px solid;\">二</td>\n" +
+                        "    <td   style=\"text-align: left; vertical-align:middle;position: relative; border: 1px solid;\" colspan=\"5\">审议事项</td>\n" +
                         " </tr >\n" +
                         "  " + html + " " +
                         " <tr style=\"height: 60px\">\n" +
-                        "    <td >三</td>\n" +
-                        "    <td   style=\"text-align: left; vertical-align:middle;position: relative;\" colspan=\"5\">研究部署</td>\n" +
+                        "    <td  style=\"border: 1px solid;\">三</td>\n" +
+                        "    <td   style=\"text-align: left; vertical-align:middle;position: relative;border: 1px solid;\" colspan=\"5\">研究部署</td>\n" +
                         " </tr>\n" +
                         "  <tr  style=\"height: 60px\">\n" +
-                        "  <td >" + rocount1 + "</td>\n" +
-                        "   <td  style=\"width:600px\"></td>\n" +
-                        "   <td style=\"width: 150px\"></td>\n" +
-                        "    <td style=\"width: 150px\"></td>\n" +
-                        "   <td style=\"width: 150px\"></td>\n" +
+                        "  <td style=\"border: 1px solid; \" >" + rocount1 + "</td>\n" +
+                        "   <td  style=\"width:600px;border: 1px solid;\"></td>\n" +
+                        "   <td style=\"width: 150px;border: 1px solid;\"></td>\n" +
+                        "    <td style=\"width: 150px;border: 1px solid;\"></td>\n" +
+                        "   <td style=\"width: 150px;border: 1px solid;\"></td>\n" +
                         " </tr>\n" +
                         " <tr  style=\"height: 60px\">\n" +
-                        "   <td >" + rocount2 + "</td>\n" +
-                        "   <td  style=\"width:600px;\"></td>\n" +
-                        "   <td style=\"width: 150px\"></td>\n" +
-                        "    <td style=\"width: 150px\"></td>\n" +
-                        "   <td style=\"width: 150px\"></td>\n" +
+                        "   <td  style=\"border: 1px solid; \">" + rocount2 + "</td>\n" +
+                        "   <td  style=\"width:600px;border: 1px solid;\"></td>\n" +
+                        "   <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
+                        "    <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
+                        "   <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
                         "</tr>\n" +
                         "  </table>\n" +
                         "</div>\n";
