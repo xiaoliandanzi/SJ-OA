@@ -93,7 +93,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">参会人员*：</label>
                             <div class="col-sm-8">
-                        <select   class="col-sm-8"  name="canhuipeo" id="canhuipeo"  onchange="funcchui()"  style=" width:654.4px;height: 32px" >
+                        <select   class="col-sm-8"  name="canhuipeo" id="canhuipeo"  onchange="funcchui()"  style=" width:663px;height: 32px" >
                             <option class="col-sm-8"  id="1">主要领导</option>
                             <option  class="col-sm-8" id="2">主管领导</option>
                             <option  class="col-sm-8"  id="3" >科室负责人</option>
@@ -104,7 +104,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">人员*：</label>
                             <div class="col-sm-8" >
-                                <select class="form-control m-b select2" name="conferee"  style=" height: 80px" id="conferee" multiple="multiple"  style="height: 100px"  required="">
+                                <select class="form-control m-b select2" name="conferee"  style=" height: 80px" id="conferee" multiple="multiple"  style="  height: 100px"  required="">
                                     <c:forEach items="${dataList}" var="peo">
                                         <option value="${peo.realName }">${peo.realName}</option>
                                     </c:forEach>
@@ -113,8 +113,8 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label m-b">备注：</label>
-                            <div class="col-sm-4 m-b">
-                                <textarea name="memo" class="form-control"></textarea>
+                            <div class="col-sm-4 m-b" >
+                                <textarea name="memo" class="form-control"  style=" width:663px;"></textarea>
                             </div>
                         </div>
                     </t:formvalid>
@@ -226,7 +226,7 @@
             return;
         }
         //是
-        $.post("meeting/deleteAll", {id: rowIds}, function (data) {
+        $.post("meeting/deleteAll", {ids: rowIds.toString()}, function (data) {
             if (data.success) {
                 qhTipSuccess(data.msg);
                 //操作结束，刷新表格

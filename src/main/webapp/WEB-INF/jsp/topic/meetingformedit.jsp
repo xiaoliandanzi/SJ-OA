@@ -100,7 +100,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">参会人员*：</label>
                             <div class="col-sm-8">
-                                <select   class="col-sm-8"  name="canhuipeo" id="canhuipeo"   style=" width:654.4px;height: 32px" >
+                                <select   class="col-sm-8"  name="canhuipeo" id="canhuipeo"   style=" width:663px;height: 32px" >
                                     <option class="col-sm-8"  value="1" onclick="func(1)">主要领导</option>
                                     <option  class="col-sm-8" value="2" onclick="func(2)">主管领导</option>
                                     <option  class="col-sm-8"  value="3" onclick="func(3)">科室负责人</option>
@@ -121,7 +121,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label m-b">备注：</label>
                             <div class="col-sm-4 m-b">
-                                <textarea name="memo" class="form-control"></textarea>
+                                <textarea name="memo" class="form-control" style=" width:663px;"></textarea>
                             </div>
                         </div>
 
@@ -169,7 +169,7 @@
             return;
         }
         //是
-        $.post("meeting/editdeleteAll", {id: rowIds}, function (data) {
+        $.post("meeting/editdeleteAll", {ids: rowIds.toString()}, function (data) {
             if (data.success) {
                 qhTipSuccess(data.msg);
                 //操作结束，刷新表格

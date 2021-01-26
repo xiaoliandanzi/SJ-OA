@@ -20,13 +20,13 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label m-b">会议名称*：</label>
                             <div class="col-sm-4 m-b">
-                                <input id="meetingName" name="meetingName" value="${oaMeeting.meetingName}" minlength="2" maxlength="10" type="text" class="form-control" required=""  >
+                                <input id="meetingName"   style="width: 401px" name="meetingName" value="${oaMeeting.meetingName}" minlength="2" maxlength="10" type="text" class="form-control" required=""  >
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label m-b">议题会议类型：</label>
-                            <div class="col-sm-4 m-b">
-                                <t:dictSelect name="meetingType" type="select"   typeGroupCode="meetingtype" defaultVal="${meetingtype}"></t:dictSelect>
+                            <div class="col-sm-4 m-b" >
+                                <input id="meetingType"   style="width: 401px" name="meetingType" value="${meetingType}" minlength="2" maxlength="10" type="text" class="form-control" required=""  >
                             </div>
                         </div>
                         <div class="form-group">
@@ -38,13 +38,13 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label m-b">会议结束时间*：</label>
                             <div class="col-sm-4 m-b">
-                                <input class="laydate-icon form-control layer-date" id="meetingendTime" value="${oaMeeting.meetingendTime}"  name="meetingendTime" required="">
+                                <input  class="laydate-icon form-control layer-date" id="meetingendTime" value="${oaMeeting.meetingendTime}"  name="meetingendTime" required="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">会议室：</label>
                             <div class="col-sm-4">
-                                <select class="form-control m-b select2" name="meetingId" id="meetingId" multiple="multiple" >
+                                <select class="form-control m-b select2" name="meetingId" id="meetingId" multiple="multiple"  style="width: 401px">
                                     <c:forEach items="${roomList}" var="room">
                                         <option value="${room.name }">${room.name }</option>
                                     </c:forEach>
@@ -59,7 +59,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label m-b">备注：</label>
                             <div class="col-sm-4 m-b">
-                                <input name="memo"   value=${oaMeeting.memo} class="form-control"></input>
+                                <input name="memo" style="width: 401px; height:40px"   value=${oaMeeting.memo} ></input>
                             </div>
                         </div>
                     </t:formvalid>
