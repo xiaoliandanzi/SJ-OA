@@ -16,6 +16,7 @@ import com.active4j.hr.system.entity.SysMessageEntity;
 import com.active4j.hr.system.model.ActiveUser;
 import com.active4j.hr.system.service.SysMessageService;
 import com.active4j.hr.topic.entity.OaTopic;
+import com.active4j.hr.topic.service.OaTopicService;
 import com.active4j.hr.work.entity.OaWorkTaskEntity;
 import com.active4j.hr.work.service.OaWorkTaskService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -64,6 +65,9 @@ public class IndexPostController extends BaseController {
     @Autowired
     private WorkflowBaseService workflowBaseService;
 
+    @Autowired
+    private OaTopicService topicService;
+
     /**
      * 待办事项
      *
@@ -80,13 +84,12 @@ public class IndexPostController extends BaseController {
             List<OaWorkTaskEntity> oaWorkTaskEntities = oaWorkTaskService.list(workTaskEntityQueryWrapper);
             count.add(0, oaWorkTaskEntities.size());
             //审核
+            count.add(1, topicService.getDBCount(ShiroUtils.getSessionUserName()));
+            //驳回
             QueryWrapper<WorkflowBaseEntity> workflowBaseEntityQueryWrapper = new QueryWrapper<>();
             workflowBaseEntityQueryWrapper.eq("USER_NAME", ShiroUtils.getSessionUserName());
-            List<WorkflowBaseEntity> workflowBaseEntities = workflowBaseService.list(workflowBaseEntityQueryWrapper);
-            count.add(1, workflowBaseEntities.size());
-            //驳回
             workflowBaseEntityQueryWrapper.eq("STATUS", 5);
-            workflowBaseEntities = workflowBaseService.list(workflowBaseEntityQueryWrapper);
+            List<WorkflowBaseEntity> workflowBaseEntities = workflowBaseService.list(workflowBaseEntityQueryWrapper);
             count.add(2, workflowBaseEntities.size());
             ajaxJson.setObj(count);
         } catch (Exception e) {

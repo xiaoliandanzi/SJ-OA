@@ -3,6 +3,7 @@ package com.active4j.hr.topic.dao;
 import com.active4j.hr.topic.entity.OaTopic;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -15,5 +16,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 public interface OaTopicMapper extends BaseMapper<OaTopic> {
 
     <T> IPage<OaTopic> findTopicList(OaTopic oaTopic);
+
+    Integer getDBCount (@Param("userName") String userName);
 
 }

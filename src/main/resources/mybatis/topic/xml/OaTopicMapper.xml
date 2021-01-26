@@ -4,4 +4,19 @@
 
 
     <select id="findTopicList" resultType="com.active4j.hr.topic.entity.OaTopic"></select>
+
+    <select id="getDBCount" resultType="java.lang.Integer">
+        SELECT DISTINCT
+        count(*)
+        FROM
+        wf_base b,
+        act_ru_execution e,
+        act_ru_task t
+        WHERE
+        b.ID = e.BUSINESS_KEY_
+        AND e.PROC_INST_ID_ = t.PROC_INST_ID_
+        AND t.ASSIGNEE_ =  #{userName}
+        order by b.APPLY_DATE desc
+    </select>
+
 </mapper>

@@ -355,7 +355,7 @@
                 </div>
                 <div>
                     <div class="articleItem" v-for="(item,index) in shijian" :key="index">
-                        <div class="eventIndex">{{index+1}}、{{item.content}}</div>
+                        <div class="eventIndex articleCenter">{{index+1}}、{{item.content}}</div>
                         <!-- <div class="eventTitle"></div>
                         <div class="eventMsg"></div> -->
                     </div>

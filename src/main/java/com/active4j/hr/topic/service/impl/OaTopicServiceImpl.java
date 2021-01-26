@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author weizihao
@@ -25,9 +25,14 @@ public class OaTopicServiceImpl extends ServiceImpl<OaTopicMapper, OaTopic> impl
 
     @Override
     public void savetopic(OaTopic oa) {
-        QueryWrapper<OaTopic> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("ID",oa.getId());
-        List<OaTopic> list=this.baseMapper.selectList(queryWrapper);
-        this.baseMapper.update(null,new UpdateWrapper<OaTopic>().set("IS_HISTORY",oa.getIsHistory()).eq("ID",oa.getId()));
+        QueryWrapper<OaTopic> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("ID", oa.getId());
+        List<OaTopic> list = this.baseMapper.selectList(queryWrapper);
+        this.baseMapper.update(null, new UpdateWrapper<OaTopic>().set("IS_HISTORY", oa.getIsHistory()).eq("ID", oa.getId()));
+    }
+
+    @Override
+    public Integer getDBCount(String userName) {
+        return this.baseMapper.getDBCount(userName);
     }
 }
