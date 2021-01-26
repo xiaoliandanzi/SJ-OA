@@ -33,15 +33,15 @@
 
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="car/audit/datagrid" tableContentId="waitTaskTable" searchGroupId="searchGroupId" fit="true" caption="待审批车辆申请" name="waitTaskList" pageSize="20" sortName="applyDate" sortOrder="desc">
-    <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="categoryId" label="流程类别" hidden="true"  replace="${categoryReplace}" query="true" queryId="categoryId" width="90"></t:dgCol>
+<%--    <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>--%>
+<%--    <t:dgCol name="categoryId" label="流程类别" hidden="true"  replace="${categoryReplace}" query="true" queryId="categoryId" width="90"></t:dgCol>--%>
 <%--    <t:dgCol name="useDepartment" label="用车单位" width="70"></t:dgCol>--%>
 <%--    <t:dgCol name="userName" label="乘车人" width="120"></t:dgCol>--%>
 <%--    <t:dgCol name="person" label="乘车人数" width="120"></t:dgCol>--%>
 <%--    <t:dgCol name="reason" label="申请事由" width="120"></t:dgCol>--%>
 <%--    <t:dgCol name="useTime" label="使用时间" width="120" query="true" datefmt="yyyy-MM-dd" queryModel="group" datePlugin="laydate"></t:dgCol>--%>
 <%--    <t:dgCol name="commit" label="备注" width="120" query="true"></t:dgCol>--%>
-    <t:dgCol name="workFlowName" label="流程名称" hidden="true" width="70"></t:dgCol>
+<%--    <t:dgCol name="workFlowName" label="流程名称" hidden="true" width="70"></t:dgCol>--%>
     <t:dgCol name="projectNo" label="编号" width="120" query="true"></t:dgCol>
 <%--    <t:dgCol name="name" label="标题名称" width="120" query="true"></t:dgCol>--%>
     <t:dgCol name="status" label="状态" width="70" dictionary="actstatus" classes="text-navy"></t:dgCol>

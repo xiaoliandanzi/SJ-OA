@@ -8,10 +8,10 @@
 					<div class="ibox-content">
 						<form class="form-horizontal m-t" action="" method="post">
 							<div class="form-group">
-								<label class="col-sm-1 control-label">流程名称：</label>
-								<div class="col-sm-5">
-									<input id="workFlowName" name="workFlowName" minlength="2" type="text" class="form-control" required="" value="${base.name }" disabled="disabled">
-								</div>
+<%--								<label class="col-sm-1 control-label">流程名称：</label>--%>
+<%--								<div class="col-sm-5">--%>
+<%--									<input id="workFlowName" name="workFlowName" minlength="2" type="text" class="form-control" required="" value="${base.name }" disabled="disabled">--%>
+<%--								</div>--%>
 								<label class="col-sm-1 control-label">申请人：</label>
 								<div class="col-sm-2">
 									<input id="applyName" name="applyName" minlength="2" type="text" class="form-control" required="" value="${base.applyName }" disabled="disabled">
