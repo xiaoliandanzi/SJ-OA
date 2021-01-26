@@ -352,11 +352,10 @@
     var massages = [];
 
 
-
-   /* {
-        name: "双井图库"
-    },
-*/
+    /* {
+         name: "双井图库"
+     },
+ */
     var dom = new Vue({
         el: '#app',
         data() {
@@ -365,9 +364,9 @@
                 isActive: 1,
                 loginName: '',
                 tabs: [{
-                        name: "公式文件",
-                        messageType: 1,
-                    },
+                    name: "公式文件",
+                    messageType: 1,
+                },
                     {
                         name: "通知公告",
                         messageType: 2,
@@ -413,8 +412,8 @@
                 axios.get('oa/login/messageList?messageType=' + messageType).then((msg) => {
                     console.log(msg)
                     console.log('getTitList')
-                    this.loginName = this.tabs[messageType].name;
-                    this.isActive = messageType;
+                    this.loginName = this.tabs[messageType - 1].name;
+                    this.isActive = messageType - 1;
                     this.titleList = msg.data.obj.records;
                     this.totalSize = msg.data.obj.total;
                 })
@@ -432,16 +431,16 @@
             },
             handleSizeChange(val) {
                 axios.get('oa/login/messageList?messageType=' + messageType + '&rows=' + val).then((msg) => {
-                    this.loginName = this.tabs[messageType].name;
-                    this.isActive = messageType;
+                    this.loginName = this.tabs[messageType - 1].name;
+                    this.isActive = messageType - 1;
                     this.titleList = msg.data.obj.records;
                     this.pageSize = val;
                 })
             },
             handleCurrentChange(val) {
                 axios.get('oa/login/messageList?messageType=' + messageType + '&rows=' + this.pageSize + '&page=' + val).then((msg) => {
-                    this.loginName = this.tabs[messageType].name;
-                    this.isActive = messageType;
+                    this.loginName = this.tabs[messageType - 1].name;
+                    this.isActive = messageType - 1;
                     this.titleList = msg.data.obj.records;
                     this.pageIndex = val;
                 })
@@ -449,8 +448,8 @@
             prevClick(val) {
                 console.log(val)
                 axios.get('oa/login/messageList?messageType=' + messageType + '&rows=' + this.pageSize + '&page=' + val).then((msg) => {
-                    this.loginName = this.tabs[messageType].name;
-                    this.isActive = messageType;
+                    this.loginName = this.tabs[messageType - 1].name;
+                    this.isActive = messageType - 1;
                     this.titleList = msg.data.obj.records;
                     this.pageIndex = val;
                 })
@@ -458,8 +457,8 @@
             nextClick(val) {
                 console.log(val)
                 axios.get('oa/login/messageList?messageType=' + messageType + '&rows=' + this.pageSize + '&page=' + val).then((msg) => {
-                    this.loginName = this.tabs[messageType].name;
-                    this.isActive = messageType;
+                    this.loginName = this.tabs[messageType - 1].name;
+                    this.isActive = messageType - 1;
                     this.titleList = msg.data.obj.records;
                     this.pageIndex = val;
                 })
@@ -474,8 +473,8 @@
             loginForThis(item) {
                 axios.get('oa/login/getArticle?id=' + item).then((msg) => {
                     console.log('loginForThis')
-                    this.loginName = this.tabs[messageType].name;
-                    this.isActive = messageType;
+                    this.loginName = this.tabs[messageType - 1].name;
+                    this.isActive = messageType - 1;
                     this.zhengwen = true;
                     this.tab1zwMsg = msg.data.obj;
                 })
