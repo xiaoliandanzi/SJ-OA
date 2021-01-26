@@ -7,6 +7,8 @@ import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.util.StringUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
+import com.active4j.hr.func.upload.entity.UploadAttachmentEntity;
+import com.active4j.hr.func.upload.service.UploadAttachmentService;
 import com.active4j.hr.system.entity.SysDeptEntity;
 import com.active4j.hr.system.entity.SysRoleEntity;
 import com.active4j.hr.system.entity.SysUserEntity;
@@ -89,6 +91,9 @@ public class OaMeetingController {
     @Autowired
     private OaWorkMeetRoomBooksService oaWorkMeetRoomBooksService;
 
+
+    @Autowired
+    private UploadAttachmentService uploadAttachmentService;
     /**
      * list视图
      *
@@ -413,7 +418,8 @@ public class OaMeetingController {
         QueryWrapper<OaTopic> queryWrapper = new QueryWrapper<>();
         HttpSession session=request.getSession();//创建session对象
         String ids= (String) session.getAttribute("chakanhuiyiid");
-        queryWrapper.in("ID",ids);
+        String str[]=ids.split(",");
+        queryWrapper.in("ID",str);
         IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
         ResponseUtil.writeJson(response, dataGrid, page);
     }
@@ -742,7 +748,35 @@ public class OaMeetingController {
             return j;
         }
     }
-
+    /**
+     * 文件列表
+     *
+     * @param //获得附件IDS
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "getFileListS")
+    private AjaxJson getFileListS(OaTopic oaTopic) {
+        AjaxJson j = new AjaxJson();
+        String  IDS=oaTopic.getIds();
+        String str[]=IDS.split(",");
+        QueryWrapper<OaTopic> queryWrapperS = new QueryWrapper<>();
+        queryWrapperS.in("ID",str);
+        List<OaTopic> lists=topicService.list(queryWrapperS);
+        List<UploadAttachmentEntity> list =new ArrayList<>();
+        for (OaTopic oa:lists){
+            if (!StringUtil.isEmpty(oa.getFileId())) {
+                String[] fileIds = oa.getFileId().split(",");
+                QueryWrapper<UploadAttachmentEntity> queryWrapper = new QueryWrapper<>();
+                queryWrapper.in("ID", fileIds);
+                UploadAttachmentEntity up = uploadAttachmentService.list(queryWrapper).get(0);
+                list.add(up);
+            }
+        }
+        j.setSuccess(true);
+        j.setObj(list);
+        return j;
+    }
     /**
      * 重新操作session
      *
@@ -834,6 +868,8 @@ public class OaMeetingController {
         IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
         ResponseUtil.writeJson(response, dataGrid, page);
     }
+
+
     /**
      * 得到用户
      *
