@@ -191,7 +191,7 @@ public class FileDownController extends BaseController {
         }
         return
                 " <div><h1 style=\"text-align: center\">签到表</h1></div><br><br>\n" +
-                        " <table width=\"600px\" height=\"40px\" border=\"1px\" style=\"text-align: center; border: 1px solid;\">\n" +
+                        " <table width=\"600px\" height=\"40px\" border=\"1px\" style=\"text-align: center; border: 1px solid;border-collapse: collapse\">\n" +
                         " <tr>\n" +
                         " <td style=\"width: 250px; border: 1px solid;\">姓名</td>\n" +
                         "   <td style=\"width: 250px; border: 1px solid; \">签到</td>\n" +
@@ -237,11 +237,11 @@ public class FileDownController extends BaseController {
         int rocount2 = rocunt + 2;
         return
                 "<div style=\"width: \"800px\";height: \"1000px\";margin: 10px auto;\">\n" +
-                        " <div><h1 style=\"text-align: center\">年第&nbsp&nbsp&nbsp&nbsp次主任办公室议题</h1></div><br><br>\n" +
+                        " <div><h1 style=\"text-align: center\">年第次主任办公室议题</h1></div><br><br>\n" +
                         "<span>会议时间:" + time + "</span><br><br>\n" +
                         " <span>会议地点:" + meetingId + "</span><br><br>\n" +
                         "<span>会议标题:" + meetingName + "</span><br><br>\n" +
-                        " <table width=\"800px\" height=\"1000px\"  style=\"text-align: center;border: 1px solid;\">\n" +
+                        " <table width=\"800px\" height=\"1000px\"  style=\"text-align: center;border: 1px solid;border-collapse: collapse\">\n" +
                         "  <tr style=\"height: 60px\">\n" +
                         "  <td style=\"width: 150px; border: 1px solid;\">序号</td>\n" +
                         "  <td style=\"width:600px; border: 1px solid;\">议题\n" +
