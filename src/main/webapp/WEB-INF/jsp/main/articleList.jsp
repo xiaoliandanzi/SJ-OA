@@ -413,7 +413,7 @@
                     console.log(msg)
                     console.log('getTitList')
                     this.loginName = this.tabs[messageType - 1].name;
-                    this.isActive = messageType;
+                    this.isActive = messageType - 1;
                     this.titleList = msg.data.obj.records;
                     this.totalSize = msg.data.obj.total;
                 })
@@ -432,15 +432,15 @@
             handleSizeChange(val) {
                 axios.get('oa/login/messageList?messageType=' + messageType + '&rows=' + val).then((msg) => {
                     this.loginName = this.tabs[messageType - 1].name;
-                    this.isActive = messageType;
+                    this.isActive = messageType - 1;
                     this.titleList = msg.data.obj.records;
                     this.pageSize = val;
                 })
             },
             handleCurrentChange(val) {
                 axios.get('oa/login/messageList?messageType=' + messageType + '&rows=' + this.pageSize + '&page=' + val).then((msg) => {
-                    this.loginName = this.tabs[messageType-1].name;
-                    this.isActive = messageType;
+                    this.loginName = this.tabs[messageType - 1].name;
+                    this.isActive = messageType - 1;
                     this.titleList = msg.data.obj.records;
                     this.pageIndex = val;
                 })
@@ -448,8 +448,8 @@
             prevClick(val) {
                 console.log(val)
                 axios.get('oa/login/messageList?messageType=' + messageType + '&rows=' + this.pageSize + '&page=' + val).then((msg) => {
-                    this.loginName = this.tabs[messageType-1].name;
-                    this.isActive = messageType;
+                    this.loginName = this.tabs[messageType - 1].name;
+                    this.isActive = messageType - 1;
                     this.titleList = msg.data.obj.records;
                     this.pageIndex = val;
                 })
@@ -457,8 +457,8 @@
             nextClick(val) {
                 console.log(val)
                 axios.get('oa/login/messageList?messageType=' + messageType + '&rows=' + this.pageSize + '&page=' + val).then((msg) => {
-                    this.loginName = this.tabs[messageType-1].name;
-                    this.isActive = messageType;
+                    this.loginName = this.tabs[messageType - 1].name;
+                    this.isActive = messageType - 1;
                     this.titleList = msg.data.obj.records;
                     this.pageIndex = val;
                 })
@@ -473,8 +473,8 @@
             loginForThis(item) {
                 axios.get('oa/login/getArticle?id=' + item).then((msg) => {
                     console.log('loginForThis')
-                    this.loginName = this.tabs[messageType-1].name;
-                    this.isActive = messageType;
+                    this.loginName = this.tabs[messageType - 1].name;
+                    this.isActive = messageType - 1;
                     this.zhengwen = true;
                     this.tab1zwMsg = msg.data.obj;
                 })
