@@ -191,14 +191,14 @@ public class FileDownController extends BaseController {
         }
         return
                 " <div><h1 style=\"text-align: center\">签到表</h1></div><br><br>\n" +
-                " <table width=\"600px\" height=\"40px\" border=\"1px\" style=\"text-align: center\">\n" +
-                " <tr>\n" +
-                " <td style=\"width: 250px\">姓名</td>\n" +
-                "   <td style=\"width: 250px\">签到</td>\n" +
-                "  </tr>\n" +
-                "  " + html + " " +
-                "  </table>\n" +
-                "</div>\n" ;
+                        " <table width=\"600px\" height=\"40px\" border=\"1px\" style=\"text-align: center\">\n" +
+                        " <tr>\n" +
+                        " <td style=\"width: 250px\">姓名</td>\n" +
+                        "   <td style=\"width: 250px\">签到</td>\n" +
+                        "  </tr>\n" +
+                        "  " + html + " " +
+                        "  </table>\n" +
+                        "</div>\n";
     }
 
     private String getMeetingStr(OaMeeting oaMeeting) throws ParseException {
@@ -237,61 +237,61 @@ public class FileDownController extends BaseController {
         int rocount2 = rocunt + 2;
         return
                 "<div style=\"width: \"800px\";height: \"1000px\";margin: 10px auto;\">\n" +
-                " <div><h1 style=\"text-align: center\">年第&nbsp&nbsp&nbsp&nbsp次主任办公室议题</h1></div><br><br>\n" +
-                "<span>会议时间:" + time + "</span><br><br>\n" +
-                " <span>会议地点:" + meetingId + "</span><br><br>\n" +
-                "<span>会议标题:" + meetingName + "</span><br><br>\n" +
-                " <table width=\"800px\" height=\"1000px\" border=\"1px\" style=\"text-align: center\">\n" +
-                "  <tr style=\"height: 60px\">\n" +
-                "  <td style=\"width: 150px\">序号</td>\n" +
-                "  <td style=\"width:600px\">议题\n" +
-                "         <td style=\"width: 150px\">提议领导</td>\n" +
-                "    <td style=\"width: 150px\">汇报人</td>\n" +
-                "    <td style=\"width: 150px\">列席</td>\n" +
-                " </tr>\n" +
-                "  <tr  style=\"height: 60px\">\n" +
-                "  <td >一</td>\n" +
-                "   <td  style=\"text-align: left; vertical-align:middle;position: relative;\"  colspan=\"5\">工作通报</td>\n" +
-                " </tr>\n" +
-                "  <tr style=\"height: 60px\">\n" +
-                "     <td style=\"\">1</td>\n" +
-                "     <td style=\"width:600px\"></td>\n" +
-                "     <td style=\"width: 150px\"></td>\n" +
-                "    <td style=\"width: 150px\"></td>\n" +
-                "    <td style=\"width: 150px\"></td>\n" +
-                "  </tr>\n" +
-                " <tr  style=\"height: 60px\">\n" +
-                "    <td style=\"\">2</td>\n" +
-                "   <td style=\"\"  style=\"width:600px\"></td>\n" +
-                "   <td style=\"width: 150px\"></td>\n" +
-                "   <td style=\"width: 150px\"></td>\n" +
-                "   <td style=\"width: 150px\"></td>\n" +
-                " </tr>\n" +
-                " <tr  style=\"height: 60px\">\n" +
-                "     <td style=\"\">二</td>\n" +
-                "    <td   style=\"text-align: left; vertical-align:middle;position: relative;\" colspan=\"5\">审议事项</td>\n" +
-                " </tr >\n" +
-                "  " + html + " " +
-                " <tr style=\"height: 60px\">\n" +
-                "    <td >三</td>\n" +
-                "    <td   style=\"text-align: left; vertical-align:middle;position: relative;\" colspan=\"5\">研究部署</td>\n" +
-                " </tr>\n" +
-                "  <tr  style=\"height: 60px\">\n" +
-                "  <td >" + rocount1 + "</td>\n" +
-                "   <td  style=\"width:600px\"></td>\n" +
-                "   <td style=\"width: 150px\"></td>\n" +
-                "    <td style=\"width: 150px\"></td>\n" +
-                "   <td style=\"width: 150px\"></td>\n" +
-                " </tr>\n" +
-                " <tr  style=\"height: 60px\">\n" +
-                "   <td >" + rocount2 + "</td>\n" +
-                "   <td  style=\"width:600px;\"></td>\n" +
-                "   <td style=\"width: 150px\"></td>\n" +
-                "    <td style=\"width: 150px\"></td>\n" +
-                "   <td style=\"width: 150px\"></td>\n" +
-                "</tr>\n" +
-                "  </table>\n" +
-                "</div>\n";
+                        " <div><h1 style=\"text-align: center\">年第&nbsp&nbsp&nbsp&nbsp次主任办公室议题</h1></div><br><br>\n" +
+                        "<span>会议时间:" + time + "</span><br><br>\n" +
+                        " <span>会议地点:" + meetingId + "</span><br><br>\n" +
+                        "<span>会议标题:" + meetingName + "</span><br><br>\n" +
+                        " <table width=\"800px\" height=\"1000px\" border=\"1px\" style=\"text-align: center\">\n" +
+                        "  <tr style=\"height: 60px\">\n" +
+                        "  <td style=\"width: 150px\">序号</td>\n" +
+                        "  <td style=\"width:600px\">议题\n" +
+                        "         <td style=\"width: 150px\">提议领导</td>\n" +
+                        "    <td style=\"width: 150px\">汇报人</td>\n" +
+                        "    <td style=\"width: 150px\">列席</td>\n" +
+                        " </tr>\n" +
+                        "  <tr  style=\"height: 60px\">\n" +
+                        "  <td >一</td>\n" +
+                        "   <td  style=\"text-align: left; vertical-align:middle;position: relative;\"  colspan=\"5\">工作通报</td>\n" +
+                        " </tr>\n" +
+                        "  <tr style=\"height: 60px\">\n" +
+                        "     <td style=\"\">1</td>\n" +
+                        "     <td style=\"width:600px\"></td>\n" +
+                        "     <td style=\"width: 150px\"></td>\n" +
+                        "    <td style=\"width: 150px\"></td>\n" +
+                        "    <td style=\"width: 150px\"></td>\n" +
+                        "  </tr>\n" +
+                        " <tr  style=\"height: 60px\">\n" +
+                        "    <td style=\"\">2</td>\n" +
+                        "   <td style=\"\"  style=\"width:600px\"></td>\n" +
+                        "   <td style=\"width: 150px\"></td>\n" +
+                        "   <td style=\"width: 150px\"></td>\n" +
+                        "   <td style=\"width: 150px\"></td>\n" +
+                        " </tr>\n" +
+                        " <tr  style=\"height: 60px\">\n" +
+                        "     <td style=\"\">二</td>\n" +
+                        "    <td   style=\"text-align: left; vertical-align:middle;position: relative;\" colspan=\"5\">审议事项</td>\n" +
+                        " </tr >\n" +
+                        "  " + html + " " +
+                        " <tr style=\"height: 60px\">\n" +
+                        "    <td >三</td>\n" +
+                        "    <td   style=\"text-align: left; vertical-align:middle;position: relative;\" colspan=\"5\">研究部署</td>\n" +
+                        " </tr>\n" +
+                        "  <tr  style=\"height: 60px\">\n" +
+                        "  <td >" + rocount1 + "</td>\n" +
+                        "   <td  style=\"width:600px\"></td>\n" +
+                        "   <td style=\"width: 150px\"></td>\n" +
+                        "    <td style=\"width: 150px\"></td>\n" +
+                        "   <td style=\"width: 150px\"></td>\n" +
+                        " </tr>\n" +
+                        " <tr  style=\"height: 60px\">\n" +
+                        "   <td >" + rocount2 + "</td>\n" +
+                        "   <td  style=\"width:600px;\"></td>\n" +
+                        "   <td style=\"width: 150px\"></td>\n" +
+                        "    <td style=\"width: 150px\"></td>\n" +
+                        "   <td style=\"width: 150px\"></td>\n" +
+                        "</tr>\n" +
+                        "  </table>\n" +
+                        "</div>\n";
     }
 
     /**
@@ -377,94 +377,83 @@ public class FileDownController extends BaseController {
         String topicName = oaTopic.getTopicName();
         String topicContent = oaTopic.getTopicContent();
         String topicRemark = oaTopic.getTopicRemark();
-        return "<div style=\"width: 680px;height: 750px;margin: 10px auto;\">\n" +
+        return "<div style=\"width: 720px;height: 1000px;margin: 10px auto;\">\n" +
                 "    <div><h1 style=\"text-align: center\">议 题 申 请 审 批 表</h1></div>\n" +
-                "    <table width=\"670px\" hight=\"978px\" border=\"1px\"\n" +
-                "           style=\"text-align: center;border: 1px black;color: black;border-collapse: collapse\">\n" +
+                "    <table width=\"670px\" border=\"1px\" \n" +
+                "           style=\"text-align: center;border: 1px solid;border-collapse: collapse\">\n" +
                 "        <tr>\n" +
-                "            <td style=\"width: 180px\">申报科室</td>\n" +
-                "            <td style=\"width: 180px\">" + deptName + "</td>\n" +
-                "            <td style=\"width: 180px\">提议领导</td>\n" +
-                "            <td style=\"width: 180px\">" + proposeLeaderName + "</td>\n" +
+                "            <td style=\"width: 180px;border: 1px solid\">申报科室</td>\n" +
+                "            <td style=\"width: 180px;border: 1px solid\">" + deptName + "</td>\n" +
+                "            <td style=\"width: 180px;border: 1px solid\">提议领导</td>\n" +
+                "            <td style=\"width: 180px;border: 1px solid\">" + proposeLeaderName + "</td>\n" +
                 "        </tr>\n" +
                 "        <tr>\n" +
-                "            <td style=\"width: 180px\">负责人</td>\n" +
-                "            <td style=\"width: 180px\">" + createUser + "</td>\n" +
-                "            <td style=\"width: 180px\">汇报人</td>\n" +
-                "            <td style=\"width: 180px\">" + reportName + "</td>\n" +
+                "            <td style=\"width: 180px;border: 1px solid\">负责人</td>\n" +
+                "            <td style=\"width: 180px;border: 1px solid\">" + createUser + "</td>\n" +
+                "            <td style=\"width: 180px;border: 1px solid\">汇报人</td>\n" +
+                "            <td style=\"width: 180px;border: 1px solid\">" + reportName + "</td>\n" +
                 "        </tr>\n" +
                 "    </table>\n" +
-                "    <table width=\"670px\" hight=\"978px\" border=\"1px\" style=\"border: 1px black;color: black;border-collapse: collapse\">\n" +
+                "    <table width=\"720px\" border=\"1px\" style=\"border: 1px solid;border-collapse: collapse\">\n" +
                 "        <tr>\n" +
                 "            <td colspan=\"2\"\n" +
-                "                style=\"height: 150px;text-align: left;vertical-align: text-top;position: relative;width: 220px;\">\n" +
+                "                style=\"height: 150px;text-align: left;vertical-align: text-top;position: relative;width: 240px;border: 1px solid\">\n" +
                 "                科室负责人意见:\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
-                "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">\n" +
-                "      年  月  日\n" +
-                "                </div>\n" +
+                "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">      年  月  日</div>\n" +
                 "            </td>\n" +
                 "            <td colspan=\"2\"\n" +
-                "                style=\"height: 150px;text-align: left;vertical-align: text-top;position: relative;width: 220px;\">主管领导意见:\n" +
+                "                style=\"height: 150px;text-align: left;vertical-align: text-top;position: relative;width: 240px;border: 1px solid\">主管领导意见:\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
-                "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">\n" +
-                "      年  月  日\n" +
-                "                </div>\n" +
-                "            </td>\n" +
+                "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">      年  月  日</div></td>\n" +
                 "            <td colspan=\"2\"\n" +
-                "                style=\"height: 150px;text-align: left;vertical-align: text-top;position: relative;width: 220px;\">综合办意见:\n" +
+                "                style=\"height: 150px;text-align: left;vertical-align: text-top;position: relative;width: 240px;border: 1px solid\">综合办意见:\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
-                "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">\n" +
-                "      年  月  日\n" +
-                "                </div>\n" +
+                "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">      年  月  日</div>\n" +
                 "            </td>\n" +
                 "        </tr>\n" +
                 "        <tr>\n" +
                 "            <td colspan=\"3\"\n" +
-                "                style=\" height: 150px;width: 300px;text-align: left;vertical-align: text-top;position: relative; \">\n" +
+                "                style=\" height: 150px;width: 360px;text-align: left;vertical-align: text-top;position: relative;border: 1px solid \">\n" +
                 "                财务科意见:\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
-                "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">\n" +
-                "          年  月  日\n" +
-                "                </div>\n" +
+                "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">      年  月  日</div>\n" +
                 "            </td>\n" +
                 "            <td colspan=\"3\"\n" +
-                "                style=\" height: 150px;width: 300px;text-align: left;vertical-align: text-top;position: relative;\">纪委意见:\n" +
+                "                style=\" height: 150px;width: 360px;text-align: left;vertical-align: text-top;position: relative;border: 1px solid\">纪委意见:\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
                 "                <br/>\n" +
-                "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">\n" +
-                "          年  月  日\n" +
-                "                </div>\n" +
+                "                <div style=\"position: absolute;right: 10px;bottom: 10px;\">      年  月  日</div>\n" +
                 "            </td>\n" +
                 "        </tr>\n" +
                 "        <tr>\n" +
-                "            <td colspan=\"6\">议题标题:" + topicName + "</td>\n" +
+                "            <td colspan=\"6\" style=\"border: 1px solid\">议题标题:" + topicName + "</td>\n" +
                 "        </tr>\n" +
                 "        <tr>\n" +
-                "            <td colspan=\"6\" style=\"height: 200px;text-align: left;vertical-align: text-top;\">内容摘要:" + topicContent + "\n" +
+                "            <td colspan=\"6\" style=\"height: 200px;text-align: left;vertical-align: text-top;border: 1px solid\">内容摘要:" + topicContent + "\n" +
                 "            </td>\n" +
                 "        </tr>\n" +
                 "        <tr>\n" +
-                "            <td colspan=\"6\">备注:" + topicRemark + "</td>\n" +
+                "            <td colspan=\"6\" style=\"border: 1px solid\">备注:" + topicRemark + "</td>\n" +
                 "        </tr>\n" +
                 "    </table>\n" +
                 "</div>\n";
