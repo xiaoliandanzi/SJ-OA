@@ -150,7 +150,7 @@
     }
 
     .tabs1Center {
-        height: 580px;
+        min-height: 580px;
         border-bottom: 1px solid #CCCCCC;
         width: 70%;
         margin: 0 auto;
@@ -180,7 +180,7 @@
     .tabs1List_name {
         margin-left: 26px;
         color: #4C4C4C;
-        max-width: 300px;
+        max-width: 600px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
