@@ -33,7 +33,7 @@
 
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="car/audit/datagrid" tableContentId="waitTaskTable" searchGroupId="searchGroupId" fit="true" caption="待审批车辆申请" name="waitTaskList" pageSize="20" sortName="applyDate" sortOrder="desc">
-<%--    <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>--%>
+    <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
 <%--    <t:dgCol name="categoryId" label="流程类别" hidden="true"  replace="${categoryReplace}" query="true" queryId="categoryId" width="90"></t:dgCol>--%>
 <%--    <t:dgCol name="useDepartment" label="用车单位" width="70"></t:dgCol>--%>
 <%--    <t:dgCol name="userName" label="乘车人" width="120"></t:dgCol>--%>
