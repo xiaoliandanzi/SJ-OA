@@ -69,5 +69,11 @@ public class FlowCarApprovalEntity extends BaseEntity {
     @TableField("COMMIT")
     private String commit;
 
+    /**
+     * 更新时间
+     */
+    @TableField("UPDATE_DATE")
+    private String update_date;
+
 
 }

@@ -1,6 +1,8 @@
 package com.active4j.hr.car.controller;
 
+import com.active4j.hr.activiti.biz.entity.FlowCarApprovalEntity;
 import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
+import com.active4j.hr.activiti.biz.service.FlowCarApprovalService;
 import com.active4j.hr.activiti.biz.service.FlowOfficalSealApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
 import com.active4j.hr.activiti.entity.WorkflowCategoryEntity;
@@ -26,7 +28,16 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,6 +45,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +67,9 @@ public class CarRecordController extends BaseController {
 
     @Autowired
     private WorkflowService workflowService;
+
+    @Autowired
+    private FlowCarApprovalService flowCarApprovalService;
 
     @Autowired
     private WorkflowCategoryService workflowCategoryService;
@@ -260,6 +279,115 @@ public class CarRecordController extends BaseController {
         }
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
+    }
+
+
+    /**
+     * Excel模板下载
+     *
+     * @param response
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/excelExport")
+    public ResponseEntity<Resource> excel2007Export(FlowCarApprovalEntity flowCarApprovalEntity , HttpServletResponse response, HttpServletRequest request, DataGrid dataGrid) {
+        try {
+            ClassPathResource cpr = new ClassPathResource("/static/car_record.xlsx");
+
+            InputStream is = cpr.getInputStream();
+            Workbook workbook = new XSSFWorkbook(is);
+            Sheet sheet = workbook.getSheetAt(0);
+
+
+
+            QueryWrapper<FlowCarApprovalEntity> queryWrapper = QueryUtils.installQueryWrapper(flowCarApprovalEntity, request.getParameterMap(), dataGrid);
+
+            queryWrapper.isNull("UPDATE_DATE");
+            // 执行查询
+            IPage<FlowCarApprovalEntity> lstResult = flowCarApprovalService.page(new Page<FlowCarApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+            List<FlowCarApprovalEntity> list = lstResult.getRecords();
+
+            int i = 0;
+            for (FlowCarApprovalEntity item : list) {
+                Row row = sheet.getRow(i + 3);
+                Cell cell1 = row.getCell(0);
+                cell1.setCellValue((i+1) + "");
+                Cell cell2 = row.getCell(1);
+                cell2.setCellValue(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(item.getCreateDate()));
+                Cell cell3 = row.getCell(2);
+                cell3.setCellValue(item.getReason());
+                Cell cell4 = row.getCell(3);
+                cell4.setCellValue(item.getDestination());
+                Cell cell5 = row.getCell(4);
+                cell5.setCellValue(item.getUserName());
+                Cell cell6 = row.getCell(5);
+                cell6.setCellValue(item.getPerson());
+                Cell cell7 = row.getCell(6);
+                cell6.setCellValue("");
+                Cell cell8 = row.getCell(7);
+                cell6.setCellValue("");
+                Cell cell9 = row.getCell(8);
+                cell6.setCellValue(item.getCommit());
+
+//                Row row = sheet.createRow(i + 2);
+//                Cell cell1 = row.createCell(0);
+//                cell1.setCellValue((i+1) + "");
+//                Cell cell2 = row.createCell(1);
+//                cell2.setCellValue(item.getCreateDate());
+//                Cell cell3 = row.createCell(2);
+//                cell3.setCellValue(item.getReason());
+//                Cell cell4 = row.createCell(3);
+//                cell4.setCellValue(item.getDestination());
+//                Cell cell5 = row.createCell(4);
+//                cell5.setCellValue(item.getUserName());
+//                Cell cell6 = row.createCell(5);
+//                cell6.setCellValue(item.getPerson());
+//                Cell cell7 = row.createCell(6);
+//                cell6.setCellValue("");
+//                Cell cell8 = row.createCell(7);
+//                cell6.setCellValue("");
+//                Cell cell9 = row.createCell(8);
+//                cell6.setCellValue(item.getCommit());
+                i++;
+            }
+
+//            int rowNum = 0;
+//            Cell cell;
+//            // 这里作为演示，造几个演示数据，模拟数据库里查数据
+//            List<String> list = new ArrayList<String>();
+//            list.add("1111");
+//            list.add("22");
+//            list.add("333");
+//            Row row = sheet.createRow(rowNum + 1);
+//            for (int i = 0; i < list.size(); i++) {
+//                cell = row.createCell(i);
+//                cell.setCellValue(list.get(i));
+//            }
+
+
+
+            String fileName = "申请记录.xlsx";
+            downLoadExcel(fileName, response, workbook);
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<Resource>(HttpStatus.OK);
+    }
+
+    public static void downLoadExcel(String fileName, HttpServletResponse response, Workbook workbook) {
+        try {
+            response.setCharacterEncoding("UTF-8");
+            response.setHeader("content-Type", "application/vnd.ms-excel");
+            response.setHeader("Content-Disposition",
+                    "attachment;filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"");
+            workbook.write(response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

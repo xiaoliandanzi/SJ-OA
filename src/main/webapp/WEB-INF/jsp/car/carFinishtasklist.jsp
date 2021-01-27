@@ -51,8 +51,12 @@
 <%--    <t:dgCol name="useTime" label="使用时间" width="120" datefmt="yyyy-MM-dd" queryModel="group" datePlugin="laydate"></t:dgCol>--%>
 <%--    <t:dgCol name="commit" label="备注" width="120" query="true"></t:dgCol>--%>
     <t:dgToolBar label="查看详情" icon="fa fa-eye" url="flow/biz/task/view" type="read" width="90%" height="90%"></t:dgToolBar>
+
     <t:dgToolBar label="查看流程图" icon="fa fa-binoculars" url="flow/biz/my/viewImage" type="read" width="80%" height="80%"></t:dgToolBar>
     <t:dgToolBar label="撤销申请" icon="fa fa-remove" url="flow/biz/my/goCancle" type="pop" width="40%" height="50%"></t:dgToolBar>
+
+    <t:dgToolBar label="导出Excel" icon="fa fa-cloud-download" type="define" funName="doAttachment"></t:dgToolBar>
+
     <t:dgToolBar type="refresh" ></t:dgToolBar>
 </t:datagrid>
 
@@ -62,6 +66,10 @@
         laydate({elem:"#applyDate_begin",event:"focus",istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
         laydate({elem:"#applyDate_end",event:"focus",istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
     });
+
+    function doAttachment() {
+        window.open("/oa/car/record/excelExport");
+    }
 </script>
 </body>
 </html>
