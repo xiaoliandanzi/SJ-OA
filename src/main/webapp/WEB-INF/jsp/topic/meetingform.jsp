@@ -104,7 +104,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">人员*：</label>
                             <div class="col-sm-8" >
-                                <select class="form-control m-b select2" name="conferee"  style=" height: 80px" id="conferee" multiple="multiple"  style="  height: 100px"  required="">
+                                <select class="form-control m-b select2" name="conferee"  style=" width:663px; height: 80px" id="conferee" multiple="multiple"  style="  height: 100px"  required="">
                                     <c:forEach items="${dataList}" var="peo">
                                         <option value="${peo.realName }">${peo.realName}</option>
                                     </c:forEach>

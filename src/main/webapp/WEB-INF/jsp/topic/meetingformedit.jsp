@@ -18,7 +18,7 @@
             $("#canhuipeo").val("${canhuipeo}".split(",")).trigger("change");
         });
         $(function () {
-            $("#meetingId").val("111".split(",")).trigger("change");
+            $("#meetingId").val("${meetingId}".split(",")).trigger("change");
         });
     </script>
 </head>
@@ -63,7 +63,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">会议室*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2" name="meetingId" id="meetingId" required=""  onchange="funchy()"  multiple="multiple" >
+                                <select class="form-control m-b select2" name="meetingId" id="meetingId" required=""   value="${meetingId}" onchange="funchy()"  multiple="multiple" >
                                     <c:forEach items="${roomList}" var="room">
                                         <option value="${room.name }">${room.name }</option>
                                     </c:forEach>
@@ -111,7 +111,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">人员*：</label>
                             <div class="col-sm-8" >
-                                <select class="form-control m-b select2" name="conferee" id="conferee"  required=""  style=" height: 80px" multiple="multiple" >
+                                <select class="form-control m-b select2" name="conferee" id="conferee"  required=""  style=" width:663px; height: 80px" multiple="multiple" >
                                     <c:forEach items="${dataList}" var="peo">
                                         <option value="${peo.realName }">${peo.realName}</option>
                                     </c:forEach>
