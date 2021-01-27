@@ -7,6 +7,7 @@ import com.active4j.hr.activiti.entity.WorkflowCategoryEntity;
 import com.active4j.hr.activiti.service.WorkflowCategoryService;
 import com.active4j.hr.activiti.service.WorkflowService;
 import com.active4j.hr.activiti.util.WorkflowConstant;
+import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.model.AjaxJson;
@@ -250,8 +251,24 @@ public class CarRecordController extends BaseController {
         if (endTime == null || endTime == "") {
             endTime = "2099-12-31";
         }
-        // 执行查询
-        IPage<WorkflowBaseEntity> lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
+
+        String userName = ShiroUtils.getSessionUserName();
+        SysUserEntity user = sysUserService.getUserByUseName(userName);
+        List<String> lstUsers = WorkflowTaskUtil.getApprovalUserByRoleName("车辆管理员");
+        IPage<WorkflowBaseEntity> lstResult = new Page<>();
+        int totalCarApper = lstUsers.size();
+        if(null == lstUsers || lstUsers.size() <= 0) {
+
+        }else if(lstUsers.size() == 1) {
+            if(lstUsers.get(0).equals(user.getUserName())){
+                lstResult = workflowService.findFinishedTaskByALL(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, WorkflowConstant.Task_Category_approval);
+            }else{
+                lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
+            }
+        }else {
+            lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
+        }
+
         long size = lstResult.getRecords().size();
         for (long i = size - 1; i >= 0; --i) {
             if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("车辆申请")){
