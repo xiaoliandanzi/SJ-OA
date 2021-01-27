@@ -241,7 +241,8 @@ public class CarRecordController extends BaseController {
      * @param dataGrid
      */
     @RequestMapping("/datagridFinish")
-    public void datagridFinish(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+    public AjaxJson datagridFinish(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        AjaxJson j = new AjaxJson();
         String startTime = request.getParameter("applyDate_begin");
         String endTime = request.getParameter("applyDate_end");
         if (startTime == null || startTime=="") {
@@ -258,7 +259,9 @@ public class CarRecordController extends BaseController {
         IPage<WorkflowBaseEntity> lstResult = new Page<>();
         int totalCarApper = lstUsers.size();
         if(null == lstUsers || lstUsers.size() <= 0) {
-
+            j.setMsg("车辆管理员不存在");
+            j.setSuccess(false);
+            return j;
         }else if(lstUsers.size() == 1) {
             if(lstUsers.get(0).equals(user.getUserName())){
                 lstResult = workflowService.findFinishedTaskByALL(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, WorkflowConstant.Task_Category_approval);
@@ -266,7 +269,9 @@ public class CarRecordController extends BaseController {
                 lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
             }
         }else {
-            lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
+            j.setMsg("车辆管理员存在多人，请联系管理员");
+            j.setSuccess(false);
+            return j;
         }
 
         long size = lstResult.getRecords().size();
@@ -277,6 +282,7 @@ public class CarRecordController extends BaseController {
         }
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
+        return j;
     }
 
 }
