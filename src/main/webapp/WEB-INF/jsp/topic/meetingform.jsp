@@ -164,13 +164,17 @@
             if (data.success) {
                 //操作结束，刷新表格
                 for (var i = 0; i < data.obj.length; i++) {
-                    var fileId = data.obj[i].id;
+                    console.log(data.obj[i])
+                    var fileId = data.obj[i];
                     down(fileId);
                     sleep(2000);
                 }
             } else {
             }
         });
+    }
+    function sleep(delay) {
+        for(let start = Date.now(); Date.now() - start< delay;);
     }
    /* function funtimes(){
         var meetingTime=$("#meetingTime").val();
@@ -259,6 +263,29 @@
         }
         x.send();
     }
+    function  down(fileId){
+        var filename = '';
+        $.get("topicFile/name?id=" + fileId, null, function (data) {
+            if (data.success) {
+                filename = data.obj;
+            } else {
+                qhTipWarning(data.msg);
+            }
+        })
+        //  setTimeout(function () {
+        var x = new XMLHttpRequest();
+        x.open("POST", "topicFile/down?id=" + fileId, true);
+        x.responseType = 'blob';
+        x.onload = function (e) {
+            var URL = window.URL.createObjectURL(x.response)
+            var a = document.createElement('a');
+            a.href = URL
+            a.download = filename
+            a.click()
+        }
+        x.send();
+    }
+
     function deleteAll() {
         var rowIds = $('#toptable').jqGrid('getGridParam', 'selarrrow');
         if (rowIds==""||rowIds==null) {
@@ -338,7 +365,6 @@
                     option.value = data.obj[i].realName;
                      option.Text = data.obj[i].realName;
                     option.innerHTML=data.obj[i].realName;
-
                     $("#conferee").append(option);
                 }
             },

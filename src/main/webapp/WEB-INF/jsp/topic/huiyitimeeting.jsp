@@ -126,7 +126,8 @@
             if (data.success) {
                 //操作结束，刷新表格
                 for (var i = 0; i < data.obj.length; i++) {
-                    var fileId = data.obj[i].id;
+                    console.log(data.obj[i])
+                    var fileId = data.obj[i];
                     down(fileId);
                     sleep(2000);
                 }
