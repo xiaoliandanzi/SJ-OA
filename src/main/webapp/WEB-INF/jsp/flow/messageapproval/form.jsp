@@ -43,7 +43,8 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">内容：*</label>
     <div class="col-sm-6">
-        <textarea rows=8 id="content" name="content" minlength="1" type="text" class="form-control" required="">${biz.content }</textarea>
+        <textarea rows="8" id="content" name="content" class="form-control">${biz.content }</textarea>
+<%--        <textarea rows=8 id="content" name="content" minlength="1" type="text" class="form-control" required="">${biz.content }</textarea>--%>
         <%--<div id="summernote"></div>--%>
         <%--<input type="hidden" name="content" id="content" value="">--%>
     </div>
@@ -81,3 +82,7 @@
         <%--</c:choose>--%>
     <%--</div>--%>
 <%--</div>--%>
+
+<script>
+
+</script>

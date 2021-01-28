@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,laydate,icheck,prettyfile,webuploader,summernote"></t:base>
+    <t:base type="default,laydate,ckeditor,icheck,prettyfile,webuploader,summernote"></t:base>
     <%--<script type="text/javascript">--%>
         <%--$(function() {--%>
             <%--laydate({elem:"#publicTime",event:"focus",istime: false, format: 'YYYY-MM-DD HH:mm'});--%>
@@ -53,6 +53,12 @@
 </body>
 
 <script type="text/javascript">
+    var editor = CKEDITOR.replace('content');
+    function getContenet(){
+        return CKEDITOR.instances.content.getData();    //获取textarea的值
+    }
+
+
 
     $(function() {
         $("#summernote").summernote({
@@ -189,12 +195,19 @@
 
     //保存草稿
     function doBtnSaveDraftAction() {
+        var kcontent=getContenet();
+        $("#content").val(kcontent);
+
+
         $("#optType").val("0");
         $("#commonForm").submit();
     }
 
     //保存申请
     function doBtnSaveApplyAction() {
+        var kcontent=getContenet();
+        $("#content").val(kcontent);
+
         $("#optType").val("1");
         $("#commonForm").submit();
     }
