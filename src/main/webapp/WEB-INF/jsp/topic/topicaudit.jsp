@@ -332,7 +332,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">审核意见：</label>
                                 <div class="col-sm-8">
-                                    <textarea name="opinion" class="form-control" readonly="true"></textarea>
+                                    <textarea name="opinion" class="form-control"></textarea>
                                 </div>
                             </div>
                         </c:if>

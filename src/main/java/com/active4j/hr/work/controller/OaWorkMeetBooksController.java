@@ -155,21 +155,31 @@ public class OaWorkMeetBooksController extends BaseController {
 			
 			//时间的校验，预定的会议室，时间不能重合
 			List<OaWorkMeetRoomBooksEntity> lstRooms = oaWorkMeetRoomBooksService.findMeetBooks(meetRoomId, oaWorkMeetRoomBooksEntity.getStrBookDate());
+			boolean isValid = true;
 			if(null != lstRooms && lstRooms.size() > 0) {
 				for(OaWorkMeetRoomBooksEntity bookRoom : lstRooms) {
-					boolean isValid = false;
-					if(oaWorkMeetRoomBooksEntity.getStartDate().after(bookRoom.getStartDate()) && oaWorkMeetRoomBooksEntity.getStartDate().before(bookRoom.getEndDate())) {
-						j.setSuccess(false);
-						j.setMsg("当前会议室已经被预定");
-						return j;
+					if (!oaWorkMeetRoomBooksEntity.getStartDate().after(bookRoom.getStartDate())
+							&& oaWorkMeetRoomBooksEntity.getEndDate().after(bookRoom.getStartDate())){
+						isValid = false;
+						break;
 					}
-					if(oaWorkMeetRoomBooksEntity.getEndDate().after(bookRoom.getStartDate()) && oaWorkMeetRoomBooksEntity.getEndDate().before(bookRoom.getEndDate())) {
-						j.setSuccess(false);
-						j.setMsg("当前会议室已经被预定");
-						return j;
+					if (!oaWorkMeetRoomBooksEntity.getEndDate().before(bookRoom.getEndDate())
+							&& oaWorkMeetRoomBooksEntity.getStartDate().before(bookRoom.getEndDate())){
+						isValid = false;
+						break;
+					}
+					if (!oaWorkMeetRoomBooksEntity.getStartDate().before(bookRoom.getStartDate())
+							&& !oaWorkMeetRoomBooksEntity.getEndDate().after(bookRoom.getEndDate())) {
+						isValid = false;
+						break;
 					}
 				}
-			} 
+			}
+			if (!isValid) {
+				j.setSuccess(false);
+				j.setMsg("当前会议室已经被预定");
+				return j;
+			}
 			
 			if(StringUtils.isEmpty(oaWorkMeetRoomBooksEntity.getId())) {
 				if(StringUtils.isNotEmpty(meetRoomId)) {

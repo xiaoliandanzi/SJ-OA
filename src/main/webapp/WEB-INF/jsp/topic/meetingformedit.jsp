@@ -158,6 +158,7 @@
     <t:dgToolBar label="打印议题单" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
     <t:dgToolBar label="批量删除" icon="fa fa-clock-o" type="define" funName="editdeleteAll"></t:dgToolBar>
     <t:dgToolBar label="打印签到表" icon="fa fa-clock-o" type="define" funName="printqd"></t:dgToolBar>
+    <t:dgToolBar label="批量下载" type="define" funName="piliangxiazai"></t:dgToolBar>
     <t:dgDelOpt label="删除" url="meeting/bjtablesdel?id={id}" />
 </t:datagrid>
 </body>
@@ -179,7 +180,25 @@
             }
         });
     }
-
+    function piliangxiazai() {
+        var rowId = $('#toptable').jqGrid('getGridParam', 'selarrrow');
+        if (!rowId) {
+            qhAlert('请选择要下载的附件');
+            return;
+        }
+        //是
+        $.post("meeting/getFileListS", {ids: rowId.toString()}, function (data) {
+            if (data.success) {
+                //操作结束，刷新表格
+                for (var i = 0; i < data.obj.length; i++) {
+                    var fileId = data.obj[i].id;
+                    down(fileId);
+                    sleep(2000);
+                }
+            } else {
+            }
+        });
+    }
     function printIt() {
         var meetingId=$("#meetingId").val();
         var meetingName=$("#meetingName").val();

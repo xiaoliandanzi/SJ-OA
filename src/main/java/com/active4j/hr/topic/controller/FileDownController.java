@@ -177,28 +177,27 @@ public class FileDownController extends BaseController {
         exportWord(request, response, getprintqdStr(oaMeeting));
     }
 
-    private String getprintqdStr(OaMeeting oaMeeting) throws ParseException {
-        String meetingId = oaMeeting.getMeetingId();
-        String meetingName = oaMeeting.getMeetingName();
+    private String getprintqdStr(OaMeeting oaMeeting) throws ParseException, UnsupportedEncodingException {
         String str[] = oaMeeting.getConferee().split(",");
         String html = "";
         for (int i = 0; i < str.length; i++) {
-            String THIS = "   <tr  style=\"height: 60px\">\n" +
-                    "       <td style=\"border: 1px solid; \">" + str[i] + "</td>\n" +
-                    "       <td  style=\"border: 1px solid; \" ></td>\n" +
-                    "      </tr>\n";
+            String init = new String(str[i].getBytes("utf-8"), "utf-8");
+            String THIS = "<tr style=\"height: 60px\">\n" +
+                    "            <td style=\"border: 1px solid\">" + init + "</td>\n" +
+                    "            <td style=\"border: 1px solid\"></td>\n" +
+                    "      </tr>";
             html = html + THIS;
         }
-        return
-                " <div><h1 style=\"text-align: center\">签到表</h1></div><br><br>\n" +
-                        " <table width=\"600px\" height=\"40px\" border=\"1px\" style=\"text-align: center; border: 1px solid;border-collapse: collapse\">\n" +
-                        " <tr>\n" +
-                        " <td style=\"width: 250px; border: 1px solid;\">姓名</td>\n" +
-                        "   <td style=\"width: 250px; border: 1px solid; \">签到</td>\n" +
-                        "  </tr>\n" +
-                        "  " + html + " " +
-                        "  </table>\n" +
-                        "</div>\n";
+        return "<div style=\"\">\n" +
+                "    <div><h1 style=\"text-align: center\">签到表</h1></div>\n" +
+                "    <table width=\"600px\" height=\"40px\" border=\"1px\"\n" +
+                "           style=\"text-align: center; border: 1px solid;border-collapse: collapse;width: 600px;height: 40px;\">\n" +
+                "        <tr>\n" +
+                "            <td style=\"width: 300px; border: 1px solid\">姓名</td>\n" +
+                "            <td style=\"width: 300px; border: 1px solid\">签到</td>\n" +
+                "        </tr>\n" + html +
+                "    </table>\n" +
+                "</div>\n";
     }
 
     private String getMeetingStr(OaMeeting oaMeeting) throws ParseException {
@@ -235,63 +234,70 @@ public class FileDownController extends BaseController {
         }
         int rocount1 = rocunt + 1;
         int rocount2 = rocunt + 2;
-        return
-                "<div style=\"width: \"800px\";height: \"1000px\";margin: 10px auto;\">\n" +
-                        " <div><h1 style=\"text-align: center\">年第次主任办公室议题</h1></div><br><br>\n" +
-                        "<span>会议时间:" + time + "</span><br><br>\n" +
-                        " <span>会议地点:" + meetingId + "</span><br><br>\n" +
-                        "<span>会议标题:" + meetingName + "</span><br><br>\n" +
-                        " <table width=\"800px\" height=\"1000px\"  style=\"text-align: center;border: 1px solid;border-collapse: collapse\">\n" +
-                        "  <tr style=\"height: 60px\">\n" +
-                        "  <td style=\"width: 150px; border: 1px solid;\">序号</td>\n" +
-                        "  <td style=\"width:600px; border: 1px solid;\">议题\n" +
-                        "         <td style=\"width: 150px; border: 1px solid;\">提议领导</td>\n" +
-                        "    <td style=\"width: 150px; border: 1px solid;\">汇报人</td>\n" +
-                        "    <td style=\"width: 150px; border: 1px solid;\">列席</td>\n" +
-                        " </tr>\n" +
-                        "  <tr  style=\"height: 60px\">\n" +
-                        "  <td  style=\"border: 1px solid; \">一</td>\n" +
-                        "   <td  style=\"text-align: left; vertical-align:middle;position: relative; border: 1px solid;\"  colspan=\"5\">工作通报</td>\n" +
-                        " </tr>\n" +
-                        "  <tr style=\"height: 60px\">\n" +
-                        "     <td style=\" border: 1px solid;\">1</td>\n" +
-                        "     <td style=\"width:600px; border: 1px solid;\"></td>\n" +
-                        "     <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
-                        "    <td style=\"width: 150px;border: 1px solid;\"></td>\n" +
-                        "    <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
-                        "  </tr>\n" +
-                        " <tr  style=\"height: 60px\">\n" +
-                        "    <td style=\"border: 1px solid;\">2</td>\n" +
-                        "   <td style=\"border: 1px solid;\"  style=\"width:600px\"></td>\n" +
-                        "   <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
-                        "   <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
-                        "   <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
-                        " </tr>\n" +
-                        " <tr  style=\"height: 60px\">\n" +
-                        "     <td style=\"border: 1px solid;\">二</td>\n" +
-                        "    <td   style=\"text-align: left; vertical-align:middle;position: relative; border: 1px solid;\" colspan=\"5\">审议事项</td>\n" +
-                        " </tr >\n" +
-                        "  " + html + " " +
-                        " <tr style=\"height: 60px\">\n" +
-                        "    <td  style=\"border: 1px solid;\">三</td>\n" +
-                        "    <td   style=\"text-align: left; vertical-align:middle;position: relative;border: 1px solid;\" colspan=\"5\">研究部署</td>\n" +
-                        " </tr>\n" +
-                        "  <tr  style=\"height: 60px\">\n" +
-                        "  <td style=\"border: 1px solid; \" >" + rocount1 + "</td>\n" +
-                        "   <td  style=\"width:600px;border: 1px solid;\"></td>\n" +
-                        "   <td style=\"width: 150px;border: 1px solid;\"></td>\n" +
-                        "    <td style=\"width: 150px;border: 1px solid;\"></td>\n" +
-                        "   <td style=\"width: 150px;border: 1px solid;\"></td>\n" +
-                        " </tr>\n" +
-                        " <tr  style=\"height: 60px\">\n" +
-                        "   <td  style=\"border: 1px solid; \">" + rocount2 + "</td>\n" +
-                        "   <td  style=\"width:600px;border: 1px solid;\"></td>\n" +
-                        "   <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
-                        "    <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
-                        "   <td style=\"width: 150px; border: 1px solid;\"></td>\n" +
-                        "</tr>\n" +
-                        "  </table>\n" +
-                        "</div>\n";
+        return "<div class=\"print-body\" style=\"width: 700px;height: 750px;margin: 10px auto\">\n" +
+                "    <div><h1 style=\"text-align: center\">"+ meetingName + "</h1></div>\n" +
+                "    <br><br>\n" +
+                "    <span>会议时间:" + time + "</span><br><br>\n" +
+                "    <span>会议地点:" + meetingId + "</span><br><br>\n" +
+                "    <span>会议标题:</span><br><br>\n" +
+                "    <table style=\"text-align: center;border: 1px solid;border-collapse: collapse\">\n" +
+                "        <tr style=\"height: 60px\">\n" +
+                "            <td style=\"width: 50px;border: 1px solid\">序号</td>\n" +
+                "            <td style=\"width: 230px;border: 1px solid\">议题\n" +
+                "            <td style=\"width: 140px;border: 1px solid\">提议领导</td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\">汇报人</td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\">列席</td>\n" +
+                "        </tr>\n" +
+                "        <tr style=\"height: 60px\">\n" +
+                "            <td style=\"border: 1px solid\">一</td>\n" +
+                "            <td style=\"border: 1px solid;text-align: left\" class=\"height-td\" colspan=\"4\">工作通报</td>\n" +
+                "        </tr>\n" +
+                "        <tr style=\"height: 60px\">\n" +
+                "            <td style=\"border: 1px solid\">1</td>\n" +
+                "            <td style=\"border: 1px solid\" class=\"height-td\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "        </tr>\n" +
+                "        <tr style=\"height: 60px\">\n" +
+                "            <td style=\"border: 1px solid\">2</td>\n" +
+                "            <td style=\"border: 1px solid\" class=\"height-td\" style=\"width:140px\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "        </tr>\n" +
+                "        <tr style=\"height: 60px\">\n" +
+                "            <td style=\"border: 1px solid\">二</td>\n" +
+                "            <td style=\"border: 1px solid;text-align: left\" class=\"height-td\" colspan=\"4\">审议事项</td>\n" +
+                "        </tr>\n" +
+                "        <tr style=\"height: 60px\">\n" +
+                "            <td style=\"border: 1px solid\">3</td>\n" +
+                "            <td style=\"border: 1px solid\" class=\"height-td\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "        </tr>\n" +
+                "  " + html + " " +
+                "        <tr style=\"height: 60px\">\n" +
+                "            <td style=\"border: 1px solid\">三</td>\n" +
+                "            <td style=\"border: 1px solid;text-align: left\" class=\"height-td\" colspan=\"4\">研究部署</td>\n" +
+                "        </tr>\n" +
+                "        <tr style=\"height: 60px\">\n" +
+                "            <td style=\"border: 1px solid\">" + rocount1 + "</td>\n" +
+                "            <td style=\"border: 1px solid\" class=\"height-td\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "        </tr>\n" +
+                "        <tr style=\"height: 60px\">\n" +
+                "            <td style=\"border: 1px solid\">" + rocount2 + "</td>\n" +
+                "            <td style=\"border: 1px solid\" class=\"height-td\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
+                "        </tr>\n" +
+                "    </table>\n" +
+                "</div>";
     }
 
     /**
@@ -332,7 +338,7 @@ public class FileDownController extends BaseController {
 
     String wordHtmlHead = "<html xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\"\n" +
             "xmlns:w=\"urn:schemas-microsoft-com:office:word\" xmlns:m=\"http://schemas.microsoft.com/office/2004/12/omml\"\n" +
-            "xmlns=\"http://www.w3.org/TR/REC-html40\"><head>\n" +
+            "xmlns=\"http://www.w3.org/TR/REC-html40\"><head><meta charset=\"UTF-8\">\n" +
             "    <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:TrackMoves>false</w:TrackMoves><w:TrackFormatting/><w:ValidateAgainstSchemas/><w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid><w:IgnoreMixedContent>false</w:IgnoreMixedContent><w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText><w:DoNotPromoteQF/><w:LidThemeOther>EN-US</w:LidThemeOther><w:LidThemeAsian>ZH-CN</w:LidThemeAsian><w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript><w:Compatibility><w:BreakWrappedTables/><w:SnapToGridInCell/><w:WrapTextWithPunct/><w:UseAsianBreakRules/><w:DontGrowAutofit/><w:SplitPgBreakAndParaMark/><w:DontVertAlignCellWithSp/><w:DontBreakConstrainedForcedTables/><w:DontVertAlignInTxbx/><w:Word11KerningPairs/><w:CachedColBalance/><w:UseFELayout/></w:Compatibility><w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel><m:mathPr><m:mathFont m:val=\"Cambria Math\"/><m:brkBin m:val=\"before\"/><m:brkBinSub m:val=\"--\"/><m:smallFrac m:val=\"off\"/><m:dispDef/><m:lMargin m:val=\"0\"/> <m:rMargin m:val=\"0\"/><m:defJc m:val=\"centerGroup\"/><m:wrapIndent m:val=\"1440\"/><m:intLim m:val=\"subSup\"/><m:naryLim m:val=\"undOvr\"/></m:mathPr></w:WordDocument></xml><![endif]-->\n" +
             "</head>";
 

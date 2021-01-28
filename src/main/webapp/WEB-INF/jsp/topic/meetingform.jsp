@@ -146,11 +146,32 @@
     <t:dgToolBar label="批量打印" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
     <t:dgToolBar label="打印议题单" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
     <t:dgToolBar label="批量删除" icon="fa fa-clock-o" type="define" funName="deleteAll"></t:dgToolBar>
+    <t:dgToolBar label="打印签到表" icon="fa fa-clock-o" type="define" funName="printqd"></t:dgToolBar>
+    <t:dgToolBar label="批量下载" type="define" funName="piliangxiazai"></t:dgToolBar>
     <t:dgDelOpt label="删除" url="meeting/tablesdel?id={id}" />
 </t:datagrid>
 
 </body>
 <script type="text/javascript">
+    function piliangxiazai() {
+        var rowId = $('#toptable').jqGrid('getGridParam', 'selarrrow');
+        if (!rowId) {
+            qhAlert('请选择要下载的附件');
+            return;
+        }
+        //是
+        $.post("meeting/getFileListS", {ids: rowId.toString()}, function (data) {
+            if (data.success) {
+                //操作结束，刷新表格
+                for (var i = 0; i < data.obj.length; i++) {
+                    var fileId = data.obj[i].id;
+                    down(fileId);
+                    sleep(2000);
+                }
+            } else {
+            }
+        });
+    }
    /* function funtimes(){
         var meetingTime=$("#meetingTime").val();
         var meetingendTime=$("#meetingendTime").val();
@@ -174,6 +195,25 @@
             $("#meetingId").removeAttr("disabled");
         }
     }*/
+   function printqd() {
+       var conferee=$("#conferee").val();
+       if(conferee==""||conferee==null){
+           qhAlert('参会人员为空不能打印');
+           return;
+       }
+       var x = new XMLHttpRequest();
+       x.open("GET", "topicFile/getprintqdHtml?conferee="+conferee,true);
+       x.responseType = 'blob';
+       x.onload = function (e) {
+           var url = window.URL.createObjectURL(x.response)
+           var a = document.createElement('a');
+           a.href = url
+           a.download = "签到表.doc"
+           a.click()
+       }
+       x.send();
+
+   }
     function funchy(){
         var meetingTime=$("#meetingTime").val();
         var meetingendTime=$("#meetingendTime").val();
@@ -287,7 +327,7 @@
     laydate(start);
     laydate(end);
     function funcchui(){
-        $("#conferee").empty();
+    //    $("#conferee").empty();
         $.ajax({
             url:"meeting/groupBycanhui" ,
             data: {canHuitype: $('#canhuipeo option:selected').attr('id')},
