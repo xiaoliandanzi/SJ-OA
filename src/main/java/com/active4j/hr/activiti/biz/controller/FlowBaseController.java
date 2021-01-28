@@ -375,7 +375,7 @@ public class FlowBaseController extends BaseController {
 				//获取当前用户个人资料
 				SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
 
-				if(user.getUserName() != workflowBaseEntity.getUserName()){
+				if(!user.getUserName().equals(workflowBaseEntity.getUserName())){
 					j.setSuccess(false);
 					j.setMsg("撤销失败，仅申请人本人可撤销申请!");
 					return j;
