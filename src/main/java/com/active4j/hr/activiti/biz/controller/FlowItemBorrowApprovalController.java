@@ -209,6 +209,20 @@ public class FlowItemBorrowApprovalController extends BaseController {
 //            workflowService.saveSubmitTask(taskId, id, comment, map);
 
             if(StringUtils.equals("N", result)) {
+
+                WorkflowBaseEntity base = workflowBaseService.getById(id);
+                String businessId = base.getBusinessId();
+                FlowItemBorrowApprovalEntity flowItemBorrowApprovalEntity = flowItemBorrowApprovalService.getById(businessId);
+                List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(flowItemBorrowApprovalEntity.getItemName());
+                RequisitionedItemEntity entity = stockEntity.get(0);
+                entity.setQuantity(entity.getQuantity() + flowItemBorrowApprovalEntity.getQuantity());
+                //高于阈值，恢复状态
+                if(entity.getQuantity() > Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 1){
+                    entity.setStatus("0");
+                }
+                requisitionedItemService.saveOrUpdate(entity);
+
+
                 map.put("flag", "N");
                 workflowService.saveBackTask(taskId, id, comment, map);
             }else if(StringUtils.equals("Y", result)){
