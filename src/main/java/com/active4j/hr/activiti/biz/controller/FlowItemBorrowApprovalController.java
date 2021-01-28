@@ -445,6 +445,10 @@ public class FlowItemBorrowApprovalController extends BaseController {
                         return j;
                     }
                     entity.setQuantity(entity.getQuantity() - quantity);
+                    //低于阈值，修改状态
+                    if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
+                        entity.setStatus("1");
+                    }
                     requisitionedItemService.saveOrUpdate(entity);
                     //============================
 
