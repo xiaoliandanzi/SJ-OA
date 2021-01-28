@@ -1,5 +1,6 @@
 package com.active4j.hr.activiti.biz.controller;
 
+import com.active4j.hr.activiti.biz.entity.FlowCarApprovalEntity;
 import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowPaperApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
@@ -12,10 +13,15 @@ import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
+import com.active4j.hr.core.query.QueryUtils;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
+import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysUserService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -24,13 +30,29 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.swing.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -278,7 +300,7 @@ public class FlowPaperApprovalController extends BaseController {
     @RequestMapping("/save")
     @ResponseBody
     public AjaxJson save(WorkflowBaseEntity workflowBaseEntity, FlowPaperApprovalEntity flowPaperApprovalEntity,
-                         String optType, HttpServletRequest request) {
+                         String optType,String download, HttpServletRequest request, HttpServletResponse response) {
         AjaxJson j = new AjaxJson();
         try {
             /*if(!workflowBaseService.validWorkflowBase(workflowBaseEntity, j).isSuccess()) {
@@ -406,6 +428,14 @@ public class FlowPaperApprovalController extends BaseController {
 
                 }
 
+                if(StringUtils.equals(download,"1")){
+                    j.setObj("/oa/flow/biz/paperapproval/excelExport?id="+flowPaperApprovalEntity.getId());
+                    j.setMsg("redirect");
+                    return j;
+                }
+
+
+
             }else {
                 //保存草稿
                 //新增
@@ -441,6 +471,119 @@ public class FlowPaperApprovalController extends BaseController {
         return j;
     }
 
+
+
+    /**
+     * Excel模板下载
+     *
+     * @param response
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/excelExport")
+    public ResponseEntity<Resource> excel2007Export(FlowPaperApprovalEntity flowPaperApprovalEntity ,String id, HttpServletResponse response, HttpServletRequest request, DataGrid dataGrid) {
+        try {
+            ClassPathResource cpr = new ClassPathResource("/static/paper.xlsx");
+
+            InputStream is = cpr.getInputStream();
+            Workbook workbook = new XSSFWorkbook(is);
+            Sheet sheet = workbook.getSheetAt(0);
+
+           flowPaperApprovalEntity = flowPaperApprovalService.getById(id);
+
+
+           //第一行
+            Row row1 = sheet.getRow(1);
+
+            //科室
+            Cell row1_cell2 = row1.getCell(2);
+            row1_cell2.setCellValue(flowPaperApprovalEntity.getDept());
+
+            //起 草 人
+            Cell row1_cell6 = row1.getCell(6);
+            row1_cell6.setCellValue(flowPaperApprovalEntity.getDraftMan());
+
+            //保密级别
+            Cell row1_cell10 = row1.getCell(10);
+            row1_cell10.setCellValue(flowPaperApprovalEntity.getSecretLevel());
+
+
+            //第一行
+            Row row2 = sheet.getRow(2);
+
+            //文件份数
+            Cell row2_cell2 = row2.getCell(2);
+            row2_cell2.setCellValue(flowPaperApprovalEntity.getPaperCount());
+
+            //发文日期
+            Cell row2_cell6 = row2.getCell(6);
+            row2_cell6.setCellValue(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(flowPaperApprovalEntity.getPaperDate()));
+
+            //发文文号
+            Cell row2_cell10 = row2.getCell(10);
+            row2_cell10.setCellValue(flowPaperApprovalEntity.getPaperNumber());
+
+            //第三行
+            Row row3 = sheet.getRow(3);
+            //公开类型
+            Cell row3_cell2 = row3.getCell(2);
+            int paperPublic = flowPaperApprovalEntity.getPaperPublic();
+            String paperPublicString = "";
+            if(paperPublic == 0){
+                paperPublicString = "主动公开□ 依申请公开□ 不予公开√";
+            }else if(paperPublic == 1){
+                paperPublicString = "主动公开√ 依申请公开□ 不予公开□";
+            }else if(paperPublic == 2){
+                paperPublicString = "主动公开□ 依申请公开√ 不予公开□";
+            }
+            row3_cell2.setCellValue(paperPublicString);
+
+            //发放范围
+            Cell row3_cell9 = row3.getCell(9);
+            row3_cell9.setCellValue("发放范围：\r\n"+flowPaperApprovalEntity.getPaperArea());
+
+            //第六行
+            Row row6 = sheet.getRow(6);
+            //文件标题
+            Cell row6_cell1 = row6.getCell(0);
+            row6_cell1.setCellValue("文件标题：\r\n"+flowPaperApprovalEntity.getTitle());
+
+            //第8行
+            Row row8 = sheet.getRow(8);
+            //内容摘要
+            Cell row8_cell1 = row8.getCell(0);
+            row8_cell1.setCellValue("内容摘要：\r\n"+flowPaperApprovalEntity.getPaperAbstract());
+
+            //第16行
+            Row row16 = sheet.getRow(16);
+            //内容摘要
+            Cell row16_cell1 = row16.getCell(0);
+            row16_cell1.setCellValue("备注：\r\n"+flowPaperApprovalEntity.getCommit());
+
+
+            String fileName = "发文审批单.xlsx";
+            downLoadExcel(fileName, response, workbook);
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<Resource>(HttpStatus.OK);
+    }
+
+    public static void downLoadExcel(String fileName, HttpServletResponse response, Workbook workbook) {
+        try {
+            response.setCharacterEncoding("UTF-8");
+            response.setHeader("content-Type", "application/vnd.ms-excel");
+            response.setHeader("Content-Disposition",
+                    "attachment;filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"");
+            workbook.write(response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 被打回 重新提交方法
      *

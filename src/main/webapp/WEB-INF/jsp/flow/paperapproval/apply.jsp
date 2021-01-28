@@ -30,6 +30,7 @@
                     <form class="form-horizontal m-t" id="commonForm" action="flow/biz/paperapproval/save" method="post">
                         <input type="hidden" name="workflowId" id="workflowId" value="${workflowId }">
                         <input type="hidden" name="optType" id="optType">
+                        <input type="hidden" name="download" id="download">
                         <input type="hidden" name="id" id="id" value="${base.id }">
                         <input type="hidden" name="attachment" id="attachment" value="${biz.attachment }">
 
@@ -39,7 +40,10 @@
                             <div class="col-sm-5 col-sm-offset-4">
                                 <button class="btn btn-primary" type="button" onclick="doBtnSaveDraftAction();">保存草稿</button>
                                 <button class="btn btn-primary" type="button" onclick="doBtnSaveApplyAction();">发起申请</button>
-                                <button type="button"  class="btn btn-primary" onclick="printIt()">打印</button>
+
+                                <button type="button"  class="btn btn-primary" onclick="downloadExcel()">导出打印</button>
+
+
                             </div>
                         </div>
                     </form>
@@ -56,6 +60,14 @@
         // 打印页面预览    　　
         wb.execwb(7,1);
     }
+
+    var downloadExcel = function () {
+        $("#download").val("1");
+        $("#optType").val("1");
+        $("#commonForm").submit();
+    }
+
+
     var printIt = function(){
         if (confirm('确定打印吗？')) {
             //wb.execwb(6,6)   ;
@@ -122,6 +134,13 @@
                 $(form).ajaxSubmit({
                     success : function(o) {
                         if (o.success) {
+
+                            if(o.msg == 'redirect'){
+                                window.location.href = o.obj
+                                return;
+                            }
+
+
                             qhTipSuccess('保存成功');
                             location.href='common/goSuccess';
                         } else {
