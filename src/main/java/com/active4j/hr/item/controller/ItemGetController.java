@@ -15,6 +15,9 @@ import com.active4j.hr.item.entity.GetItemEntity;
 import com.active4j.hr.item.entity.RequisitionedItemEntity;
 import com.active4j.hr.item.service.GetItemService;
 import com.active4j.hr.item.service.RequisitionedItemService;
+import com.active4j.hr.system.entity.SysDeptEntity;
+import com.active4j.hr.system.model.SysUserModel;
+import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.work.entity.OaWorkMeetRoomEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -42,6 +45,9 @@ public class ItemGetController extends BaseController {
     @Autowired
     private GetItemService getItemService;
 
+    @Autowired
+    private SysUserService sysUserService;
+
 
     /**
      * 跳转到新增编辑页面
@@ -56,9 +62,22 @@ public class ItemGetController extends BaseController {
         //查询领用物品
         List<RequisitionedItemEntity> lstItems = requisitionedItemService.findGetItem();
         view.addObject("lstItems", lstItems);
+        GetItemEntity tmpEntity = new GetItemEntity();
+        //获取当前用户id
+        String userId = ShiroUtils.getSessionUserId();
+        //获取当前用户个人资料
+        SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
+//        SysDeptEntity department = sysUserService.getUserDepart(userId);
 
         if (StringUtils.isNotEmpty(getItemEntity.getId())) {
             getItemEntity = getItemService.getById(getItemEntity.getId());
+            getItemEntity.setUserName(user.getRealName());
+            getItemEntity.setDepartmentName(user.getDeptName());
+            view.addObject("item", getItemEntity);
+        }else {
+            GetItemEntity item = new GetItemEntity();
+            getItemEntity.setUserName(user.getRealName());
+            getItemEntity.setDepartmentName(user.getDeptName());
             view.addObject("item", getItemEntity);
         }
 

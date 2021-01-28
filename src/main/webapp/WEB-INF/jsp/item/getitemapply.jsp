@@ -27,13 +27,14 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label m-b">领用科室*：</label>
                             <div class="col-sm-5 m-b">
-                                <input id="departmentName" name="departmentName" type="text" class="form-control" required="" value="${item.departmentName }">
+<%--                                <input id="departmentName" name="departmentName" type="text" class="form-control" required="" value="${item.departmentName }">--%>
+                                <textarea id="departmentName" name="departmentName" required="" defaultVal="${departmentName}" class="form-control">${item.departmentName }</textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">领用人*：</label>
                             <div class="col-sm-5">
-                                <textarea id="userName" name="userName" class="form-control">${item.userName }</textarea>
+                                <textarea id="userName" name="userName" required="" defaultVal="${userName}" class="form-control">${item.userName }</textarea>
                             </div>
                         </div>
                         <div class="form-group">
