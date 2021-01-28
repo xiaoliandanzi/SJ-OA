@@ -404,8 +404,10 @@
 <div id="rbbox" hidden="true">
     <div class="notification" style="width: 600px">
         <div class="info">
-            <div class="gbspan" style="font-weight: bolder " ; onclick="closes()"><span>关闭</span></div>
-            <div class="tzspan" style="font-weight: bolder" onclick="jieshou()">接收通知</div>
+            <div class="gbspan" style="font-weight: bolder " ; onclick="closes()"><span><button>关闭</button></span></div>
+            <div class="tzspan" style="font-weight: bolder" onclick="jieshou()">
+                <button>接收通知</button>
+            </div>
             <div id="jqGrid_wrapper" class="jqGrid_wrapper" style="width: 600px">
             </div>
         </div>
@@ -415,8 +417,11 @@
 <div id="rbboxs" hidden="true">
     <div class="notification" style="width: 600px">
         <div class="info">
-            <div class="gbspan" style="font-weight: bolder " ; onclick="closess()"><span>关闭</span></div>
-            <div class="tzspan" style="font-weight: bolder" onclick="jieshou()">接收通知</div>
+            <div class="gbspan" style="font-weight: bolder " ; onclick="closess()"><span><button>关闭</button></span>
+            </div>
+            <div class="tzspan" style="font-weight: bolder" onclick="jieshou()">
+                <button>接收通知</button>
+            </div>
             <div id="jqGrid_wrappers" class="jqGrid_wrappers" style="width: 600px">
             </div>
         </div>
@@ -569,7 +574,7 @@
                 this.getCounts()
         },
         methods: {
-            getCounts(){
+            getCounts() {
                 axios.get('oa/index/workCount').then((msg) => {
                     console.log(msg)
                     console.log(msg.data.obj)
@@ -647,7 +652,6 @@
     getNum();
 
 
-
     function search() {
         $.ajax({
             type: "post",
@@ -667,9 +671,9 @@
             type: "get",
             url: 'oa/goto12345',//目标地址
             success: function (data) {
-                if(data.success){
+                if (data.success) {
                     window.location.href = data.obj;
-                }else {
+                } else {
                     qhTipWarning(data.msg);
                 }
 
