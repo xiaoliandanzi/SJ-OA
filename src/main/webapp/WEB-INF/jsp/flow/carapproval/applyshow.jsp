@@ -41,11 +41,11 @@
         <%@include file="/WEB-INF/jsp/flow/include/inputapp.jsp" %>
     </c:if>
 
-    <div class="form-group" style="margin-top: 30px;">
-        <div class="col-sm-4 col-sm-offset-3">
-            <button type="button"  class="btn btn-primary" onclick="printIt()">打印</button>
-        </div>
-    </div>
+<%--    <div class="form-group" style="margin-top: 30px;">--%>
+<%--        <div class="col-sm-4 col-sm-offset-3">--%>
+<%--            <button type="button"  class="btn btn-primary" onclick="printIt()">打印</button>--%>
+<%--        </div>--%>
+<%--    </div>--%>
 
 </div>
 </body>
