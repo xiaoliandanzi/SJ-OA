@@ -287,7 +287,7 @@
     laydate(start);
     laydate(end);
     function funcchui(){
-        $("#conferee").empty();
+    //    $("#conferee").empty();
         $.ajax({
             url:"meeting/groupBycanhui" ,
             data: {canHuitype: $('#canhuipeo option:selected').attr('id')},
