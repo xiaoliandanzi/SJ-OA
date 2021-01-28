@@ -389,7 +389,7 @@ public class CarRecordController extends BaseController {
 
 
 
-            String fileName = "申请记录.xlsx";
+            String fileName = "物品申请记录.xlsx";
             downLoadExcel(fileName, response, workbook);
 
 
