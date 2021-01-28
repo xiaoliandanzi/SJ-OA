@@ -113,6 +113,10 @@ public class ItemGetController extends BaseController {
             }
 
             entity.setQuantity(entity.getQuantity() - quantity);
+            //低于阈值，修改状态
+            if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
+                entity.setStatus("1");
+            }
 
             if (StringUtils.isEmpty(getItemEntity.getId())) {
                 //新增方法

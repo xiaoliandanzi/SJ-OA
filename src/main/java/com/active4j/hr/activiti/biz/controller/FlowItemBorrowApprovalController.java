@@ -385,8 +385,34 @@ public class FlowItemBorrowApprovalController extends BaseController {
                     workflowBaseEntity.setWorkflowId(workflow.getId());
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
                     workflowBaseEntity.setStatus("1"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
+
                     //保存业务数据
                     flowItemBorrowApprovalService.saveNewItemBorrow(workflowBaseEntity, flowItemBorrowApprovalEntity);
+
+                    //==============减去库存==============
+                    int quantity = flowItemBorrowApprovalEntity.getQuantity();
+                    List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(flowItemBorrowApprovalEntity.getItemName());
+                    if (stockEntity.size() != 1) {
+                        j.setSuccess(false);
+                        j.setMsg("库存多项物品冲突");
+                        return j;
+                    }
+                    RequisitionedItemEntity entity = stockEntity.get(0);
+                    if (quantity > entity.getQuantity()) {
+                        j.setSuccess(false);
+                        j.setMsg("库存不足，剩余" + entity.getQuantity());
+                        return j;
+                    }
+                    entity.setQuantity(entity.getQuantity() - quantity);
+                    //低于阈值，修改状态
+                    if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
+                        entity.setStatus("1");
+                    }
+
+                    requisitionedItemService.saveOrUpdate(entity);
+                    //============================
+
+
 
                     //启动流程
                     //赋值流程变量
@@ -400,7 +426,29 @@ public class FlowItemBorrowApprovalController extends BaseController {
                     MyBeanUtils.copyBeanNotNull2Bean(flowItemBorrowApprovalService, biz);
                     //已申请
                     base.setStatus("1");
+
                     flowItemBorrowApprovalService.saveUpdate(base, biz);
+
+
+                    //==============减去库存==============
+                    int quantity = flowItemBorrowApprovalEntity.getQuantity();
+                    List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(flowItemBorrowApprovalEntity.getItemName());
+                    if (stockEntity.size() != 1) {
+                        j.setSuccess(false);
+                        j.setMsg("库存多项物品冲突");
+                        return j;
+                    }
+                    RequisitionedItemEntity entity = stockEntity.get(0);
+                    if (quantity > entity.getQuantity()) {
+                        j.setSuccess(false);
+                        j.setMsg("库存不足，剩余" + entity.getQuantity());
+                        return j;
+                    }
+                    entity.setQuantity(entity.getQuantity() - quantity);
+                    requisitionedItemService.saveOrUpdate(entity);
+                    //============================
+
+
 
                     //启动流程
                     //赋值流程变量

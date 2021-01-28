@@ -355,6 +355,29 @@ public class FlowTmpCardApprovalController extends BaseController{
                     //保存业务数据
                     flowTmpCardApprovalService.saveNewTmpCard(workflowBaseEntity, flowTmpCardApprovalEntity);
 
+                    //==============减去库存==============
+                    int quantity = flowTmpCardApprovalEntity.getQuantity();
+                    List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(flowTmpCardApprovalEntity.getCardName());
+                    if (stockEntity.size() != 1) {
+                        j.setSuccess(false);
+                        j.setMsg("库存多项物品冲突");
+                        return j;
+                    }
+                    RequisitionedItemEntity entity = stockEntity.get(0);
+                    if (quantity > entity.getQuantity()) {
+                        j.setSuccess(false);
+                        j.setMsg("库存不足，剩余" + entity.getQuantity());
+                        return j;
+                    }
+                    entity.setQuantity(entity.getQuantity() - quantity);
+                    //低于阈值，修改状态
+                    if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
+                        entity.setStatus("1");
+                    }
+
+                    requisitionedItemService.saveOrUpdate(entity);
+                    //============================
+
                     //启动流程
                     //赋值流程变量
                     Map<String, Object> variables = new HashMap<String, Object>();
@@ -368,6 +391,24 @@ public class FlowTmpCardApprovalController extends BaseController{
                     //已申请
                     base.setStatus("1");
                     flowTmpCardApprovalService.saveUpdate(base, biz);
+
+                    //==============减去库存==============
+                    int quantity = flowTmpCardApprovalEntity.getQuantity();
+                    List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(flowTmpCardApprovalEntity.getCardName());
+                    if (stockEntity.size() != 1) {
+                        j.setSuccess(false);
+                        j.setMsg("库存多项物品冲突");
+                        return j;
+                    }
+                    RequisitionedItemEntity entity = stockEntity.get(0);
+                    if (quantity > entity.getQuantity()) {
+                        j.setSuccess(false);
+                        j.setMsg("库存不足，剩余" + entity.getQuantity());
+                        return j;
+                    }
+                    entity.setQuantity(entity.getQuantity() - quantity);
+                    requisitionedItemService.saveOrUpdate(entity);
+                    //============================
 
                     //启动流程
                     //赋值流程变量
