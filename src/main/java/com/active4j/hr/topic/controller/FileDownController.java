@@ -177,28 +177,27 @@ public class FileDownController extends BaseController {
         exportWord(request, response, getprintqdStr(oaMeeting));
     }
 
-    private String getprintqdStr(OaMeeting oaMeeting) throws ParseException {
-        String meetingId = oaMeeting.getMeetingId();
-        String meetingName = oaMeeting.getMeetingName();
+    private String getprintqdStr(OaMeeting oaMeeting) throws ParseException, UnsupportedEncodingException {
         String str[] = oaMeeting.getConferee().split(",");
         String html = "";
         for (int i = 0; i < str.length; i++) {
-            String THIS = "   <tr  style=\"height: 60px\">\n" +
-                    "       <td style=\"border: 1px solid; \">" + str[i] + "</td>\n" +
-                    "       <td  style=\"border: 1px solid; \" ></td>\n" +
-                    "      </tr>\n";
+            String init = (str[i].getBytes("utf-8")).toString();
+            String THIS = "<tr style=\"height: 60px\">\n" +
+                    "            <td style=\"border: 1px solid\">" + init + "</td>\n" +
+                    "            <td style=\"border: 1px solid\"></td>\n" +
+                    "      </tr>";
             html = html + THIS;
         }
-        return
-                " <div><h1 style=\"text-align: center\">签到表</h1></div><br><br>\n" +
-                        " <table width=\"600px\" height=\"40px\" border=\"1px\" style=\"text-align: center; border: 1px solid;border-collapse: collapse\">\n" +
-                        " <tr>\n" +
-                        " <td style=\"width: 250px; border: 1px solid;\">姓名</td>\n" +
-                        "   <td style=\"width: 250px; border: 1px solid; \">签到</td>\n" +
-                        "  </tr>\n" +
-                        "  " + html + " " +
-                        "  </table>\n" +
-                        "</div>\n";
+        return "<div style=\"\">\n" +
+                "    <div><h1 style=\"text-align: center\">签到表</h1></div>\n" +
+                "    <table width=\"600px\" height=\"40px\" border=\"1px\"\n" +
+                "           style=\"text-align: center; border: 1px solid;border-collapse: collapse;width: 600px;height: 40px;\">\n" +
+                "        <tr>\n" +
+                "            <td style=\"width: 300px; border: 1px solid\">姓名</td>\n" +
+                "            <td style=\"width: 300px; border: 1px solid\">签到</td>\n" +
+                "        </tr>\n" + html +
+                "    </table>\n" +
+                "</div>\n";
     }
 
     private String getMeetingStr(OaMeeting oaMeeting) throws ParseException {
