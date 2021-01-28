@@ -66,6 +66,14 @@
 								</div>
 							</div>
 							<div class="form-group">
+								<label class="col-sm-2 control-label">参会人：</label>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<t:choose url="common/selectUsers" hiddenName="attendeeId" hiddenValue="${attendeeId}" textValue="${attendee }" textName="attendee" hiddenId="attendeeId" textId="attendee"></t:choose>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
 								<label class="col-sm-2 control-label">会议内容：</label>
 								<div class="col-sm-4">
 									<textarea rows="4" id="content" name="content" class="form-control" >${meet.content}</textarea>

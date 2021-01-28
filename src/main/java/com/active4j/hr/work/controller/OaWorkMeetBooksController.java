@@ -12,6 +12,7 @@ import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysUserService;
+import com.active4j.hr.system.util.MessageUtils;
 import com.active4j.hr.work.entity.OaWorkMeetRoomBooksEntity;
 import com.active4j.hr.work.entity.OaWorkMeetRoomEntity;
 import com.active4j.hr.work.service.OaWorkMeetRoomBooksService;
@@ -29,6 +30,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -149,7 +152,6 @@ public class OaWorkMeetBooksController extends BaseController {
 				j.setMsg("请填写正确的预定时间");
 				return j;
 			}
-			
 			//日期赋值
 			oaWorkMeetRoomBooksEntity.setStrBookDate(DateUtils.date2Str(oaWorkMeetRoomBooksEntity.getBookDate(), DateUtils.SDF_YYYY_MM_DD));
 			
@@ -180,6 +182,7 @@ public class OaWorkMeetBooksController extends BaseController {
 				j.setMsg("当前会议室已经被预定");
 				return j;
 			}
+
 			
 			if(StringUtils.isEmpty(oaWorkMeetRoomBooksEntity.getId())) {
 				if(StringUtils.isNotEmpty(meetRoomId)) {
@@ -210,16 +213,42 @@ public class OaWorkMeetBooksController extends BaseController {
 					}
 					tmp.setMeetRoomId(meetRoomId);
 				}
-				
 				oaWorkMeetRoomBooksService.saveOrUpdate(tmp);
 				
 			}
+			sendMessage2Attendee(oaWorkMeetRoomBooksEntity.getAttendee(),
+					oaWorkMeetRoomBooksEntity.getUserName(),
+					oaWorkMeetRoomBooksEntity.getBookDate(),
+					oaWorkMeetRoomBooksEntity.getStartDate(),
+					oaWorkMeetRoomBooksEntity.getEndDate(),
+					oaWorkMeetRoomBooksEntity.getMeetRoomId());
 		}catch(Exception e) {
 			j.setSuccess(false);
 			j.setMsg(GlobalConstant.Err_Msg_All);
 			log.error("保存会议室预定信息失败，错误信息:{}", e);
 		}
 		return j;
+	}
+
+	private void sendMessage2Attendee(String attendees, String userName, Date bookDate,
+		Date startTime, Date endTime, String roomId){
+		SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm");
+		try {
+			if(attendees.isEmpty()) {
+				return;
+			}
+			String[] attendeeList = attendees.split(",");
+			for (int i = 0; i < attendeeList.length; i++) {
+				String content = String.format("您好，%s 邀请您在 %s 的 %s 至 %s 于%s会议室参加会议",
+						userName, formatterDate.format(bookDate),
+						formatterTime.format(startTime), formatterTime.format(endTime),
+						oaWorkMeetRoomService.getById(roomId).getName());
+				MessageUtils.SendSysMessage(sysUserService.getUserByRealName(attendeeList[i]).getId(), content);
+			}
+		} catch (Exception ex) {
+			log.error("发送会议信息失败，错误信息:{}", ex);
+		}
 	}
 	
 	/**
