@@ -115,6 +115,11 @@
         border-left: 0px none !important;
         background: #FFF;
     }
+
+    .eventIndex {
+        max-height: 220px;
+        overflow: hidden;
+    }
 </style>
 <head>
     <t:base type="default,jqgrid"></t:base>
@@ -354,9 +359,9 @@
                         </div>
                     </div>
                 </div>
-                <div>
+                <div class="eventIndex">
                     <div class="articleItem" v-for="(item,index) in shijian" :key="index">
-                        <div class="eventIndex articleCenter">{{index+1}}、{{item.content}}</div>
+                        <div class="">{{index+1}}、{{item.content}}</div>
                         <!-- <div class="eventTitle"></div>
                         <div class="eventMsg"></div> -->
                     </div>
