@@ -146,6 +146,7 @@
     <t:dgToolBar label="批量打印" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
     <t:dgToolBar label="打印议题单" icon="fa fa-clock-o" type="define" funName="printItAll"></t:dgToolBar>
     <t:dgToolBar label="批量删除" icon="fa fa-clock-o" type="define" funName="deleteAll"></t:dgToolBar>
+    <t:dgToolBar label="打印签到表" icon="fa fa-clock-o" type="define" funName="printqd"></t:dgToolBar>
     <t:dgDelOpt label="删除" url="meeting/tablesdel?id={id}" />
 </t:datagrid>
 
@@ -174,6 +175,25 @@
             $("#meetingId").removeAttr("disabled");
         }
     }*/
+   function printqd() {
+       var conferee=$("#conferee").val();
+       if(conferee==""||conferee==null){
+           qhAlert('参会人员为空不能打印');
+           return;
+       }
+       var x = new XMLHttpRequest();
+       x.open("GET", "topicFile/getprintqdHtml?conferee="+conferee,true);
+       x.responseType = 'blob';
+       x.onload = function (e) {
+           var url = window.URL.createObjectURL(x.response)
+           var a = document.createElement('a');
+           a.href = url
+           a.download = "签到表.doc"
+           a.click()
+       }
+       x.send();
+
+   }
     function funchy(){
         var meetingTime=$("#meetingTime").val();
         var meetingendTime=$("#meetingendTime").val();
