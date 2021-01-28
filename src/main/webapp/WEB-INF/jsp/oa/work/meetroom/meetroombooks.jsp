@@ -60,14 +60,14 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">设备配置：</label>
-								<div class="col-sm-8">
+								<label class="col-sm-2 control-label">设备配置：</label>
+								<div class="col-sm-4">
 									<input id="equipment" name="equipment" class="form-control" >${meet.equipment}</>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">会议内容：</label>
-								<div class="col-sm-8">
+								<label class="col-sm-2 control-label">会议内容：</label>
+								<div class="col-sm-4">
 									<textarea rows="4" id="content" name="content" class="form-control" >${meet.content}</textarea>
 								</div>
 							</div>
