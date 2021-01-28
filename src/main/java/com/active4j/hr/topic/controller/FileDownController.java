@@ -213,7 +213,7 @@ public class FileDownController extends BaseController {
         String weekday = getWeekOfDate(date);
         String getDuringDay = getDuringDay(hours);
         int hour = calendar.get(Calendar.HOUR_OF_DAY); //时（24小时制）
-        String time = datetime + weekday + getDuringDay + ":" + hour + ":00";
+        String time = datetime + "("+weekday+")" + getDuringDay + ":" + hour + ":00";
         QueryWrapper<OaTopic> queryWrapper = new QueryWrapper<>();
         String str[] = oaMeeting.getIssueId().split(",");
         queryWrapper.in("id", str);
@@ -269,13 +269,6 @@ public class FileDownController extends BaseController {
                 "        <tr style=\"height: 60px\">\n" +
                 "            <td style=\"border: 1px solid\">二</td>\n" +
                 "            <td style=\"border: 1px solid;text-align: left\" class=\"height-td\" colspan=\"4\">审议事项</td>\n" +
-                "        </tr>\n" +
-                "        <tr style=\"height: 60px\">\n" +
-                "            <td style=\"border: 1px solid\">3</td>\n" +
-                "            <td style=\"border: 1px solid\" class=\"height-td\"></td>\n" +
-                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
-                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
-                "            <td style=\"width: 140px;border: 1px solid\"></td>\n" +
                 "        </tr>\n" +
                 "  " + html + " " +
                 "        <tr style=\"height: 60px\">\n" +

@@ -763,14 +763,16 @@ public class OaMeetingController {
         QueryWrapper<OaTopic> queryWrapperS = new QueryWrapper<>();
         queryWrapperS.in("ID",str);
         List<OaTopic> lists=topicService.list(queryWrapperS);
-        List<UploadAttachmentEntity> list =new ArrayList<>();
+        List<String> list =new ArrayList<>();
         for (OaTopic oa:lists){
             if (!StringUtil.isEmpty(oa.getFileId())) {
                 String[] fileIds = oa.getFileId().split(",");
                 QueryWrapper<UploadAttachmentEntity> queryWrapper = new QueryWrapper<>();
                 queryWrapper.in("ID", fileIds);
-                UploadAttachmentEntity up = uploadAttachmentService.list(queryWrapper).get(0);
-                list.add(up);
+               List<UploadAttachmentEntity> uplist = uploadAttachmentService.list(queryWrapper);
+               for (UploadAttachmentEntity up: uplist ){
+                   list.add(up.getId());
+               }
             }
         }
         j.setSuccess(true);
