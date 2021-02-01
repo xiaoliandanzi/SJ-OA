@@ -52,6 +52,9 @@ public class OaWorkMeetRoomBooksEntity extends BaseEntity {
 	@TableField("CONTENT")
 	private String content;
 
+	@TableField("ATTENDEE")
+	private String attendee;
+
 	@TableField("EQUIPMENT")
 	private String equipment;
 

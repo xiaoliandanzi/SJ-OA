@@ -226,16 +226,17 @@ public class IndexPostController extends BaseController {
         try{
             String userId = ShiroUtils.getSessionUserId();
             //获取当前用户个人资料
-            String userName = sysUserService.getInfoByUserId(userId).get(0).getRealName();
-//            String userName = "安监";
-            String password = getPassword(userName);
+
+            String deptName = sysUserService.getInfoByUserId(userId).get(0).getDeptName();
+///            String userName = "安监";
+            String password = getPassword(deptName);
             if (password == null || password.isEmpty()){
                 json.setSuccess(false);
-                json.setMsg("12345系统没有您的账号");
+                json.setMsg("对不起，12345系统没有找到您科室的账号");
                 return json;
             }
             json.setObj(String.format("http://8.131.95.226:9001/login/main2?username=%s&password=%s&rememberMe=ture",
-                    URLEncoder.encode(userName
+                    URLEncoder.encode(deptName
                             , "utf-8"), password));
         }catch (Exception ex) {
 

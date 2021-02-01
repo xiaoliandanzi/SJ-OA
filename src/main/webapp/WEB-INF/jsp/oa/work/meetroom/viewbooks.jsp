@@ -41,7 +41,7 @@
 				dayClick: function (date, allDay, jsEvent, view){
 					var currentDate = new Date(date).QHformat('yyyy-MM-dd');
 					var roomId = $("#roomId").val();
-					var url = 'oa/work/meetRoom/bookview?id=' + roomId + '&currentDate=' + currentDate;
+					var url = 'oa/work/meetRoomBooks/addorupdate?id=' + roomId + '&currentDate=' + currentDate;
 					parent.layer.open({
 						type : 2,
 						title : '预定会议室',
