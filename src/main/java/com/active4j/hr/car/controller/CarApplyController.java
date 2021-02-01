@@ -1,5 +1,6 @@
 package com.active4j.hr.car.controller;
 
+import com.active4j.hr.activiti.biz.entity.FlowCarApprovalEntity;
 import com.active4j.hr.activiti.entity.WorkflowFormEntity;
 import com.active4j.hr.activiti.entity.WorkflowMngEntity;
 import com.active4j.hr.activiti.service.WorkflowFormService;
@@ -15,6 +16,7 @@ import com.active4j.hr.core.util.ListUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.system.entity.SysRoleEntity;
+import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.work.entity.OaWorkMeetRoomBooksEntity;
 import com.active4j.hr.work.entity.OaWorkMeetRoomEntity;
@@ -82,6 +84,10 @@ public class CarApplyController extends BaseController {
                 view = new ModelAndView("redirect:" + form.getPath() +
                         "?formId=" + workflowMngEntity.getFormId()
                         + "&workflowId=" + workflowMngEntity.getId());
+//                SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
+//                FlowCarApprovalEntity biz = new FlowCarApprovalEntity();
+//                biz.setUseDepartment(user.getDeptName());
+//                view.addObject("biz",biz);
                 return view;
             }
         }

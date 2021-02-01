@@ -110,9 +110,23 @@
 
         // 文件上传成功，给item添加成功class, 用样式标记上传成功。
         uploader2.on('uploadSuccess', function(file, data) {
+            // var filePath = data.attributes.filePath;
+            // $("#fileList").html(file.name);
+            // $("#attachment").val(filePath);
+
             var filePath = data.attributes.filePath;
-            $("#fileList").html(file.name);
-            $("#attachment").val(filePath);
+            var count = $(".file-name").length;
+            $("#fileList").append("<div class='file-name' id='file-name"+(count+1)+"'>"+file.name+"<a href='javascript:removeFile("+(count+1)+")'>删除</a></div>")
+            // $("#fileList").html(file.name);
+            var attachment = $("#attachment").val();
+            if(attachment != ''){
+                attachment = JSON.parse(attachment)
+            }else{
+                attachment = [];
+            }
+            attachment.push(filePath)
+
+            $("#attachment").val(JSON.stringify(attachment));
         });
 
         // 文件上传失败，显示上传出错。
@@ -154,6 +168,10 @@
             }
         });
     });
+
+    function removeFile(index) {
+        $("#file-name"+index).remove();
+    }
 
     //保存草稿
     function doBtnSaveDraftAction() {
