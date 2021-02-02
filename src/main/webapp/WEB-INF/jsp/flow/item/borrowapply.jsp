@@ -11,6 +11,7 @@
 <html>
 <head>
     <t:base type="default,laydate,icheck,summernote"></t:base>
+    <link href="static/layui/css/layui.css" rel="stylesheet"/>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">

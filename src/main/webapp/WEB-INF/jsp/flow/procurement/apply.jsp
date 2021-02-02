@@ -11,6 +11,7 @@
 <html>
 <head>
     <t:base type="default,laydate,icheck,summernote"></t:base>
+    <link href="static/layui/css/layui.css" rel="stylesheet"/>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -25,6 +26,7 @@
                         <input type="hidden" name="workflowId" id="workflowId" value="${workflowId }">
                         <input type="hidden" name="optType" id="optType">
                         <input type="hidden" name="id" id="id" value="${base.id }">
+
                         <%@include file="/WEB-INF/jsp/flow/procurement/form.jsp" %>
                         <div class="form-group" style="margin-top: 30px;">
                             <div class="col-sm-4 col-sm-offset-3">
@@ -40,6 +42,9 @@
 </body>
 
 <script type="text/javascript">
+
+
+
 
     //表单验证
     $(function() {
