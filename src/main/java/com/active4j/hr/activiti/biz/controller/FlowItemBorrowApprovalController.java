@@ -217,7 +217,7 @@ public class FlowItemBorrowApprovalController extends BaseController {
                 String businessId = base.getBusinessId();
                 FlowItemBorrowApprovalEntity flowItemBorrowApprovalEntity = flowItemBorrowApprovalService.getById(businessId);
 
-                String json_data = flowItemBorrowApprovalEntity.getJson_data();
+                String json_data = flowItemBorrowApprovalEntity.getJsonData();
                 JSONArray array = JSON.parseArray(json_data);
                 for (int i = 0; i < array.size(); i++) {
                     JSONObject jo = array.getJSONObject(i);
@@ -361,7 +361,7 @@ public class FlowItemBorrowApprovalController extends BaseController {
             workflowBaseEntity.setLevel("0");
 
 
-            if(null == flowItemBorrowApprovalEntity.getJson_data()){
+            if(null == flowItemBorrowApprovalEntity.getJsonData()){
                 j.setSuccess(false);
                 j.setMsg("物品规格不能为空");
                 return j;
@@ -427,7 +427,7 @@ public class FlowItemBorrowApprovalController extends BaseController {
                     flowItemBorrowApprovalService.saveNewItemBorrow(workflowBaseEntity, flowItemBorrowApprovalEntity);
 
                     //==============减去库存==============
-                    String json_data = flowItemBorrowApprovalEntity.getJson_data();
+                    String json_data = flowItemBorrowApprovalEntity.getJsonData();
                     JSONArray array = JSON.parseArray(json_data);
                     for (int i = 0; i < array.size(); i++) {
                         JSONObject jo = array.getJSONObject(i);
@@ -473,7 +473,7 @@ public class FlowItemBorrowApprovalController extends BaseController {
 
 
                     //==============减去库存==============
-                    String json_data = flowItemBorrowApprovalEntity.getJson_data();
+                    String json_data = flowItemBorrowApprovalEntity.getJsonData();
                     JSONArray array = JSON.parseArray(json_data);
                     for (int i = 0; i < array.size(); i++) {
                         JSONObject jo = array.getJSONObject(i);

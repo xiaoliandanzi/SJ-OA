@@ -327,7 +327,7 @@ public class FlowProcurementApprovalController extends BaseController{
             workflowBaseEntity.setLevel("0");
 
 
-            if(null == flowProcurementApprovalEntity.getJson_data()){
+            if(null == flowProcurementApprovalEntity.getJsonData()){
                 j.setSuccess(false);
                 j.setMsg("物品规格不能为空");
                 return j;

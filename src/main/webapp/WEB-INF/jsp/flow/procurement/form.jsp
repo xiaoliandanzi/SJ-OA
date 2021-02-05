@@ -32,7 +32,7 @@
         <table id="demo"></table>
     </div>
 </div>
-<input type="hidden" name="json_data" id="json_data">
+<input type="hidden" name="jsonData" id="jsonData">
 
 <div class="form-group" style="margin-top: 30px;">
     <label class="col-sm-3 control-label"></label>
@@ -106,6 +106,11 @@
 
     var list = [];
     var table;
+    var is_show = false;
+    <c:if test="${biz.jsonData != null }">
+         list = ${biz.jsonData }
+         is_show = true;
+    </c:if>
 
     function add(){
         layer.confirm('<div class="input-hidden form-group">\n' +
@@ -178,7 +183,7 @@
 
 
     function render_table() {
-        $("#json_data").val(JSON.stringify(list))
+        $("#jsonData").val(JSON.stringify(list))
         var count = 0
         for(var i in list){
             var item = list[i];
@@ -186,19 +191,34 @@
         }
         $("#price").val(count)
         //第一个实例
-        table.render({
-            elem: '#demo'
-            ,data: list
-            ,cols: [[ //表头
-                {field: 'itemName', title: '品名', width:80}
-                ,{field: 'type', title: '品牌、规格型号', width:80}
-                ,{field: 'number', title: '数量', width:80}
-                ,{field: 'unitPrice', title: '单价', width:80}
-                ,{field: 'purpose', title: '用途', width:80}
-                ,{field: 'Subtotal', title: '小计', width:80}
-                ,{field: 'action', title: '操作', width:100}
-            ]]
-        });
+        if(is_show){
+            table.render({
+                elem: '#demo'
+                ,data: list
+                ,cols: [[ //表头
+                    {field: 'itemName', title: '品名', width:80}
+                    ,{field: 'type', title: '品牌、规格型号', width:80}
+                    ,{field: 'number', title: '数量', width:80}
+                    ,{field: 'unitPrice', title: '单价', width:80}
+                    ,{field: 'purpose', title: '用途', width:80}
+                    ,{field: 'Subtotal', title: '小计', width:80}
+                ]]
+            });
+        }else{
+            table.render({
+                elem: '#demo'
+                ,data: list
+                ,cols: [[ //表头
+                    {field: 'itemName', title: '品名', width:80}
+                    ,{field: 'type', title: '品牌、规格型号', width:80}
+                    ,{field: 'number', title: '数量', width:80}
+                    ,{field: 'unitPrice', title: '单价', width:80}
+                    ,{field: 'purpose', title: '用途', width:80}
+                    ,{field: 'Subtotal', title: '小计', width:80}
+                    ,{field: 'action', title: '操作', width:100}
+                ]]
+            });
+        }
     }
     
     function removeItem(index) {

@@ -25,7 +25,7 @@
         <table id="demo"></table>
     </div>
 </div>
-<input type="hidden" name="json_data" id="json_data">
+<input type="hidden" name="jsonData" id="jsonData">
 
 <div class="form-group" style="margin-top: 30px;">
     <label class="col-sm-3 control-label"></label>
@@ -97,8 +97,12 @@
 
     var list = [];
     var table;
+    <c:if test="${biz.jsonData != null }">
+        list = ${biz.jsonData }
+    </c:if>
 
-    function add(){
+
+        function add(){
         layer.confirm('<div class="form-group input-hidden">\n' +
             '    <label class="col-sm-3 control-label">借用物品*：</label>\n' +
             '    <div class="col-sm-5">\n' +
@@ -147,7 +151,7 @@
 
 
     function render_table() {
-        $("#json_data").val(JSON.stringify(list))
+        $("#jsonData").val(JSON.stringify(list))
 
         //第一个实例
         table.render({
