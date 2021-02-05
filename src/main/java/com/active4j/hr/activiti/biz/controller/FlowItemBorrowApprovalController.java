@@ -19,6 +19,9 @@ import com.active4j.hr.item.entity.RequisitionedItemEntity;
 import com.active4j.hr.item.service.RequisitionedItemService;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysUserService;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -213,14 +216,24 @@ public class FlowItemBorrowApprovalController extends BaseController {
                 WorkflowBaseEntity base = workflowBaseService.getById(id);
                 String businessId = base.getBusinessId();
                 FlowItemBorrowApprovalEntity flowItemBorrowApprovalEntity = flowItemBorrowApprovalService.getById(businessId);
-                List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(flowItemBorrowApprovalEntity.getItemName());
-                RequisitionedItemEntity entity = stockEntity.get(0);
-                entity.setQuantity(entity.getQuantity() + flowItemBorrowApprovalEntity.getQuantity());
-                //高于阈值，恢复状态
-                if(entity.getQuantity() > Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 1){
-                    entity.setStatus("0");
+
+                String json_data = flowItemBorrowApprovalEntity.getJson_data();
+                JSONArray array = JSON.parseArray(json_data);
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject jo = array.getJSONObject(i);
+                    String itemName = jo.getString("itemName");
+                    int quantity = jo.getInteger("quantity");
+                    List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(itemName);
+                    RequisitionedItemEntity entity = stockEntity.get(0);
+                    entity.setQuantity(entity.getQuantity() + quantity);
+                    //高于阈值，恢复状态
+                    if(entity.getQuantity() > Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 1){
+                        entity.setStatus("0");
+                    }
+                    requisitionedItemService.saveOrUpdate(entity);
                 }
-                requisitionedItemService.saveOrUpdate(entity);
+
+
 
 
                 map.put("flag", "N");
@@ -414,26 +427,31 @@ public class FlowItemBorrowApprovalController extends BaseController {
                     flowItemBorrowApprovalService.saveNewItemBorrow(workflowBaseEntity, flowItemBorrowApprovalEntity);
 
                     //==============减去库存==============
-                    int quantity = flowItemBorrowApprovalEntity.getQuantity();
-                    List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(flowItemBorrowApprovalEntity.getItemName());
-                    if (stockEntity.size() != 1) {
-                        j.setSuccess(false);
-                        j.setMsg("库存多项物品冲突");
-                        return j;
+                    String json_data = flowItemBorrowApprovalEntity.getJson_data();
+                    JSONArray array = JSON.parseArray(json_data);
+                    for (int i = 0; i < array.size(); i++) {
+                        JSONObject jo = array.getJSONObject(i);
+                        String itemName = jo.getString("itemName");
+                        int quantity = jo.getInteger("quantity");
+                        List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(itemName);
+                        if (stockEntity.size() != 1) {
+                            j.setSuccess(false);
+                            j.setMsg("库存多项物品冲突");
+                            return j;
+                        }
+                        RequisitionedItemEntity entity = stockEntity.get(0);
+                        if (quantity > entity.getQuantity()) {
+                            j.setSuccess(false);
+                            j.setMsg("库存不足，剩余" + entity.getQuantity());
+                            return j;
+                        }
+                        entity.setQuantity(entity.getQuantity() - quantity);
+                        //低于阈值，修改状态
+                        if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
+                            entity.setStatus("1");
+                        }
+                        requisitionedItemService.saveOrUpdate(entity);
                     }
-                    RequisitionedItemEntity entity = stockEntity.get(0);
-                    if (quantity > entity.getQuantity()) {
-                        j.setSuccess(false);
-                        j.setMsg("库存不足，剩余" + entity.getQuantity());
-                        return j;
-                    }
-                    entity.setQuantity(entity.getQuantity() - quantity);
-                    //低于阈值，修改状态
-                    if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
-                        entity.setStatus("1");
-                    }
-
-                    requisitionedItemService.saveOrUpdate(entity);
                     //============================
 
 
@@ -455,25 +473,31 @@ public class FlowItemBorrowApprovalController extends BaseController {
 
 
                     //==============减去库存==============
-                    int quantity = flowItemBorrowApprovalEntity.getQuantity();
-                    List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(flowItemBorrowApprovalEntity.getItemName());
-                    if (stockEntity.size() != 1) {
-                        j.setSuccess(false);
-                        j.setMsg("库存多项物品冲突");
-                        return j;
+                    String json_data = flowItemBorrowApprovalEntity.getJson_data();
+                    JSONArray array = JSON.parseArray(json_data);
+                    for (int i = 0; i < array.size(); i++) {
+                        JSONObject jo = array.getJSONObject(i);
+                        String itemName = jo.getString("itemName");
+                        int quantity = jo.getInteger("quantity");
+                        List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(itemName);
+                        if (stockEntity.size() != 1) {
+                            j.setSuccess(false);
+                            j.setMsg("库存多项物品冲突");
+                            return j;
+                        }
+                        RequisitionedItemEntity entity = stockEntity.get(0);
+                        if (quantity > entity.getQuantity()) {
+                            j.setSuccess(false);
+                            j.setMsg("库存不足，剩余" + entity.getQuantity());
+                            return j;
+                        }
+                        entity.setQuantity(entity.getQuantity() - quantity);
+                        //低于阈值，修改状态
+                        if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
+                            entity.setStatus("1");
+                        }
+                        requisitionedItemService.saveOrUpdate(entity);
                     }
-                    RequisitionedItemEntity entity = stockEntity.get(0);
-                    if (quantity > entity.getQuantity()) {
-                        j.setSuccess(false);
-                        j.setMsg("库存不足，剩余" + entity.getQuantity());
-                        return j;
-                    }
-                    entity.setQuantity(entity.getQuantity() - quantity);
-                    //低于阈值，修改状态
-                    if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
-                        entity.setStatus("1");
-                    }
-                    requisitionedItemService.saveOrUpdate(entity);
                     //============================
 
 
