@@ -69,7 +69,17 @@
             return;
         }
 
-        location.href = "func/upload/download?id=" + rowData.attachment;
+        var data = JSON.parse(rowData.attachment)
+
+        if(data){
+            for (var i in data){
+                var item = data[i]
+                window.open("func/upload/download?id=" + item)
+            }
+        }else{
+            location.href = "func/upload/download?id=" + rowData.attachment;
+        }
+
     };
 
 </script>
