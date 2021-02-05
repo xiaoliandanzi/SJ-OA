@@ -92,4 +92,9 @@ public class FlowProcurementApprovalEntity  extends BaseEntity {
     @TableField("APPLYSTATUS")
     private Integer applyStatus;
 
+    /**
+     * 多规格数据
+     */
+    @TableField("JSON_DATA")
+    private String json_data;
 }

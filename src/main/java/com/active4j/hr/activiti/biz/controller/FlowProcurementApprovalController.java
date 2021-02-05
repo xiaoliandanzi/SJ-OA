@@ -327,11 +327,17 @@ public class FlowProcurementApprovalController extends BaseController{
             workflowBaseEntity.setLevel("0");
 
 
-            if(StringUtils.isBlank(flowProcurementApprovalEntity.getDepartmentName())) {
+            if(null == flowProcurementApprovalEntity.getJson_data()){
                 j.setSuccess(false);
-                j.setMsg("采购部门不能为空");
+                j.setMsg("物品规格不能为空");
                 return j;
             }
+
+//            if(StringUtils.isBlank(flowProcurementApprovalEntity.getDepartmentName())) {
+//                j.setSuccess(false);
+//                j.setMsg("采购部门不能为空");
+//                return j;
+//            }
 
 
             if(StringUtils.isBlank(flowProcurementApprovalEntity.getAgent())) {

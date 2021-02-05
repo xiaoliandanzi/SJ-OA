@@ -347,17 +347,27 @@ public class FlowItemBorrowApprovalController extends BaseController {
 
             workflowBaseEntity.setLevel("0");
 
-            if(null == flowItemBorrowApprovalEntity.getItemName()) {
+
+            if(null == flowItemBorrowApprovalEntity.getJson_data()){
                 j.setSuccess(false);
-                j.setMsg("物品名称不能为空");
+                j.setMsg("物品规格不能为空");
                 return j;
             }
 
-            if(null == flowItemBorrowApprovalEntity.getQuantity()) {
-                j.setSuccess(false);
-                j.setMsg("借用数量不能为空");
-                return j;
-            }
+//            if(null == flowItemBorrowApprovalEntity.getItemName()) {
+//                j.setSuccess(false);
+//                j.setMsg("物品名称不能为空");
+//                return j;
+//            }
+//
+//            if(null == flowItemBorrowApprovalEntity.getQuantity()) {
+//                j.setSuccess(false);
+//                j.setMsg("借用数量不能为空");
+//                return j;
+//            }
+
+
+
 
             if(null == flowItemBorrowApprovalEntity.getDepartmentName()) {
                 j.setSuccess(false);

@@ -73,6 +73,12 @@ public class FlowItemBorrowApprovalEntity extends BaseEntity {
     @TableField("COMMIT")
     private String commit;
 
+    /**
+     * 多规格数据
+     */
+    @TableField("JSON_DATA")
+    private String json_data;
+
 
     /**
      * 审批状态 0:审批中 1：审批完成 2：驳回

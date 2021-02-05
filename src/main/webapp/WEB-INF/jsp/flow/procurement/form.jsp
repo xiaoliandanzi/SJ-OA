@@ -28,7 +28,7 @@
 
 <div class="form-group">
     <label class="col-sm-3 control-label">采购项目明细*：</label>
-    <div class="col-sm-4">
+    <div class="col-sm-6">
         <table id="demo"></table>
     </div>
 </div>
@@ -76,15 +76,14 @@
 <%--        <button class="btn btn-primary" type="button" onclick="deleteItem();">添加</button>--%>
 <%--    </div>--%>
 <%--</div>--%>
+<%--<div class="form-group">--%>
+<%--    <label class="col-sm-3 control-label">用途*：</label>--%>
+<%--    <div class="col-sm-5">--%>
+<%--        <textarea id="purpose" name="purpose" required="" class="form-control">${biz.purpose }</textarea>--%>
+<%--    </div>--%>
+<%--</div>--%>
 
 
-
-<div class="form-group">
-    <label class="col-sm-3 control-label">用途*：</label>
-    <div class="col-sm-5">
-        <textarea id="purpose" name="purpose" required="" class="form-control">${biz.purpose }</textarea>
-    </div>
-</div>
 <div class="form-group">
     <label class="col-sm-3 control-label">合计*：</label>
     <div class="col-sm-5">
@@ -133,13 +132,20 @@
             '    <div class="col-sm-5">\n' +
             '        <input  id="unitPrice" name="unitPrice" required="" class="form-control" />\n' +
             '    </div>\n' +
-            '</div>\n', function(index){
+            '</div>\n' +
+            '<div class="input-hidden form-group">\n' +
+            '    <label class="col-sm-3 control-label">用途*：</label>\n' +
+            '    <div class="col-sm-5">\n' +
+            '        <textarea id="purpose" name="purpose" required="" class="form-control"></textarea>\n' +
+            '    </div>\n' +
+            '</div>', function(index){
             //do something
 
             var itemName = $("#itemName").val();
             var type = $("#type").val();
             var number = $("#number").val();
             var unitPrice = $("#unitPrice").val();
+            var purpose = $("#purpose").val();
             var Subtotal = number * unitPrice;
 
             console.log(itemName + "," + type + "," +number + "," +unitPrice + "," +Subtotal)
@@ -150,6 +156,7 @@
                 type:type,
                 number:number,
                 unitPrice:unitPrice,
+                purpose:purpose,
                 Subtotal:Subtotal,
                 action:'<button class="btn btn-primary" type="button" onclick="removeItem('+i+');">删除</button>',
             });
@@ -187,6 +194,7 @@
                 ,{field: 'type', title: '品牌、规格型号', width:80}
                 ,{field: 'number', title: '数量', width:80}
                 ,{field: 'unitPrice', title: '单价', width:80}
+                ,{field: 'purpose', title: '用途', width:80}
                 ,{field: 'Subtotal', title: '小计', width:80}
                 ,{field: 'action', title: '操作', width:100}
             ]]
