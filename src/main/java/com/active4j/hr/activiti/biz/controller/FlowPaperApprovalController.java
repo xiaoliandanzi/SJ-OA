@@ -1,6 +1,5 @@
 package com.active4j.hr.activiti.biz.controller;
 
-import com.active4j.hr.activiti.biz.entity.FlowCarApprovalEntity;
 import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowPaperApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
@@ -13,15 +12,11 @@ import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
-import com.active4j.hr.core.query.QueryUtils;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysUserService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -34,7 +29,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -48,12 +42,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -338,6 +332,12 @@ public class FlowPaperApprovalController extends BaseController {
                 return j;
             }
 
+            if(flowPaperApprovalEntity.getPaperCount() <= 0) {
+                j.setSuccess(false);
+                j.setMsg("文件份数无效");
+                return j;
+            }
+
             if(null == flowPaperApprovalEntity.getPaperAbstract()) {
                 j.setSuccess(false);
                 j.setMsg("内容摘要为空");
@@ -359,6 +359,15 @@ public class FlowPaperApprovalController extends BaseController {
             if(null == flowPaperApprovalEntity.getPaperDate()) {
                 j.setSuccess(false);
                 j.setMsg("发文日期不能为空");
+                return j;
+            }
+
+            String dateNow = DateUtils.formatDate(DateUtils.getNow());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
+            Date date = simpleDateFormat.parse(dateNow);
+            if(flowPaperApprovalEntity.getPaperDate().before(date)) {
+                j.setSuccess(false);
+                j.setMsg("发文日期无效");
                 return j;
             }
 
