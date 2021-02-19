@@ -142,6 +142,13 @@ public class OfficalSealAuditController extends BaseController {
 
         String startTime = request.getParameter("applyDate_begin");
         String endTime = request.getParameter("applyDate_end");
+        if (startTime == null || startTime=="") {
+            startTime = "2000-01-01";
+        }
+
+        if (endTime == null || endTime == "") {
+            endTime = "2099-12-31";
+        }
 
         // 执行查询
         IPage<WorkflowBaseEntity> lstResult = workflowService.findTaskStrsByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
