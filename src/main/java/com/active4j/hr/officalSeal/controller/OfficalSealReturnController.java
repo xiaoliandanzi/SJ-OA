@@ -404,6 +404,8 @@ public class OfficalSealReturnController extends BaseController {
         for (long i = size - 1; i >= 0; --i) {
             if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("双井公章申请")){
                 lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
+            }else if(!lstResult.getRecords().get((int)i).getStatus().equals("3")){
+                lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
             }
         }
         // 输出结果
