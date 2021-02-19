@@ -25,6 +25,7 @@ import com.active4j.hr.system.entity.SysDeptEntity;
 import com.active4j.hr.system.entity.SysDicValueEntity;
 import com.active4j.hr.system.entity.SysRoleEntity;
 import com.active4j.hr.system.entity.SysUserEntity;
+import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysDeptService;
 import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.system.util.SystemUtils;
@@ -270,25 +271,66 @@ public class OfficalSealReturnController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/excelExport")
-    public ResponseEntity<Resource> excel2007Export(FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity , HttpServletResponse response, HttpServletRequest request, DataGrid dataGrid) {
+    public ResponseEntity<Resource> excel2007Export(WorkflowBaseEntity workflowBaseEntity , HttpServletResponse response, HttpServletRequest request, DataGrid dataGrid) {
         try {
+            String startTime = request.getParameter("applyDate_begin");
+            String endTime = request.getParameter("applyDate_end");
+            if (startTime == null || startTime=="") {
+                startTime = "2000-01-01";
+            }
+
+            if (endTime == null || endTime == "") {
+                endTime = "2099-12-31";
+            }
+
             ClassPathResource cpr = new ClassPathResource("/static/offical_recode.xlsx");
 
             InputStream is = cpr.getInputStream();
             Workbook workbook = new XSSFWorkbook(is);
             Sheet sheet = workbook.getSheetAt(0);
 
+//            //获取当前用户id
+//            String userId = ShiroUtils.getSessionUserId();
+//            //获取当前用户个人资料
+//            SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
+//            String dep = user.getDeptName();
+
+            String userName = ShiroUtils.getSessionUserName();
+            SysUserEntity user = sysUserService.getUserByUseName(userName);
+            IPage<WorkflowBaseEntity> lstResult = new Page<>();
+            if(SystemUtils.getDeptNameById(user.getDeptId()).equals("综合办公室")){
+                Row row = sheet.getRow(1);
+                Cell cell = row.getCell(0);
+                cell.setCellValue("部门名称：双井街道全体");
+                lstResult = workflowService.findFinishedTaskByALL(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, WorkflowConstant.Task_Category_approval);
+            }else{
+                Row row = sheet.getRow(1);
+                Cell cell = row.getCell(0);
+                SysDeptEntity paperDept = sysDeptService.getById(user.getDeptId());
+                cell.setCellValue("部门名称："+paperDept.getName());
+                lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
+            }
 
 
-            QueryWrapper<FlowOfficalSealApprovalEntity> queryWrapper = QueryUtils.installQueryWrapper(flowOfficalSealApprovalEntity, request.getParameterMap(), dataGrid);
+//            QueryWrapper<FlowOfficalSealApprovalEntity> queryWrapper = QueryUtils.installQueryWrapper(flowOfficalSealApprovalEntity, request.getParameterMap(), dataGrid);
+//
+//            queryWrapper.isNull("UPDATE_DATE");
+//            // 执行查询
+//            IPage<FlowOfficalSealApprovalEntity> lstResult = flowOfficalSealApprovalService.page(new Page<FlowOfficalSealApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+//            List<FlowOfficalSealApprovalEntity> list = lstResult.getRecords();
 
-            queryWrapper.isNull("UPDATE_DATE");
             // 执行查询
-            IPage<FlowOfficalSealApprovalEntity> lstResult = flowOfficalSealApprovalService.page(new Page<FlowOfficalSealApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
-            List<FlowOfficalSealApprovalEntity> list = lstResult.getRecords();
-
+            long size = lstResult.getRecords().size();
+            for (long i = size - 1; i >= 0; --i) {
+                if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("双井公章申请")){
+                    lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
+                }
+            }
+            List<WorkflowBaseEntity> list = lstResult.getRecords();
+//            FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
             int i = 0;
-            for (FlowOfficalSealApprovalEntity item : list) {
+            for (WorkflowBaseEntity base : list) {
+                FlowOfficalSealApprovalEntity item = flowOfficalSealApprovalService.getById(base.getBusinessId());
                 Row row = sheet.getRow(i + 3);
                 Cell cell1 = row.getCell(0);
                 cell1.setCellValue((i+1) + "");
