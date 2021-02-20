@@ -38,6 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -356,6 +357,15 @@ public class FlowOfficalSealApprovalController extends BaseController {
             if(null == flowOfficalSealApprovalEntity.getUseDay()) {
                 j.setSuccess(false);
                 j.setMsg("使用日期不能为空");
+                return j;
+            }
+
+            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+            String currentDate = df.format(new Date());
+            Date now = df.parse(currentDate);
+            if(flowOfficalSealApprovalEntity.getUseDay().compareTo(now) == -1){
+                j.setSuccess(false);
+                j.setMsg("申请时间错误，申请使用日期不能在当前日期之前");
                 return j;
             }
 

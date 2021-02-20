@@ -42,6 +42,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -360,6 +361,15 @@ public class FlowTmpCardApprovalController extends BaseController{
             if(null == flowTmpCardApprovalEntity.getUseDay()) {
                 j.setSuccess(false);
                 j.setMsg("使用日期不能为空");
+                return j;
+            }
+
+            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+            String currentDate = df.format(new Date());
+            Date now = df.parse(currentDate);
+            if(flowTmpCardApprovalEntity.getUseDay().compareTo(now) == -1){
+                j.setSuccess(false);
+                j.setMsg("申请使用日期不能在当前日期之前");
                 return j;
             }
 

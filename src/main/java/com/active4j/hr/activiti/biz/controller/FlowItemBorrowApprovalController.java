@@ -38,6 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -393,9 +394,27 @@ public class FlowItemBorrowApprovalController extends BaseController {
                 j.setMsg("使用日期不能为空");
                 return j;
             }
+
+            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+            String currentDate = df.format(new Date());
+            Date now = df.parse(currentDate);
+            if(flowItemBorrowApprovalEntity.getUseDay().compareTo(now) == -1){
+                j.setSuccess(false);
+                j.setMsg("申请使用日期不能在当前日期之前");
+                return j;
+            }
+
+
             if(null == flowItemBorrowApprovalEntity.getReturnDay()) {
                 j.setSuccess(false);
                 j.setMsg("归还日期不能为空");
+                return j;
+            }
+
+
+            if(flowItemBorrowApprovalEntity.getUseDay().compareTo(flowItemBorrowApprovalEntity.getReturnDay()) == 1) {
+                j.setSuccess(false);
+                j.setMsg("申请时间错误，归还日期不得早于使用日期");
                 return j;
             }
 
