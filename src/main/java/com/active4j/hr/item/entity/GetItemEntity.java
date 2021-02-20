@@ -41,6 +41,12 @@ public class GetItemEntity extends BaseEntity {
     private String userName;
 
     /**
+     * 多规格数据
+     */
+    @TableField("JSON_DATA")
+    private String jsonData;
+
+    /**
      * 物品名称
      */
     @TableField("ITEMNAME")

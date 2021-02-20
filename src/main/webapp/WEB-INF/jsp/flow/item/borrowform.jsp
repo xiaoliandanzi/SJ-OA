@@ -33,33 +33,6 @@
         <button class="btn btn-primary" type="button" onclick="add();">添加</button>
     </div>
 </div>
-
-
-
-
-
-
-<%--<div class="form-group">--%>
-<%--    <label class="col-sm-3 control-label">借用物品*：</label>--%>
-<%--    <div class="col-sm-5">--%>
-<%--        <select id="itemName" name="itemName" class="form-control" required="" >--%>
-<%--            <c:forEach items="${lstItems }" var="c">--%>
-<%--                <option value="${c.name }" <c:if test="${biz.itemName == c.name }">selected="selected"</c:if>>${c.name }</option>--%>
-<%--            </c:forEach>--%>
-<%--        </select>--%>
-<%--    </div>--%>
-<%--</div>--%>
-<%--<div class="form-group">--%>
-<%--    <label class="col-sm-3 control-label">借用数量*：</label>--%>
-<%--    <div class="col-sm-5">--%>
-<%--        <input id="quantity" name="quantity" type="number" class="form-control" required="" value="${biz.quantity }">--%>
-<%--    </div>--%>
-<%--</div>--%>
-
-
-
-
-
 <div class="form-group">
     <label class="col-sm-3 control-label m-b">使用日期*：</label>
     <div class="col-sm-4 m-b">
@@ -104,7 +77,7 @@
 
         function add(){
         layer.confirm('<div class="form-group input-hidden">\n' +
-            '    <label class="col-sm-3 control-label">借用物品*：</label>\n' +
+            '    <label class="col-sm-4 control-label">名称*：</label>\n' +
             '    <div class="col-sm-5">\n' +
             '        <select id="itemName" name="itemName" class="form-control" required="" >\n' +
             '            <c:forEach items="${lstItems }" var="c">\n' +
@@ -114,7 +87,7 @@
             '    </div>\n' +
             '</div>\n' +
             '<div class="form-group input-hidden">\n' +
-            '    <label class="col-sm-3 control-label">借用数量*：</label>\n' +
+            '    <label class="col-sm-4 control-label">数量*：</label>\n' +
             '    <div class="col-sm-5">\n' +
             '        <input id="quantity" name="quantity" type="number" class="form-control" required="" value="">\n' +
             '    </div>\n' +
@@ -158,8 +131,8 @@
             elem: '#demo'
             ,data: list
             ,cols: [[ //表头
-                {field: 'itemName', title: '领用物品', width:80}
-                ,{field: 'quantity', title: '领用数量', width:80}
+                {field: 'itemName', title: '借用物品', width:120}
+                ,{field: 'quantity', title: '借用数量', width:120}
                 ,{field: 'action', title: '操作', width:100}
             ]]
         });

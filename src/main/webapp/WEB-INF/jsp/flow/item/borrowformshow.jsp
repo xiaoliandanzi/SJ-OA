@@ -25,23 +25,6 @@
         <table id="demo"></table>
     </div>
 </div>
-
-
-<%--<div class="form-group">--%>
-<%--    <label class="col-sm-3 control-label">借用物品*：</label>--%>
-<%--    <div class="col-sm-5">--%>
-<%--        <textarea id="itemName" name="itemName" readonly class="form-control">${biz.itemName }</textarea>--%>
-<%--    </div>--%>
-<%--</div>--%>
-
-
-<%--<div class="form-group">--%>
-<%--    <label class="col-sm-3 control-label">借用数量*：</label>--%>
-<%--    <div class="col-sm-5">--%>
-<%--        <input id="quantity" name="quantity" type="number" class="form-control" readonly required="" value="${biz.quantity }">--%>
-<%--    </div>--%>
-<%--</div>--%>
-
 <div class="form-group">
     <label class="col-sm-3 control-label m-b">使用日期*：</label>
     <div class="col-sm-4 m-b">

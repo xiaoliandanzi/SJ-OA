@@ -48,12 +48,19 @@ public class FlowTmpCardApprovalEntity extends BaseEntity {
     @TableField("QUANTITY")
     private Integer quantity;
 
+
+
     /**
      * 使用日期
      */
     @TableField("USE_DAY")
     private Date useDay;
 
+    /**
+     * 多规格数据
+     */
+    @TableField("JSON_DATA")
+    private String jsonData;
 
     /**
      * 使用事由

@@ -440,9 +440,14 @@ public class FlowItemBorrowApprovalController extends BaseController {
                             return j;
                         }
                         RequisitionedItemEntity entity = stockEntity.get(0);
+                        if (quantity <= 0) {
+                            j.setSuccess(false);
+                            j.setMsg(itemName+"借用数量须大于0");
+                            return j;
+                        }
                         if (quantity > entity.getQuantity()) {
                             j.setSuccess(false);
-                            j.setMsg("库存不足，剩余" + entity.getQuantity());
+                            j.setMsg(itemName+" 库存不足，剩余" + entity.getQuantity());
                             return j;
                         }
                         entity.setQuantity(entity.getQuantity() - quantity);
@@ -488,7 +493,7 @@ public class FlowItemBorrowApprovalController extends BaseController {
                         RequisitionedItemEntity entity = stockEntity.get(0);
                         if (quantity > entity.getQuantity()) {
                             j.setSuccess(false);
-                            j.setMsg("库存不足，剩余" + entity.getQuantity());
+                            j.setMsg(itemName+" 库存不足，剩余" + entity.getQuantity());
                             return j;
                         }
                         entity.setQuantity(entity.getQuantity() - quantity);

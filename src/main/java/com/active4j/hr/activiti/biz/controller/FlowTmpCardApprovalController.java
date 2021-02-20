@@ -23,6 +23,9 @@ import com.active4j.hr.officalSeal.entity.OaOfficalSealEntity;
 import com.active4j.hr.officalSeal.service.OaOfficalSealService;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysUserService;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -342,6 +345,30 @@ public class FlowTmpCardApprovalController extends BaseController{
                 return j;
             }
 
+            if(null == flowTmpCardApprovalEntity.getJsonData()){
+                j.setSuccess(false);
+                j.setMsg("借用物品不能为空");
+                return j;
+            }
+
+            if(null == flowTmpCardApprovalEntity.getDepartmentName()) {
+                j.setSuccess(false);
+                j.setMsg("借用科室不能为空");
+                return j;
+            }
+
+            if(null == flowTmpCardApprovalEntity.getUseDay()) {
+                j.setSuccess(false);
+                j.setMsg("使用日期不能为空");
+                return j;
+            }
+
+            if(null == flowTmpCardApprovalEntity.getReason()) {
+                j.setSuccess(false);
+                j.setMsg("借用事由不能为空");
+                return j;
+            }
+
             if(StringUtils.equals(optType, "1")) {
                 //直接申请流程
                 if(StringUtils.isBlank(workflowBaseEntity.getId())) {
@@ -356,26 +383,56 @@ public class FlowTmpCardApprovalController extends BaseController{
                     flowTmpCardApprovalService.saveNewTmpCard(workflowBaseEntity, flowTmpCardApprovalEntity);
 
                     //==============减去库存==============
-                    int quantity = flowTmpCardApprovalEntity.getQuantity();
-                    List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(flowTmpCardApprovalEntity.getCardName());
-                    if (stockEntity.size() != 1) {
-                        j.setSuccess(false);
-                        j.setMsg("库存多项物品冲突");
-                        return j;
-                    }
-                    RequisitionedItemEntity entity = stockEntity.get(0);
-                    if (quantity > entity.getQuantity()) {
-                        j.setSuccess(false);
-                        j.setMsg("库存不足，剩余" + entity.getQuantity());
-                        return j;
-                    }
-                    entity.setQuantity(entity.getQuantity() - quantity);
-                    //低于阈值，修改状态
-                    if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
-                        entity.setStatus("1");
+                    String json_data = flowTmpCardApprovalEntity.getJsonData();
+                    JSONArray array = JSON.parseArray(json_data);
+                    for (int i = 0; i < array.size(); i++) {
+                        JSONObject jo = array.getJSONObject(i);
+                        String cardName = jo.getString("cardName");
+                        int quantity = jo.getInteger("quantity");
+                        List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(cardName);
+                        if (stockEntity.size() != 1) {
+                            j.setSuccess(false);
+                            j.setMsg("库存多项物品冲突");
+                            return j;
+                        }
+                        RequisitionedItemEntity entity = stockEntity.get(0);
+                        if (quantity <= 0) {
+                            j.setSuccess(false);
+                            j.setMsg(cardName+" 借用数量须大于0");
+                            return j;
+                        }
+                        if (quantity > entity.getQuantity()) {
+                            j.setSuccess(false);
+                            j.setMsg(cardName+" 数量不足，剩余" + entity.getQuantity());
+                            return j;
+                        }
+                        entity.setQuantity(entity.getQuantity() - quantity);
+                        //低于阈值，修改状态
+                        if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
+                            entity.setStatus("1");
+                        }
+                        requisitionedItemService.saveOrUpdate(entity);
                     }
 
-                    requisitionedItemService.saveOrUpdate(entity);
+
+//                    List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(flowTmpCardApprovalEntity.getCardName());
+//                    if (stockEntity.size() != 1) {
+//                        j.setSuccess(false);
+//                        j.setMsg("库存多项物品冲突");
+//                        return j;
+//                    }
+//                    RequisitionedItemEntity entity = stockEntity.get(0);
+//                    if (quantity > entity.getQuantity()) {
+//                        j.setSuccess(false);
+//                        j.setMsg("库存不足，剩余" + entity.getQuantity());
+//                        return j;
+//                    }
+//                    entity.setQuantity(entity.getQuantity() - quantity);
+//                    //低于阈值，修改状态
+//                    if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
+//                        entity.setStatus("1");
+//                    }
+
                     //============================
 
                     //启动流程
@@ -393,26 +450,36 @@ public class FlowTmpCardApprovalController extends BaseController{
                     flowTmpCardApprovalService.saveUpdate(base, biz);
 
                     //==============减去库存==============
-                    int quantity = flowTmpCardApprovalEntity.getQuantity();
-                    List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(flowTmpCardApprovalEntity.getCardName());
-                    if (stockEntity.size() != 1) {
-                        j.setSuccess(false);
-                        j.setMsg("库存多项物品冲突");
-                        return j;
+                    String json_data = flowTmpCardApprovalEntity.getJsonData();
+                    JSONArray array = JSON.parseArray(json_data);
+                    for (int i = 0; i < array.size(); i++) {
+                        JSONObject jo = array.getJSONObject(i);
+                        String cardName = jo.getString("cardName");
+                        int quantity = jo.getInteger("quantity");
+                        List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(cardName);
+                        if (stockEntity.size() != 1) {
+                            j.setSuccess(false);
+                            j.setMsg("库存多项物品冲突");
+                            return j;
+                        }
+                        RequisitionedItemEntity entity = stockEntity.get(0);
+                        if (quantity <= 0) {
+                            j.setSuccess(false);
+                            j.setMsg(cardName+" 借用数量须大于0");
+                            return j;
+                        }
+                        if (quantity > entity.getQuantity()) {
+                            j.setSuccess(false);
+                            j.setMsg(cardName+" 数量不足，剩余" + entity.getQuantity());
+                            return j;
+                        }
+                        entity.setQuantity(entity.getQuantity() - quantity);
+                        //低于阈值，修改状态
+                        if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
+                            entity.setStatus("1");
+                        }
+                        requisitionedItemService.saveOrUpdate(entity);
                     }
-                    RequisitionedItemEntity entity = stockEntity.get(0);
-                    if (quantity > entity.getQuantity()) {
-                        j.setSuccess(false);
-                        j.setMsg("库存不足，剩余" + entity.getQuantity());
-                        return j;
-                    }
-                    entity.setQuantity(entity.getQuantity() - quantity);
-                    //低于阈值，修改状态
-                    if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
-                        entity.setStatus("1");
-                    }
-                    requisitionedItemService.saveOrUpdate(entity);
-                    //============================
 
                     //启动流程
                     //赋值流程变量

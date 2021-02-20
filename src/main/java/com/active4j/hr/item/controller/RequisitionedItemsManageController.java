@@ -133,6 +133,12 @@ public class RequisitionedItemsManageController extends BaseController {
                 return j;
             }
 
+            if(Integer.parseInt(requisitionedItemEntity.getMinQuantity()) >= requisitionedItemEntity.getQuantity()){
+                j.setSuccess(false);
+                j.setMsg("物品数量须大于物品最低预警数量，请正确入库!");
+                return j;
+            }
+            requisitionedItemEntity.setStatus("0");
 
             if(StringUtils.isEmpty(requisitionedItemEntity.getId())) {
                 //新增方法
