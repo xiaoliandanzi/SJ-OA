@@ -65,6 +65,6 @@
 <div class="form-group">
     <label class="col-sm-3 control-label">备注：</label>
     <div class="col-sm-5">
-        <input id="commit" name="commit" minlength="1" type="text" class="form-control" required="" value="${biz.commit }">
+        <input id="commit" name="commit" minlength="1" type="text" class="form-control" value="${biz.commit }">
     </div>
 </div>
