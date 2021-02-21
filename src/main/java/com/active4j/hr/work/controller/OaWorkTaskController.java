@@ -532,7 +532,8 @@ public class OaWorkTaskController extends BaseController {
      */
     @RequestMapping("/doFinish")
     @ResponseBody
-    public AjaxJson doFinish(OaWorkTaskEntity oaWorkTaskEntity, String status, HttpServletRequest request) {
+    public AjaxJson doFinish(OaWorkTaskEntity oaWorkTaskEntity, String status, String returnContent,
+                             String returnCommit, String returnAttachment, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try {
 
@@ -540,6 +541,9 @@ public class OaWorkTaskController extends BaseController {
                 OaWorkTaskEntity tmp = oaWorkTaskService.getById(oaWorkTaskEntity.getId());
                 tmp.setStatus(status);
                 tmp.setFinishTime(DateUtils.getDate());
+                tmp.setReturnContent(returnContent);
+                tmp.setReturnCommit(returnCommit);
+                tmp.setReturnAttachment(returnAttachment);
                 oaWorkTaskService.saveOrUpdate(tmp, status);
             }
         } catch (Exception e) {

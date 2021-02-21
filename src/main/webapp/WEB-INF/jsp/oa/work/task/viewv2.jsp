@@ -19,6 +19,7 @@
                         <input type="hidden" name="appointUserId" id="appointUserId" value="${appointUserId }">
                         <input type="hidden" name="appointUserName" id="appointUserName" value="${appointUserName }">
                         <input type="hidden" name="attachment" id="attachment" value="${task.attachment }">
+                        <input type="hidden" name="returnAttachment" id="returnAttachment" value="${task.returnAttachment }">
                         <div class="form-group">
                             <div class="col-sm-6">
                                 <dl class="dl-horizontal">
@@ -72,7 +73,41 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">督办内容：</label>
                             <div class="col-sm-8">
-                                <textarea rows=8 readonly id="content" name="content" minlength="1" type="text" class="form-control" required="">${task.content }</textarea>
+                                <textarea rows=4 readonly id="content" name="content" minlength="1" type="text" class="form-control" required="">${task.content }</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">备注：</label>
+                            <div class="col-sm-8">
+                                <textarea rows=1 readonly id="commit" name="commit" type="text" class="form-control">${task.commit }</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label m-b">督办附件：</label>
+                            <div class="col-sm-8">
+                                <button class="btn btn-primary" type="button" onclick="doBtnDownloadFile();">下载附件</button>
+                                <div id="fileList" class="uploader-list">${task.attachment}</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">回执内容：</label>
+                            <div class="col-sm-8">
+                                <textarea rows=4 id="returnContent" name="returnContent" minlength="1" type="text" class="form-control" required="">${task.returnContent }</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">回执备注：</label>
+                            <div class="col-sm-8">
+                                <textarea rows=1 id="returnCommit" name="returnCommit" type="text" class="form-control">${task.returnCommit }</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label m-b">回执附件：</label>
+                            <div class="col-sm-2">
+                                <div id="filePicker">上传附件</div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div id="fileList2" class="uploader-list"></div>
                             </div>
                         </div>
                     </t:formvalid>
@@ -87,9 +122,9 @@
                                     <i class="fa fa-tasks"></i>&nbsp;任务完成
                                 </button>
                                 </c:if>
-                                <button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="doBtnDownloadFile();">
-                                    <i class="fa fa-tasks"></i>&nbsp;下载附件
-                                </button>
+                                <%--<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="doBtnDownloadFile();">--%>
+                                    <%--<i class="fa fa-tasks"></i>&nbsp;下载附件--%>
+                                <%--</button>--%>
                             </p>
                             </div>
                         </div>
@@ -196,13 +231,19 @@
 
     function addFinishAction() {
         var id = $("#id").val();
+        var returnContent = $("#returnContent").val();
+        var returnCommit = $("#returnCommit").val();
+        var returnAttachment = $("#returnAttachment").val();
 
         qhConfirm("确定该任务已完成?", function(index) {
             //关闭询问
             parent.layer.close(index);
 
             //是
-            $.post("oa/work/task/doFinish", {id : id, status:'2'}, function(d){
+            $.post("oa/work/task/doFinish",
+                {id : id, status:'2', returnContent:returnContent,returnCommit:returnCommit,
+                    returnAttachment:returnAttachment},
+                function(d){
                 if(d.success) {
                     qhTipSuccess(d.msg);
 
@@ -248,6 +289,63 @@
 
         location.href = "func/upload/download?id=" + att;
     };
+
+    $(function() {
+        //初始化Web Uploader
+        var uploader2 = WebUploader.create({
+
+            // 选完文件后，是否自动上传。
+            auto : true,
+
+            // swf文件路径
+            swf : 'static/webuploader/Uploader.swf',
+
+            // 文件接收服务端。
+            server : 'func/upload/uploadFiles?db=1',
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick : {
+                id : '#filePicker'
+            },
+
+            fileSizeLimit: 5 * 1024 * 1024
+
+        });
+
+
+        // 文件上传过程中创建进度条实时显示。
+        uploader2.on('uploadProgress', function(file, percentage) {
+        });
+
+        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+        uploader2.on('uploadSuccess', function(file, data) {
+            var filePath = data.attributes.filePath;
+            var count = $(".file-name").length;
+            $("#fileList2").append("<div class='file-name' id='file-name"+(count+1)+"'>"+file.name+"<a href='javascript:removeFile("+(count+1)+")'>删除</a></div>")
+            var attachment = $("#returnAttachment").val();
+            if(attachment != ''){
+                attachment = JSON.parse(attachment)
+            }else{
+                attachment = [];
+            }
+            attachment.push(filePath)
+
+            $("#returnAttachment").val(JSON.stringify(attachment));
+        });
+
+        // 文件上传失败，显示上传出错。
+        uploader2.on('uploadError', function(file) {
+
+        });
+
+        // 完成上传完了，成功或者失败，先删除进度条。
+        uploader2.on('uploadComplete', function(file) {
+            qhTipSuccess('上传完成....');
+        });
+
+    });
+
 
 </script>
 

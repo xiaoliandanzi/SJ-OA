@@ -114,10 +114,12 @@
 								<div class="col-sm-8">
 									<textarea rows=8 id="content" name="content" minlength="1" type="text" class="form-control" required="">${task.content }</textarea>
 								</div>
-								<%--<div class="col-sm-8">
-									<div id="summernote"></div>
-									<input type="hidden" name="content" id="content" value="">
-								</div>--%>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">备注：</label>
+								<div class="col-sm-8">
+									<textarea rows=1 id="commit" name="commit" type="text" class="form-control">${task.commit }</textarea>
+								</div>
 							</div>
 						</t:formvalid>
                     </div>
