@@ -42,48 +42,6 @@
 </div>
 
 
-<%--<div class="form-group">--%>
-<%--    <label class="col-sm-3 control-label">采购项目明细*：</label>--%>
-<%--</div>--%>
-<%--<div class="form-group">--%>
-<%--    <label class="col-sm-3 control-label">品名*：</label>--%>
-<%--    <div class="col-sm-5">--%>
-<%--         <input  id="itemName" name="itemName" required="" class="form-control" />--%>
-<%--    </div>--%>
-<%--</div>--%>
-<%--<div class="form-group">--%>
-<%--    <label class="col-sm-3 control-label">品牌、规格型号*：</label>--%>
-<%--    <div class="col-sm-5">--%>
-<%--        <input  id="type" name="type" required="" class="form-control" />--%>
-<%--    </div>--%>
-<%--</div>--%>
-
-<%--<div class="form-group">--%>
-<%--    <label class="col-sm-3 control-label">数量*：</label>--%>
-<%--    <div class="col-sm-5">--%>
-<%--        <input  id="number" name="number" required="" class="form-control" />--%>
-<%--    </div>--%>
-<%--</div>--%>
-<%--<div class="form-group">--%>
-<%--    <label class="col-sm-3 control-label">单价*：</label>--%>
-<%--    <div class="col-sm-5">--%>
-<%--        <input  id="unitPrice" name="unitPrice" required="" class="form-control" />--%>
-<%--    </div>--%>
-<%--</div>--%>
-<%--<div class="form-group">--%>
-<%--    <label class="col-sm-3 control-label">操作：</label>--%>
-<%--    <div class="col-sm-5">--%>
-<%--        <button class="btn btn-primary" type="button" onclick="deleteItem();">添加</button>--%>
-<%--    </div>--%>
-<%--</div>--%>
-<%--<div class="form-group">--%>
-<%--    <label class="col-sm-3 control-label">用途*：</label>--%>
-<%--    <div class="col-sm-5">--%>
-<%--        <textarea id="purpose" name="purpose" required="" class="form-control">${biz.purpose }</textarea>--%>
-<%--    </div>--%>
-<%--</div>--%>
-
-
 <div class="form-group">
     <label class="col-sm-3 control-label">合计*：</label>
     <div class="col-sm-5">
@@ -115,35 +73,35 @@
     function add(){
         layer.confirm('<div class="input-hidden form-group">\n' +
             '    <label class="col-sm-3 control-label">品名*：</label>\n' +
-            '    <div class="col-sm-5">\n' +
+            '    <div class="col-sm-8">\n' +
             '         <input  id="itemName" name="itemName" required="" class="form-control" />\n' +
             '    </div>\n' +
             '</div>\n' +
             '<div class="input-hidden form-group">\n' +
             '    <label class="col-sm-3 control-label">品牌、规格型号*：</label>\n' +
-            '    <div class="col-sm-5">\n' +
+            '    <div class="col-sm-8">\n' +
             '        <input  id="type" name="type" required="" class="form-control" />\n' +
             '    </div>\n' +
             '</div>\n' +
             '\n' +
             '<div class="input-hidden form-group">\n' +
             '    <label class="col-sm-3 control-label">数量*：</label>\n' +
-            '    <div class="col-sm-5">\n' +
+            '    <div class="col-sm-8">\n' +
             '        <input  id="number" name="number" required="" class="form-control" />\n' +
             '    </div>\n' +
             '</div>\n' +
             '<div class="input-hidden form-group">\n' +
             '    <label class="col-sm-3 control-label">单价*：</label>\n' +
-            '    <div class="col-sm-5">\n' +
+            '    <div class="col-sm-8">\n' +
             '        <input  id="unitPrice" name="unitPrice" required="" class="form-control" />\n' +
             '    </div>\n' +
             '</div>\n' +
             '<div class="input-hidden form-group">\n' +
             '    <label class="col-sm-3 control-label">用途*：</label>\n' +
-            '    <div class="col-sm-5">\n' +
+            '    <div class="col-sm-8">\n' +
             '        <textarea id="purpose" name="purpose" required="" class="form-control"></textarea>\n' +
             '    </div>\n' +
-            '</div>', function(index){
+            '</div>',{area:['800px']}, function(index){
             //do something
 
             var itemName = $("#itemName").val();
@@ -176,7 +134,7 @@
         // });
     }
 
-    layui.use('table', function(){
+        layui.use('table', function(){
         table = layui.table;
         render_table();
     });
@@ -215,7 +173,7 @@
                     ,{field: 'unitPrice', title: '单价', width:80}
                     ,{field: 'purpose', title: '用途', width:80}
                     ,{field: 'Subtotal', title: '小计', width:80}
-                    ,{field: 'action', title: '操作', width:100}
+                    ,{field: 'action', title: '操作', width:80}
                 ]]
             });
         }
