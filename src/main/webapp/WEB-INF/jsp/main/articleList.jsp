@@ -319,7 +319,7 @@
             </el-pagination>
         </div>
     </div>
-    <div class="tabs1Center" v-if="zhengwen">
+    <div class="tabs1Center" v-if="zhengwen" style="position: relative">
         <div class="tab1Zhengwen" v-if="zhengwen">
             <p class="tab1_zwTitle" style="text-align: center;font-size: 30px;padding-bottom: 10px">
                 {{tab1zwMsg.title}}
@@ -331,7 +331,14 @@
                 {{tab1zwMsg.content}}
             </p>
         </div>
+        <div style="position: absolute;bottom: 0px">
+
+            <a :href="'func/upload/download?id=' + item" v-for="(item,index) in attachList" :key="index">附件{{index+1}}</a><br>
+
+        </div>
     </div>
+
+
 
     <div class="friendBox">
         <span class="friendTxt"> 链接</span>
@@ -388,6 +395,7 @@
                 pageSize: 20,
                 pageIndex: 1,
                 titleList: [],
+                attachList:[],
                 totalSize: 20,
                 zhengwen: false,
                 tab1zwMsg: {
@@ -467,6 +475,8 @@
                 axios.get('oa//login/getArticle?id=' + item.id).then((msg) => {
                     this.zhengwen = true;
                     this.tab1zwMsg = msg.data.obj;
+                    this.attachList = JSON.parse(this.tab1zwMsg.attachment) ? JSON.parse(this.tab1zwMsg.attachment) : this.tab1zwMsg.attachment;
+
                 })
 
             },
@@ -477,6 +487,7 @@
                     this.isActive = messageType - 1;
                     this.zhengwen = true;
                     this.tab1zwMsg = msg.data.obj;
+                    this.attachList = JSON.parse(this.tab1zwMsg.attachment) ? JSON.parse(this.tab1zwMsg.attachment) : this.tab1zwMsg.attachment;
                 })
 
             },
