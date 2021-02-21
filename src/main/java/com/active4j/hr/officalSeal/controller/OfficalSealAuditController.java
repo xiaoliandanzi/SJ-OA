@@ -45,15 +45,15 @@ public class OfficalSealAuditController extends BaseController {
     @Autowired
     private WorkflowService workflowService;
 
-    /**9
-     * @param request
-     * @return
-     */
-    @RequestMapping("/show")
-    public ModelAndView show(HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("officalSeal/officalSealAudit");
-        return view;
-    }
+//    /**9
+//     * @param request
+//     * @return
+//     */
+//    @RequestMapping("/show")
+//    public ModelAndView show(HttpServletRequest request) {
+//        ModelAndView view = new ModelAndView("officalSeal/officalSealAudit");
+//        return view;
+//    }
 
     /**
      * 跳转到待审批公章页面

@@ -35,7 +35,6 @@
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="Id" label="车辆" width="100" query="true" queryId="id" replace="${lstCars }"></t:dgCol>
     <t:dgCol name="userName" label="预定人" width="80"></t:dgCol>
-    <%--<t:dgCol name="bookDate" label="预定日期" width="100" datefmt="yyyy-MM-dd" query="true" defval="${nowStrDate }" datePlugin="laydate"></t:dgCol>--%>
     <t:dgCol name="startDate" label="开始时间" width="80" datefmt="HH:mm"></t:dgCol>
     <t:dgCol name="endDate" label="结束时间" width="80" datefmt="HH:mm"></t:dgCol>
     <t:dgCol name="opt" label="操作" ></t:dgCol>

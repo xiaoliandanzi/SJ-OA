@@ -142,6 +142,15 @@ public class OaWorkMeetBooksController extends BaseController {
 				return j;
 			}
 
+			SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+			String currentDate = df.format(new Date());
+			Date now = df.parse(currentDate);
+			if(oaWorkMeetRoomBooksEntity.getBookDate().compareTo(now) == -1){
+				j.setSuccess(false);
+				j.setMsg("预定日期日期不能在当前日期之前");
+				return j;
+			}
+
 			if(null == oaWorkMeetRoomBooksEntity.getStartDate() || null == oaWorkMeetRoomBooksEntity.getEndDate()) {
 				j.setSuccess(false);
 				j.setMsg("请填写完整的预定时间");
