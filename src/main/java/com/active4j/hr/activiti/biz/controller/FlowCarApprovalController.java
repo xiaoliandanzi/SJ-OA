@@ -139,6 +139,7 @@ public class FlowCarApprovalController extends BaseController {
 
             FlowCarApprovalEntity biz = flowCarApprovalService.getById(base.getBusinessId());
             view.addObject("biz", biz);
+            return view;
         }
 
         //获取当前用户id
