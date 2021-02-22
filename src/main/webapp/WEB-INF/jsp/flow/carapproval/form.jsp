@@ -31,7 +31,7 @@
 <%--    </div>--%>
 <%--</div>--%>
 <div class="form-group">
-    <label class="col-sm-3 control-label">用车事由：*</label>
+    <label class="col-sm-3 control-label">用车事由*：</label>
     <div class="col-sm-3">
        <select class="form-control" name="reason" id="reason">
            <option value="应急类">应急类</option>
