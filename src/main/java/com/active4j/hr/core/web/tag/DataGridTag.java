@@ -1,29 +1,22 @@
 package com.active4j.hr.core.web.tag;
 
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TagSupport;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
-import com.active4j.hr.core.util.oConvertUtils;
 import com.active4j.hr.core.web.tag.model.DataGridColumn;
 import com.active4j.hr.core.web.tag.model.DataGridToolBarUrl;
 import com.active4j.hr.core.web.tag.model.DataGridUrl;
 import com.active4j.hr.core.web.tag.model.OptTypeDirection;
 import com.active4j.hr.system.entity.SysDicValueEntity;
 import com.active4j.hr.system.util.SystemUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspTagException;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.tagext.TagSupport;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.*;
 
 
 /**
@@ -491,6 +484,8 @@ public class DataGridTag extends TagSupport {
 							if(StringUtils.equals(key, "0")) {
 								sb.append("if(cellvalue == '").append(key).append("') return '").append("<span class=\"label label-primary\">" + map.get(key) + "</span>").append("'; ");
 							}else if(StringUtils.equals(key, "1")) {
+								sb.append("if(cellvalue == '").append(key).append("') return '").append("<span class=\"label label-info\">" + map.get(key) + "</span>").append("'; ");
+							} else if(StringUtils.equals(key, "6")) {
 								sb.append("if(cellvalue == '").append(key).append("') return '").append("<span class=\"label label-info\">" + map.get(key) + "</span>").append("'; ");
 							}else if(StringUtils.equals(key, "2")) {
 								sb.append("if(cellvalue == '").append(key).append("') return '").append("<span class=\"label label-success\">" + map.get(key) + "</span>").append("'; ");

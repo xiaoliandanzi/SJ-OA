@@ -12,6 +12,7 @@ import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
 import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.work.entity.OaWorkTaskEntity;
+import com.active4j.hr.work.service.OaWorkTaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,10 +50,14 @@ public class FlowTaskApprovalController extends BaseController {
     @Autowired
     private WorkflowBaseService workflowBaseService;
 
+    @Autowired
+    private OaWorkTaskService oaWorkTaskService;
+
     @RequestMapping("/save")
     @ResponseBody
     public AjaxJson save(WorkflowBaseEntity workflowBaseEntity, OaWorkTaskEntity taskEntity,
-                         String optType, HttpServletRequest request){
+                         String returnContent,
+                         String returnCommit, String returnAttachment, HttpServletRequest request){
 
         AjaxJson j = new AjaxJson();
         try {
@@ -63,6 +68,10 @@ public class FlowTaskApprovalController extends BaseController {
                 j.setMsg("参数错误，系统中没有该流程");
                 return j;
             }
+
+            taskEntity.setReturnAttachment(returnAttachment);
+            taskEntity.setReturnCommit(returnCommit);
+            taskEntity.setReturnContent(returnContent);
 
             //taskEntity.setApplyStatus(0);
             //直接申请流程
@@ -78,6 +87,8 @@ public class FlowTaskApprovalController extends BaseController {
                 //保存业务数据
                 workflowBaseEntity.setBusinessId(taskEntity.getId());
                 workflowBaseService.save(workflowBaseEntity);
+                oaWorkTaskService.save(taskEntity);
+
                 //启动流程
                 //赋值流程变量
                 Map<String, Object> variables = new HashMap<String, Object>();

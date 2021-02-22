@@ -44,6 +44,10 @@ public class OaWorkTaskEntity extends BaseEntity {
 	@TableField("COMMIT")
 	private String commit;
 
+	// 审核意见
+	@TableField("APPROVALCOMMIT")
+	private String approvalCommit;
+
 	// 回执备注
 	@TableField("RETURNCOMMIT")
 	private String returnCommit;

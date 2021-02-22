@@ -30,6 +30,7 @@
                                             <c:when test="${task.status == '2' }"><span class="label label-success">完成</span></c:when>
                                             <c:when test="${task.status == '3' }"><span class="label label-warning">未完成</span></c:when>
                                             <c:when test="${task.status == '4' }"><span class="label label-danger">放弃</span></c:when>
+                                            <c:when test="${task.status == '6' }"><span class="label label-danger">待审核</span></c:when>
                                             <c:otherwise>
                                                 其他
                                             </c:otherwise>
@@ -66,7 +67,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label m-b">办结时间：</label>
                             <div class="col-sm-4 m-b">
-                                <input readonly class="laydate-icon form-control layer-date" id="finshTime" name="finshTime"  value='<fmt:formatDate value="${task.endTime }" type="both" pattern="yyyy-MM-dd HH:mm"/>'>
+                                <input readonly class="laydate-icon form-control layer-date" id="finshTime" name="finshTime"  value='<fmt:formatDate value="${task.finshTime }" type="both" pattern="yyyy-MM-dd HH:mm"/>'>
                             </div>
                         </div>
                         </c:if>
@@ -110,21 +111,44 @@
                                 <div id="fileList2" class="uploader-list"></div>
                             </div>
                         </div>
+                        <c:if test="${task.status == '6' }">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label m-b">审核意见：</label>
+                                <div class="col-sm-8">
+                                    <textarea rows=1 id="approvalCommit" name="approvalCommit" type="text" class="form-control">${task.approvalCommit }</textarea>
+                                </div>
+                            </div>
+                        </c:if>
+                        <c:if test="${task.status != '6' }">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label m-b">审核意见：</label>
+                                <div class="col-sm-8">
+                                    <textarea readonly rows=1 id="approvalCommit" name="approvalCommit" type="text" class="form-control">${task.approvalCommit }</textarea>
+                                </div>
+                            </div>
+                        </c:if>
                     </t:formvalid>
                         <div class="row">
                             <div class="col-sm-12">
                             <p style="margin-left: 400px;">
-                                <button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="changeStartAction();">
-                                    <i class="fa fa-file-o"></i>&nbsp;开始执行
-                                </button>
+                                <c:if test="${task.status == '0' }">
+                                    <button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="changeStartAction();">
+                                        <i class="fa fa-file-o"></i>&nbsp;开始执行
+                                    </button>
+                                </c:if>
                                 <c:if test="${task.status != '2' }">
                                 <button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="addFinishAction();">
                                     <i class="fa fa-tasks"></i>&nbsp;任务完成
                                 </button>
                                 </c:if>
-                                <%--<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="doBtnDownloadFile();">--%>
-                                    <%--<i class="fa fa-tasks"></i>&nbsp;下载附件--%>
-                                <%--</button>--%>
+                                <c:if test="${task.status == '6' }">
+                                    <button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="addApprovalAction();">
+                                        <i class="fa fa-tasks"></i>&nbsp;审核通过
+                                    </button>
+                                    <button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="addRejectAction();">
+                                        <i class="fa fa-tasks"></i>&nbsp;审核驳回
+                                    </button>
+                                </c:if>
                             </p>
                             </div>
                         </div>
@@ -189,6 +213,8 @@
                     $("#statusSpan").html("<span class='label label-danger'>放弃</span>");
                 }else if('5' == task.status){
                     $("#statusSpan").html("<span class='label label-danger'>超期</span>");
+                }else if('6' == task.status){
+                    $("#statusSpan").html("<span class='label label-info'>待审核</span>");
                 }
 
                 $("#content").html(task.content);
@@ -228,6 +254,53 @@
         });
     }
 
+    function addApprovalAction() {
+        var id = $("#id").val();
+        var approvalCommit = $("#approvalCommit").val();
+
+        qhConfirm("确定该任务已审核通过?", function(index) {
+            //关闭询问
+            parent.layer.close(index);
+
+            //是
+            $.post("oa/work/task/doApproval",
+                {id : id, status:'2', approvalCommit:approvalCommit},
+                function(d){
+                    if(d.success) {
+                        qhTipSuccess(d.msg);
+
+                        $("#statusSpan").html("<span class='label label-info'>完成</span>");
+                    }
+                });
+
+        }, function() {
+            //否
+        });
+    }
+
+    function addRejectAction() {
+        var id = $("#id").val();
+        var approvalCommit = $("#approvalCommit").val();
+
+        qhConfirm("确定驳回该任务?", function(index) {
+            //关闭询问
+            parent.layer.close(index);
+
+            //是
+            $.post("oa/work/task/doApproval",
+                {id : id, status:'1', approvalCommit:approvalCommit},
+                function(d){
+                    if(d.success) {
+                        qhTipSuccess(d.msg);
+
+                        $("#statusSpan").html("<span class='label label-info'>进行中</span>");
+                    }
+                });
+
+        }, function() {
+            //否
+        });
+    }
 
     function addFinishAction() {
         var id = $("#id").val();
@@ -241,13 +314,13 @@
 
             //是
             $.post("oa/work/task/doFinish",
-                {id : id, status:'2', returnContent:returnContent,returnCommit:returnCommit,
+                {id : id, status:'6', returnContent:returnContent,returnCommit:returnCommit,
                     returnAttachment:returnAttachment},
                 function(d){
                 if(d.success) {
                     qhTipSuccess(d.msg);
 
-                    $("#statusSpan").html("<span class='label label-info'>完成</span>");
+                    $("#statusSpan").html("<span class='label label-info'>待审核</span>");
                 }
             });
 
