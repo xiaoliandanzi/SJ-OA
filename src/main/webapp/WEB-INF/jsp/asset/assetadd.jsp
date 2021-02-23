@@ -78,7 +78,14 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">备注：</label>
                             <div class="col-sm-8">
-                                <textarea id="memo" name="memo" class="form-control" >${item.memo}</textarea>
+                                <textarea id="memo" name="memo" class="form-control" >${asset.commit}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">记录：</label>
+                            <div class="col-sm-8">
+                                <input name="jsonData"  type="hidden"  value='${asset.jsonData }'>
+                              <div id="record"></div>
                             </div>
                         </div>
                     </t:formvalid>
@@ -88,6 +95,17 @@
     </div>
 </div>
 </body>
+<script>
+
+    var json = '${asset.jsonData}';
+
+    json = JSON.parse(json);
+
+    for (var i in json){
+        $("#record").append(json[i] + "<br>")
+    }
+
+</script>
 
 </html>
 

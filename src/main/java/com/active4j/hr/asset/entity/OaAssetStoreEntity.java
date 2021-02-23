@@ -78,4 +78,9 @@ public class OaAssetStoreEntity extends BaseEntity {
     @TableField("CHANGE_TIME")
     private Date changeTime;
 
+    /**
+     * 多规格数据
+     */
+    @TableField("JSON_DATA")
+    private String jsonData;
 }

@@ -12,6 +12,9 @@ import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.system.entity.SysUserEntity;
 import com.active4j.hr.system.service.SysUserService;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -25,6 +28,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author xfzhang
@@ -82,6 +87,19 @@ public class AssetManageController extends BaseController {
     public AjaxJson save(OaAssetStoreEntity oaAssetStoreEntity, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try{
+
+            String jsonData = oaAssetStoreEntity.getJsonData();
+            JSONArray array;
+            if(StringUtils.isEmpty(jsonData)){
+                array = new JSONArray();
+            }else{
+               array = JSON.parseArray(jsonData);
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+            array.add(sdf.format(new Date())+"，"+ShiroUtils.getSessionUser().getRealName()+"修改");
+
+            oaAssetStoreEntity.setJsonData(array.toJSONString());
+
             if(StringUtils.isEmpty(oaAssetStoreEntity.getAssetName())) {
                 j.setSuccess(false);
                 j.setMsg("资产名称不能为空!");
