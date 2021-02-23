@@ -16,11 +16,15 @@ import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
+import com.active4j.hr.item.entity.RequisitionedItemEntity;
 import com.active4j.hr.system.entity.SysDeptEntity;
 import com.active4j.hr.system.entity.SysUserEntity;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysDeptService;
 import com.active4j.hr.system.service.SysUserService;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -83,6 +87,10 @@ public class FlowAssetApprovalController extends BaseController {
     @RequestMapping("/go")
     public ModelAndView go(String formId, String type, String workflowId, String id, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("flow/assetapproval/apply");
+
+//        if(!StringUtils.isEmpty(id)){
+//            type = "1";
+//        }
 
         if(StringUtils.isEmpty(formId)) {
             view = new ModelAndView("system/common/warning");
@@ -324,29 +332,44 @@ public class FlowAssetApprovalController extends BaseController {
                 return j;
             }
 
-            if(-1 == flowAssetApprovalEntity.getAmount()) {
-                j.setSuccess(false);
-                j.setMsg("价格为空");
-                return j;
-            }
+            String json_data = flowAssetApprovalEntity.getJsonData();
+            JSONArray array = JSON.parseArray(json_data);
+            JSONObject jo = array.getJSONObject(0);
+            String assetName = jo.getString("assetName");
+            String quantity = jo.getString("quantity");
+            String unitPrice = jo.getString("unitPrice");
+            String model = jo.getString("model");
 
-            if(null == flowAssetApprovalEntity.getAssetName()) {
-                j.setSuccess(false);
-                j.setMsg("资产名称为空");
-                return j;
-            }
+            flowAssetApprovalEntity.setAssetName(assetName);
+            flowAssetApprovalEntity.setModel(model);
 
-            if(null == flowAssetApprovalEntity.getModel()) {
-                j.setSuccess(false);
-                j.setMsg("资产类型为空");
-                return j;
-            }
 
-            if(null == flowAssetApprovalEntity.getQuantity()) {
-                j.setSuccess(false);
-                j.setMsg("数量不能为空");
-                return j;
-            }
+//            if(-1 == flowAssetApprovalEntity.getAmount()) {
+//                j.setSuccess(false);
+//                j.setMsg("价格为空");
+//                return j;
+//            }
+//
+//            if(null == flowAssetApprovalEntity.getAssetName()) {
+//                j.setSuccess(false);
+//                j.setMsg("资产名称为空");
+//                return j;
+//            }
+//
+//            if(null == flowAssetApprovalEntity.getModel()) {
+//                j.setSuccess(false);
+//                j.setMsg("资产类型为空");
+//                return j;
+//            }
+//
+//            if(null == flowAssetApprovalEntity.getQuantity()) {
+//                j.setSuccess(false);
+//                j.setMsg("数量不能为空");
+//                return j;
+//            }
+
+
+
 
             WorkflowMngEntity workflow = workflowMngService.getById(workflowBaseEntity.getWorkflowId());
             if(null == workflow) {

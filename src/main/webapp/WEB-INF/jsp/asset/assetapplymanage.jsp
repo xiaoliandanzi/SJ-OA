@@ -44,7 +44,8 @@
     <t:dgCol name="receiver" label="接收人" width="40"></t:dgCol>
     <t:dgDelOpt label="删除" url="aseet/manage/apply/delete?id={id}"/>
     <t:dgToolBar url="asset/manage/apply/go" label="移交申请" type="define" funName="apply" width="70%"></t:dgToolBar>
-    <t:dgToolBar url="asset/manage/addorupdate" label="编辑" type="edit" width="70%"></t:dgToolBar>
+<%--    <t:dgToolBar url="asset/manage/apply/go"  label="编辑" type="edit" width="70%"></t:dgToolBar>--%>
+    <t:dgToolBar url="asset/manage/apply/go" label="编辑" type="edit" width="70%"></t:dgToolBar>
     <t:dgToolBar type="refresh" ></t:dgToolBar>
 </t:datagrid>
 </body>

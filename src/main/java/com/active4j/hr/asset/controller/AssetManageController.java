@@ -186,8 +186,8 @@ public class AssetManageController extends BaseController {
      */
     @RequestMapping("/addorupdate")
     public ModelAndView addorupdate(OaAssetStoreEntity oaAssetStoreEntity, HttpServletRequest request) {
-        ModelAndView view = new ModelAndView("asset/assetadd");
-
+//        ModelAndView view = new ModelAndView("asset/assetadd");
+        ModelAndView view = new ModelAndView("flow/assetapproval/applyshow");
         if(StringUtils.isNotEmpty(oaAssetStoreEntity.getId())) {
             oaAssetStoreEntity = oaAssetService.getById(oaAssetStoreEntity.getId());
             view.addObject("asset", oaAssetStoreEntity);

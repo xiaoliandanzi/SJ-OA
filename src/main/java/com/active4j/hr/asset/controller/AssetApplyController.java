@@ -7,6 +7,7 @@ import com.active4j.hr.activiti.entity.WorkflowMngEntity;
 import com.active4j.hr.activiti.service.WorkflowFormService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.activiti.service.WorkflowService;
+import com.active4j.hr.asset.entity.OaAssetStoreEntity;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.model.AjaxJson;
@@ -85,7 +86,7 @@ public class AssetApplyController extends BaseController {
     }
 
     @RequestMapping("/go")
-    public ModelAndView apply(HttpServletRequest request) {
+    public ModelAndView apply(HttpServletRequest request,String id,String type) {
         ModelAndView view;
 
         //当前用户ID
@@ -105,7 +106,8 @@ public class AssetApplyController extends BaseController {
                 WorkflowFormEntity form = workflowFormService.getById(workflowMngEntity.getFormId());
                 view = new ModelAndView("redirect:" + form.getPath() +
                         "?formId=" + workflowMngEntity.getFormId()
-                        + "&workflowId=" + workflowMngEntity.getId());
+                        + "&workflowId=" + workflowMngEntity.getId()
+                );
                 return view;
             }
         }
@@ -113,6 +115,7 @@ public class AssetApplyController extends BaseController {
         view.addObject("message", "系统不存在当前表单");
         return view;
     }
+
 
     @RequestMapping("/delete")
     @ResponseBody
