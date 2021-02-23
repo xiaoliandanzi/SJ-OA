@@ -41,9 +41,10 @@
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="itemborrow/apply/datagrid" tableContentId="waitTaskTable" searchGroupId="searchGroupId" fit="true" caption="待审批物品申请" name="waitTaskList" pageSize="20" sortName="applyDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <t:dgCol name="categoryId" label="流程类别" hidden="true"  replace="${categoryReplace}" query="true" queryId="categoryId" width="90"></t:dgCol>
+    <t:dgCol name="categoryId" label="流程类别" hidden="true"  replace="${categoryReplace}" queryId="categoryId" width="90"></t:dgCol>
     <t:dgCol name="workFlowName" label="流程名称" width="70"></t:dgCol>
 <%--    <t:dgCol name="departmentName" label="使用科室" width="120" ></t:dgCol>--%>
+    <t:dgCol name="applyerDepart" label="申请科室" width="80" query="true"></t:dgCol>
     <t:dgCol name="applyName" label="申请人" width="120"></t:dgCol>
     <t:dgCol name="userName" label="借用人" width="120"></t:dgCol>
     <t:dgCol name="status" label="状态" width="70" dictionary="actstatus" classes="text-navy"></t:dgCol>

@@ -384,6 +384,7 @@ public class FlowTmpCardApprovalController extends BaseController{
                 if(StringUtils.isBlank(workflowBaseEntity.getId())) {
                     workflowBaseEntity.setApplyDate(DateUtils.getDate());
                     workflowBaseEntity.setApplyName(ShiroUtils.getSessionUser().getRealName());
+                    workflowBaseEntity.setApplyerDepart(flowTmpCardApprovalEntity.getDepartmentName());
                     workflowBaseEntity.setUserName(ShiroUtils.getSessionUserName());
                     workflowBaseEntity.setCategoryId(workflow.getCategoryId());
                     workflowBaseEntity.setWorkflowId(workflow.getId());
@@ -504,6 +505,7 @@ public class FlowTmpCardApprovalController extends BaseController{
                 if(StringUtils.isEmpty(workflowBaseEntity.getId())) {
                     workflowBaseEntity.setApplyDate(DateUtils.getDate());
                     workflowBaseEntity.setApplyName(ShiroUtils.getSessionUser().getRealName());
+                    workflowBaseEntity.setApplyerDepart(flowTmpCardApprovalEntity.getDepartmentName());
                     workflowBaseEntity.setUserName(ShiroUtils.getSessionUserName());
                     workflowBaseEntity.setCategoryId(workflow.getCategoryId());
                     workflowBaseEntity.setWorkflowId(workflow.getId());

@@ -436,6 +436,7 @@ public class FlowItemBorrowApprovalController extends BaseController {
                 if(StringUtils.isBlank(workflowBaseEntity.getId())) {
                     workflowBaseEntity.setApplyDate(DateUtils.getDate());
                     workflowBaseEntity.setApplyName(ShiroUtils.getSessionUser().getRealName());
+                    workflowBaseEntity.setApplyerDepart(flowItemBorrowApprovalEntity.getDepartmentName());
                     workflowBaseEntity.setUserName(ShiroUtils.getSessionUserName());
                     workflowBaseEntity.setCategoryId(workflow.getCategoryId());
                     workflowBaseEntity.setWorkflowId(workflow.getId());
@@ -539,6 +540,7 @@ public class FlowItemBorrowApprovalController extends BaseController {
                 if(StringUtils.isEmpty(workflowBaseEntity.getId())) {
                     workflowBaseEntity.setApplyDate(DateUtils.getDate());
                     workflowBaseEntity.setApplyName(ShiroUtils.getSessionUser().getRealName());
+                    workflowBaseEntity.setApplyerDepart(flowItemBorrowApprovalEntity.getDepartmentName());
                     workflowBaseEntity.setUserName(ShiroUtils.getSessionUserName());
                     workflowBaseEntity.setCategoryId(workflow.getCategoryId());
                     workflowBaseEntity.setWorkflowId(workflow.getId());
