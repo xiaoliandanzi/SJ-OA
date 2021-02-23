@@ -88,6 +88,9 @@ public class SysConstant {
 	
 	//数据字典-付款状态
 	public static final String  DIC_PAY_STATUS = "paystatus";
+
+	//12345科室名称对应oa科室
+	public static final String OA_12345_DEPT = "oa12345dept";
 	
 	
 }

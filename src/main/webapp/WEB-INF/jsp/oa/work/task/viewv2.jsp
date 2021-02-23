@@ -52,6 +52,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-3 control-label">联系人：</label>
+                            <div class="col-sm-8">
+                                <input id="contractName" readonly name="contractName" type="text" class="form-control" required="" value="${task.contractName }">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">联系电话：</label>
+                            <div class="col-sm-8">
+                                <input id="contractPhone" readonly name="contractPhone" type="text" class="form-control" required="" value="${task.contractPhone }">
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-3 control-label m-b">交办时间：</label>
                             <div class="col-sm-4 m-b">
                                 <input readonly class="laydate-icon form-control layer-date" id="startTime" name="startTime"  value='<fmt:formatDate value="${task.startTime }" type="both" pattern="yyyy-MM-dd HH:mm"/>'>

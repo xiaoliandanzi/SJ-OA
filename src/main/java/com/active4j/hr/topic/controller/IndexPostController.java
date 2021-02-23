@@ -5,15 +5,18 @@ import com.active4j.hr.activiti.biz.service.FlowMessageApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
 import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.base.controller.BaseController;
+import com.active4j.hr.common.constant.SysConstant;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.HttpUtil;
 import com.active4j.hr.core.util.StringUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
+import com.active4j.hr.system.entity.SysDicValueEntity;
 import com.active4j.hr.system.entity.SysMessageEntity;
 import com.active4j.hr.system.model.ActiveUser;
 import com.active4j.hr.system.service.SysMessageService;
 import com.active4j.hr.system.service.SysUserService;
+import com.active4j.hr.system.util.SystemUtils;
 import com.active4j.hr.topic.service.OaTopicService;
 import com.active4j.hr.work.entity.OaWorkTaskEntity;
 import com.active4j.hr.work.service.OaWorkTaskService;
@@ -227,12 +230,12 @@ public class IndexPostController extends BaseController {
             String userId = ShiroUtils.getSessionUserId();
             //获取当前用户个人资料
 
-            String deptName = sysUserService.getInfoByUserId(userId).get(0).getDeptName();
+            String deptName = get12345DeptName(sysUserService.getInfoByUserId(userId).get(0).getDeptName());
 ///            String userName = "安监";
             String password = getPassword(deptName);
             if (password == null || password.isEmpty()){
                 json.setSuccess(false);
-                json.setMsg("对不起，12345系统没有找到您科室的账号");
+                json.setMsg(String.format("对不起，12345系统没有找到科室%s的账号", deptName));
                 return json;
             }
             json.setObj(String.format("http://8.131.95.226:9001/login/main2?username=%s&password=%s&rememberMe=ture",
@@ -243,6 +246,16 @@ public class IndexPostController extends BaseController {
         }
 
         return json;
+    }
+
+    private String get12345DeptName (String oaDeptName) {
+        List<SysDicValueEntity> dicNameList = SystemUtils.getDictionaryLst(SysConstant.OA_12345_DEPT);
+        for (SysDicValueEntity sysDicValueEntity : dicNameList) {
+            if (oaDeptName.equalsIgnoreCase(sysDicValueEntity.getLabel())) {
+                return sysDicValueEntity.getValue();
+            }
+        }
+        return oaDeptName;
     }
 
     private String getPassword(String userName) {

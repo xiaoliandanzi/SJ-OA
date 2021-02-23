@@ -383,6 +383,7 @@ public class OaWorkTaskController extends BaseController {
     @ResponseBody
     public AjaxJson save(OaWorkTaskEntity oaWorkTaskEntity, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
+
         try {
             if (StringUtils.isEmpty(oaWorkTaskEntity.getTitle())) {
                 j.setMsg("任务标题不能为空");
@@ -396,13 +397,17 @@ public class OaWorkTaskController extends BaseController {
                 return j;
             }
 
+            if (oaWorkTaskEntity.getContent().length() > 2000) {
+                j.setSuccess(false);
+                j.setMsg("任务内容超过2000字，建议简化并以附件上传");
+                return j;
+            }
+
             if (StringUtils.isEmpty(oaWorkTaskEntity.getUserId())) {
                 j.setMsg("任务责任人不能为空");
                 j.setSuccess(false);
                 return j;
             }
-
-
 
             if (StringUtils.isEmpty(oaWorkTaskEntity.getDept())) {
                 j.setMsg("承办科室不能为空");
@@ -430,11 +435,11 @@ public class OaWorkTaskController extends BaseController {
             } else {
 
                 OaWorkTaskEntity tmp = oaWorkTaskService.getById(oaWorkTaskEntity.getId());
-                if (!StringUtils.equals(tmp.getStatus(), GlobalConstant.OA_WORK_TASK_STATUS_NEW)) {
+                /*if (!StringUtils.equals(tmp.getStatus(), GlobalConstant.OA_WORK_TASK_STATUS_NEW)) {
                     j.setSuccess(false);
                     j.setMsg("当前任务状态不支持修改");
                     return j;
-                }
+                }*/
                 if (!StringUtils.equals(tmp.getAppointUserId(), ShiroUtils.getSessionUserId())) {
                     j.setSuccess(false);
                     j.setMsg("不是本人分配的任务不支持修改");
@@ -550,6 +555,11 @@ public class OaWorkTaskController extends BaseController {
                 //任务完成待审核
                 tmp.setStatus(status);
                 //tmp.setFinishTime(DateUtils.getDate());
+                if (returnContent.length() > 2000) {
+                    j.setSuccess(false);
+                    j.setMsg("回执内容超过2000字，建议简化并以附件上传");
+                    return j;
+                }
                 tmp.setReturnContent(returnContent);
                 tmp.setReturnCommit(returnCommit);
                 tmp.setReturnAttachment(returnAttachment);
