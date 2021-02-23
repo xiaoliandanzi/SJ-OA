@@ -158,6 +158,7 @@ public class GlobalConstant {
 	 public static final String OA_WORK_TASK_STATUS_NO = "3"; //取消
 	 public static final String OA_WORK_TASK_STATUS_GIVEUP = "4"; //放弃
 	 public static final String OA_WORK_TASK_STATUS_EX = "5"; //超期
+	public static final String OA_WORK_TASK_STATUS_APPROVAL = "6"; //待审核
 	 
 	 /***
 	  * OA 工作中心  目标状态

@@ -135,17 +135,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">综合办*：</label>
-                            <div class="col-sm-8">
-                                <select class="form-control m-b select2"
-                                        id="generalOffice" name="generalOffice">
-                                    <c:forEach items="${generalOffice}" var="genera">
-                                        <option value="${genera.id }">${genera.realName}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-3 control-label">财务科是否参与审核：</label>
                             <div class="col-sm-8">
                                 <select name="isFO" class="form-control">
@@ -155,7 +144,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">财务科*：</label>
+                            <label class="col-sm-3 control-label">财务科：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
                                         id="financeOffice" name="financeOffice">
@@ -175,12 +164,23 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">纪委*：</label>
+                            <label class="col-sm-3 control-label">纪委：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
                                         id="disciplineOffice" name="disciplineOffice">
                                     <c:forEach items="${disciplineOffice}" var="discipline">
                                         <option value="${discipline.id }">${discipline.realName}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">综合办*：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-b select2"
+                                        id="generalOffice" name="generalOffice">
+                                    <c:forEach items="${generalOffice}" var="genera">
+                                        <option value="${genera.id }">${genera.realName}</option>
                                     </c:forEach>
                                 </select>
                             </div>

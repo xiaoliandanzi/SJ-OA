@@ -24,26 +24,12 @@
         <input id="person" name="person" type="number" class="form-control" required="" value="${biz.person }">
     </div>
 </div>
-<%--<div class="form-group">--%>
-<%--    <label class="col-sm-3 control-label">用车事由*：</label>--%>
-<%--    <div class="col-sm-5">--%>
-<%--        <input id="reason" name="reason" minlength="1" type="text" class="form-control" required="" value="${biz.reason }">--%>
-<%--    </div>--%>
-<%--</div>--%>
 <div class="form-group">
     <label class="col-sm-3 control-label">用车事由*：</label>
-    <div class="col-sm-3">
-       <select class="form-control" name="reason" id="reason">
-           <option value="应急类">应急类</option>
-           <option value="文件">文件</option>
-           <option value="重大活动">重大活动</option>
-           <option value="临时调研">临时调研</option>
-           <option value="财务">财务</option>
-           <option value="城六区外参加会议或公务活动">城六区外参加会议或公务活动</option>
-       </select>
+    <div class="col-sm-5">
+        <input id="reason" name="reason" minlength="1" type="text" class="form-control" required="" value="${biz.reason }">
     </div>
 </div>
-
 <div class="form-group">
     <label class="col-sm-3 control-label m-b">用车日期*：</label>
     <div class="col-sm-4 m-b">

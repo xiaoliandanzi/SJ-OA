@@ -295,11 +295,34 @@ public class OaTopicController extends BaseController {
                 if (dao.getIsPassOne() == 1)
                     throw new OaTopicException("审核已在进行,不可修改");
             }
+
+            if ((!StringUtils.isEmpty(oaTopic.getFinanceOffice()) && StringUtils.isEmpty(oaTopic.getDisciplineOffice())) ||
+                    (StringUtils.isEmpty(oaTopic.getFinanceOffice()) && !StringUtils.isEmpty(oaTopic.getDisciplineOffice()))) {
+                ajaxJson.setSuccess(false);
+                ajaxJson.setMsg("财务与纪委审核人需同时存在或同时为空");
+                return ajaxJson;
+            }
             oaTopic.setIsPassOne(0);
             oaTopic.setIsPassTwo(0);
             oaTopic.setIsPassThree(0);
-            oaTopic.setIsPassFour(0);
-            oaTopic.setIsPassFive(0);
+            if (StringUtils.isEmpty(oaTopic.getFinanceOffice())) {
+                oaTopic.setChoicePassFour("false");
+                oaTopic.setIsPassFour(1);
+                oaTopic.setOpinionFinanceOffice("无需审核，默认通过");
+            } else {
+                oaTopic.setChoicePassFour("true");
+                oaTopic.setIsPassFour(0);
+            }
+
+            if (StringUtils.isEmpty(oaTopic.getDisciplineOffice())) {
+                oaTopic.setChoicePassFive("false");
+                oaTopic.setIsPassFive(1);
+                oaTopic.setOpinionDisciplineOffice("无需审核，默认通过");
+            } else {
+                oaTopic.setChoicePassFive("true");
+                oaTopic.setIsPassFive(0);
+            }
+
             oaTopic.setCreateUserId(user.getId());
             oaTopic.setCreateUserName(user.getRealName());
             oaTopic = getUserName(oaTopic);
@@ -404,7 +427,18 @@ public class OaTopicController extends BaseController {
                 oaTopic.setOpinionLeader(opinion);
                 oaTopic.setStateId(2);
                 //向综合办发送审核消息
-                sendAuditMsg(oaTopic.getGeneralOffice(), oaTopic);
+//                sendAuditMsg(oaTopic.getGeneralOffice(), oaTopic);
+                //判断是否需要财务&纪委审批
+                if (oaTopic.getIsPassFour().equals(1) && oaTopic.getIsPassFour().equals(1)) {
+                    sendAuditMsg(oaTopic.getGeneralOffice(), oaTopic);
+                } else {
+                    if (oaTopic.getIsPassFour().equals(0)) {
+                        sendAuditMsg(oaTopic.getFinanceOffice(), oaTopic);
+                    }
+                    if (oaTopic.getIsPassFour().equals(0)) {
+                        sendAuditMsg(oaTopic.getDisciplineOffice(), oaTopic);
+                    }
+                }
             } else {
                 oaTopic.setIsPassTwo(2);
                 oaTopic.setOpinionLeader(opinion);
@@ -414,20 +448,23 @@ public class OaTopicController extends BaseController {
             }
         } else if (lv == 3) {
             //综合办
-            //财务 或 纪委 任意一方通过审核
-            if (oaTopic.getIsPassFour() == 1 || oaTopic.getIsPassFive() == 1) {
-                throw new OaTopicException("审核已提交,禁止修改");
+            //财务 或 纪委 均 通过审核 综合办给与审批
+            if (oaTopic.getIsPassFour() != 1 || oaTopic.getIsPassFive() != 1) {
+                throw new OaTopicException("财务&纪委为同时审批通过，请联系财务&纪委审批人完成审批");
             }
             if (isOk == 1) {
+                //审批流程结束
                 oaTopic.setIsPassThree(1);
                 oaTopic.setOpinionGeneralOffice(opinion);
-                oaTopic.setStateId(3);
-                //判断是否需要 纪委或综合办参与审核  根据是否选中两个科室的负责人id
-                //发送审核通知
-                oaTopic = ifNeedJWOrCW(oaTopic);
+                oaTopic.setStateId(4);
+                oaTopic.setAllPass(1);
+//                //判断是否需要 纪委或综合办参与审核  根据是否选中两个科室的负责人id
+//                //发送审核通知
+//                oaTopic = ifNeedJWOrCW(oaTopic);
                 //修改上会建议
                 oaTopic.setIsWorkingCommittee(isWorkingCommittee);
                 oaTopic.setIsDirector(isDirector);
+                sendAllPassMsg(oaTopic);
             } else {
                 oaTopic.setIsPassThree(2);
                 oaTopic.setOpinionGeneralOffice(opinion);
@@ -436,28 +473,37 @@ public class OaTopicController extends BaseController {
                 sendRejectMsg(oaTopic, oaTopic.getGeneralOfficeName());
             }
         } else if (lv == 4) {
-            //财务
-            if (oaTopic.getStateId() == 3) {
-                //通过综合办的审核 是后两个级别审核
+            //财务审批
+            if (oaTopic.getChoicePassFour().equals("false")) {
+                throw new OaTopicException("该申请无须财务审批");
+            }
+            if (oaTopic.getIsPassFour().equals(1)) {
+                throw new OaTopicException("财务审批流程已结束，请勿重复审批");
+            }
+            if (oaTopic.getStateId() == 2) {
+                //主管领导审批完成，财务可以审批
                 if (isOk == 1) {
                     //后两个级别审核通过
                     oaTopic.setIsPassFour(1);
                     oaTopic.setOpinionFinanceOffice(opinion);
-                    if (!"".equals(oaTopic.getDisciplineOffice()) && oaTopic.getIsPassFive() == 1) {
-                        //纪委ID不为空 且通过审核
-                        oaTopic.setStateId(4);
-                        oaTopic.setAllPass(1);
-                        //发审核通过通知
-                        sendAllPassMsg(oaTopic);
-                        //oaTopic.setIsHistory(1);
-                    } else if ("".equals(oaTopic.getDisciplineOffice())) {
-                        //纪委ID空 通过审核  其他不修改状态
-                        oaTopic.setStateId(4);
-                        oaTopic.setAllPass(1);
-                        //发审核通过通知
-                        sendAllPassMsg(oaTopic);
-                        //oaTopic.setIsHistory(1);
+                    if(oaTopic.getIsPassFive().equals(1)){
+                        sendAuditMsg(oaTopic.getGeneralOffice(), oaTopic);
                     }
+//                    if (!"".equals(oaTopic.getDisciplineOffice()) && oaTopic.getIsPassFive() == 1) {
+//                        //纪委ID不为空 且通过审核
+//                        oaTopic.setStateId(4);
+//                        oaTopic.setAllPass(1);
+//                        //发审核通过通知
+//                        sendAllPassMsg(oaTopic);
+//                        //oaTopic.setIsHistory(1);
+//                    } else if ("".equals(oaTopic.getDisciplineOffice())) {
+//                        //纪委ID空 通过审核  其他不修改状态
+//                        oaTopic.setStateId(4);
+//                        oaTopic.setAllPass(1);
+//                        //发审核通过通知
+//                        sendAllPassMsg(oaTopic);
+//                        //oaTopic.setIsHistory(1);
+//                    }
                 } else {
                     oaTopic.setIsPassFour(2);
                     oaTopic.setOpinionFinanceOffice(opinion);
@@ -466,33 +512,42 @@ public class OaTopicController extends BaseController {
                     sendRejectMsg(oaTopic, oaTopic.getFinanceName());
                 }
             } else {
-                //没通过综合办审核的 是作为科室负责人 审核本科室提交议题
+                //没通过主管领审核的 是作为科室负责人 审核本科室提交议题
                 //一次审核 上级已审核通过 禁止修改
                 oaTopic = deptLeaderAudit(oaTopic, opinion, isOk);
             }
         } else if (lv == 5) {
+            if (oaTopic.getChoicePassFive().equals("false")) {
+                throw new OaTopicException("该申请无须纪委审批");
+            }
+            if (oaTopic.getIsPassFive().equals(1)) {
+                throw new OaTopicException("纪委审批流程已结束，请勿重复审批");
+            }
             //纪委
-            if (oaTopic.getStateId() == 3) {
-                //通过综合办的审核 是后两个级别审核
+            if (oaTopic.getStateId() == 2) {
+                //主管领导审批完成，纪委可以审批
                 if (isOk == 1) {
                     //后两个级别审核通过
                     oaTopic.setIsPassFive(1);
                     oaTopic.setOpinionDisciplineOffice(opinion);
-                    if (!"".equals(oaTopic.getFinanceOffice()) && oaTopic.getIsPassFour() == 1) {
-                        //纪委ID不为空 且通过审核
-                        oaTopic.setStateId(4);
-                        oaTopic.setAllPass(1);
-                        //发审核通过通知
-                        sendAllPassMsg(oaTopic);
-                        //oaTopic.setIsHistory(1);
-                    } else if ("".equals(oaTopic.getFinanceOffice())) {
-                        //纪委ID空 通过审核  其他不修改状态
-                        oaTopic.setStateId(4);
-                        oaTopic.setAllPass(1);
-                        //发审核通过通知
-                        sendAllPassMsg(oaTopic);
-                        //oaTopic.setIsHistory(1);
+                    if(oaTopic.getIsPassFour().equals(1)){
+                        sendAuditMsg(oaTopic.getGeneralOffice(), oaTopic);
                     }
+//                    if (!"".equals(oaTopic.getFinanceOffice()) && oaTopic.getIsPassFour() == 1) {
+//                        //纪委ID不为空 且通过审核
+//                        oaTopic.setStateId(4);
+//                        oaTopic.setAllPass(1);
+//                        //发审核通过通知
+//                        sendAllPassMsg(oaTopic);
+//                        //oaTopic.setIsHistory(1);
+//                    } else if ("".equals(oaTopic.getFinanceOffice())) {
+//                        //纪委ID空 通过审核  其他不修改状态
+//                        oaTopic.setStateId(4);
+//                        oaTopic.setAllPass(1);
+//                        //发审核通过通知
+//                        sendAllPassMsg(oaTopic);
+//                        //oaTopic.setIsHistory(1);
+//                    }
                 } else {
                     oaTopic.setIsPassFive(2);
                     oaTopic.setOpinionDisciplineOffice(opinion);
@@ -537,8 +592,24 @@ public class OaTopicController extends BaseController {
                 oaTopic.setIsPassTwo(1);
                 oaTopic.setStateId(2);
                 oaTopic.setOpinionLeader("二次审核,默认通过");
-                //向综合办发送 审核信息
-                sendAuditMsg(oaTopic.getGeneralOffice(), oaTopic);
+                if(!oaTopic.getIsPassFour().equals(1) && oaTopic.getChoicePassFour().equals("true")){
+                    //向财务发送 审核信息
+                    sendAuditMsg(oaTopic.getFinanceOffice(), oaTopic);
+                }else{
+                    oaTopic.setIsPassFour(1);
+//                    oaTopic.setOpinionFinanceOffice("二次审核,默认通过");
+                }
+                if(!oaTopic.getIsPassFour().equals(1) && oaTopic.getChoicePassFour().equals("true")){
+                    //向纪委发送 审核信息
+                    sendAuditMsg(oaTopic.getDisciplineOffice(), oaTopic);
+                }else{
+                    oaTopic.setIsPassFive(1);
+//                    oaTopic.setOpinionDisciplineOffice("二次审核,默认通过");
+                }
+                //不需要财务纪委审批 直接转综合办科员
+                if(oaTopic.getChoicePassFour().equals("false") && oaTopic.getChoicePassFour().equals("false")){
+                    sendAuditMsg(oaTopic.getGeneralOffice(), oaTopic);
+                }
             }
         } else {
             //负责人拒绝后直接打回
@@ -580,15 +651,15 @@ public class OaTopicController extends BaseController {
             oaTopic.setIsPassThree(1);*/
             oaTopic.setChoicePassFour("true");
             ShiroUtils.setSessionValue("auditLV", "4");
-        } else if (ShiroUtils.hasRole("topicadd")) {
-            //判断是否议题发起人
-            //01议题发起人  deptId查询条件
-            oaTopic.setDeptId(userEntity.getDeptId());
         } else if (ShiroUtils.hasRole("topicaudit")) {
             //判断是否综合办议题审核人员
             //04综合办议题审核员 isPassOne isPassTwo
             oaTopic.setIsPassTwo(1);
             ShiroUtils.setSessionValue("auditLV", "3");
+        } else if (ShiroUtils.hasRole("topicadd")) {
+            //判断是否议题发起人
+            //01议题发起人  deptId查询条件
+            oaTopic.setDeptId(userEntity.getDeptId());
         } else {
             //剩下的 为 本科室 负责人
             //02本科室科长  deptLeaderId
@@ -627,11 +698,13 @@ public class OaTopicController extends BaseController {
         OaTopic dao = topicService.getById(oaTopic.getId());
         if (oaTopic.getIsFO() == 2) {
             oaTopic.setFinanceOffice("");
+            oaTopic.setIsPassFour(1);
             if (!"088c84560ed47db5d1ce11696a4915e3".equals(dao.getDeptId()))
                 oaTopic.setChoicePassFour("false");
         }
         if (oaTopic.getIsDO() == 2) {
             oaTopic.setDisciplineOffice("");
+            oaTopic.setIsPassFive(1);
             if (!"c1150728449e35b42fbe86db549477e8".equals(dao.getDeptId()))
                 oaTopic.setChoicePassFive("false");
 

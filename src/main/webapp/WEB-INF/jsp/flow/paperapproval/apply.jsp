@@ -36,8 +36,6 @@
 
                         <%@include file="/WEB-INF/jsp/flow/paperapproval/form.jsp" %>
 
-
-
                         <div class="form-group" style="margin-top: 30px;">
                             <div class="col-sm-5 col-sm-offset-4">
                                 <button class="btn btn-primary" type="button" onclick="doBtnSaveDraftAction();">保存草稿</button>

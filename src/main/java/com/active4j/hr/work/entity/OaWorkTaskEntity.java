@@ -36,9 +36,29 @@ public class OaWorkTaskEntity extends BaseEntity {
 	@TableField("CONTENT")
 	private String content;
 
+	// 回执内容
+	@TableField("RETURNCONTENT")
+	private String returnContent;
+
+	// 备注
+	@TableField("COMMIT")
+	private String commit;
+
+	// 审核意见
+	@TableField("APPROVALCOMMIT")
+	private String approvalCommit;
+
+	// 回执备注
+	@TableField("RETURNCOMMIT")
+	private String returnCommit;
+
 	// 附件
 	@TableField("ATTACHMENT")
 	private String attachment;
+
+	// 回执附件
+	@TableField("RETURNATTACHMENT")
+	private String returnAttachment;
 
 	// 任务分配人
 	@TableField("APPOINT_USER_ID")
@@ -106,6 +126,5 @@ public class OaWorkTaskEntity extends BaseEntity {
 	
 	@TableField("PARENT_TASK_ID")
 	private String parentTaskId;
-
 
 }

@@ -154,7 +154,7 @@
             <%--<a href="/oa/index" class="nava">个人办公</a>--%>
             <%--span class="navItemName">--%><a href="/oa/index" class="navItemName nava">个人办公</a><%--</span>--%>
         </div>
-        <div class="navberItem">
+        <%--<div class="navberItem">
             <img class="navIcon" src="./img/c.png" alt="">
             <span class="navItemName">财务系统</span>
         </div>
@@ -169,7 +169,7 @@
             <div class="selectBtn">
                 搜索
             </div>
-        </div>
+        </div>--%>
         <div class="userBox" id="user-box"><img src="./img/user.jpg" class="navIcon" style="margin-top: 0px;">&nbsp
             {{relName}}
         </div>

@@ -84,6 +84,8 @@ public class OaWorkTaskController extends BaseController {
                     domain.setName("放弃");
                 } else if (StringUtils.equals(status.getValue(), GlobalConstant.OA_WORK_TASK_STATUS_EX)) {
                     domain.setName("超期");
+                } else if (StringUtils.equals(status.getValue(), GlobalConstant.OA_WORK_TASK_STATUS_APPROVAL)) {
+                    domain.setName("待审核");
                 }
                 lstData.add(domain);
                 Integer in = Integer.parseInt(status.getNum());
@@ -129,6 +131,8 @@ public class OaWorkTaskController extends BaseController {
                     domain.setName("放弃");
                 } else if (StringUtils.equals(status.getValue(), GlobalConstant.OA_WORK_TASK_STATUS_EX)) {
                     domain.setName("超期");
+                } else if (StringUtils.equals(status.getValue(), GlobalConstant.OA_WORK_TASK_STATUS_APPROVAL)) {
+                    domain.setName("待审核");
                 }
                 lstData.add(domain);
                 Integer in = Integer.parseInt(status.getNum());
@@ -175,6 +179,8 @@ public class OaWorkTaskController extends BaseController {
                     domain.setName("放弃");
                 } else if (StringUtils.equals(status.getValue(), GlobalConstant.OA_WORK_TASK_STATUS_EX)) {
                     domain.setName("超期");
+                } else if (StringUtils.equals(status.getValue(), GlobalConstant.OA_WORK_TASK_STATUS_APPROVAL)) {
+                    domain.setName("待审核");
                 }
                 lstData.add(domain);
                 Integer in = Integer.parseInt(status.getNum());
@@ -220,6 +226,8 @@ public class OaWorkTaskController extends BaseController {
                     domain.setName("放弃");
                 } else if (StringUtils.equals(status.getValue(), GlobalConstant.OA_WORK_TASK_STATUS_EX)) {
                     domain.setName("超期");
+                } else if (StringUtils.equals(status.getValue(), GlobalConstant.OA_WORK_TASK_STATUS_APPROVAL)) {
+                    domain.setName("待审核");
                 }
                 lstData.add(domain);
                 Integer in = Integer.parseInt(status.getNum());
@@ -532,20 +540,55 @@ public class OaWorkTaskController extends BaseController {
      */
     @RequestMapping("/doFinish")
     @ResponseBody
-    public AjaxJson doFinish(OaWorkTaskEntity oaWorkTaskEntity, String status, HttpServletRequest request) {
+    public AjaxJson doFinish(OaWorkTaskEntity oaWorkTaskEntity, String status, String returnContent,
+                             String returnCommit, String returnAttachment, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try {
 
             if (StringUtils.isNotEmpty(oaWorkTaskEntity.getId())) {
                 OaWorkTaskEntity tmp = oaWorkTaskService.getById(oaWorkTaskEntity.getId());
+                //任务完成待审核
                 tmp.setStatus(status);
-                tmp.setFinishTime(DateUtils.getDate());
+                //tmp.setFinishTime(DateUtils.getDate());
+                tmp.setReturnContent(returnContent);
+                tmp.setReturnCommit(returnCommit);
+                tmp.setReturnAttachment(returnAttachment);
                 oaWorkTaskService.saveOrUpdate(tmp, status);
             }
         } catch (Exception e) {
             j.setSuccess(false);
             j.setMsg(GlobalConstant.ERROR_MSG);
             log.error("修改任务状态报错，错误信息:{}", e);
+        }
+
+        return j;
+    }
+
+    @RequestMapping("/doApproval")
+    @ResponseBody
+    public AjaxJson doApproval(OaWorkTaskEntity oaWorkTaskEntity, String status, String approvalCommit, HttpServletRequest request) {
+        AjaxJson j = new AjaxJson();
+        try {
+            if (StringUtils.isNotEmpty(oaWorkTaskEntity.getId())) {
+                OaWorkTaskEntity tmp = oaWorkTaskService.getById(oaWorkTaskEntity.getId());
+                if(!ShiroUtils.getSessionUser().getRealName()
+                        .equalsIgnoreCase(tmp.getAppointUserName())){
+                    j.setSuccess(false);
+                    j.setMsg("您不是分配人，无法进行任务审核");
+                    return j;
+                }
+                //任务完成待审核
+                tmp.setStatus(status);
+                if (status.equalsIgnoreCase("2")) {
+                    tmp.setFinishTime(DateUtils.getDate());
+                }
+                tmp.setApprovalCommit(approvalCommit);
+                oaWorkTaskService.saveOrUpdate(tmp, status);
+            }
+        } catch (Exception e) {
+            j.setSuccess(false);
+            j.setMsg(GlobalConstant.ERROR_MSG);
+            log.error("审核任务报错，错误信息:{}", e);
         }
 
         return j;
@@ -844,6 +887,14 @@ public class OaWorkTaskController extends BaseController {
         domain = new OaWorkTaskStatusDomain();
         domain.setValue(GlobalConstant.OA_WORK_TASK_STATUS_EX);
         domain.setName("超期");
+        if (!lstData.contains(domain)) {
+            domain.setNum("0");
+            lstData.add(domain);
+        }
+
+        domain = new OaWorkTaskStatusDomain();
+        domain.setValue(GlobalConstant.OA_WORK_TASK_STATUS_APPROVAL);
+        domain.setName("待审核");
         if (!lstData.contains(domain)) {
             domain.setNum("0");
             lstData.add(domain);

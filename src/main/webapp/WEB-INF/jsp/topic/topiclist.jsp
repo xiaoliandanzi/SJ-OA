@@ -36,14 +36,15 @@
     <t:dgCol name="reportName" label="汇报人" query="false" align="center"></t:dgCol>
     <t:dgCol name="isPassOne" label="科室负责人" query="false" replace="驳回_2,通过_1, _0" align="center"></t:dgCol>
     <t:dgCol name="isPassTwo" label="主管领导" query="false" replace="驳回_2,通过_1, _0" align="center"></t:dgCol>
-    <t:dgCol name="isPassThree" label="综合办" query="false" replace="驳回_2,通过_1, _0" align="center"></t:dgCol>
     <t:dgCol name="isPassFour" label="财务科" query="false" replace="驳回_2,通过_1, _0" align="center"></t:dgCol>
     <t:dgCol name="isPassFive" label="纪委" query="false" replace="驳回_2,通过_1, _0" align="center"></t:dgCol>
+    <t:dgCol name="isPassThree" label="综合办" query="false" replace="驳回_2,通过_1, _0" align="center"></t:dgCol>
     <t:dgCol name="isSecretary" label="书记会" dictionary="byesorno" query="false" align="center"></t:dgCol>
     <t:dgCol name="isDirector" label="主任会" dictionary="byesorno" query="flase" align="center"></t:dgCol>
     <t:dgCol name="isWorkingCommittee" label="工委会" dictionary="byesorno" query="flase" align="center"></t:dgCol>
     <t:dgCol name="allPass" label="通过审核" query="true" replace="是_1,否_0" align="center"></t:dgCol>
     <t:dgCol name="isHistory" label="历史议题" query="true" replace="是_1,否_0" align="center"></t:dgCol>
+    <t:dgCol name="topicRemark" label="议题备注" width="180"></t:dgCol>
     <t:dgToolBar url="topic/saveOrUpdateView" type="add" width="60%" operationCode="topic:add"></t:dgToolBar>
     <t:dgToolBar url="topic/saveOrUpdateView" type="edit" width="60%" operationCode="topic:add"></t:dgToolBar>
     <t:dgToolBar label="查看" type="define" funName="getOne"></t:dgToolBar>

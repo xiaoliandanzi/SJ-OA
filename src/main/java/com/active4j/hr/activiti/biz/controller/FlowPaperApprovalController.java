@@ -286,7 +286,7 @@ public class FlowPaperApprovalController extends BaseController {
     /**
      * 保存方法
      * @param
-     * @param optType  0 : 保存草稿   1:直接申请
+     * @param optType  0 : 保存草稿   1:直接申请 3：打印
      * @param
      * @param request
      * @return
@@ -443,8 +443,6 @@ public class FlowPaperApprovalController extends BaseController {
                     return j;
                 }
 
-
-
             }else {
                 //保存草稿
                 //新增
@@ -526,7 +524,7 @@ public class FlowPaperApprovalController extends BaseController {
 
             //发文日期
             Cell row2_cell6 = row2.getCell(6);
-            row2_cell6.setCellValue(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(flowPaperApprovalEntity.getPaperDate()));
+            row2_cell6.setCellValue(new SimpleDateFormat("yyyy-MM-dd").format(flowPaperApprovalEntity.getPaperDate()));
 
             //发文文号
             Cell row2_cell10 = row2.getCell(10);
