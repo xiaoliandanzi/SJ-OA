@@ -58,6 +58,10 @@ public class WorkflowBaseEntity extends BaseEntity {
 	// 申请人
 	@TableField("APPLY_NAME")
 	private String applyName;
+
+	// 申请科室
+	@TableField("APPLYER_DEPART")
+	private String applyerDepart;
 	
 	//申请人
 	@TableField("USER_NAME")

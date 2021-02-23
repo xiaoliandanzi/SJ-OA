@@ -19,7 +19,7 @@ public interface WorkflowDao {
 
    public IPage<WorkflowBaseEntity> findGroupTaskStrsByUserName(IPage<WorkflowBaseEntity> page, @Param("userName") String userName,
 		   @Param("categoryId") String categoryId, @Param("projectNo") String projectNo,
-		   @Param("name") String name, @Param("applyName") String applyName,
+		   @Param("name") String name, @Param("applyName") String applyName,@Param("applyerDepart") String applyerDepart,
 		   @Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd);
    
    
@@ -27,17 +27,17 @@ public interface WorkflowDao {
    
    public IPage<WorkflowBaseEntity> findFinishedTaskByUserName(IPage<WorkflowBaseEntity> page, @Param("userName") String userName,
 		   @Param("categoryId") String categoryId, @Param("projectNo") String projectNo,
-		   @Param("name") String name, @Param("applyName") String applyName,
+		   @Param("name") String name, @Param("applyName") String applyName,@Param("applyerDepart") String applyerDepart,
 		   @Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd);
 
    public IPage<WorkflowBaseEntity> findFinishedTaskByALL(IPage<WorkflowBaseEntity> page,
 		 @Param("categoryId") String categoryId, @Param("projectNo") String projectNo,
-		 @Param("name") String name, @Param("applyName") String applyName,
+		 @Param("name") String name, @Param("applyName") String applyName,@Param("applyerDepart") String applyerDepart,
 		 @Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd);
 
    public IPage<WorkflowBaseEntity> findTaskStrsByUserName(IPage<WorkflowBaseEntity> page, @Param("userName") String userName,
 		   @Param("categoryId") String categoryId, @Param("projectNo") String projectNo,
-		   @Param("name") String name, @Param("applyName") String applyName,
+		   @Param("name") String name, @Param("applyName") String applyName,@Param("applyerDepart") String applyerDepart,
 		   @Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd);
    
 }

@@ -7,6 +7,7 @@
 			B.ID,
 			B.APPLY_DATE,
 			B.APPLY_NAME,
+			B.APPLYER_DEPART,
 			B.BUSINESS_ID,
 			B.CATEGORY_ID,
 			B.CREATE_DATE,
@@ -38,6 +39,9 @@
 		<if test="applyName!=null and applyName!=''">  
 			    and b.APPLY_NAME = #{applyName}
 		</if>
+		<if test="applyerDepart!=null and applyerDepart!=''">
+			and b.APPLYER_DEPART = #{applyerDepart}
+		</if>
 		<if test="applyDateStart!=null and applyDateStart!=''">  
 			    and b.APPLY_DATE &gt;= #{applyDateStart}
 		</if>
@@ -52,6 +56,7 @@
 		B.ID,
 		B.APPLY_DATE,
 		B.APPLY_NAME,
+		B.APPLYER_DEPART,
 		B.BUSINESS_ID,
 		B.CATEGORY_ID,
 		B.CREATE_DATE,
@@ -82,6 +87,9 @@
 		<if test="applyName!=null and applyName!=''">
 			and b.APPLY_NAME = #{applyName}
 		</if>
+		<if test="applyerDepart!=null and applyerDepart!=''">
+			and b.APPLYER_DEPART = #{applyerDepart}
+		</if>
 		<if test="applyDateStart!=null and applyDateStart!=''">
 			and b.APPLY_DATE &gt;= #{applyDateStart}
 		</if>
@@ -96,6 +104,7 @@
 			B.ID,
 			B.APPLY_DATE,
 			B.APPLY_NAME,
+			B.APPLYER_DEPART,
 			B.BUSINESS_ID,
 			B.CATEGORY_ID,
 			B.CREATE_DATE,
@@ -127,6 +136,9 @@
 		</if>
 		<if test="applyName!=null and applyName!=''">  
 			    and b.APPLY_NAME = #{applyName}
+		</if>
+		<if test="applyerDepart!=null and applyerDepart!=''">
+			and b.APPLYER_DEPART = #{applyerDepart}
 		</if>
 		<if test="applyDateStart!=null and applyDateStart!=''">  
 			    and b.APPLY_DATE &gt;= #{applyDateStart}
@@ -160,6 +172,7 @@
 			B.ID,
 			B.APPLY_DATE,
 			B.APPLY_NAME,
+			B.APPLYER_DEPART,
 			B.BUSINESS_ID,
 			B.CATEGORY_ID,
 			B.CREATE_DATE,
@@ -190,6 +203,9 @@
 		</if>
 		<if test="applyName!=null and applyName!=''">  
 			    and b.APPLY_NAME = #{applyName}
+		</if>
+		<if test="applyerDepart!=null and applyerDepart!=''">
+			and b.APPLYER_DEPART = #{applyerDepart}
 		</if>
 		<if test="applyDateStart!=null and applyDateStart!=''">  
 			    and b.APPLY_DATE &gt;= #{applyDateStart}

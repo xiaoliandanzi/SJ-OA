@@ -41,6 +41,7 @@
 <%--    <t:dgCol name="name" label="标题名称" width="120" query="true"></t:dgCol>--%>
     <t:dgCol name="status" label="状态" width="70" dictionary="actstatus" classes="text-navy"></t:dgCol>
     <t:dgCol name="level" label="紧急程度" width="70" dictionary="workflowlevel" display="level" hidden="true"></t:dgCol>
+    <t:dgCol name="applyerDepart" label="申请科室" width="80" query="true"></t:dgCol>
     <t:dgCol name="applyName" label="申请人" width="80" query="true"></t:dgCol>
 
     <t:dgToolBar label="借用记录" icon="fa fa-eye" url="flow/biz/task/view" type="read" width="90%" height="90%"></t:dgToolBar>
