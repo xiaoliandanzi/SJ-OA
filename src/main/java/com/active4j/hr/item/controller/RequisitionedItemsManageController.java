@@ -5,10 +5,14 @@ import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.query.QueryUtils;
+import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.item.entity.RequisitionedItemEntity;
 import com.active4j.hr.item.service.RequisitionedItemService;
+import com.active4j.hr.system.service.SysRoleService;
+import com.active4j.hr.system.service.SysUserService;
+import com.active4j.hr.system.util.MessageUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -22,6 +26,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,8 +44,13 @@ public class RequisitionedItemsManageController extends BaseController {
     @Autowired
     private RequisitionedItemService requisitionedItemService;
 
+    @Autowired
+    private SysUserService sysUserService;
+
+    @Autowired
+    private SysRoleService roleService;
+
     /**
-     *
      * @param request
      * @return
      */
@@ -70,6 +81,7 @@ public class RequisitionedItemsManageController extends BaseController {
 
     /**
      * 保存方法
+     *
      * @param requisitionedItemEntity
      * @param request
      * @return
@@ -78,14 +90,14 @@ public class RequisitionedItemsManageController extends BaseController {
     @ResponseBody
     public AjaxJson save(RequisitionedItemEntity requisitionedItemEntity, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
-        try{
-            if(StringUtils.isEmpty(requisitionedItemEntity.getName())) {
+        try {
+            if (StringUtils.isEmpty(requisitionedItemEntity.getName())) {
                 j.setSuccess(false);
                 j.setMsg("物品名称不能为空!");
                 return j;
             }
 
-            if(StringUtils.isEmpty(requisitionedItemEntity.getType())) {
+            if (StringUtils.isEmpty(requisitionedItemEntity.getType())) {
                 j.setSuccess(false);
                 j.setMsg("物品类型种类不能为空!");
                 return j;
@@ -103,53 +115,59 @@ public class RequisitionedItemsManageController extends BaseController {
 //                return j;
 //            }
 
-            if("null" .equals(requisitionedItemEntity.getQuantity())) {
+            if ("null".equals(requisitionedItemEntity.getQuantity())) {
                 j.setSuccess(false);
                 j.setMsg("物品数量不能为空!");
                 return j;
             }
 
-            if(StringUtils.isEmpty(requisitionedItemEntity.getUnit())) {
+            if (StringUtils.isEmpty(requisitionedItemEntity.getUnit())) {
                 j.setSuccess(false);
                 j.setMsg("物品单位不能为空!");
                 return j;
             }
 
-            if(StringUtils.isEmpty(requisitionedItemEntity.getKeeper())) {
+            if (StringUtils.isEmpty(requisitionedItemEntity.getKeeper())) {
                 j.setSuccess(false);
                 j.setMsg("物品保管人不能为空!");
                 return j;
             }
 
-            if(StringUtils.isEmpty(requisitionedItemEntity.getLocation())) {
+            if (StringUtils.isEmpty(requisitionedItemEntity.getLocation())) {
                 j.setSuccess(false);
                 j.setMsg("物品存放地点不能为空!");
                 return j;
             }
 
-            if(StringUtils.isEmpty(requisitionedItemEntity.getMinQuantity())) {
+            if (StringUtils.isEmpty(requisitionedItemEntity.getMinQuantity())) {
                 j.setSuccess(false);
                 j.setMsg("物品最低预警数量不能为空!");
                 return j;
             }
 
-            if(Integer.parseInt(requisitionedItemEntity.getMinQuantity()) >= requisitionedItemEntity.getQuantity()){
+            if (Integer.parseInt(requisitionedItemEntity.getMinQuantity()) >= requisitionedItemEntity.getQuantity()) {
                 j.setSuccess(false);
                 j.setMsg("物品数量须大于物品最低预警数量，请正确入库!");
                 return j;
             }
             requisitionedItemEntity.setStatus("0");
 
-            if(StringUtils.isEmpty(requisitionedItemEntity.getId())) {
+            if (StringUtils.isEmpty(requisitionedItemEntity.getId())) {
                 //新增方法
                 requisitionedItemService.save(requisitionedItemEntity);
-            }else {
+            } else {
                 //编辑方法
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String date = simpleDateFormat.format(new Date());
                 RequisitionedItemEntity tmp = requisitionedItemService.getById(requisitionedItemEntity.getId());
+                String record = recordcreate(tmp, requisitionedItemEntity);
+                MessageUtils.SendSysMessage(sysUserService.getUserByUseName(roleService.findUserByRoleName("物品管理员").get(0).getUserName()).getId(), String.format("%s, %s 编辑了库存物品: %s,变更明细:%s", date, ShiroUtils.getSessionUser().getRealName(), tmp.getName(), record));
                 MyBeanUtils.copyBeanNotNull2Bean(requisitionedItemEntity, tmp);
                 requisitionedItemService.saveOrUpdate(tmp);
+
+
             }
-        }catch(Exception e) {
+        } catch (Exception e) {
             j.setSuccess(false);
             j.setMsg(GlobalConstant.Err_Msg_All);
             log.error("保存领用物品失败，错误信息:{}", e);
@@ -160,6 +178,7 @@ public class RequisitionedItemsManageController extends BaseController {
 
     /**
      * 删除
+     *
      * @param requisitionedItemEntity
      * @param request
      * @return
@@ -168,11 +187,11 @@ public class RequisitionedItemsManageController extends BaseController {
     @ResponseBody
     public AjaxJson delete(RequisitionedItemEntity requisitionedItemEntity, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
-        try{
-            if(StringUtils.isNotEmpty(requisitionedItemEntity.getId())) {
+        try {
+            if (StringUtils.isNotEmpty(requisitionedItemEntity.getId())) {
                 requisitionedItemService.removeById(requisitionedItemEntity.getId());
             }
-        }catch(Exception e) {
+        } catch (Exception e) {
             j.setSuccess(false);
             j.setMsg(GlobalConstant.Err_Msg_All);
             log.error("删除领用物品失败，错误信息:{}", e);
@@ -182,6 +201,7 @@ public class RequisitionedItemsManageController extends BaseController {
 
     /**
      * 跳转到新增编辑页面
+     *
      * @param requisitionedItemEntity
      * @param request
      * @return
@@ -190,12 +210,43 @@ public class RequisitionedItemsManageController extends BaseController {
     public ModelAndView addorupdate(RequisitionedItemEntity requisitionedItemEntity, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("item/requisitionadd");
 
-        if(StringUtils.isNotEmpty(requisitionedItemEntity.getId())) {
+        if (StringUtils.isNotEmpty(requisitionedItemEntity.getId())) {
             requisitionedItemEntity = requisitionedItemService.getById(requisitionedItemEntity.getId());
             view.addObject("item", requisitionedItemEntity);
         }
 
         return view;
+    }
+
+
+    public String recordcreate(RequisitionedItemEntity oldEntity, RequisitionedItemEntity newEntity) {
+        String res = "";
+        if (oldEntity.getQuantity() != newEntity.getQuantity()) {
+            res += String.format("数量由 [%d] 修改为 [%d];", oldEntity.getQuantity(), newEntity.getQuantity());
+        }
+        if (!oldEntity.getName().equals(newEntity.getName())) {
+            res += String.format("名称由 [%s] 修改为 [%s];", oldEntity.getName(), newEntity.getName());
+        }
+        if (!oldEntity.getMinQuantity().equals(newEntity.getMinQuantity())) {
+            res += String.format("低量预警由 [%s] 修改为 [%s];", oldEntity.getMinQuantity(), newEntity.getMinQuantity());
+        }
+        if (!oldEntity.getUnit().equals(newEntity.getUnit())) {
+            res += String.format("单位由 [%s] 修改为 [%s];", oldEntity.getUnit(), newEntity.getUnit());
+        }
+        if (!oldEntity.getLocation().equals(newEntity.getLocation())) {
+            res += String.format("存放地点由 [%s] 修改为 [%s];", oldEntity.getLocation(), newEntity.getLocation());
+        }
+        if (!oldEntity.getKeeper().equals(newEntity.getKeeper())) {
+            res += String.format("保管人由 [%s] 修改为 [%s];", oldEntity.getKeeper(), newEntity.getKeeper());
+        }
+        if (!oldEntity.getItemId().equals(newEntity.getItemId())) {
+            res += String.format("编号由 [%s] 修改为 [%s];", oldEntity.getItemId(), newEntity.getItemId());
+        }
+        if (!oldEntity.getModel().equals(newEntity.getModel())) {
+            res += String.format("规格由 [%s] 修改为 [%s];", oldEntity.getModel(), newEntity.getModel());
+        }
+
+        return res;
     }
 
 }
