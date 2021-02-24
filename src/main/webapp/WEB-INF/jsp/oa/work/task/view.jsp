@@ -29,7 +29,7 @@
 									<div class="col-sm-12">
 										<div class="m-b-md">
 											<input type="hidden" id="id" name="id" value="${task.id }">
-											<input type="hidden" id="attachment" name="attachment" value="${task.attachment }">
+											<input type="hidden" id="attachment" name="attachment" value='${task.attachment }'>
 											<h2>${task.title }</h2>
 										</div>
 										<div class="col-sm-2">
@@ -111,9 +111,11 @@
 												<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="addFinishAction();">
 													<i class="fa fa-tasks"></i>&nbsp;任务完成
 												</button>
-												<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="doBtnDownloadFile();">
-													<i class="fa fa-tasks"></i>&nbsp;下载附件
-												</button>
+											<div id="fileList" class="uploader-list"></div>
+
+<%--												<button class="btn btn-primary" style="margin-left:3px;" type="button" onclick="doBtnDownloadFile();">--%>
+<%--													<i class="fa fa-tasks"></i>&nbsp;下载附件--%>
+<%--												</button>--%>
 											</p>
 										</div>
 										<%--<div class="row m-t-sm">--%>
@@ -186,6 +188,16 @@
 
 <script type="text/javascript">
 	$(function() {
+		var attachment = '${task.attachment }';
+		attachment = JSON.parse(attachment);
+		for (var i in attachment){
+			var item = attachment[i];
+
+			$("#fileList").append("<div class='file-name' id='file-name"+(i+1)+"'>" +
+					"<a href=\"func/upload/download?id=" + item +"\">附件"+(parseInt(i)+1)+"</a>&nbsp;&nbsp;&nbsp;" +
+					"</div>")
+		}
+
 		initData();
 	});
 

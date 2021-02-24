@@ -16,7 +16,7 @@
 							<input type="hidden" name="id" id="id" value="${task.id }">
 							<input type="hidden" name="appointUserId" id="appointUserId" value="${appointUserId }">
 							<input type="hidden" name="appointUserName" id="appointUserName" value="${appointUserName }">
-							<input type="hidden" name="attachment" id="attachment" value="${task.attachment }">
+							<input type="hidden" name="attachment" id="attachment" value='${task.attachment }'>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">督办编号：*</label>
 								<div class="col-sm-8">
@@ -106,7 +106,10 @@
 									<div id="filePicker">上传附件</div>
 								</div>
 								<div class="col-sm-4">
+
 									<div id="fileList" class="uploader-list"></div>
+
+									<div id="uploaded"></div>
 								</div>
 							</div>
                             <div class="form-group">
@@ -130,7 +133,22 @@
 </body>
 
 <script type="text/javascript">
+
+
 $(function() {
+
+	var attachment = '${task.attachment }';
+	attachment = JSON.parse(attachment);
+	for (var i in attachment){
+		var item = attachment[i];
+
+		$("#fileList").append("<div class='file-name' id='file-name"+(i+1)+"'>" +
+									"<a href=\"func/upload/download?id=" + item +"\">附件"+(parseInt(i)+1)+"</a>&nbsp;&nbsp;&nbsp;" +
+									"<a href='javascript:removeFile("+(i+1)+")'>删除</a>" +
+								"</div>")
+	}
+
+
 	$("#summernote").summernote({
 		lang : "zh-CN",
 		height : 300,
@@ -239,8 +257,20 @@ $(function() {
     // 文件上传成功，给item添加成功class, 用样式标记上传成功。
     uploader2.on('uploadSuccess', function(file, data) {
         var filePath = data.attributes.filePath;
-        $("#fileList").html(file.name);
-        $("#attachment").val(filePath);
+		var count = $(".file-name").length;
+		$("#fileList").append("<div class='file-name' id='file-name"+(count+1)+"'>"+file.name+"" +
+				"&nbsp;&nbsp;&nbsp;<a href='javascript:removeFile("+(count+1)+")'>删除</a>" +
+				"</div>")
+		// $("#fileList").html(file.name);
+		var attachment = $("#attachment").val();
+		if(attachment != ''){
+			attachment = JSON.parse(attachment)
+		}else{
+			attachment = [];
+		}
+		attachment.push(filePath)
+
+		$("#attachment").val(JSON.stringify(attachment));
     });
 
     // 文件上传失败，显示上传出错。
@@ -253,8 +283,13 @@ $(function() {
         qhTipSuccess('上传完成....');
     });
 
-});
 
+
+
+});
+function removeFile(index) {
+	$("#file-name"+index).remove();
+}
 </script>
 
 </html>

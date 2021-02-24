@@ -86,8 +86,8 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label m-b">督办附件：</label>
                             <div class="col-sm-8">
-                                <button class="btn btn-primary" type="button" onclick="doBtnDownloadFile();">下载附件</button>
-                                <div id="fileList" class="uploader-list">${task.attachment}</div>
+<%--                                <button class="btn btn-primary" type="button" onclick="doBtnDownloadFile();">下载附件</button>--%>
+                                <div id="fileList" class="uploader-list"></div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -161,6 +161,16 @@
 
 <script type="text/javascript">
     $(function() {
+        var attachment = '${task.attachment }';
+        attachment = JSON.parse(attachment);
+        for (var i in attachment){
+            var item = attachment[i];
+
+            $("#fileList").append("<div class='file-name' id='file-name"+(i+1)+"'>" +
+                "<a href=\"func/upload/download?id=" + item +"\">附件"+(parseInt(i)+1)+"</a>&nbsp;&nbsp;&nbsp;" +
+                "</div>")
+        }
+
         initData();
     });
 
