@@ -189,14 +189,17 @@
 <script type="text/javascript">
 	$(function() {
 		var attachment = '${task.attachment }';
-		attachment = JSON.parse(attachment);
-		for (var i in attachment){
-			var item = attachment[i];
+		if(attachment){
+			attachment = JSON.parse(attachment);
+			for (var i in attachment){
+				var item = attachment[i];
 
-			$("#fileList").append("<div class='file-name' id='file-name"+(i+1)+"'>" +
-					"<a href=\"func/upload/download?id=" + item +"\">附件"+(parseInt(i)+1)+"</a>&nbsp;&nbsp;&nbsp;" +
-					"</div>")
+				$("#fileList").append("<div class='file-name' id='file-name"+(i+1)+"'>" +
+						"<a href=\"func/upload/download?id=" + item +"\">附件"+(parseInt(i)+1)+"</a>&nbsp;&nbsp;&nbsp;" +
+						"</div>")
+			}
 		}
+
 
 		initData();
 	});
