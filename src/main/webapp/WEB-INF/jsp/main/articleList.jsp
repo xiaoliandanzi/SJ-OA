@@ -333,7 +333,7 @@
         </div>
         <div style="position: absolute;bottom: 0px">
 
-            <a :href="'func/upload/download?id=' + item" v-for="(item,index) in attachList" :key="index">附件{{index+1}}</a><br>
+            <a :href="'func/upload/download?id=' + item" v-for="(item,index) in attachList" :key="index">附件{{index+1}}下载</a><br>
 
         </div>
     </div>
