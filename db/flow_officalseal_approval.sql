@@ -15,26 +15,27 @@ Date: 2020-12-20 18:56:18
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
--- Table structure for flow_tmpcard_approval
+-- Table structure for wf_base
 -- ----------------------------
-DROP TABLE IF EXISTS `flow_tmpcard_approval`;
-CREATE TABLE `flow_tmpcard_approval`  (
-      `ID` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-      `VERSIONS` int(11) NULL DEFAULT 0 COMMENT '版本号',
-      `CREATE_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '创建人',
-      `CREATE_DATE` datetime NOT NULL COMMENT '创建时间',
-      `UPDATE_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
-      `UPDATE_DATE` datetime NULL DEFAULT NULL COMMENT '更新时间',
-      `BOOKDATE` datetime NULL DEFAULT NULL COMMENT '借用时间',
-      `USE_DAY` datetime NULL DEFAULT NULL COMMENT '使用日期',
-      `DEPARTMENTNAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '使用科室',
-      `CARDNAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '餐卡名称',
-      `USERNAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '借用人',
-      `QUANTITY` int(11) NULL DEFAULT NULL COMMENT '数量',
-      `REASON` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '使用事由',
-      `COMMIT` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-      `APPLY_STATUS` int(11) NULL DEFAULT 0 COMMENT '审核状态',
-      `JSON_DATA` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '多规格数据',
-      `RETURN_FLAG` int(11) NULL DEFAULT 1 COMMENT '归还状态',
-      PRIMARY KEY (`ID`) USING BTREE
+DROP TABLE IF EXISTS `wf_base`;
+CREATE TABLE `wf_base`  (
+        `ID` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+        `versions` int(11) NULL DEFAULT NULL,
+        `CREATE_DATE` datetime NULL DEFAULT NULL,
+        `CREATE_NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+        `UPDATE_DATE` datetime NULL DEFAULT NULL,
+        `UPDATE_NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+        `APPLY_DATE` datetime NOT NULL,
+        `APPLY_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+        `APPLYER_DEPART` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+        `CATEGORY_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+        `LEVEL` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+        `NAME` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+        `PROJECT_NO` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+        `STATUS` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+        `WORKFLOW_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+        `WORKFLOW_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+        `BUSINESS_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+        `USER_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+        PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;

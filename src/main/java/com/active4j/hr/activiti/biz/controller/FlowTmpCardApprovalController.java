@@ -22,7 +22,9 @@ import com.active4j.hr.item.service.RequisitionedItemService;
 import com.active4j.hr.officalSeal.entity.OaOfficalSealEntity;
 import com.active4j.hr.officalSeal.service.OaOfficalSealService;
 import com.active4j.hr.system.model.SysUserModel;
+import com.active4j.hr.system.service.SysRoleService;
 import com.active4j.hr.system.service.SysUserService;
+import com.active4j.hr.system.util.MessageUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -84,6 +86,10 @@ public class FlowTmpCardApprovalController extends BaseController{
 
     @Autowired
     private FlowTmpCardApprovalService flowTmpCardApprovalService;
+
+    @Autowired
+    private SysRoleService roleService;
+
 
     /**
      * 跳转到表单页面
@@ -384,6 +390,7 @@ public class FlowTmpCardApprovalController extends BaseController{
                 if(StringUtils.isBlank(workflowBaseEntity.getId())) {
                     workflowBaseEntity.setApplyDate(DateUtils.getDate());
                     workflowBaseEntity.setApplyName(ShiroUtils.getSessionUser().getRealName());
+                    workflowBaseEntity.setApplyerDepart(flowTmpCardApprovalEntity.getDepartmentName());
                     workflowBaseEntity.setUserName(ShiroUtils.getSessionUserName());
                     workflowBaseEntity.setCategoryId(workflow.getCategoryId());
                     workflowBaseEntity.setWorkflowId(workflow.getId());
@@ -486,6 +493,7 @@ public class FlowTmpCardApprovalController extends BaseController{
                         entity.setQuantity(entity.getQuantity() - quantity);
                         //低于阈值，修改状态
                         if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
+                            MessageUtils.SendSysMessage(sysUserService.getUserByUseName(roleService.findUserByRoleName("物品管理员").get(0).getUserName()).getId(),String.format("%s仅剩%s个，已低于低量预警线%s个，请及时补充",entity.getName(),entity.getQuantity(),entity.getMinQuantity()));
                             entity.setStatus("1");
                         }
                         requisitionedItemService.saveOrUpdate(entity);
@@ -504,6 +512,7 @@ public class FlowTmpCardApprovalController extends BaseController{
                 if(StringUtils.isEmpty(workflowBaseEntity.getId())) {
                     workflowBaseEntity.setApplyDate(DateUtils.getDate());
                     workflowBaseEntity.setApplyName(ShiroUtils.getSessionUser().getRealName());
+                    workflowBaseEntity.setApplyerDepart(flowTmpCardApprovalEntity.getDepartmentName());
                     workflowBaseEntity.setUserName(ShiroUtils.getSessionUserName());
                     workflowBaseEntity.setCategoryId(workflow.getCategoryId());
                     workflowBaseEntity.setWorkflowId(workflow.getId());

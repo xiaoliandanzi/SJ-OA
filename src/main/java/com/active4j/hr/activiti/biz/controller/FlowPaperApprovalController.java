@@ -385,6 +385,12 @@ public class FlowPaperApprovalController extends BaseController {
             if (flowPaperApprovalEntity.getPaperPublic() == 0) {
                 j.setSuccess(false);
                 j.setMsg("当前选择为不公开，请在线下完成申请");
+                if(StringUtils.equals(download,"1")){
+                    flowPaperApprovalService.save(flowPaperApprovalEntity);
+                    j.setObj("/oa/flow/biz/paperapproval/excelExport?id="+flowPaperApprovalEntity.getId());
+                    j.setMsg("redirect");
+                    return j;
+                }
                 return j;
             }
 

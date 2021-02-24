@@ -142,7 +142,7 @@ public class OfficalSealAuditController extends BaseController {
 
         String startTime = request.getParameter("applyDate_begin");
         String endTime = request.getParameter("applyDate_end");
-        if (startTime == null || startTime=="") {
+        if (startTime == null || startTime == "") {
             startTime = "2000-01-01";
         }
 
@@ -153,8 +153,11 @@ public class OfficalSealAuditController extends BaseController {
         // 执行查询
         IPage<WorkflowBaseEntity> lstResult = workflowService.findTaskStrsByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
         long size = lstResult.getTotal();
+        if (size >= lstResult.getSize()) {
+            size = lstResult.getSize();
+        }
         for (long i = size - 1; i >= 0; --i) {
-            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("双井公章申请")){
+            if (!lstResult.getRecords().get((int) i).getWorkFlowName().equals("双井公章申请")) {
                 lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
             }
         }
@@ -188,7 +191,7 @@ public class OfficalSealAuditController extends BaseController {
         IPage<WorkflowBaseEntity> lstResult = workflowService.findGroupTaskStrsByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName());
         long size = lstResult.getTotal();
         for (long i = size - 1; i >= 0; --i) {
-            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("双井公章申请")){
+            if (!lstResult.getRecords().get((int) i).getWorkFlowName().equals("双井公章申请")) {
                 lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
             }
         }
@@ -196,7 +199,6 @@ public class OfficalSealAuditController extends BaseController {
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
     }
-
 
 
 }

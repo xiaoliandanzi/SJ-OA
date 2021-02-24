@@ -324,6 +324,8 @@ public class OfficalSealReturnController extends BaseController {
             for (long i = size - 1; i >= 0; --i) {
                 if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("双井公章申请")){
                     lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
+                }else if(!lstResult.getRecords().get((int) i).getStatus().equals("3")){
+                    lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
                 }
             }
             List<WorkflowBaseEntity> list = lstResult.getRecords();
@@ -335,7 +337,7 @@ public class OfficalSealReturnController extends BaseController {
                 Cell cell1 = row.getCell(0);
                 cell1.setCellValue((i+1) + "");
                 Cell cell2 = row.getCell(1);
-                cell2.setCellValue(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(item.getUseDay()));
+                cell2.setCellValue(new SimpleDateFormat("yyyy-MM-dd").format(item.getUseDay()));
                 Cell cell3 = row.getCell(2);
                 cell3.setCellValue(item.getContent());
                 Cell cell4 = row.getCell(3);

@@ -167,9 +167,9 @@
                     <div style="float: left"><img src="img/办公.png" class="ban">
                         <a href="/oa/index" class="cor-size">个人办公</a>
                     </div>
-                    <div style="float: left"><img src="img/财务Finance.png" class="ban">
+                    <%--<div style="float: left"><img src="img/财务Finance.png" class="ban">
                         <a href="#" class="cor-size">财务系统&nbsp;&nbsp;&nbsp;&nbsp</a>
-                    </div>
+                    </div>--%>
                     <%--<div style="float: left;position: relative;top: 15px">
                         <input type="search" placeholder="请输入关键字" id="text-input">
                         &lt;%&ndash;<span class="glyphicon glyphicon-search image"></span>&ndash;%&gt;
