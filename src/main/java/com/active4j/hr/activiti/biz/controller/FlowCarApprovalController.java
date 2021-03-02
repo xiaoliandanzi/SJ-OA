@@ -33,6 +33,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -320,6 +322,23 @@ public class FlowCarApprovalController extends BaseController {
                 j.setMsg("使用日期不能为空");
                 return j;
             }
+            Date usetime = flowCarApprovalEntity.getUseTime();
+            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+            String currentDate = df.format(new Date());
+            Date now = df.parse(currentDate);
+            if(usetime.compareTo(now) == -1){
+                j.setSuccess(false);
+                j.setMsg("申请使用日期不能在当前日期之前");
+                return j;
+            }
+            long diff = usetime.getTime()-now.getTime();
+            long days = diff/(1000 * 60 * 60 * 24);
+            if(days >= 14){
+                j.setSuccess(false);
+                j.setMsg("仅支持两周内使用申请");
+                return j;
+            }
+
 
             if(null == flowCarApprovalEntity.getMorningOrAfternoon()) {
                 j.setSuccess(false);
