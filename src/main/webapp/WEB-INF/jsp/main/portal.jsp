@@ -129,7 +129,7 @@
     <script src="./vue.min.js"></script>
     <script src="./axios.min.js"></script>
     <script src="./element.js"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js"></script>
     <!-- 引入组件库 -->
     <%--<script src="https://unpkg.com/element-ui/lib/index.js"></script>--%>
     <%--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>--%>

@@ -209,7 +209,7 @@ public class IndexPostController extends BaseController {
     public AjaxJson getAll() {
         AjaxJson json = new AjaxJson();
         //http post
-        String url = "http://123.56.249.251:9001/admin/index/getTodayTotalByOA";
+        String url = "http://shj12345.yuntianrongji.com/admin/index/getTodayTotalByOA";
         json.setObj(postUrl(url));
         return json;
     }
@@ -217,7 +217,7 @@ public class IndexPostController extends BaseController {
     @RequestMapping(value = "/123456/getNum")
     public AjaxJson getNum() {
         AjaxJson json = new AjaxJson();
-        String url = "http://123.56.249.251:9001/admin/index/getIsOverByOA";
+        String url = "http://shj12345.yuntianrongji.com/admin/index/getIsOverByOA";
         json.setObj(postUrl(url));
         return json;
     }
