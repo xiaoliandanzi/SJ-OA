@@ -87,19 +87,19 @@ public class AssetManageController extends BaseController {
     public AjaxJson save(OaAssetStoreEntity oaAssetStoreEntity, HttpServletRequest request) {
         AjaxJson j = new AjaxJson();
         try{
-
-            String jsonData = oaAssetStoreEntity.getJsonData();
-            JSONArray array;
-            if(StringUtils.isEmpty(jsonData)){
-                array = new JSONArray();
-            }else{
-               array = JSON.parseArray(jsonData);
-            }
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
-            array.add(sdf.format(new Date())+"，"+ShiroUtils.getSessionUser().getRealName()+"修改");
-
-            oaAssetStoreEntity.setJsonData(array.toJSONString());
-
+//
+//            String jsonData = oaAssetStoreEntity.getJsonData();
+//            JSONArray array;
+//            if(StringUtils.isEmpty(jsonData)){
+//                array = new JSONArray();
+//            }else{
+//               array = JSON.parseArray(jsonData);
+//            }
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+//            array.add(sdf.format(new Date())+"，"+ShiroUtils.getSessionUser().getRealName()+"修改");
+//
+//            oaAssetStoreEntity.setJsonData(array.toJSONString());
+//
             if(StringUtils.isEmpty(oaAssetStoreEntity.getAssetName())) {
                 j.setSuccess(false);
                 j.setMsg("资产名称不能为空!");
