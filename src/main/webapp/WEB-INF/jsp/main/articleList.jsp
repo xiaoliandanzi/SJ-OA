@@ -254,19 +254,19 @@
                    <a href="/oa/index" class="nava">个人办公</a>
                 </span>
         </div>
-        <div class="btnBox">
-            <img class="btnImg" src="./img/c.png" alt="">
-            <span class="btnTxt">
-                    <a href="#" class="nava">财务系统</a>
-                </span>
-        </div>
-        <div class="selectBox">
-            <el-input size="mini" placeholder="请输入关键字" prefix-icon="el-icon-search" v-model="input2">
-            </el-input>
-        </div>
-        <div class="selectBtn">
-            搜索
-        </div>
+        <%--<div class="btnBox">--%>
+            <%--<img class="btnImg" src="./img/c.png" alt="">--%>
+            <%--<span class="btnTxt">--%>
+                    <%--<a href="#" class="nava">财务系统</a>--%>
+                <%--</span>--%>
+        <%--</div>--%>
+        <%--<div class="selectBox">--%>
+            <%--<el-input size="mini" placeholder="请输入关键字" prefix-icon="el-icon-search" v-model="input2">--%>
+            <%--</el-input>--%>
+        <%--</div>--%>
+        <%--<div class="selectBtn">--%>
+            <%--搜索--%>
+        <%--</div>--%>
     </div>
     <div class="tabs">
         <div class="tabsBox">

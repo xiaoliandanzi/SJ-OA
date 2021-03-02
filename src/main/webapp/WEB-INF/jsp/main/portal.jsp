@@ -217,7 +217,7 @@
                     <div class="border_right">
                         <div>
                             <span class="jia">+</span>
-                            <span class="gengduo">更多</span>
+                            <span class="gengduo"><a href="sys/message/list" class="gengduo">更多</a></span>
                         </div>
                     </div>
                 </div>
@@ -298,11 +298,6 @@
                     </div>
                 </div>
                 <div>
-                    <%--<div class="articleItem" v-for="(item,index) in list" :key="index">
-                        <div class="articleTitle">{{item.title}}</div>
-                        <div class="articleDate">({{item.date}}</div>
-                        <div class="articleNums">阅{{item.nums}}次)</div>
-                    </div>--%>
                     <div id="main-number"
                          style="width: 200px;height:200px;float: right;z-index: 9999999;top: 20px;right: 40px"></div>
                     <div id="main-dept"
@@ -355,7 +350,7 @@
                     <div class="border_right">
                         <div>
                             <span class="jia">+</span>
-                            <span class="gengduo">更多</span>
+                            <span class="gengduo"><a href="sys/message/list" class="gengduo">更多</a></span>
                         </div>
                     </div>
                 </div>
