@@ -668,7 +668,7 @@
 
     function goto12345() {
         $.ajax({
-            type: "get",
+            type: "post",
             url: 'oa/goto12345',//目标地址
             success: function (data) {
                 if (data.success) {

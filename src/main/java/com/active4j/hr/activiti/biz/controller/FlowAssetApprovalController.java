@@ -332,16 +332,16 @@ public class FlowAssetApprovalController extends BaseController {
                 return j;
             }
 
-//            String json_data = flowAssetApprovalEntity.getJsonData();
-//            JSONArray array = JSON.parseArray(json_data);
-//            JSONObject jo = array.getJSONObject(0);
-//            String assetName = jo.getString("assetName");
-//            String quantity = jo.getString("quantity");
-//            String unitPrice = jo.getString("unitPrice");
-//            String model = jo.getString("model");
-//
-//            flowAssetApprovalEntity.setAssetName(assetName);
-//            flowAssetApprovalEntity.setModel(model);
+            String json_data = flowAssetApprovalEntity.getJsonData();
+            JSONArray array = JSON.parseArray(json_data);
+            JSONObject jo = array.getJSONObject(0);
+            String assetName = jo.getString("assetName");
+            String quantity = jo.getString("quantity");
+            String unitPrice = jo.getString("unitPrice");
+            String model = jo.getString("model");
+
+            flowAssetApprovalEntity.setAssetName(assetName);
+            flowAssetApprovalEntity.setModel(model);
 
 
             if(-1 == flowAssetApprovalEntity.getAmount()) {
@@ -356,17 +356,17 @@ public class FlowAssetApprovalController extends BaseController {
                 return j;
             }
 
-            if(null == flowAssetApprovalEntity.getModel()) {
-                j.setSuccess(false);
-                j.setMsg("资产类型为空");
-                return j;
-            }
-
-            if(null == flowAssetApprovalEntity.getQuantity()) {
-                j.setSuccess(false);
-                j.setMsg("数量不能为空");
-                return j;
-            }
+//            if(null == flowAssetApprovalEntity.getModel()) {
+//                j.setSuccess(false);
+//                j.setMsg("资产类型为空");
+//                return j;
+//            }
+//
+//            if(null == flowAssetApprovalEntity.getQuantity()) {
+//                j.setSuccess(false);
+//                j.setMsg("数量不能为空");
+//                return j;
+//            }
 
 
 
