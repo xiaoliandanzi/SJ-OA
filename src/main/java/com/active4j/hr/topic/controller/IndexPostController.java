@@ -238,7 +238,7 @@ public class IndexPostController extends BaseController {
                 json.setMsg(String.format("对不起，12345系统没有找到科室%s的账号", deptName));
                 return json;
             }
-            json.setObj(String.format("http://8.131.95.226:9001/login/main2?username=%s&password=%s&rememberMe=ture",
+            json.setObj(String.format("http://shj12345.yuntianrongji.com/login/main2?username=%s&password=%s&rememberMe=ture",
                     URLEncoder.encode(deptName
                             , "utf-8"), password));
         }catch (Exception ex) {
@@ -261,7 +261,7 @@ public class IndexPostController extends BaseController {
     private String getPassword(String userName) {
         String password = "";
         try{
-            String url = String.format("http://8.131.95.226:9001/login/getPassword?username=%s",
+            String url = String.format("http://shj12345.yuntianrongji.com/login/getPassword?username=%s",
                     URLEncoder.encode(userName
                     , "utf-8"));
             JSONObject jsonObject = HttpUtil.sendGet(url);
