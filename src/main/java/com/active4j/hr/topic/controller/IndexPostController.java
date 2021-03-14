@@ -17,6 +17,7 @@ import com.active4j.hr.system.model.ActiveUser;
 import com.active4j.hr.system.service.SysMessageService;
 import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.system.util.SystemUtils;
+import com.active4j.hr.topic.service.IndexPostService;
 import com.active4j.hr.topic.service.OaTopicService;
 import com.active4j.hr.work.entity.OaWorkTaskEntity;
 import com.active4j.hr.work.service.OaWorkTaskService;
@@ -45,6 +46,8 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author weiZiHao
@@ -72,6 +75,9 @@ public class IndexPostController extends BaseController {
 
     @Autowired
     private SysUserService sysUserService;
+
+    @Autowired
+    private IndexPostService indexPostService;
 
     /**
      * 待办事项
@@ -323,5 +329,49 @@ public class IndexPostController extends BaseController {
         return back;
     }
 
+    @RequestMapping("/index/getIndexImg")
+    public List<String> getIndexImg(){
+        List<String> imgPath = new ArrayList<>();
+        try{
+            List<String> listImg = this.indexPostService.getIndexImg();
+
+            for (String str:listImg){
+                String strlis = getImgSrc(str);
+                imgPath.add(strlis);
+            }
+        }catch (Exception e){
+            throw e;
+        }
+
+        return imgPath;
+    }
+
+    public String getImgSrc(String htmlStr) {
+
+        if( htmlStr == null ){
+
+            return null;
+        }
+
+        String img = "";
+        Pattern p_image;
+        Matcher m_image;
+        String pics = new String();
+
+        String regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>";
+        p_image = Pattern.compile(regEx_img, Pattern.CASE_INSENSITIVE);
+        m_image = p_image.matcher(htmlStr);
+        while (m_image.find()) {
+            img = img + "," + m_image.group();
+            // Matcher m =
+            // Pattern.compile("src=\"?(.*?)(\"|>|\\s+)").matcher(img); //匹配src
+            Matcher m = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img);
+
+            while (m.find()) {
+                pics=m.group(1);
+            }
+        }
+        return pics;
+    }
 
 }

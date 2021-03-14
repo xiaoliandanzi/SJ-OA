@@ -35,7 +35,8 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
-	
+
+
 	//上传图片
 	//config.filebrowserImageUploadUrl = "fileUploaderController.do?ckUploadImages";
 	config.filebrowserImageBrowseUrl='static/ckfinder/ckfinder.html?type=Images'
@@ -43,5 +44,12 @@ CKEDITOR.editorConfig = function( config ) {
 	config.filebrowserImageBrowseUrl='static/ckfinder/ckfinder.html?type=Images'
 	config.filebrowserFlashBrowseUrl='static/ckfinder/ckfinder.html?type=Flash'
 	config.filebrowserUploadUrl='static/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Files'
-	config.filebrowserFlashUploadUrl='static/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Flash'
+	//config.filebrowserUploadUrl = '/oa/func/upload/uploadImages'
+	//config.filebrowserFlashUploadUrl='static/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Flash'
+
+	config.image_previewText=' ';
+	config.filebrowserImageUploadUrl = "/oa/func/upload/uploadImageSource?Type=Image";//上传图片
+	config.filebrowserImageBrowseUrl = "/oa/func/upload/browerServer"//浏览服务器
+
+
 };

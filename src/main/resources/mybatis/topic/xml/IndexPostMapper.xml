@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.active4j.hr.topic.dao.IndexPostMapper">
+    <select id="getIndexImg" resultType="String">
+        SELECT DISTINCT
+        CONTENT
+        FROM
+        flow_message_approval
+        WHERE
+        MESSAGETYPE ='6'
+        and APPLYSTATUS='1'
+        ORDER BY UPDATE_DATE DESC
+        LIMIT 5
+    </select>
+
+</mapper>

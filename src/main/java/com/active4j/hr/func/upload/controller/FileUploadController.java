@@ -12,12 +12,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.active4j.hr.func.upload.utils.ImageUploadUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -335,5 +338,19 @@ public class FileUploadController extends BaseController {
 			e.printStackTrace();
 		}
 		
+	}
+
+	@ExceptionHandler(MaxUploadSizeExceededException.class)
+	@RequestMapping("/uploadImageSource")
+	public void uploadSource(MultipartHttpServletRequest request, HttpServletResponse response){
+		String DirectoryName = "upload";
+		try {
+			ImageUploadUtil.ckeditor(request, response, DirectoryName);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 }
