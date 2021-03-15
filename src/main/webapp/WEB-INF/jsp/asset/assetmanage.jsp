@@ -45,7 +45,30 @@
     <t:dgToolBar url="asset/assetmanage/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>
     <t:dgToolBar url="asset/assetmanage/addorupdate" type="edit" width="40%" height="70%"></t:dgToolBar>
     <t:dgToolBar type="refresh" ></t:dgToolBar>
+    <t:dgToolBar label="导出" type="define" funName="printIt" ></t:dgToolBar>
 </t:datagrid>
+<script type="text/javascript">
+
+    $(function () {
+        laydate({elem: "#creatTime_begin", event: "focus", istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
+        laydate({elem: "#creatTime_end", event: "focus", istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
+    });
+
+    function printIt() {
+        var x = new XMLHttpRequest();
+        x.open("GET","asset/export/exportWord", true);
+        x.responseType = 'blob';
+        x.onload = function (e) {
+            var url = window.URL.createObjectURL(x.response)
+            var a = document.createElement('a');
+            a.href = url
+            a.download = "双井街道固定资产入库单.doc"
+            a.click()
+        }
+        x.send();
+        // window.location.href="asset/export/exportWord"
+    }
+</script>
 </body>
 
 

@@ -78,7 +78,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">备注：</label>
                             <div class="col-sm-8">
-                                <textarea id="memo" name="memo" class="form-control" >${asset.commit}</textarea>
+                                <textarea id="commit" name="commit" class="form-control" >${asset.commit}</textarea>
                             </div>
                         </div>
                     </t:formvalid>

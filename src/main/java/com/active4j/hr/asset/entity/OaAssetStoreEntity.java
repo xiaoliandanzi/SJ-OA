@@ -52,7 +52,7 @@ public class OaAssetStoreEntity extends BaseEntity {
      * 价格
      */
     @TableField("AMOUNT")
-    private double amount;
+    private Double amount;
 
     /**
      * 型号
