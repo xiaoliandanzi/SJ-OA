@@ -12,6 +12,8 @@ import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.active4j.hr.system.entity.SysUserEntity;
 import com.active4j.hr.system.service.SysUserService;
+import com.active4j.hr.topic.entity.OaEditStore;
+import com.active4j.hr.topic.service.OaEditStoreService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -20,6 +22,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +48,8 @@ public class AssetManageController extends BaseController {
     private OaAssetService oaAssetService;
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private OaEditStoreService oaEditStoreService;
 
     /**
      *
@@ -144,6 +149,12 @@ public class AssetManageController extends BaseController {
             if(StringUtils.isEmpty(oaAssetStoreEntity.getId())) {
                 //新增方法
                 oaAssetService.save(oaAssetStoreEntity);
+
+                //同步保存到oa_edit_store表格
+                oaAssetStoreEntity.setId(null);
+                OaEditStore editStore = new OaEditStore();
+                BeanUtils.copyProperties(oaAssetStoreEntity,editStore);
+                oaEditStoreService.save(editStore);
             }else {
                 //编辑方法
                 OaAssetStoreEntity tmp = oaAssetService.getById(oaAssetStoreEntity.getId());
@@ -156,6 +167,12 @@ public class AssetManageController extends BaseController {
                     return j;
                 }
                 oaAssetService.saveOrUpdate(tmp);
+
+                //同步保存到oa_edit_store表格
+                oaAssetStoreEntity.setId(null);
+                OaEditStore editStore = new OaEditStore();
+                BeanUtils.copyProperties(oaAssetStoreEntity,editStore);
+                oaEditStoreService.save(editStore);
             }
         }catch(Exception e) {
             j.setSuccess(false);
@@ -212,5 +229,25 @@ public class AssetManageController extends BaseController {
         }
 
         return view;
+    }
+
+    /**
+     * 查询库存历史数据
+     *
+     * @param
+     * @param request
+     * @param response
+     * @param dataGrid
+     */
+    @RequestMapping("/asset_history/datagrid")
+    public void asset_history_datagrid(OaEditStore oaEditStore, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        // 拼接查询条件
+        QueryWrapper<OaEditStore> queryWrapper = QueryUtils.installQueryWrapper(oaEditStore, request.getParameterMap(), dataGrid);
+
+        IPage<OaEditStore> lstResult = oaEditStoreService.page(new Page<OaEditStore>(dataGrid.getPage(), dataGrid.getRows()),
+                queryWrapper.eq("ASSETNAME", oaEditStore.getAssetName()).select("CREATE_DATE", "RECEIVER", "ASSETNAME", "MODEL","QUANTITY", "AMOUNT", "ADDRESS")
+                        .orderByDesc("CREATE_DATE"));
+        // 输出结果
+        ResponseUtil.writeJson(response, dataGrid, lstResult);
     }
 }

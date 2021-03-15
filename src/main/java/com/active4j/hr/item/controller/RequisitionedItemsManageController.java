@@ -13,11 +13,14 @@ import com.active4j.hr.item.service.RequisitionedItemService;
 import com.active4j.hr.system.service.SysRoleService;
 import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.system.util.MessageUtils;
+import com.active4j.hr.topic.entity.OaEditStore;
+import com.active4j.hr.topic.service.OaEditStoreService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +52,9 @@ public class RequisitionedItemsManageController extends BaseController {
 
     @Autowired
     private SysRoleService roleService;
+
+    @Autowired
+    private OaEditStoreService oaEditStoreService;
 
     /**
      * @param request
@@ -155,6 +161,14 @@ public class RequisitionedItemsManageController extends BaseController {
             if (StringUtils.isEmpty(requisitionedItemEntity.getId())) {
                 //新增方法
                 requisitionedItemService.save(requisitionedItemEntity);
+
+                //同步保存到oa_edit_store表格
+                requisitionedItemEntity.setId(null);
+                OaEditStore editStore = new OaEditStore();
+                BeanUtils.copyProperties(requisitionedItemEntity,editStore);
+                editStore.setAddress(requisitionedItemEntity.getLocation());
+                editStore.setReceiver(requisitionedItemEntity.getKeeper());
+                oaEditStoreService.save(editStore);
             } else {
                 //编辑方法
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -163,6 +177,14 @@ public class RequisitionedItemsManageController extends BaseController {
                 String record = recordcreate(tmp, requisitionedItemEntity);
                 MessageUtils.SendSysMessage(sysUserService.getUserByUseName(roleService.findUserByRoleName("物品管理员").get(0).getUserName()).getId(), String.format("%s, %s 编辑了库存物品: %s,变更明细:%s", date, ShiroUtils.getSessionUser().getRealName(), tmp.getName(), record));
                 MyBeanUtils.copyBeanNotNull2Bean(requisitionedItemEntity, tmp);
+
+                //同步保存到oa_edit_store表格
+                requisitionedItemEntity.setId(null);
+                OaEditStore editStore = new OaEditStore();
+                BeanUtils.copyProperties(requisitionedItemEntity,editStore);
+                editStore.setAddress(requisitionedItemEntity.getLocation());
+                editStore.setReceiver(requisitionedItemEntity.getKeeper());
+                oaEditStoreService.save(editStore);
                 requisitionedItemService.saveOrUpdate(tmp);
 
 
@@ -217,6 +239,27 @@ public class RequisitionedItemsManageController extends BaseController {
 
         return view;
     }
+
+    /**
+     * 查询库存历史数据
+     *
+     * @param
+     * @param request
+     * @param response
+     * @param dataGrid
+     */
+    @RequestMapping("/item_history/datagrid")
+    public void item_history_datagrid(OaEditStore oaEditStore, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        // 拼接查询条件
+        QueryWrapper<OaEditStore> queryWrapper = QueryUtils.installQueryWrapper(oaEditStore, request.getParameterMap(), dataGrid);
+
+        IPage<OaEditStore> lstResult = oaEditStoreService.page(new Page<OaEditStore>(dataGrid.getPage(), dataGrid.getRows()),
+                queryWrapper.eq("NAME", oaEditStore.getName()).select("CREATE_DATE", "RECEIVER", "NAME", "MODEL","QUANTITY", "UNIT", "ADDRESS")
+                        .orderByDesc("CREATE_DATE"));
+        // 输出结果
+        ResponseUtil.writeJson(response, dataGrid, lstResult);
+    }
+
 
 
     public String recordcreate(RequisitionedItemEntity oldEntity, RequisitionedItemEntity newEntity) {

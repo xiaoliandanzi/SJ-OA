@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,laydate,icheck"></t:base>
+    <t:base type="default,laydate,icheck,jqgrid"></t:base>
     <script type="text/javascript">
         $(function() {
             laydate({elem:"#changeTime",event:"focus",istime: false, format: 'YYYY-MM-DD'});
@@ -81,22 +81,42 @@
                                 <textarea id="memo" name="memo" class="form-control" >${asset.commit}</textarea>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">记录：</label>
-                            <div class="col-sm-8">
-                                <input name="jsonData"  type="hidden"  value='${asset.jsonData }'>
-                              <div id="record"></div>
-                            </div>
-                        </div>
                     </t:formvalid>
+                </div>
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-12" id="searchGroupId">
+                        </div>
+                    </div>
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div id="assetManageTable" class="jqGrid_wrapper"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- 脚本部分 -->
+<t:datagrid actionUrl="asset/assetmanage/asset_history/datagrid" tableContentId="assetManageTable" fit="true" caption="当前资产库存历史记录" name="assetManageList" pageSize="20" sortName="createDate" sortOrder="desc">
+    <%--<t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>--%>
+    <t:dgCol name="createDate" label="更新时间" width="80" datefmt="yyyy-MM-dd HH:mm:SS" queryModel="group" datePlugin="laydate"></t:dgCol>
+    <t:dgCol name="receiver" label="保管人" width="50"></t:dgCol>
+    <t:dgCol name="assetName" label="资产名称" width="50" query="true" defval="${asset.assetName }"></t:dgCol>
+    <t:dgCol name="model" label="规格/型号" width="50"></t:dgCol>
+    <t:dgCol name="quantity" label="数量" width="50"></t:dgCol>
+    <t:dgCol name="amount" label="价格" width="50"></t:dgCol>
+    <t:dgCol name="address" label="库存地点" width="70"></t:dgCol>
+    <%--<t:dgCol name="opt" label="操作" ></t:dgCol>
+    <t:dgDelOpt label="删除" url="asset/assetmanage/delete?id={id}"/>
+    <t:dgToolBar url="asset/assetmanage/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>
+    <t:dgToolBar url="asset/assetmanage/addorupdate" type="edit" width="40%" height="70%"></t:dgToolBar>
+    <t:dgToolBar type="refresh" ></t:dgToolBar>--%>
+</t:datagrid>
 </body>
 <script>
-
     var json = '${asset.jsonData}';
 
     json = JSON.parse(json);
