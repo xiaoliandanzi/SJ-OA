@@ -136,8 +136,8 @@
     <link rel="stylesheet" href="./index.css">
     <link rel="stylesheet" href="./element.css">
 </head>
-<body>
-<div id="app" style="background-color: #fefefe">
+<body style = "background-color:#f7f7f7">
+<div id="app" style="background-color: #f7f7f7">
     <div class="topNavber" style="background-color: #2076be !important;color: white;">
         <div class="logo">
             <img class="logoImg" src="./img/a.png" alt="">
