@@ -137,22 +137,22 @@
     <link rel="stylesheet" href="./element.css">
 </head>
 <body>
-<div id="app">
-    <div class="topNavber">
+<div id="app" style="background-color: #fefefe">
+    <div class="topNavber" style="background-color: #2076be !important;color: white;">
         <div class="logo">
             <img class="logoImg" src="./img/a.png" alt="">
         </div>
-        <div class="webName">
+        <div class="webName" style="color: white;">
             双井街道智慧办公系统
         </div>
         <div class="navberItem">
             <img class="navIcon" src="./img/d.png" alt="">
-            <span class="navItemName"><a href="/oa/" class="nava">门户首页</a></span>
+            <span class="navItemName"><a href="/oa/" class="nava" style="color: white;">门户首页</a></span>
         </div>
         <div class="navberItem">
             <img class="navIcon" src="./img/b.png" alt="">
             <%--<a href="/oa/index" class="nava">个人办公</a>--%>
-            <%--span class="navItemName">--%><a href="/oa/index" class="navItemName nava">个人办公</a><%--</span>--%>
+            <%--span class="navItemName">--%><a href="/oa/index" class="navItemName nava" style="color: white;">个人办公</a><%--</span>--%>
         </div>
         <%--<div class="navberItem">
             <img class="navIcon" src="./img/c.png" alt="">
@@ -170,235 +170,207 @@
                 搜索
             </div>
         </div>--%>
-        <div class="userBox" id="user-box"><img src="./img/user.jpg" class="navIcon" style="margin-top: 0px;">&nbsp
-            {{relName}}
+        <div class="userBox" id="user-box" style="margin-right: 136px !important;">
+            <img src="./img/user.png" class="navIcon" style="margin-top: 0px;">&nbsp
+            <span class="navItemName nava" style="font-size: 30px;color: white;">{{relName}}</span>
         </div>
     </div>
     <div class="listBox">
-        <!-- 第一个 -->
-        <div class="oneLine">
-            <div class="one_a">
-                <div class="borderTitle">
-                    <div class="border_left">双井图库</div>
-                    <div class="border_right">
-                        <div>
-                            <span class="jia">+</span>
-                            <span class="gengduo">更多</span>
+        <div style="margin-top: 18px;padding: 0 20px;display: flex;">
+            <div class="nowCenter" style="width: 1230px;">
+                <div class="one_a boxShadow" style="width: 1230px !important;height: 703px !important;margin-bottom: 20px;">
+                    <div class="borderTitle">
+                        <div class="border_left" style="border-left: 5px solid #347BB7">双井图库</div>
+                        <div class="border_right">
+                            <div>
+                                <span class="jia" style="display: block;position: relative;top:24px;"><img
+                                        src="./img/more.png"></span>
+                                <span class="gengduo">更多</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <img class="BorderImgBox" src="./img/borderImg.png" alt="">
-                </div>
-            </div>
-            <!-- 第二个 -->
-            <div class="one_a borderCenter">
-                <div class="borderTitle">
-                    <div class="border_left">工作信息</div>
-                    <div class="border_right">
-                        <div>
-                            <span class="jia">+</span>
-                            <span class="gengduo"><a href="/oa/oa/index/viewArticleList?messageType=4" class="gengduo">更多</a></span>
-                        </div>
+                    <div>
+                        <img style="float: left; width: 26px;height: 44px;margin-right: 20px;margin-left: 10px; margin-top:295px; "
+                             src="./img/zuo-.png" alt="">
+                        <img class="BorderImgBox" style=" float: left; width: 1084px;height: 610px !important;"
+                             src="./img/borderImg.png" alt="">
+                        <img style="float: left;width: 26px;height: 44px;margin-left: 25px; margin-top:295px;"
+                             src="./img/you.png" alt="">
                     </div>
-                </div>
-                <div>
-                    <div class="articleItem" v-for="(item,index) in fourList" :key="index" @click="listClick(item)">
-                        <div class="articleTitle">{{item.title}}</div>
-                        <div class="articleDate">({{item.publicTime}}</div>
-                        <div class="articleNums">阅{{item.count}}次)</div>
-                    </div>
-                </div>
-            </div>
-            <!-- 第三个 -->
-            <div class="one_a">
-                <div class="borderTitle">
-                    <div class="border_left">待办事项</div>
-                    <div class="border_right">
-                        <div>
-                            <span class="jia">+</span>
-                            <span class="gengduo"><a href="sys/message/list" class="gengduo">更多</a></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="circularBigBox">
-                    <div class="circularBox">
-                        <div class="circular">
-                            <div style="font-size: 22px;font-weight: bold">{{shenhe}}</div>
-                        </div>
-                        <div class="circularTitle">
-                            待审核申请
-                        </div>
-                    </div>
-                    <div class="circularBox">
-                        <div class="circular">
-                            <div style="font-size: 22px;font-weight: bold">{{duban}}</div>
-                        </div>
-                        <div class="circularTitle">
-                            待督办事项
-                        </div>
-                    </div>
-                    <div class="circularBox">
-                        <div class="circular">
-                            <div style="font-size: 22px;font-weight: bold">{{bohui}}</div>
-                        </div>
-                        <div class="circularTitle">
-                            被驳回事项
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 第二行 -->
-        <div class="oneLine twoLine">
-            <div class="one_a">
-                <div class="borderTitle">
-                    <div class="border_left">公示文件</div>
-                    <div class="border_right">
-                        <div>
-                            <span class="jia">+</span>
-                            <span class="gengduo"><a href="/oa/oa/index/viewArticleList?messageType=1" class="gengduo">更多</a></span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="articleItem" v-for="(item,index) in oneList" :key="index" @click="listClick(item)">
-                        <div class="articleTitle">{{item.title}}</div>
-                        <div class="articleDate">({{item.publicTime}}</div>
-                        <div class="articleNums">阅{{item.count}}次)</div>
-                    </div>
-                </div>
-            </div>
-            <div class="one_a borderCenter">
-                <div class="borderTitle">
-                    <div class="border_left">媒体聚焦</div>
-                    <div class="border_right">
-                        <div>
-                            <span class="jia">+</span>
-                            <span class="gengduo"><a href="/oa/oa/index/viewArticleList?messageType=3" class="gengduo">更多</a></span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="articleItem" v-for="(item,index) in threeList" :key="index" @click="listClick(item)">
-                        <div class="articleTitle">{{item.title}}</div>
-                        <div class="articleDate">({{item.publicTime}}</div>
-                        <div class="articleNums">阅{{item.count}}次)</div>
-                    </div>
-                </div>
-            </div>
-            <div class="one_a">
-                <div class="borderTitle">
-                    <div class="border_left">12345案件统计</div>
-                    <div class="border_right">
-                        <div>
-                            <span class="jia">+</span>
-                            <span class="gengduo" onclick="goto12345()">更多</span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div id="main-number"
-                         style="width: 200px;height:200px;float: right;z-index: 9999999;top: 20px;right: 40px"></div>
-                    <div id="main-dept"
-                         style="width: 200px;height:200px; float: left;z-index: 9999999;top: 20px;left: 40px"></div>
-                </div>
-            </div>
 
-        </div>
-        <!-- 第三行 -->
-        <div class="oneLine twoLine">
-            <div class="one_a">
-                <div class="borderTitle">
-                    <div class="border_left">通知公告</div>
-                    <div class="border_right">
-                        <div>
-                            <span class="jia">+</span>
-                            <span class="gengduo"><a href="/oa/oa/index/viewArticleList?messageType=2" class="gengduo">更多</a></span>
-                        </div>
-                    </div>
                 </div>
-                <div>
-                    <div class="articleItem" v-for="(item,index) in twoList" :key="index" @click="listClick(item)">
-                        <div class="articleTitle">{{item.title}}</div>
-                        <div class="articleDate">({{item.publicTime}}</div>
-                        <div class="articleNums">阅{{item.count}}次)</div>
-                    </div>
-                </div>
-            </div>
-            <div class="one_a borderCenter">
-                <div class="borderTitle">
-                    <div class="border_left">制度规范</div>
-                    <div class="border_right">
-                        <div>
-                            <span class="jia">+</span>
-                            <span class="gengduo"><a href="/oa/oa/index/viewArticleList?messageType=5" class="gengduo">更多</a></span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="articleItem" v-for="(item,index) in fiveList" :key="index" @click="listClick(item)">
-                        <div class="articleTitle">{{item.title}}</div>
-                        <div class="articleDate">({{item.publicTime}}</div>
-                        <div class="articleNums">阅{{item.count}}次)</div>
-                    </div>
-                </div>
-            </div>
-            <div class="one_a">
-                <div class="borderTitle">
-                    <div class="border_left">事项通知</div>
-                    <div class="border_right">
-                        <div>
-                            <span class="jia">+</span>
-                            <span class="gengduo"><a href="sys/message/list" class="gengduo">更多</a></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="eventIndex">
-                    <div class="articleItem" v-for="(item,index) in shijian" :key="index">
-                        <div class="">{{index+1}}、{{item.content}}</div>
-                        <!-- <div class="eventTitle"></div>
-                        <div class="eventMsg"></div> -->
-                    </div>
-                </div>
-            </div>
 
-        </div>
-        <div class="herfBox">
-            <div class="lianjie">链接</div>
-            <a href="http://www.chy.egov.cn/" target="_blank">
-                <div class="hrefVal">
-                    朝阳政务
+                <div class="one_a boxShadow">
+                    <div class="borderTitle">
+                        <div class="border_left" style="border-left: 5px solid #347BB7">通知公告</div>
+                        <div class="border_right">
+                            <div>
+                                <%--                        <span class="jia">+</span>--%>
+                                <span class="jia" style="display: block;position: relative;top:25px;"><img src="./img/more.png"></span>
+                                <span class="gengduo"><a href="/oa/oa/index/viewArticleList?messageType=2"
+                                                         class="gengduo">更多</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="articleItem" v-for="(item,index) in twoList" :key="index" @click="listClick(item)">
+                            <div class="articleTitle">{{item.title}}</div>
+                            <div class="articleDate">({{item.publicTime}}</div>
+                            <div class="articleNums">阅{{item.count}}次)</div>
+                        </div>
+                    </div>
                 </div>
-            </a>
-            <a href="http://www.bjchy.gov.cn/" target="_blank">
-                <div class="hrefVal">
-                    朝阳区政府
-                </div>
-            </a>
-            <a href="http://bgpc.beijing.gov.cn/" target="_blank">
-                <div class="hrefVal">
-                    市政府采购中心
-                </div>
-            </a>
-            <a href="http://3d.bjchy.gov.cn" target="_blank">
-                <div class="hrefVal">
-                    云享朝阳·感知互动体验中心
-                </div>
-            </a>
-            <a href="https://www.xuexi.cn/" target="_blank">
-                <div class="hrefVal">
-                    学习强国
-                </div>
-            </a>
-            <a href="http://www.chy.egov.cn/qbm-5.html" target="_blank">
-                <div class="hrefVal">
-                    区保密局提示
-                </div>
-            </a>
 
+                <div class="one_a boxShadow" style="margin-left: 40px;">
+                    <div class="borderTitle">
+                        <div class="border_left" style="border-left: 5px solid #347BB7">工作信息</div>
+                        <div class="border_right">
+                            <div>
+                                <%--                        <span class="jia">+</span>--%>
+                                <span class="jia" style="display: block;position: relative;top:25px;"><img src="./img/more.png"></span>
+                                <span class="gengduo"><a href="/oa/oa/index/viewArticleList?messageType=5"
+                                                         class="gengduo">更多</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="articleItem" v-for="(item,index) in fiveList" :key="index" @click="listClick(item)">
+                            <div class="articleTitle">{{item.title}}</div>
+                            <div class="articleDate">({{item.publicTime}}</div>
+                            <div class="articleNums">阅{{item.count}}次)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="newLeft" style="width: 600px;">
+                <div class="oneLine">
+                    <div class="one_a boxShadow">
+                        <div class="borderTitle">
+                            <div class="border_left" style="border-left: 5px solid #347BB7">待办事项</div>
+                            <div class="border_right">
+                                <div>
+                                    <%--                                    <span class="jia">+</span>--%>
+                                    <span class="jia" style="display: block;position: relative;top:25px;"><img
+                                            src="./img/more.png"></span>
+                                    <span class="gengduo"><a href="sys/message/list" class="gengduo">更多</a></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="circularBigBox">
+                            <div class="circularBox">
+                                <div class="circular">
+                                    <div style="font-size: 22px;font-weight: bold">{{shenhe}}</div>
+                                </div>
+                                <div class="circularTitle">
+                                    待审核申请
+                                </div>
+                            </div>
+                            <div class="circularBox">
+                                <div class="circular">
+                                    <div style="font-size: 22px;font-weight: bold">{{duban}}</div>
+                                </div>
+                                <div class="circularTitle">
+                                    待督办事项
+                                </div>
+                            </div>
+                            <div class="circularBox">
+                                <div class="circular">
+                                    <div style="font-size: 22px;font-weight: bold">{{bohui}}</div>
+                                </div>
+                                <div class="circularTitle">
+                                    被驳回事项
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oneLine">
+                    <div class="one_a boxShadow">
+                        <div class="borderTitle">
+                            <div class="border_left" style="border-left: 5px solid #347BB7">12345案件统计</div>
+                            <div class="border_right">
+                                <div>
+                                    <%--                                    <span class="jia">+</span>--%>
+                                    <span class="jia" style="display: block;position: relative;top:25px;"><img
+                                            src="./img/more.png"></span>
+                                    <span class="gengduo" onclick="goto12345()">更多</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div id="main-number"
+                                 style="width: 200px;height:200px;float: right;z-index: 9999999;top: 20px;right: 40px"></div>
+                            <div id="main-dept"
+                                 style="width: 200px;height:200px; float: left;z-index: 9999999;top: 20px;left: 40px"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="oneLine" style="height: 369px;">
+                    <div class="one_a boxShadow" style="height: 369px;">
+                        <div class="borderTitle">
+                            <div class="border_left" style="border-left: 5px solid #347BB7">事项通知</div>
+                            <div class="border_right">
+                                <div>
+                                    <%--                        <span class="jia">+</span>--%>
+                                    <span class="jia" style="display: block;position: relative;top:25px;"><img
+                                            src="./img/more.png"></span>
+                                    <span class="gengduo"><a href="sys/message/list" class="gengduo">更多</a></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="eventIndex">
+                            <div class="articleItem" v-for="(item,index) in shijian" :key="index">
+                                <div class="">{{index + 1}}、{{item.content}}</div>
+                                <!-- <div class="eventTitle"></div>
+                                <div class="eventMsg"></div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <!-- 第三行 -->
+    <div class="oneLine">
+
+
+    </div>
+    <div class="herfBox">
+        <div class="lianjie">链接</div>
+        <a href="http://www.chy.egov.cn/" target="_blank">
+            <div class="hrefVal">
+                朝阳政务
+            </div>
+        </a>
+        <a href="http://www.bjchy.gov.cn/" target="_blank">
+            <div class="hrefVal">
+                朝阳区政府
+            </div>
+        </a>
+        <a href="http://bgpc.beijing.gov.cn/" target="_blank">
+            <div class="hrefVal">
+                市政府采购中心
+            </div>
+        </a>
+        <a href="http://3d.bjchy.gov.cn" target="_blank">
+            <div class="hrefVal">
+                云享朝阳·感知互动体验中心
+            </div>
+        </a>
+        <a href="https://www.xuexi.cn/" target="_blank">
+            <div class="hrefVal">
+                学习强国
+            </div>
+        </a>
+        <a href="http://www.chy.egov.cn/qbm-5.html" target="_blank">
+            <div class="hrefVal">
+                区保密局提示
+            </div>
+        </a>
+
+    </div>
+</div>
 </div>
 </body>
 <div id="rbbox" hidden="true">
