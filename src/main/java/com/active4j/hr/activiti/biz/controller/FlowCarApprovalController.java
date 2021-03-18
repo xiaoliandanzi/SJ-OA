@@ -10,6 +10,7 @@ import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.activiti.service.WorkflowFormService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.activiti.service.WorkflowService;
+import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
@@ -231,7 +232,6 @@ public class FlowCarApprovalController extends BaseController {
         }
         workflowBaseService.saveOrUpdate(workflowBaseEntity);
         log.info("流程:" + workflowBaseEntity.getName() + "完成审批，审批任务ID:" + taskId + "， 审批状态:" + workflowBaseEntity.getStatus());
-
     }
 
 
@@ -272,6 +272,10 @@ public class FlowCarApprovalController extends BaseController {
                 workflowBaseEntity.setStatus("3");
                 FlowCarApprovalEntity flowCarApprovalEntity = flowCarApprovalService.getById(workflowBaseEntity.getBusinessId());
                 flowCarApprovalService.saveOrUpdate(flowCarApprovalEntity);
+
+                //添加到系统信息
+                WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getCreateName(), task.getAssignee(),
+                        workflowBaseEntity.getApplyDate(), workflowBaseEntity.getWorkFlowName());
             } else {
                 workflowBaseEntity.setStatus("2");
                 FlowCarApprovalEntity flowCarApprovalEntity = flowCarApprovalService.getById(workflowBaseEntity.getBusinessId());

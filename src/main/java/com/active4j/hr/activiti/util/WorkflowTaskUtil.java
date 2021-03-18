@@ -61,7 +61,7 @@ public class WorkflowTaskUtil {
 		SysDeptEntity dept = sysDeptService.getById(user.getDeptId());
 		//主管部门查询
 		SysDeptEntity parentDept = sysDeptService.getById(dept.getParentId());
-		String roleName = StringUtils.substringAfter(parentDept.getName(), "分管") + "主管领导";
+		String roleName = StringUtils.substringBefore(parentDept.getName(), "分管") + "主管领导";//取分管前字符与主管领导拼接
 		return roleName;
 	}
 
@@ -103,6 +103,8 @@ public class WorkflowTaskUtil {
 
 	//审批通过
 	public static void sendApprovalMessage(String applyName, String approvalName, Date taskTime, String taskName) {
+		System.out.println(applyName);
+		System.out.println(approvalName);
 		try {
 			MessageUtils.SendSysMessage(sysUserService.getUserByUseName(applyName).getId(),
 					String.format("您好，您于%s提出的%s，%s已审批通过，请查收",
