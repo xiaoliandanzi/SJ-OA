@@ -20,6 +20,7 @@ import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysRoleService;
 import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.system.util.MessageUtils;
+import com.active4j.hr.system.util.SystemUtils;
 import com.active4j.hr.work.entity.OaWorkMeetRoomEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -186,6 +187,7 @@ public class ItemGetController extends BaseController {
      */
     @RequestMapping("/datagrid")
     public void datagrid(GetItemEntity getItemEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        String userDept = ShiroUtils.getSessionUserDept();
         // 拼接查询条件
         QueryWrapper<GetItemEntity> queryWrapper = QueryUtils.installQueryWrapper(getItemEntity, request.getParameterMap(), dataGrid);
         // 执行查询

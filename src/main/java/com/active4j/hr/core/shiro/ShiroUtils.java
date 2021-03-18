@@ -10,6 +10,8 @@ import org.apache.shiro.util.ByteSource;
 import com.active4j.hr.system.model.ActiveUser;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 
+import java.util.Set;
+
 
 /**
  * shiro工具类
@@ -67,7 +69,6 @@ public class ShiroUtils {
     
     /**
      * 是否具有某种角色
-     * @param roleName
      * @return
      */
     public static boolean hasRole(String roleCode) {
@@ -144,4 +145,22 @@ public class ShiroUtils {
 		ActiveUser user = getSessionUser();
 		return user.getId();
 	}
+
+    /**
+     * 取得当前登录用户所在的部门
+     * @return
+     */
+    public static String getSessionUserDept() {
+        ActiveUser user = getSessionUser();
+        return user.getDeptName();
+    }
+
+    /**
+     * 取得当前登录用户的角色
+     * @return
+     */
+    public static Set getSessionUserRole() {
+        ActiveUser user = getSessionUser();
+        return user.getRoles();
+    }
 }
