@@ -3,7 +3,7 @@
 <mapper namespace="com.active4j.hr.topic.dao.IndexPostMapper">
     <select id="getIndexImg" resultType="String">
         SELECT DISTINCT
-        CONTENT
+        CONTENT,UPDATE_DATE
         FROM
         flow_message_approval
         WHERE

@@ -339,6 +339,9 @@ public class IndexPostController extends BaseController {
                 String strlis = getImgSrc(str);
                 imgPath.add(strlis);
             }
+            if (imgPath.size()==0||imgPath.size()<5){
+                imgPath.add("/oa/upload/borderImg.png");
+            }
         }catch (Exception e){
             throw e;
         }
