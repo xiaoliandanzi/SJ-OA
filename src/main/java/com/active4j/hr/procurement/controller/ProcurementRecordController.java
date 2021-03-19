@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -62,6 +63,7 @@ public class ProcurementRecordController {
 
     @Autowired
     private SysDeptService sysDeptService;
+
 
     @RequestMapping("/show")
     public ModelAndView show(HttpServletRequest request) {
@@ -236,7 +238,7 @@ public class ProcurementRecordController {
 
     /**
      * 查询数据  -- 我的已办审批
-     * @param user
+     * @param
      * @param request
      * @param response
      * @param dataGrid
@@ -253,13 +255,8 @@ public class ProcurementRecordController {
             endTime = "2099-12-31";
         }
         // 执行查询
-        IPage<WorkflowBaseEntity> lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
-        long size = lstResult.getRecords().size();
-        for (long i = size - 1; i >= 0; --i) {
-            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("政采申请")){
-                lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
-            }
-        }
+        IPage<WorkflowBaseEntity> lstResult = workflowService.findFinishedTaskByUserDept(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserDept(), WorkflowConstant.Task_Category_approval);
+
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
     }
