@@ -840,4 +840,16 @@ public class WorkflowServiceImpl implements WorkflowService {
         }
         return isCandiate;
     }
+
+    /**
+     * 根据当前用户，获取业务表ID
+     *
+     * @param userName
+     * @param category 区别审批还是办理
+     * @return
+     */
+    public IPage<WorkflowBaseEntity> findFinishedTaskByUserDept(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String userDept, String category) {
+
+        return workflowDao.findFinishedTaskByUserDept(page, userDept, base.getCategoryId(), base.getProjectNo(), base.getName(), base.getApplyName(), base.getApplyerDepart(), startTime, endTime);
+    }
 }

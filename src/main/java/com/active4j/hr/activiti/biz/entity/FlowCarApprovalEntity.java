@@ -75,5 +75,21 @@ public class FlowCarApprovalEntity extends BaseEntity {
     @TableField("UPDATE_DATE")
     private String update_date;
 
+    /**
+     * 车牌号
+     * */
+    @TableField("PLATENUM")
+    private String platenum;
 
+    /**
+     * 司机
+     * */
+    @TableField(" ")
+    private String plateuser;
+
+    /**
+     * etc情况
+     * */
+    @TableField("ETCMESSAGE")
+    private String etcmessage;
 }
