@@ -29,6 +29,7 @@ public interface SysDeptService extends IService<SysDeptEntity> {
 	 * @time 2020年1月28日 下午3:35:12
 	 */
 	public List<SysDeptEntity> getChildDeptsByDeptId(String deptId);
+
 	
 	/**
 	 * 

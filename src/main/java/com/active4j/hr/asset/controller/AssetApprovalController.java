@@ -2,10 +2,13 @@ package com.active4j.hr.asset.controller;
 
 import com.active4j.hr.activiti.biz.service.FlowAssetApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
+import com.active4j.hr.activiti.entity.WorkflowCategoryEntity;
+import com.active4j.hr.activiti.service.WorkflowCategoryService;
 import com.active4j.hr.activiti.service.WorkflowService;
 import com.active4j.hr.activiti.util.WorkflowConstant;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.core.shiro.ShiroUtils;
+import com.active4j.hr.core.util.ListUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -35,10 +38,31 @@ public class AssetApprovalController extends BaseController {
     private FlowAssetApprovalService flowAssetApprovalService;
     @Autowired
     private WorkflowService workflowService;
+    @Autowired
+    private WorkflowCategoryService workflowCategoryService;
 
     @RequestMapping("/list")
     public ModelAndView show(HttpServletRequest request) {
         ModelAndView view = new ModelAndView("asset/waittasklist");
+        return view;
+    }
+
+    @RequestMapping("/addlist")
+    public ModelAndView addshow(HttpServletRequest request) {
+        ModelAndView view = new ModelAndView("asset/assetAudit");
+
+        // 获取流程类别数据
+        List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
+        List<WorkflowCategoryEntity> lstSeal = new ArrayList<WorkflowCategoryEntity>();
+        int size = lstCatogorys.size();
+        for (int i = size - 1; i >= 0; i--) {
+            WorkflowCategoryEntity catogorys = lstCatogorys.get(i);
+            if (catogorys.getName().equals("行政类")) {
+                lstSeal.add(catogorys);
+            }
+        }
+        view.addObject("categoryReplace", ListUtils.listToReplaceStr(lstSeal, "name", "id"));
+
         return view;
     }
 
@@ -51,7 +75,7 @@ public class AssetApprovalController extends BaseController {
      * @param dataGrid
      */
     @RequestMapping("/datagrid")
-    public void datagrid(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+    public void adddatagrid(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
         String startTime = request.getParameter("applyDate_begin");
         String endTime = request.getParameter("applyDate_end");
 
@@ -75,6 +99,31 @@ public class AssetApprovalController extends BaseController {
 
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
+        ResponseUtil.writeJson(response, dataGrid, lstResult);
+    }
+
+    /**
+     * 查询入库申请数据
+     *
+     * @param workflowBaseEntity
+     * @param request
+     * @param response
+     * @param dataGrid
+     */
+    @RequestMapping("/adddatagrid")
+    public void datagrid(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        String startTime = request.getParameter("applyDate_begin");
+        String endTime = request.getParameter("applyDate_end");
+
+        // 执行查询
+        IPage<WorkflowBaseEntity> lstResult = workflowService.findTaskStrsByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
+        long size = lstResult.getTotal();
+        for (long i = size - 1; i >= 0; --i) {
+            if (!lstResult.getRecords().get((int) i).getWorkFlowName().equals("固定资产入库")) {
+                lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
+            }
+        }
+        // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
     }
 

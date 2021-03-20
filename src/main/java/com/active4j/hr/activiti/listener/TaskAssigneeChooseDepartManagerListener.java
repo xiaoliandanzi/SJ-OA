@@ -15,11 +15,11 @@ import java.util.List;
 
 
 /**
- * 审批任务节点为部门经理，审批人指定
+ * 审批任务节点为科室负责人，审批人自己指定指定
  * @author chenxl
  *
  */
-public class TaskAssigneeDepartManagerListener implements TaskListener {
+public class TaskAssigneeChooseDepartManagerListener implements TaskListener {
 
 	/**
 	 * 
@@ -33,8 +33,11 @@ public class TaskAssigneeDepartManagerListener implements TaskListener {
 		WorkflowBaseService workflowBaseService = ApplicationContextUtil.getContext().getBean(WorkflowBaseService.class);
 		//申请人
 		String applyName = (String)delegateTask.getVariable("applyName");
-		//根据部门id查找部门负责人
-		List<String> lstUsers = WorkflowTaskUtil.getDepartManagerByApplyName(applyName);
+
+		String deptId = (String)delegateTask.getVariable("deptId");
+		
+		List<String> lstUsers = WorkflowTaskUtil.getDepartManagerByDeptId(deptId);
+		
 		if(null == lstUsers || lstUsers.size() <= 0) {
 			taskService.setAssignee(delegateTask.getId(), WorkflowConstant.Str_Admin);
 		}else if(lstUsers.size() == 1) {
