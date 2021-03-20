@@ -486,4 +486,28 @@ public class FlowCarApprovalController extends BaseController {
         }
         return view;
     }
+
+    @RequestMapping("/saveetcmessage")
+    public AjaxJson saveEtcMessage(String id,String taskId,String etcmessage,HttpServletRequest request){
+        AjaxJson j=new AjaxJson();
+        try{
+            if (StringUtils.isEmpty(etcmessage)){
+                j.setMsg("etc使用情况不可为空");
+                j.setSuccess(false);
+            }
+            WorkflowBaseEntity workflowBaseEntity = workflowBaseService.getById(id);
+            if (workflowBaseEntity!=null){
+                FlowCarApprovalEntity flowCarApprovalEntity = flowCarApprovalService.getById(workflowBaseEntity.getBusinessId());
+                flowCarApprovalEntity.setEtcmessage(etcmessage);
+                flowCarApprovalService.saveOrUpdate(flowCarApprovalEntity);
+                j.setSuccess(true);
+                j.setMsg("操作成功");
+            }
+        }catch(Exception e){
+            j.setSuccess(false);
+            j.setMsg(GlobalConstant.ERROR_MSG);
+            log.error("审批报错，错误信息:{}", e);
+        }
+        return j;
+    }
 }
