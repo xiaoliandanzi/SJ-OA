@@ -84,7 +84,7 @@ public class FlowCarApprovalEntity extends BaseEntity {
     /**
      * 司机
      * */
-    @TableField(" ")
+    @TableField("PLATEUSER")
     private String plateuser;
 
     /**
