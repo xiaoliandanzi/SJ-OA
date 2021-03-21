@@ -40,9 +40,9 @@ public class FlowAssetAddEntity {
     private Date createDate;
 
     @ApiModelProperty(value = "入库日期")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
     @TableField("TIME")
-    private Date time;
+    private String time;
 
     @ApiModelProperty(value = "部门")
     @TableField("DEPT")

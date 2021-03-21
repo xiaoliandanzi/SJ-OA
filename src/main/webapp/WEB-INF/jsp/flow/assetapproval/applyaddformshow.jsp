@@ -8,13 +8,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <div class="form-group">
     <label class="col-sm-3 control-label">资产管理部门*：</label>
-    <div class="col-sm-8">
-        <div class="input-group">
-            <t:choose url="common/selectDepart" hiddenName="dept" hiddenValue="${biz.dept}" textValue="" textName="departLabel" hiddenId="departId" textId="departLabel"></t:choose>
-        </div>
+    <div class="col-sm-5">
+        <input id="useDepartment" name="dept" minlength="2" type="text" class="form-control" required="" value="${biz.dept }">
     </div>
 </div>
-
 <div class="form-group">
     <label class="col-sm-2 control-label">固定资产*：</label>
     <div class="col-sm-3">
@@ -38,7 +35,7 @@
     </div>
     <label class="col-sm-3 control-label m-b">入库日期*：</label>
     <div class="col-sm-4 m-b">
-        <input class="laydate-icon form-control layer-date" id="time" name="time" value='<fmt:formatDate value="${biz.time }" type="time" pattern="yyyy-MM-dd"/>'>
+        <input id="time" name="time"  type="text" class="form-control" required="" value="${biz.time }">
     </div>
 </div>
 <div class="form-group">
@@ -61,3 +58,4 @@
         <input id="commit" name="commit" minlength="1" type="text" class="form-control" value="${biz.commit }">
     </div>
 </div>
+
