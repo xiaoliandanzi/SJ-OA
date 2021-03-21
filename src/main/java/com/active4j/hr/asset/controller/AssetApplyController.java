@@ -1,6 +1,8 @@
 package com.active4j.hr.asset.controller;
 
+import com.active4j.hr.activiti.biz.entity.FlowAssetAddEntity;
 import com.active4j.hr.activiti.biz.entity.FlowAssetApprovalEntity;
+import com.active4j.hr.activiti.biz.service.FlowAssetAddService;
 import com.active4j.hr.activiti.biz.service.FlowAssetApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowFormEntity;
 import com.active4j.hr.activiti.entity.WorkflowMngEntity;
@@ -58,6 +60,8 @@ public class AssetApplyController extends BaseController {
 
     @Autowired
     private WorkflowService workflowService;
+    @Autowired
+    private FlowAssetAddService flowAssetAddService;
 
     @RequestMapping("/list")
     public ModelAndView show(HttpServletRequest request) {
@@ -108,6 +112,45 @@ public class AssetApplyController extends BaseController {
                         "?formId=" + workflowMngEntity.getFormId()
                         + "&workflowId=" + workflowMngEntity.getId()
                 );
+                return view;
+            }
+        }
+        view = new ModelAndView("system/common/warning");
+        view.addObject("message", "系统不存在当前表单");
+        return view;
+    }
+
+    /**
+     *assetadd
+     * @return
+     */
+    @RequestMapping("/addgo")
+    public ModelAndView addshow(HttpServletRequest request,String id,String type) {
+        ModelAndView view;
+
+        //当前用户ID
+        String userId = ShiroUtils.getSessionUserId();
+
+        List<SysRoleEntity> lstRoles = sysUserService.getUserRoleByUserId(userId);
+
+        List<String> roleIds = new ArrayList<String>();
+        if(null != lstRoles) {
+            roleIds = lstRoles.stream().map(d -> d.getId()).collect(Collectors.toList());
+        }
+
+        List<WorkflowMngEntity> lstWorkflows = workflowMngService.findWorkflowMngByUserIdAndRoleIds(userId, roleIds);
+
+
+        for (WorkflowMngEntity workflowMngEntity : lstWorkflows) {
+            if (workflowMngEntity.getName().equals("固定资产入库")) {
+                WorkflowFormEntity form = workflowFormService.getById(workflowMngEntity.getFormId());
+                view = new ModelAndView("redirect:" + form.getPath() +
+                        "?formId=" + workflowMngEntity.getFormId()
+                        + "&workflowId=" + workflowMngEntity.getId());
+//                SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
+//                FlowCarApprovalEntity biz = new FlowCarApprovalEntity();
+//                biz.setUseDepartment(user.getDeptName());
+//                view.addObject("biz",biz);
                 return view;
             }
         }

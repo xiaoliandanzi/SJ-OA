@@ -16,6 +16,7 @@ import com.active4j.hr.item.entity.RequisitionedItemEntity;
 import com.active4j.hr.item.service.GetItemService;
 import com.active4j.hr.item.service.RequisitionedItemService;
 import com.active4j.hr.system.entity.SysDeptEntity;
+import com.active4j.hr.system.entity.SysRoleEntity;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysRoleService;
 import com.active4j.hr.system.service.SysUserService;
@@ -36,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("item/get")
@@ -187,13 +189,30 @@ public class ItemGetController extends BaseController {
      */
     @RequestMapping("/datagrid")
     public void datagrid(GetItemEntity getItemEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        //获取当前用户的部门
         String userDept = ShiroUtils.getSessionUserDept();
-        // 拼接查询条件
-        QueryWrapper<GetItemEntity> queryWrapper = QueryUtils.installQueryWrapper(getItemEntity, request.getParameterMap(), dataGrid);
-        // 执行查询
-        IPage<GetItemEntity> lstResult = getItemService.page(new Page<GetItemEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+        Set userRole = ShiroUtils.getSessionUserRole();
 
-        // 输出结果
-        ResponseUtil.writeJson(response, dataGrid, lstResult);
+        QueryWrapper<SysRoleEntity> wrapper = new QueryWrapper<>();
+        wrapper.select("ROLE_CODE").eq("ROLE_NAME", "物品管理员");
+        List<SysRoleEntity> list = roleService.list(wrapper);
+        if (userRole.contains(list.get(0).getRoleCode())){
+            // 拼接查询条件
+            QueryWrapper<GetItemEntity> queryWrapper = QueryUtils.installQueryWrapper(getItemEntity, request.getParameterMap(), dataGrid);
+            // 执行查询
+            IPage<GetItemEntity> lstResult = getItemService.page(new Page<GetItemEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+
+            // 输出结果
+            ResponseUtil.writeJson(response, dataGrid, lstResult);
+        }else {
+            // 拼接查询条件
+            QueryWrapper<GetItemEntity> queryWrapper = QueryUtils.installQueryWrapper(getItemEntity, request.getParameterMap(), dataGrid);
+            // 执行查询
+            IPage<GetItemEntity> lstResult = getItemService.page(new Page<GetItemEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper.eq("DEPARTMENTNAME",userDept));
+
+            // 输出结果
+            ResponseUtil.writeJson(response, dataGrid, lstResult);
+        }
+
     }
 }

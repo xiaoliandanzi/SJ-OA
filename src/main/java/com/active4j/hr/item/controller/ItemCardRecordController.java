@@ -15,6 +15,8 @@ import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.ListUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
+import com.active4j.hr.item.entity.BorrowedItemEntity;
+import com.active4j.hr.item.entity.GetItemEntity;
 import com.active4j.hr.officalSeal.service.OaOfficalSealRecordService;
 import com.active4j.hr.system.entity.SysDeptEntity;
 import com.active4j.hr.system.entity.SysRoleEntity;
@@ -80,7 +82,6 @@ public class ItemCardRecordController extends BaseController {
     /**
      * 查询数据  -- 我的已办审批
      *
-     * @param user
      * @param request
      * @param response
      * @param dataGrid
@@ -96,8 +97,16 @@ public class ItemCardRecordController extends BaseController {
         if (endTime == null || endTime == "") {
             endTime = "2099-12-31";
         }
+
+
+        /*// 拼接查询条件
+        QueryWrapper<BorrowedItemEntity> queryWrapper = QueryUtils.installQueryWrapper(borrowedItemEntity, request.getParameterMap(), dataGrid);
         // 执行查询
-        IPage<WorkflowBaseEntity> lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
+        IPage<GetItemEntity> lstResult = workflowService.page(new Page<GetItemEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);*/
+
+        // 执行查询
+        IPage<WorkflowBaseEntity> lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows())
+                , workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
         long size = lstResult.getRecords().size();
         for (long i = size - 1; i >= 0; --i) {
             if (!lstResult.getRecords().get((int) i).getWorkFlowName().equals("物品借用申请") && !lstResult.getRecords().get((int) i).getWorkFlowName().equals("临时餐卡申请")) {

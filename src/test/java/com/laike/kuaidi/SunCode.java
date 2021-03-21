@@ -29,7 +29,7 @@ public class SunCode {
         gc.setOutputDir(projectPath + "/src/main/java");//路径
         gc.setAuthor("weizihao");//设置代码书写的人
         gc.setOpen(false);//是否打开资源管理器
-        gc.setFileOverride(false);//是否覆盖原来生成的
+        gc.setFileOverride(true);//是否覆盖原来生成的
         gc.setServiceName("%sService");//去Service的I前缀;
         gc.setIdType(IdType.NONE);
         gc.setDateType(DateType.ONLY_DATE);//日期类型
@@ -39,18 +39,18 @@ public class SunCode {
         //设置数据源
         DataSourceConfig dsc = new DataSourceConfig();
 
-        dsc.setUrl("jdbc:mysql://106.15.180.14:3306/active4j_dev?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8");
+        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/active4j_dev?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("password");
+        dsc.setPassword("123456");
         dsc.setDbType(DbType.MYSQL);
         mpg.setDataSource(dsc);
 
         //3.包的配置
         PackageConfig pc = new PackageConfig();
 
-        pc.setModuleName("topic");
-        pc.setParent("com.active4j.hr");
+        //pc.setModuleName("topic");
+        pc.setParent("com.active4j.hr.activiti.biz");
         pc.setEntity("entity");
         pc.setMapper("mapper");
         pc.setService("service");
@@ -60,7 +60,7 @@ public class SunCode {
 
         //4策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setInclude("oa_topic");//设置映射表名
+        strategy.setInclude("flow_asset_add");//设置映射表名
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntityLombokModel(true);
