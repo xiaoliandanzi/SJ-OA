@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.active4j.hr.activiti.biz.dao.FlowCarApprovalDao">
+    <select id="getplate" resultType="java.lang.String">
+        select carid from oa_car
+    </select>
+    <select id="getdriver" resultType="java.lang.String">
+        select name from oa_driver
+    </select>
+    
+</mapper>

@@ -33,8 +33,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -73,6 +75,8 @@ public class FlowCarApprovalController extends BaseController {
 
     @Autowired
     private RuntimeService runtimeService;
+
+
     /**
      * 跳转到表单页面
      * @param request
@@ -246,7 +250,7 @@ public class FlowCarApprovalController extends BaseController {
 
         /**
          * 注意：添加批注的时候，由于Activiti底层代码是使用： String userId =
-         * Authentication.getAuthenticatedUserId(); CommentEntity comment = new
+         *          * Authentication.getAuthenticatedUserId(); CommentEntity comment = new
          * CommentEntity(); comment.setUserId(userId);
          * 所有需要从Session中获取当前登录人，作为该任务的办理人（审核人），对应act_hi_comment表中的User_ID的字段，不过不添加审核人，该字段为null
          * 所以要求，添加配置执行使用Authentication.setAuthenticatedUserId();添加当前任务的审核人
@@ -509,5 +513,23 @@ public class FlowCarApprovalController extends BaseController {
             log.error("审批报错，错误信息:{}", e);
         }
         return j;
+    }
+
+    @RequestMapping("/getplatemessage")
+    @ResponseBody
+    public HashMap getplatemessage(){
+        HashMap<String, List<String>> map = new HashMap<>();
+        List list1 = new ArrayList();
+        List list2 = new ArrayList();
+        try {
+            list1 = this.flowCarApprovalService.getplate();//车牌
+            list2 = this.flowCarApprovalService.getdriver();//司机
+        }catch (Exception e){
+            throw e;
+        }
+
+        map.put("plate",list1);
+        map.put("driver",list2);
+        return map;
     }
 }

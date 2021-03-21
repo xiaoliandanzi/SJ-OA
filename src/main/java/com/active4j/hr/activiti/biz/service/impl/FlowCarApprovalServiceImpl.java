@@ -10,6 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author xfzhang
  * @version 1.0
@@ -22,6 +27,8 @@ public class FlowCarApprovalServiceImpl extends ServiceImpl<FlowCarApprovalDao, 
 
     @Autowired
     private WorkflowBaseService workflowBaseService;
+    @Resource
+    private FlowCarApprovalDao flowCarApprovalDao;
 
     public void saveNewCar(WorkflowBaseEntity workflowBaseEntity, FlowCarApprovalEntity flowCarApprovalEntity) {
 
@@ -37,5 +44,14 @@ public class FlowCarApprovalServiceImpl extends ServiceImpl<FlowCarApprovalDao, 
 
         workflowBaseService.saveOrUpdate(workflowBaseEntity);
     }
+
+    public List getplate(){
+
+        return this.flowCarApprovalDao.getplate();
+    }
+    public List getdriver(){
+        return this.flowCarApprovalDao.getdriver();
+    }
+
 
 }
