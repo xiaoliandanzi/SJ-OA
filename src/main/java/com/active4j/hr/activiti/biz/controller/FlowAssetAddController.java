@@ -11,6 +11,8 @@ import com.active4j.hr.activiti.service.WorkflowFormService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.activiti.service.WorkflowService;
 import com.active4j.hr.activiti.util.WorkflowTaskUtil;
+import com.active4j.hr.asset.entity.OaAssetStoreEntity;
+import com.active4j.hr.asset.service.OaAssetService;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
@@ -20,6 +22,8 @@ import com.active4j.hr.system.entity.SysDeptEntity;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysDeptService;
 import com.active4j.hr.system.service.SysUserService;
+import com.active4j.hr.system.util.SystemUtils;
+import com.active4j.hr.topic.entity.OaEditStore;
 import com.active4j.hr.topic.service.OaEditStoreService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +32,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,6 +81,8 @@ public class FlowAssetAddController {
     private RuntimeService runtimeService;
     @Autowired
     private SysDeptService sysDeptService;
+    @Autowired
+    private OaAssetService oaAssetService;
     /**
      * 跳转到表单页面
      * @param request
@@ -425,6 +432,21 @@ public class FlowAssetAddController {
                 workflowBaseEntity.setStatus("3");
                 FlowAssetAddEntity flowAssetAddEntity = flowAssetAddService.getById(workflowBaseEntity.getBusinessId());
                 flowAssetAddService.saveOrUpdate(flowAssetAddEntity);
+
+                //添加到固定资产库存
+                OaAssetStoreEntity oaAssetStoreEntity = new OaAssetStoreEntity();
+                BeanUtils.copyProperties(flowAssetAddEntity,oaAssetStoreEntity);
+                String dept = SystemUtils.getDeptNameById(flowAssetAddEntity.getDept());
+                oaAssetStoreEntity.setDept(dept);
+                oaAssetStoreEntity.setReceiver(flowAssetAddEntity.getCreateName());
+                oaAssetStoreEntity.setId(null);
+                oaAssetService.save(oaAssetStoreEntity);
+
+                //同步保存到oa_edit_store表格
+                oaAssetStoreEntity.setId(null);
+                OaEditStore editStore = new OaEditStore();
+                BeanUtils.copyProperties(oaAssetStoreEntity,editStore);
+                oaEditStoreService.save(editStore);
 
                 //添加到系统信息
                 WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getCreateName(), task.getAssignee(),
