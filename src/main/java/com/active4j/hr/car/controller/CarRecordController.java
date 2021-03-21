@@ -285,7 +285,7 @@ public class CarRecordController extends BaseController {
             if(lstUsers.get(0).equals(user.getUserName())){
                 lstResult = workflowService.findFinishedTaskByALL(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, WorkflowConstant.Task_Category_approval);
             }else{
-                lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
+                lstResult = workflowService.findFinishedTaskCarByUserDept(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserDept(), WorkflowConstant.Task_Category_approval);
             }
         }else {
             j.setMsg("车辆管理员存在多人，请联系管理员");

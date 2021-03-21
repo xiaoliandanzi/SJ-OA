@@ -3,10 +3,12 @@ package com.active4j.hr.activiti.biz.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.active4j.hr.activiti.biz.service.FlowGetSpeRoleService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,6 +65,7 @@ public class FlowTaskController extends BaseController {
 	
 	@Autowired
 	private WorkflowFormService workflowFormService;
+
 	
 	/**
 	 * 跳转到待审批流程页面
@@ -225,13 +228,14 @@ public class FlowTaskController extends BaseController {
 			
 			//根据主表中的流程ID，查询流程中心的流程配置
 			WorkflowMngEntity workflow = workflowMngService.getById(workflowBaseEntity.getWorkflowId());
-			
+
 			if(null != workflow) {
 				//查询表单
 				WorkflowFormEntity form = workflowFormService.getById(workflow.getFormId());
 				//系统表单
 				if(StringUtils.equals("0", form.getType())) {
 					view = new ModelAndView("redirect:" + form.getPath() + "?formId=" + form.getId() + "&type=3" + "&workflowId=" + workflow.getId() + "&id=" + workflowBaseEntity.getId());
+
 					return view;
 				}
 			}

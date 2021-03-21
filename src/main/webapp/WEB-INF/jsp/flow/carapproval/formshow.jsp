@@ -54,3 +54,56 @@
         <input id="commit" name="commit" minlength="1" type="text" class="form-control" value="${biz.commit }">
     </div>
 </div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">车牌号*：</label>
+    <div class="col-sm-3">
+        <select class="form-control" name="platenum" id="platenum" style="width: 100px">
+            <option value="${biz.platenum }">${biz.platenum }</option>
+        </select>
+    </div>
+    <label class="col-sm-3 control-label" style="width: 100px">驾驶员*：</label>
+    <div class="col-sm-3">
+        <select class="form-control" name="plateuser" id="plateuser" style="width: 100px">
+            <option value="${biz.plateuser }">${biz.plateuser }</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-3 control-label">ETC使用情况：</label>
+    <div class="col-sm-5">
+        <input id="etcmessage" name="etcmessage" minlength="1" type="text" class="form-control" value="${biz.etcmessage }">
+    </div>
+</div>
+<script type="text/javascript">
+    $("#plateuser").ready(function(){
+        $.ajax({
+            type: "POST",
+            url: "flow/biz/carapproval/getplatemessage",
+            success: function(data){
+                var driver = data.driver;
+                for(var i=0;i<driver.length;i++){
+                    var ui="<option value='"+driver[i]+"'>"+driver[i]+"</option>";
+                    $("#plateuser").append(ui);
+                }
+
+            }
+        });
+    });
+
+    $("#platenum").ready(function(){
+        $.ajax({
+            type: "POST",
+            url: "flow/biz/carapproval/getplatemessage",
+            success: function(data){
+                var plate = data.plate;
+                for(var i=0;i<plate.length;i++){
+                    var ui="<option value='"+plate[i]+"'>"+plate[i]+"</option>";
+                    $("#platenum").append(ui);
+                }
+
+            }
+        });
+    });
+
+</script>

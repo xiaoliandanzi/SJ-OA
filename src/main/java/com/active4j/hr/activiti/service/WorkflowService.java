@@ -253,4 +253,12 @@ public interface WorkflowService {
 	 */
 	public IPage<WorkflowBaseEntity> findFinishedTaskByUserDept(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String userDept, String category);
 
+	/**
+	 * 根据当前用户，获取业务表ID
+	 * @param userName
+	 * @param category 区别审批还是办理
+	 * @return
+	 */
+	public IPage<WorkflowBaseEntity> findFinishedTaskCarByUserDept(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String dept, String category);
+
 }
