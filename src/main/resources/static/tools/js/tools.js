@@ -423,34 +423,32 @@ function  adminY(id, url, title, width, height) {
                 var aa =$(layero).find("iframe").contents().find("#destination").val().toString();
                 var ss =$(layero).find("iframe").contents().find("#id").val();
                 var msg =$(layero).find("iframe").contents().find("#etcmessage").val();
-                //alert(ss);
+                var num =$(layero).find("iframe").contents().find("#platenum").selected().val();
+                var user =$(layero).find("iframe").contents().find("#plateuser").selected().val();
+                //alert(num);
                 $.ajax({
                     data : {},
                     type : "POST",
-                    url : "flow/biz/carapproval/saveetcmessage?id="+ss+"&etcmessage="+msg,
+                    url : "flow/biz/carapproval/saveetcmessage?id="+ss+"&etcmessage="+msg+"&platenum="+num+"&plateuser="+user,
                     cache : false,
                     contentType : false,
                     processData : false,
                     datatype:"json",
                     success : function(data) {
-                        var o = $.parseJSON(data);
-                        if(o.success) {
+                        if(data.success) {
+                            parent.layer.close(index);
                             qhTipSuccess('保存成功');
-                            //layer.msg("弹出层成功弹出");
                             reloadTable(id);
                         }else {
-                            qhTipWarning(o.msg);
+                            parent.layer.close(index);
+                            qhTipWarning(data.msg);
                         }
                     },
                     error : function() {
+                        parent.layer.close(index);
                         qhTipError('系统错误，请联系系统管理员');
                     }
                 });
-                //确定按钮回调
-                //表单提交
-                //parent.frames['layui-layer-iframe' + index].submitL();
-                // 操作结束，刷新表格
-
             },
         btn2: function (index, layero) {
             //取消按钮回调

@@ -123,7 +123,7 @@ public class FlowCarApprovalController extends BaseController {
             view.addObject("lstTasks", lstTasks);
             view.addObject("action", "flow/biz/carapproval/doApprove");
         }else if(StringUtils.equals("3", type)) {
-            view = new ModelAndView("flow/carapproval/applyshow");
+            view = new ModelAndView("flow/carapproval/newapplyshow");
 
             //根据businessKey查询任务list
             String currentName =ShiroUtils.getSessionUserName();
@@ -493,7 +493,7 @@ public class FlowCarApprovalController extends BaseController {
 
     @RequestMapping("/saveetcmessage")
     @ResponseBody
-    public AjaxJson saveEtcMessage(String id,String taskId,String etcmessage,HttpServletRequest request){
+    public AjaxJson saveEtcMessage(String id,String taskId,String etcmessage,String platenum,String plateuser,HttpServletRequest request){
         AjaxJson j=new AjaxJson();
         try{
             if (StringUtils.isEmpty(etcmessage)){
@@ -503,6 +503,8 @@ public class FlowCarApprovalController extends BaseController {
             WorkflowBaseEntity workflowBaseEntity = workflowBaseService.getById(id);
             if (workflowBaseEntity!=null){
                 FlowCarApprovalEntity flowCarApprovalEntity = flowCarApprovalService.getById(workflowBaseEntity.getBusinessId());
+                flowCarApprovalEntity.setPlatenum(platenum);
+                flowCarApprovalEntity.setPlateuser(plateuser);
                 flowCarApprovalEntity.setEtcmessage(etcmessage);
                 flowCarApprovalService.saveOrUpdate(flowCarApprovalEntity);
                 j.setSuccess(true);
