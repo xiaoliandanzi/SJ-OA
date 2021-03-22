@@ -82,6 +82,12 @@
         </select>
     </div>
 </div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">ETC使用情况：</label>
+    <div class="col-sm-5">
+        <input id="etcmessage" name="etcmessage" minlength="1" type="text" class="form-control">
+    </div>
+</div>
 <script type="text/javascript">
     $("#plateuser").ready(function(){
         $.ajax({
@@ -112,6 +118,15 @@
             }
         });
     });
+    $.post("flow/biz/getSpe/getcaradminrole", {}, function(data) {
+        if($.trim(data)=="true"){
+        }else{
+            $('#platenum').attr("disabled", "disabled");
+            $('#plateuser').attr("disabled", "disabled");
+            //$('#etcmessage').removeAttr("disabled");
+            $('#etcmessage').attr("disabled", "disabled");
+        }
+    })
 </script>
 
 

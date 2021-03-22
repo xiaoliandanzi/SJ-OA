@@ -1,3 +1,4 @@
+
 <%--
   Created by IntelliJ IDEA.
   User: zhangxufeng
@@ -105,5 +106,12 @@
             }
         });
     });
-
+    $.post("flow/biz/getSpe/getcaradminrole", {}, function(data) {
+        if($.trim(data)=="true"){
+            $('#etcmessage').removeAttr("disabled");
+        }else{
+            $('#platenum').attr("disabled", "disabled");
+            $('#plateuser').attr("disabled", "disabled");
+        }
+    })
 </script>
