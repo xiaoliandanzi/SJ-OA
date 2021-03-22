@@ -7,24 +7,20 @@
     html body {
         overflow: auto;
     }
-
     .nava {
         color: #2F4050;
         text-decoration: none;
     }
-
     .warning-msg {
         display: block;
         bottom: 0px;
         right: 0px;
         position: fixed;
     }
-
     * html .warning-msg {
         position: absolute;
         right: 18px
     }
-
     .notification {
         position: fixed;
         z-index: 99999;
@@ -36,7 +32,6 @@
         width: 600px;
         min-height: 150px;
     }
-
     .notification .info {
         flex: 1;
         position: fixed;
@@ -47,14 +42,12 @@
         border-radius: 3px 0 0 3px;
         border-bottom: 3px solid #c0cdd1;
     }
-
     .notification .info span {
         margin: 0;
         padding: 0;
         font-size: 16px;
         color: #000;
     }
-
     .notification .info p {
         margin: 0;
         margin-top: 20px;
@@ -62,7 +55,6 @@
         font-size: 14px;
         color: #c5bebe;
     }
-
     .notification .info .button {
         display: inline-block;
         margin: 30px 3px 5px 0;
@@ -74,17 +66,14 @@
         text-decoration: none;
         color: #ecf0f1;
     }
-
     .notification .info .button.gray {
         background: #95a5a6;
         border-bottom-color: #798d8f;
     }
-
     .notification .info .button {
         background: #435d8a;
         border-bottom-color: #435d8a;
     }
-
     .gbspan {
         position: absolute;
         right: 0;
@@ -94,7 +83,6 @@
         color: #000;
         height: 36px;
     }
-
     .tzspan {
         margin: 0;
         padding: 0;
@@ -102,7 +90,6 @@
         color: #000;
         height: 36px;
     }
-
     .ui-jqgrid .ui-jqgrid-titlebar {
         position: relative;
         border-left: 0 solid;
@@ -110,12 +97,10 @@
         border-top: 0 solid;
         background: #FFFFFF;
     }
-
     .ui-jqgrid .table-bordered th.ui-th-ltr {
         border-left: 0px none !important;
         background: #FFF;
     }
-
     .eventIndex {
         max-height: 220px;
         overflow: hidden;
@@ -191,12 +176,35 @@
                     </div>
                     <div>
                         <img style="float: left; width: 26px;height: 44px;margin-right: 20px;margin-left: 10px; margin-top:295px; "
-                             src="./img/zuo-.png" alt="">
-                        <img class="BorderImgBox" style=" float: left; width: 1084px;height: 610px !important;"
-                             src="./img/borderImg.png" alt="">
-                        <img style="float: left;width: 26px;height: 44px;margin-left: 25px; margin-top:295px;"
-                             src="./img/you.png" alt="">
+                             src="./img/zuo-.png" alt="" id="left">
+<%--                        <img class="BorderImgBox" style=" float: left; width: 1084px;height: 610px !important;"--%>
+<%--                             src="./img/borderImg.png" alt="">--%>
+
+                        <div class="container">
+                            <div class="list" style="left:0px;">
+                                <!--<img src="../static/image/photo1.jpg" alt="5"/>-->
+                                <img src="./upload/borderImg.png" alt="1"/>
+                                <img src="./upload/bor1.jpg" alt="2"/>
+                                <img src="./upload/bor2.png" alt="3"/>
+                                <img src="./upload/bor3.jpg" alt="4"/>
+                                <img src="./upload/bor4.jpg" alt="5"/>
+                                <!--<img src="../static/image/banner.jpg" alt="1"/>-->
+                            </div>
+                            <div class="pointer">
+                                <span index="1" class="on"></span>
+                                <span index="2"></span>
+                                <span index="3"></span>
+                                <span index="4"></span>
+                                <span index="5"></span>
+                            </div>
+
+<%--                            <a href="#" rel="external nofollow" rel="external nofollow" class="arrow left">&gt;</a>--%>
+<%--                            <a href="#" rel="external nofollow" rel="external nofollow" class="arrow right">&lt;</a>--%>
+                        </div>
+                        <img style="float: right;width: 26px;height: 44px;margin-left: 25px; margin-top:295px;"
+                             src="./img/you.png" alt="" id="right">
                     </div>
+
 
                 </div>
 
@@ -420,7 +428,6 @@
     function closes() {
         $("#rbbox").hide();
     }
-
     function closess() {
         $("#rbboxs").hide();
         $.post("notificationform/updatetx0", function (data) {
@@ -432,7 +439,6 @@
             }
         });
     }
-
     function jieshou() {
         var rowIds = $("#table_list_1").jqGrid('getGridParam', 'selarrrow');
         if (rowIds == "" || rowIds == null) {
@@ -451,7 +457,6 @@
             }
         });
     }
-
     function getAll() {
         //是
         $.post("notificationform/tableAlls", function (data) {
@@ -465,7 +470,6 @@
             }
         });
     }
-
     function getgr() {
         //是
         $.post("notificationform/tablegroupbygrs", function (data) {
@@ -487,7 +491,6 @@
             }
         });
     }
-
     function getgrS() {
         //是
         $.post("notificationform/tablegroupbygrs", function (data) {
@@ -509,10 +512,83 @@
             }
         });
     }
-
     setInterval(getAll, 7200000);
     setInterval(getgrS, 9000);
     window.onload = function () {    //加载
+        var imgCount = 5;
+        var index = 1;
+        var intervalId;
+        var buttonSpan = $('.pointer')[0].children;//htmlCollection 集合
+        //自动轮播功能 使用定时器
+        autoNextPage();
+        function autoNextPage(){
+            intervalId = setInterval(function(){
+                nextPage(true);
+            },6000);
+        }
+        //当鼠标移入 停止轮播
+        $('.container').mouseover(function(){
+            console.log('hah');
+            clearInterval(intervalId);
+        });
+        // 当鼠标移出，开始轮播
+        $('.container').mouseout(function(){
+            autoNextPage();
+        });
+        //点击下一页 上一页的功能
+        $('#left').click(function(){
+            debugger
+            nextPage(false);
+        });
+        $('#right').click(function(){
+            debugger
+            nextPage(true);
+        });
+
+        //小圆点的相应功能 事件委托
+        clickButtons();
+        function clickButtons(){
+            var length = buttonSpan.length;
+            for(var i=0;i<length;i++){
+                buttonSpan[i].onclick = function(){
+                    $(buttonSpan[index-1]).removeClass('on');
+                    if($(this).attr('index')==1){
+                        index = 5;
+                    }else{
+                        index = $(this).attr('index')-1;
+                    }
+                    nextPage(true);
+
+                };
+            }
+        }
+        function nextPage(next){
+            var targetLeft = 0;
+            //当前的圆点去掉on样式
+            $(buttonSpan[index-1]).removeClass('on');
+            if(next){//往后走
+                if(index == 5){//到最后一张，直接跳到第一张
+                    targetLeft = 0;
+                    index = 1;
+                }else{
+                    index++;
+                    targetLeft = -1084*(index-1);
+                }
+
+            }else{//往前走
+                if(index == 1){//在第一张，直接跳到第五张
+                    index = 5;
+                    targetLeft = -1084*(imgCount-1);
+                }else{
+                    index--;
+                    targetLeft = -1084*(index-1);
+                }
+
+            }
+            $('.list').animate({left:targetLeft+'px'});
+            //更新后的圆点加上样式
+            $(buttonSpan[index-1]).addClass('on');
+        }
         getAll();
         getgr();
     }
@@ -550,7 +626,6 @@
                 axios.get('oa/index/workCount').then((msg) => {
                     console.log(msg)
                     console.log(msg.data.obj)
-
                     this.duban = msg.data.obj[0]
                     this.shenhe = msg.data.obj[1]
                     this.bohui = msg.data.obj[2]
@@ -589,10 +664,8 @@
             getSelectHold() {
                 if (this.selectMsg != '') {
                     this.selectHold = false
-
                 } else {
                     this.selectHold = true
-
                 }
             },
             listClick(item) {
@@ -613,7 +686,6 @@
     document.getElementById("app").style.webkitTransform = scale; // Chrome, Opera, Safari
     document.getElementById("app").style.msTransform = scale; // IE 9
     document.getElementById("app").style.transform = scale; // General
-
     /**
      *
      */
@@ -622,8 +694,6 @@
     var bingtu = '';
     search();
     getNum();
-
-
     function search() {
         $.ajax({
             type: "post",
@@ -637,7 +707,6 @@
             }
         })
     }
-
     function goto12345() {
         $.ajax({
             type: "post",
@@ -648,14 +717,12 @@
                 } else {
                     qhTipWarning(data.msg);
                 }
-
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(textStatus)
             }
         })
     }
-
     function getNum() {
         $.ajax({
             type: "post",
@@ -669,7 +736,6 @@
             }
         })
     }
-
     function numeac(bingtu) {
         var titleNumber = bingtu.data.total;
         var number = bingtu.data.chart;
@@ -719,8 +785,6 @@
         };
         myChart_two.setOption(option_two);
     }
-
-
     function eac(bingtu) {
         var titleNumber = bingtu.data.total;
         var number = bingtu.data.chart;
@@ -770,7 +834,75 @@
         };
         myChart.setOption(option);
     }
-
 </script>
+<style>
+    *{
+        padding:0;
+        margin:0;
+    }
+    .container{
+        width:1084px;
+        height:610px;
+        overflow: hidden;
+        position:relative;
+        margin-top:15px;
+        margin-left: 5px;
+        float: left;
+    }
+    .list{
+        /*width:3000px;*/
+        height:610px;
+        position:absolute;
+
+    }
+    .list>img{
+        float:left;
+        width:1084px;
+        height:610px;
+    }
+    .pointer{
+        position:absolute;
+        width:150px;
+        bottom:20px;
+        left:520px;
+    }
+    .pointer>span{
+        cursor:pointer;
+        display:inline-block;
+        width:20px;
+        height:20px;
+        background: #7b7d80;
+        border-radius:50%;
+        border:1px solid #fff;
+    }
+    .pointer .on{
+        background: #28a4c9;
+    }
+    .arrow{
+        position:absolute;
+        text-decoration:none;
+        width:40px;
+        height:40px;
+        background: #727d8f;
+        color:#fff;
+        font-weight: bold;
+        line-height:40px;
+        text-align:center;
+        top:180px;
+        display:none;
+    }
+    .arrow:hover{
+        background: #0f0f0f;
+    }
+    .left{
+        left:0;
+    }
+    .right{
+        right:0;
+    }
+    .container:hover .arrow{
+        display:block;
+    }
+</style>
 
 </html>
