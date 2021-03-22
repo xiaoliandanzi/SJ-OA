@@ -246,12 +246,12 @@ public interface WorkflowService {
 	public List<String> findGroupTaskIdByBusinessKey(String businessKey, String userName);
 
 	/**
-	 * 根据当前用户，获取业务表ID
+	 * 根据当前用户，获取业务表ID(政采)
 	 * @param userName
 	 * @param category 区别审批还是办理
 	 * @return
 	 */
-	public IPage<WorkflowBaseEntity> findFinishedTaskByUserDept(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String userDept, String category);
+	public IPage<WorkflowBaseEntity> findFinishedTaskByUserDept(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String userDept, String category,String workflow_name);
 
 	/**
 	 * 根据当前用户，获取业务表ID
@@ -260,5 +260,13 @@ public interface WorkflowService {
 	 * @return
 	 */
 	public IPage<WorkflowBaseEntity> findFinishedTaskCarByUserDept(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String dept, String category);
+
+	/**
+	 * 根据当前用户，获取业务表ID(政采)
+	 * @param userName
+	 * @param category 区别审批还是办理
+	 * @return
+	 */
+	public IPage<WorkflowBaseEntity> findFinishedTaskGoodsByUserDept(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String userDept, String category);
 
 }
