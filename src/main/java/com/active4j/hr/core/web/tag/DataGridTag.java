@@ -333,6 +333,9 @@ public class DataGridTag extends TagSupport {
 				}else if(StringUtils.equals("pop", toolBar.getType())){
 					//弹出框类型 输入值  保存
 					sbToolBar.append("<button class=\'btn btn-primary\' style=\'margin-left:3px;\' type=\'button\' onclick=pop(\'" + this.getName() + "\',\'" + toolBar.getUrl() + "\',\'" + toolBar.getLabel() + "\',\'"+ (StringUtils.isEmpty(toolBar.getWidth()) ? "" : toolBar.getWidth()) +"\',\'"+(StringUtils.isEmpty(toolBar.getHeight()) ? "" : toolBar.getHeight())+"\');><i class=\'" + toolBar.getIcon() + "\'></i>&nbsp;" + toolBar.getLabel() + "</button>");
+				}else if(StringUtils.equals("newpop", toolBar.getType())){
+					//弹出框类型 输入值  保存
+					sbToolBar.append("<button class=\'btn btn-primary\' style=\'margin-left:3px;\' type=\'button\' onclick=newpop(\'" + this.getName() + "\',\'" + toolBar.getUrl() + "\',\'" + toolBar.getLabel() + "\',\'"+ (StringUtils.isEmpty(toolBar.getWidth()) ? "" : toolBar.getWidth()) +"\',\'"+(StringUtils.isEmpty(toolBar.getHeight()) ? "" : toolBar.getHeight())+"\');><i class=\'" + toolBar.getIcon() + "\'></i>&nbsp;" + toolBar.getLabel() + "</button>");
 				}else if(StringUtils.equals("read", toolBar.getType())){
 					//弹出框类型 输入值  无保存
 					sbToolBar.append("<button class=\'btn btn-primary\' style=\'margin-left:3px;\' type=\'button\' onclick=read(\'" + this.getName() + "\',\'" + toolBar.getUrl() + "\',\'" + toolBar.getLabel() + "\',\'"+ (StringUtils.isEmpty(toolBar.getWidth()) ? "" : toolBar.getWidth()) +"\',\'"+(StringUtils.isEmpty(toolBar.getHeight()) ? "" : toolBar.getHeight())+"\');><i class=\'" + toolBar.getIcon() + "\'></i>&nbsp;" + toolBar.getLabel() + "</button>");

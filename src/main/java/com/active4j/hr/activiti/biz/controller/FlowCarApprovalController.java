@@ -492,6 +492,7 @@ public class FlowCarApprovalController extends BaseController {
     }
 
     @RequestMapping("/saveetcmessage")
+    @ResponseBody
     public AjaxJson saveEtcMessage(String id,String taskId,String etcmessage,HttpServletRequest request){
         AjaxJson j=new AjaxJson();
         try{
