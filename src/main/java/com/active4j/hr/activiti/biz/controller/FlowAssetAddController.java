@@ -45,6 +45,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.activiti.engine.task.Comment;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -433,6 +435,9 @@ public class FlowAssetAddController {
                 FlowAssetAddEntity flowAssetAddEntity = flowAssetAddService.getById(workflowBaseEntity.getBusinessId());
                 flowAssetAddService.saveOrUpdate(flowAssetAddEntity);
 
+                /*Date date = new Date();
+                String strDateFormat = "yyyy-MM-dd";
+                SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);*/
                 //添加到固定资产库存
                 OaAssetStoreEntity oaAssetStoreEntity = new OaAssetStoreEntity();
                 BeanUtils.copyProperties(flowAssetAddEntity,oaAssetStoreEntity);
@@ -440,6 +445,7 @@ public class FlowAssetAddController {
                 oaAssetStoreEntity.setDept(dept);
                 oaAssetStoreEntity.setReceiver(flowAssetAddEntity.getCreateName());
                 oaAssetStoreEntity.setId(null);
+                oaAssetStoreEntity.setChangeTime(new Date());
                 oaAssetService.save(oaAssetStoreEntity);
 
                 //同步保存到oa_edit_store表格
