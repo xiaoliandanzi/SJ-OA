@@ -98,21 +98,17 @@ public class ItemCardRecordController extends BaseController {
             endTime = "2099-12-31";
         }
 
-
-        /*// 拼接查询条件
-        QueryWrapper<BorrowedItemEntity> queryWrapper = QueryUtils.installQueryWrapper(borrowedItemEntity, request.getParameterMap(), dataGrid);
+        String workflow_name="物品借用申请";
         // 执行查询
-        IPage<GetItemEntity> lstResult = workflowService.page(new Page<GetItemEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);*/
+        IPage<WorkflowBaseEntity> lstResult = workflowService.findFinishedTaskGoodsByUserDept(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows())
+                , workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserDept(), WorkflowConstant.Task_Category_approval);
+//        long size = lstResult.getRecords().size();
 
-        // 执行查询
-        IPage<WorkflowBaseEntity> lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows())
-                , workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
-        long size = lstResult.getRecords().size();
-        for (long i = size - 1; i >= 0; --i) {
-            if (!lstResult.getRecords().get((int) i).getWorkFlowName().equals("物品借用申请") && !lstResult.getRecords().get((int) i).getWorkFlowName().equals("临时餐卡申请")) {
-                lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
-            }
-        }
+//        for (long i = size - 1; i >= 0; --i) {
+//            if (!lstResult.getRecords().get((int) i).getWorkFlowName().equals("物品借用申请") && !lstResult.getRecords().get((int) i).getWorkFlowName().equals("临时餐卡申请")) {
+//                lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
+//            }
+//        }
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
     }

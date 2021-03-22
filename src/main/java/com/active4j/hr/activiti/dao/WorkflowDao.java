@@ -43,10 +43,16 @@ public interface WorkflowDao {
 	public IPage<WorkflowBaseEntity> findFinishedTaskByUserDept(IPage<WorkflowBaseEntity> page, @Param("userDpet") String userDept,
 																@Param("categoryId") String categoryId, @Param("projectNo") String projectNo,
 																@Param("name") String name, @Param("applyName") String applyName,@Param("applyerDepart") String applyerDepart,
-																@Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd);
+																@Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd,@Param("workflow_name")String workflow_name);
 
 	public IPage<WorkflowBaseEntity> findFinishedTaskCarByUserDept(IPage<WorkflowBaseEntity> page, @Param("dept") String dept,
 																   @Param("categoryId") String categoryId, @Param("projectNo") String projectNo,
 																   @Param("name") String name, @Param("applyName") String applyName,@Param("applyerDepart") String applyerDepart,
 																   @Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd);
+
+	public IPage<WorkflowBaseEntity> findFinishedTaskGoodsByUserDept(IPage<WorkflowBaseEntity> page, @Param("userDpet") String userDept,
+																@Param("categoryId") String categoryId, @Param("projectNo") String projectNo,
+																@Param("name") String name, @Param("applyName") String applyName,@Param("applyerDepart") String applyerDepart,
+																@Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd);
+
 }

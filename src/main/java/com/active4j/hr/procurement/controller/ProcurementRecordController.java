@@ -254,8 +254,9 @@ public class ProcurementRecordController {
         if (endTime == null || endTime == "") {
             endTime = "2099-12-31";
         }
+        String workflow_name="政采申请";
         // 执行查询
-        IPage<WorkflowBaseEntity> lstResult = workflowService.findFinishedTaskByUserDept(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserDept(), WorkflowConstant.Task_Category_approval);
+        IPage<WorkflowBaseEntity> lstResult = workflowService.findFinishedTaskByUserDept(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserDept(), WorkflowConstant.Task_Category_approval,workflow_name);
 
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
