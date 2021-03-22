@@ -64,7 +64,6 @@
         //让页面管理表单的字段不可编辑
         $("#commonForm input").attr("disabled", "disabled");
         $("#commonForm textarea").attr("disabled", "disabled");
-
     });
     //时间控件初始化
     $(function() {

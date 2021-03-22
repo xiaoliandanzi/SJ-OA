@@ -382,25 +382,6 @@ function pop(id, url, title, width, height) {
 
 // 自定义弹出页面
 function newpop(id, url, title, width, height) {
-    $(document).ready(function(){
-        $.ajax({
-            type: "POST",
-            url: "flow/biz/getSpe/getcaradminrole",
-            success: function(data){
-                //var driver = data.toString().trim();
-                if($.trim(data)=="true"){
-                    adminY(id, url, title, width, height)
-                }else{
-                    adminNo(id, url, title, width, height)
-                }
-            }
-        });
-    });
-
-
-}
-
-function  adminY(id, url, title, width, height) {
     var rowId = $('#' + id).jqGrid('getGridParam', 'selrow');
     if (!rowId) {
         qhAlert('请选择要编辑的项目');
@@ -408,8 +389,10 @@ function  adminY(id, url, title, width, height) {
     }
     width = width ? width : '90%';
     height = height ? height : '90%';
+
     // 添加参数，表格的ID
     url += '?id=' + rowId;
+
     parent.layer.open({
         type: 2,
         title: title,
@@ -418,40 +401,15 @@ function  adminY(id, url, title, width, height) {
         area: [width, height],
         content: url, // iframe的url
         btn: ['确定', '取消'],
-        yes:
-            function (index, layero) {
-                var aa =$(layero).find("iframe").contents().find("#destination").val().toString();
-                var ss =$(layero).find("iframe").contents().find("#id").val();
-                var msg =$(layero).find("iframe").contents().find("#etcmessage").val();
-                //alert(ss);
-                $.ajax({
-                    data : {},
-                    type : "POST",
-                    url : "flow/biz/carapproval/saveetcmessage?id="+ss+"&etcmessage="+msg,
-                    cache : false,
-                    contentType : false,
-                    processData : false,
-                    datatype:"json",
-                    success : function(data) {
-                        var o = $.parseJSON(data);
-                        if(o.success) {
-                            qhTipSuccess('保存成功');
-                            //layer.msg("弹出层成功弹出");
-                            reloadTable(id);
-                        }else {
-                            qhTipWarning(o.msg);
-                        }
-                    },
-                    error : function() {
-                        qhTipError('系统错误，请联系系统管理员');
-                    }
-                });
-                //确定按钮回调
-                //表单提交
-                //parent.frames['layui-layer-iframe' + index].submitL();
-                // 操作结束，刷新表格
-
-            },
+        yes: function (index, layero) {
+            var  aa=Document.getElementById("etcmessage").value;
+            alert(aa);
+            //确定按钮回调
+            //表单提交
+            parent.frames['layui-layer-iframe' + index].submitL();
+            // 操作结束，刷新表格
+            reloadTable(id);
+        },
         btn2: function (index, layero) {
             //取消按钮回调
 
@@ -461,31 +419,7 @@ function  adminY(id, url, title, width, height) {
             reloadTable(id);
         }
     });
-}
 
-function  adminNo(id, url, title, width, height) {
-    var rowId = $('#' + id).jqGrid('getGridParam', 'selrow');
-    if (!rowId) {
-        qhAlert('请选择要编辑的项目');
-        return;
-    }
-    width = width ? width : '90%';
-    height = height ? height : '90%';
-    // 添加参数，表格的ID
-    url += '?id=' + rowId;
-    parent.layer.open({
-        type: 2,
-        title: title,
-        shadeClose: true,
-        shade: 0.8,
-        area: [width, height],
-        content: url, // iframe的url
-        btn: ['取消'],
-        cancel: function (index, layero) {
-            //取消按钮回调
-            reloadTable(id);
-        }
-    });
 }
 
 //自定义弹出页面

@@ -848,9 +848,9 @@ public class WorkflowServiceImpl implements WorkflowService {
      * @param category 区别审批还是办理
      * @return
      */
-    public IPage<WorkflowBaseEntity> findFinishedTaskByUserDept(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String userDept, String category) {
+    public IPage<WorkflowBaseEntity> findFinishedTaskByUserDept(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String userDept, String category,String workflow_name) {
 
-        return workflowDao.findFinishedTaskByUserDept(page, userDept, base.getCategoryId(), base.getProjectNo(), base.getName(), base.getApplyName(), base.getApplyerDepart(), startTime, endTime);
+        return workflowDao.findFinishedTaskByUserDept(page, userDept, base.getCategoryId(), base.getProjectNo(), base.getName(), base.getApplyName(), base.getApplyerDepart(), startTime, endTime,workflow_name);
     }
 
 
@@ -864,5 +864,10 @@ public class WorkflowServiceImpl implements WorkflowService {
     public IPage<WorkflowBaseEntity> findFinishedTaskCarByUserDept(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String dept, String category) {
 
         return workflowDao.findFinishedTaskCarByUserDept(page, dept, base.getCategoryId(), base.getProjectNo(), base.getName(), base.getApplyName(), base.getApplyerDepart(), startTime, endTime);
+    }
+
+    public IPage<WorkflowBaseEntity> findFinishedTaskGoodsByUserDept(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String userDept, String category) {
+
+        return workflowDao.findFinishedTaskGoodsByUserDept(page, userDept, base.getCategoryId(), base.getProjectNo(), base.getName(), base.getApplyName(), base.getApplyerDepart(), startTime, endTime);
     }
 }
