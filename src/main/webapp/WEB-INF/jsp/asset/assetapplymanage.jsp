@@ -34,10 +34,10 @@
 <t:datagrid actionUrl="asset/manage/apply/datagrid" tableContentId="assetManageTable" searchGroupId="searchGroupId" fit="true" caption="申请列表" name="assetManageList" pageSize="20" sortName="createDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="dept" label="所属科室" width="60" query="true"></t:dgCol>
-    <t:dgCol name="assetName" label="移交固定资产名称" width="60" query="true"></t:dgCol>
+    <%--<t:dgCol name="assetName" label="移交固定资产名称" width="60" query="true"></t:dgCol>
     <t:dgCol name="quantity" label="数量" width="40"></t:dgCol>
     <t:dgCol name="amount" label="价格" width="40"></t:dgCol>
-    <t:dgCol name="model" label="规格/型号" width="60"></t:dgCol>
+    <t:dgCol name="model" label="规格/型号" width="60"></t:dgCol>--%>
     <t:dgCol name="address" label="移交地点" width="60"></t:dgCol>
     <t:dgCol name="userName" label="移交人" width="40"></t:dgCol>
     <t:dgCol name="monitor" label="监交人" width="40"></t:dgCol>

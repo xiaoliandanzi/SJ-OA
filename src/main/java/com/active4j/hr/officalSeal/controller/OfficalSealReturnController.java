@@ -19,7 +19,10 @@ import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.ListUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
+import com.active4j.hr.item.entity.GetItemEntity;
+import com.active4j.hr.officalSeal.entity.OaOfficalSealBookEntity;
 import com.active4j.hr.officalSeal.entity.OaOfficalSealEntity;
+import com.active4j.hr.officalSeal.service.OaOfficalSealBookService;
 import com.active4j.hr.officalSeal.service.OaOfficalSealRecordService;
 import com.active4j.hr.system.entity.SysDeptEntity;
 import com.active4j.hr.system.entity.SysDicValueEntity;
@@ -27,6 +30,7 @@ import com.active4j.hr.system.entity.SysRoleEntity;
 import com.active4j.hr.system.entity.SysUserEntity;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysDeptService;
+import com.active4j.hr.system.service.SysRoleService;
 import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.system.util.SystemUtils;
 import com.active4j.hr.work.entity.OaWorkMeetEntity;
@@ -61,6 +65,7 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -92,6 +97,9 @@ public class OfficalSealReturnController extends BaseController {
 
     @Autowired
     private SysDeptService sysDeptService;
+
+    @Autowired
+    private SysRoleService roleService;
 
     @RequestMapping("/show")
     public ModelAndView show(HttpServletRequest request) {
@@ -375,13 +383,13 @@ public class OfficalSealReturnController extends BaseController {
 
     /**
      * 查询数据  -- 我的已办审批
-     * @param user
+     * @param flowOfficalSealApprovalEntity
      * @param request
      * @param response
      * @param dataGrid
      */
     @RequestMapping("/datagridFinish")
-    public void datagridFinish(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+    public void datagridFinish(FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
         String startTime = request.getParameter("applyDate_begin");
         String endTime = request.getParameter("applyDate_end");
         if (startTime == null || startTime=="") {
@@ -393,7 +401,7 @@ public class OfficalSealReturnController extends BaseController {
         }
 
 
-        String userName = ShiroUtils.getSessionUserName();
+        /*String userName = ShiroUtils.getSessionUserName();
         SysUserEntity user = sysUserService.getUserByUseName(userName);
         IPage<WorkflowBaseEntity> lstResult = new Page<>();
         if(SystemUtils.getDeptNameById(user.getDeptId()).equals("综合办公室")){
@@ -409,9 +417,45 @@ public class OfficalSealReturnController extends BaseController {
             }else if(!lstResult.getRecords().get((int)i).getStatus().equals("3")){
                 lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
             }
-        }
-        // 输出结果
-        ResponseUtil.writeJson(response, dataGrid, lstResult);
-    }
+        }*/
 
+        //获取当前用户的部门
+        String userDept = ShiroUtils.getSessionUserDept();
+        Set userRole = ShiroUtils.getSessionUserRole();
+
+        QueryWrapper<SysRoleEntity> wrapper = new QueryWrapper<>();
+        wrapper.select("ROLE_CODE").eq("ROLE_NAME", "公章管理员");
+        List<SysRoleEntity> list = roleService.list(wrapper);
+        if (userRole.contains(list.get(0).getRoleCode())||userRole.contains("superAdmin")){
+            // 拼接查询条件
+            QueryWrapper<FlowOfficalSealApprovalEntity> queryWrapper = QueryUtils.installQueryWrapper(flowOfficalSealApprovalEntity, request.getParameterMap(), dataGrid);
+            // 执行查询
+            IPage<FlowOfficalSealApprovalEntity> lstResult = flowOfficalSealApprovalService.page(new Page<FlowOfficalSealApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+
+            // 输出结果
+            ResponseUtil.writeJson(response, dataGrid, lstResult);
+        }else {
+            // 拼接查询条件
+            QueryWrapper<FlowOfficalSealApprovalEntity> queryWrapper = QueryUtils.installQueryWrapper(flowOfficalSealApprovalEntity, request.getParameterMap(), dataGrid);
+            // 执行查询
+            IPage<FlowOfficalSealApprovalEntity> lstResult = flowOfficalSealApprovalService.page(new Page<FlowOfficalSealApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()),queryWrapper.eq("DEPARTMENTNAME",userDept));
+
+            // 输出结果
+            ResponseUtil.writeJson(response, dataGrid, lstResult);
+        }
+
+        /*long num = lstResult.getRecords().size();
+        if (ShiroUtils.getSessionUserRole().contains("公章管理员")){
+            // 输出结果
+            ResponseUtil.writeJson(response, dataGrid, lstResult);
+        }else {
+            for (long i = num - 1; i >= 0; --i){
+                if (!lstResult.getRecords().get((int) i).getApplyerDepart().equals(ShiroUtils.getSessionUserDept())){
+                    lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
+                }
+            }
+            // 输出结果
+            ResponseUtil.writeJson(response, dataGrid, lstResult);
+        }*/
+    }
 }
