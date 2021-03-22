@@ -292,13 +292,16 @@ public class CarRecordController extends BaseController {
             j.setSuccess(false);
             return j;
         }
-
+        int total = 0;
         long size = lstResult.getRecords().size();
         for (long i = size - 1; i >= 0; --i) {
             if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("车辆申请")){
                 lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
+            }else{
+                total++;
             }
         }
+        lstResult.setTotal(total);
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
         return j;
