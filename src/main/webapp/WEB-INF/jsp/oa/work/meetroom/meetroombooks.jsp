@@ -69,7 +69,7 @@
 								<label class="col-sm-2 control-label">参会人：</label>
 								<div class="col-sm-4">
 									<div class="input-group">
-										<t:choose url="common/selectUsers" hiddenName="attendeeId" hiddenValue="${attendeeId}" textValue="${attendee }" textName="attendee" hiddenId="attendeeId" textId="attendee"></t:choose>
+										<t:choose url="common/selectUsers" hiddenName="attendeeId" hiddenValue="${attendeeId}" textValue="${meet.attendee}" textName="attendee" hiddenId="attendeeId" textId="attendee"></t:choose>
 									</div>
 								</div>
 							</div>
