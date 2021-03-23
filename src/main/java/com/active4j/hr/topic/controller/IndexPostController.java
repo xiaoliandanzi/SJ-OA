@@ -330,6 +330,7 @@ public class IndexPostController extends BaseController {
     }
 
     @RequestMapping("/index/getIndexImg")
+    @ResponseBody
     public List<String> getIndexImg(){
         List<String> imgPath = new ArrayList<>();
         try{
@@ -339,7 +340,7 @@ public class IndexPostController extends BaseController {
                 String strlis = getImgSrc(str);
                 imgPath.add(strlis);
             }
-            if (imgPath.size()==0||imgPath.size()<5){
+            if (imgPath.size()==0||imgPath==null){
                 imgPath.add("/oa/upload/borderImg.png");
             }
         }catch (Exception e){

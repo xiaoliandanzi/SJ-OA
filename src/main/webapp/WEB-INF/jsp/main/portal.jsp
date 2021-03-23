@@ -181,13 +181,13 @@
 <%--                             src="./img/borderImg.png" alt="">--%>
 
                         <div class="container">
-                            <div class="list" style="left:0px;">
+                            <div class="list" id="listImg" style="left:0px;">
                                 <!--<img src="../static/image/photo1.jpg" alt="5"/>-->
-                                <img src="./upload/borderImg.png" alt="1"/>
-                                <img src="./upload/bor1.jpg" alt="2"/>
-                                <img src="./upload/bor2.png" alt="3"/>
-                                <img src="./upload/bor3.jpg" alt="4"/>
-                                <img src="./upload/bor4.jpg" alt="5"/>
+<%--                                <img src="./upload/borderImg.png" alt="1"/>--%>
+<%--                                <img src="./upload/bor1.jpg" alt="2"/>--%>
+<%--                                <img src="./upload/bor2.png" alt="3"/>--%>
+<%--                                <img src="./upload/bor3.jpg" alt="4"/>--%>
+<%--                                <img src="./upload/bor4.jpg" alt="5"/>--%>
                                 <!--<img src="../static/image/banner.jpg" alt="1"/>-->
                             </div>
                             <div class="pointer">
@@ -425,6 +425,14 @@
 
 
 <script type="text/javascript">
+    $.post("oa/index/getIndexImg", function (data) {
+        for(var i=0;i<data.length;i++){
+            var ui="<img src="+data[i]+" alt="+(i+1)+"/>";
+            $("#listImg").append(ui);
+        }
+    });
+
+
     function closes() {
         $("#rbbox").hide();
     }
