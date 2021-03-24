@@ -75,4 +75,11 @@ public class FlowOfficalSealApprovalEntity extends BaseEntity {
      */
     @TableField("RETURN_FLAG")
     private Integer returnFlag;
+
+    /**
+     *
+     * 公章类型：办事处章/工委章
+     * */
+    @TableField("SEALTYPE")
+    private String sealtype;
 }

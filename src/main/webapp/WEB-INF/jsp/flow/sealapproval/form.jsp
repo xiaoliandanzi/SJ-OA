@@ -55,6 +55,16 @@
     </div>
 </div>
 <div class="form-group">
+    <label class="col-sm-3 control-label">公章类型：</label>
+    <div class="col-sm-5">
+<%--        <textarea id="sealtype" name="sealtype" class="form-control">${biz.sealtype }</textarea>--%>
+        <select class="form-control" name="sealtype" id="sealtype" style="width: 200px" onchange="">
+            <option value="办事处章">办事处章</option>
+            <option value="工委章">工委章</option>
+        </select>
+    </div>
+</div>
+<div class="form-group">
     <label class="col-sm-3 control-label">借用人：</label>
     <div class="col-sm-5">
         <textarea id="userName" name="userName" class="form-control">${biz.userName }</textarea>

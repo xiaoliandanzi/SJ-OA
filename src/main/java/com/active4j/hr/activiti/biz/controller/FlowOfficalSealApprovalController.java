@@ -2,6 +2,7 @@ package com.active4j.hr.activiti.biz.controller;
 
 import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
 import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
+import com.active4j.hr.activiti.biz.service.FlowGetSpeRoleService;
 import com.active4j.hr.activiti.biz.service.FlowOfficalSealApprovalService;
 import com.active4j.hr.activiti.biz.service.FlowPaperApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
@@ -11,6 +12,7 @@ import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.activiti.service.WorkflowFormService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.activiti.service.WorkflowService;
+import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
@@ -42,6 +44,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -81,6 +84,8 @@ public class FlowOfficalSealApprovalController extends BaseController {
     @Autowired
     private WorkflowFormService workflowFormService;
 
+    @Autowired
+    private FlowGetSpeRoleService flowGetSpeRoleService;
 
     /**
      * 跳转到表单页面
@@ -195,7 +200,6 @@ public class FlowOfficalSealApprovalController extends BaseController {
     @ResponseBody
     public AjaxJson doApprove(String id, String taskId, String comment,String result, HttpServletRequest request){
         AjaxJson j = new AjaxJson();
-
         try{
             if(StringUtils.isEmpty(comment)) {
                 j.setMsg("审批意见不能为空");
@@ -210,19 +214,42 @@ public class FlowOfficalSealApprovalController extends BaseController {
 
             Map<String, Object> map = new HashMap<String, Object>();
 //            workflowService.saveSubmitTask(taskId, id, comment, map);
+            String userId = ShiroUtils.getSessionUserId();
+            List<String> roleList = this.flowGetSpeRoleService.getUserRoleName(userId);
+            String flag = null;
+            Boolean sign = false;
+            for (String rolename:roleList){
+                if (rolename.contains("主管领导")){
+                    sign = true;
+                }
+
+            }
+            if (sign){
+                WorkflowBaseEntity workflowBaseEntity = workflowBaseService.getById(id);
+                FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity = flowOfficalSealApprovalService
+                        .getById(workflowBaseEntity.getBusinessId());
+                if ("办事处章".equals(flowOfficalSealApprovalEntity.getSealtype())){
+                    flag = "B";
+                }else {
+                    flag = "A";
+                }
+            }
 
             if(StringUtils.equals("N", result)) {
                 map.put("flag", "N");
                 workflowService.saveBackTask(taskId, id, comment, map);
-            }else if(StringUtils.equals("Y", result)){
-                map.put("flag", "Y");
-
+            }else if(StringUtils.equals("Y", result)) {
+                if (flag != null) {
+                    map.put("flag", flag);
+                } else {
+                    map.put("flag", "Y");
+                }
                 saveSubmitTask(taskId, id, comment, map);
             }else if (StringUtils.equals("O", result)) {
                 map.put("flag", "O");
                 saveSubmitOverTask(taskId, id, comment, map);
-            }
-            else {
+
+            }else {
                 saveSubmitTask(taskId, id, comment, map);
             }
 
@@ -300,6 +327,10 @@ public class FlowOfficalSealApprovalController extends BaseController {
                 FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity = flowOfficalSealApprovalService.getById(workflowBaseEntity.getBusinessId());
                 flowOfficalSealApprovalEntity.setApplyStatus(1);
                 flowOfficalSealApprovalService.saveOrUpdate(flowOfficalSealApprovalEntity);
+
+//                //添加到系统信息
+//                WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getCreateName(), task.getAssignee(),
+//                        workflowBaseEntity.getApplyDate(), workflowBaseEntity.getWorkFlowName());
             } else {
                 workflowBaseEntity.setStatus("2");
                 FlowOfficalSealApprovalEntity flowOfficalSealAfpprovalEntity = flowOfficalSealApprovalService.getById(workflowBaseEntity.getBusinessId());

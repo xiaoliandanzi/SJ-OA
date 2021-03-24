@@ -77,6 +77,7 @@
     </div>
 </div>
 <script type="text/javascript">
+
     $("#plateuser").ready(function(){
         $.ajax({
             type: "POST",

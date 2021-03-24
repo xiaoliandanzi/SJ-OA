@@ -4,4 +4,14 @@
     <select id="getCarAdminrole" resultType="string">
         SELECT ROLE_CODE FROM sys_role where ROLE_NAME='车辆管理员'
     </select>
+
+    <select id="getUserRoleName" resultType="string">
+        SELECT
+	        ROLE_NAME
+        FROM
+	        sys_role b
+	    LEFT JOIN sys_user_role a on a.role_id=b.id
+        WHERE
+	        a.USER_ID = #{userId}
+    </select>
 </mapper>
