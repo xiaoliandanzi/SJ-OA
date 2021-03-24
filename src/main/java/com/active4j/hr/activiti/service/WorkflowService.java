@@ -156,6 +156,14 @@ public interface WorkflowService {
 	public IPage<WorkflowBaseEntity> findFinishedTaskByALL(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String category);
 
 	/**
+	 * 车辆查询所有
+	 * @param WorkflowBaseEntity
+	 * @param category 区别审批还是办理
+	 * @return
+	 */
+	public IPage<WorkflowBaseEntity> findFinishedCarTaskByALL(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String category);
+
+	/**
 	 * 完成任务提交
 	 * @param taskId   任务ID
 	 * @param businessKey  业务数据ID

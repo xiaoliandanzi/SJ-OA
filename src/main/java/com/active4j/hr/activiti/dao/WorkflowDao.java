@@ -35,6 +35,11 @@ public interface WorkflowDao {
 														   @Param("name") String name, @Param("applyName") String applyName,@Param("applyerDepart") String applyerDepart,
 														   @Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd);
 
+	public IPage<WorkflowBaseEntity> findFinishedCarTaskByALL(IPage<WorkflowBaseEntity> page,
+														   @Param("categoryId") String categoryId, @Param("projectNo") String projectNo,
+														   @Param("name") String name, @Param("applyName") String applyName,@Param("applyerDepart") String applyerDepart,
+														   @Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd);
+
 	public IPage<WorkflowBaseEntity> findTaskStrsByUserName(IPage<WorkflowBaseEntity> page, @Param("userName") String userName,
 															@Param("categoryId") String categoryId, @Param("projectNo") String projectNo,
 															@Param("name") String name, @Param("applyName") String applyName,@Param("applyerDepart") String applyerDepart,

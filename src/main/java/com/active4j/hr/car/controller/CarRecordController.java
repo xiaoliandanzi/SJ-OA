@@ -260,6 +260,7 @@ public class CarRecordController extends BaseController {
      * @param dataGrid
      */
     @RequestMapping("/datagridFinish")
+    @ResponseBody
     public AjaxJson datagridFinish(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
         AjaxJson j = new AjaxJson();
         String startTime = request.getParameter("applyDate_begin");
@@ -283,7 +284,7 @@ public class CarRecordController extends BaseController {
             return j;
         }else if(lstUsers.size() == 1) {
             if(lstUsers.get(0).equals(user.getUserName())){
-                lstResult = workflowService.findFinishedTaskByALL(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, WorkflowConstant.Task_Category_approval);
+                lstResult = workflowService.findFinishedCarTaskByALL(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, WorkflowConstant.Task_Category_approval);
             }else{
                 lstResult = workflowService.findFinishedTaskCarByUserDept(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserDept(), WorkflowConstant.Task_Category_approval);
             }
@@ -292,16 +293,12 @@ public class CarRecordController extends BaseController {
             j.setSuccess(false);
             return j;
         }
-        int total = 0;
-        long size = lstResult.getRecords().size();
-        for (long i = size - 1; i >= 0; --i) {
-            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("车辆申请")){
-                lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
-            }else{
-                total++;
-            }
-        }
-        lstResult.setTotal(total);
+//        long size = lstResult.getRecords().size();
+//        for (long i = size - 1; i >= 0; --i) {
+//            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("车辆申请")){
+//                lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
+//
+//        }
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
         return j;

@@ -381,6 +381,16 @@ public class WorkflowServiceImpl implements WorkflowService {
     }
 
     /**
+     * 车辆查询所有
+     * @param WorkflowBaseEntity
+     * @param category 区别审批还是办理
+     * @return
+     */
+    public IPage<WorkflowBaseEntity> findFinishedCarTaskByALL(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String category) {
+        return workflowDao.findFinishedCarTaskByALL(page, base.getCategoryId(), base.getProjectNo(), base.getName(), base.getApplyName(), base.getApplyerDepart(), startTime, endTime);
+    }
+
+    /**
      * 根据业务ID，查询当前流程实例所有审批意见信息列表
      *
      * @param businesskey
