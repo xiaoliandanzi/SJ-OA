@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,laydate,icheck,summernote"></t:base>
+    <t:base type="default,laydate,icheck,summernote,clock"></t:base>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -60,6 +60,12 @@
 
         }
     }
+    //让页面管理表单的字段不可编辑
+    $(function() {
+        //让页面管理表单的字段不可编辑
+        $("#commonForm input").attr("disabled", "disabled");
+        $("#commonForm textarea").attr("disabled", "disabled");
+    });
     //时间控件初始化
     $(function() {
         laydate({
@@ -68,17 +74,6 @@
             istime : false,
             format : 'YYYY-MM-DD'
         });
-        // laydate({
-        //     elem : "#endDay",
-        //     event : "focus",
-        //     istime : true,
-        //     format : 'YYYY-MM-DD hh:mm'
-        // });
-
-        //让页面管理表单的字段不可编辑
-        $("#commonForm input").attr("disabled", "disabled");
-        $("#commonForm textarea").attr("disabled", "disabled");
-
     });
 
 </script>

@@ -7,6 +7,7 @@ import com.active4j.hr.activiti.biz.entity.FlowPaperApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowOfficalSealApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
 import com.active4j.hr.activiti.entity.WorkflowCategoryEntity;
+import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.activiti.service.WorkflowCategoryService;
 import com.active4j.hr.activiti.service.WorkflowService;
 import com.active4j.hr.activiti.util.WorkflowConstant;
@@ -83,9 +84,11 @@ public class OfficalSealReturnController extends BaseController {
     private OaOfficalSealRecordService oaOfficalSealRecordService;
 
     @Autowired
+    private WorkflowBaseService workflowBaseService;
+
+
+    @Autowired
     private FlowOfficalSealApprovalService flowOfficalSealApprovalService;
-
-
     @Autowired
     private WorkflowService workflowService;
 
@@ -383,13 +386,13 @@ public class OfficalSealReturnController extends BaseController {
 
     /**
      * 查询数据  -- 我的已办审批
-     * @param flowOfficalSealApprovalEntity
+     * @param workflowBaseEntity
      * @param request
      * @param response
      * @param dataGrid
      */
     @RequestMapping("/datagridFinish")
-    public void datagridFinish(FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+    public void datagridFinish(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
         String startTime = request.getParameter("applyDate_begin");
         String endTime = request.getParameter("applyDate_end");
         if (startTime == null || startTime=="") {
@@ -428,17 +431,17 @@ public class OfficalSealReturnController extends BaseController {
         List<SysRoleEntity> list = roleService.list(wrapper);
         if (userRole.contains(list.get(0).getRoleCode())||userRole.contains("superAdmin")){
             // 拼接查询条件
-            QueryWrapper<FlowOfficalSealApprovalEntity> queryWrapper = QueryUtils.installQueryWrapper(flowOfficalSealApprovalEntity, request.getParameterMap(), dataGrid);
+            QueryWrapper<WorkflowBaseEntity> queryWrapper = QueryUtils.installQueryWrapper(workflowBaseEntity, request.getParameterMap(), dataGrid);
             // 执行查询
-            IPage<FlowOfficalSealApprovalEntity> lstResult = flowOfficalSealApprovalService.page(new Page<FlowOfficalSealApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+            IPage<WorkflowBaseEntity> lstResult = workflowBaseService.page(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper.eq("WORKFLOW_NAME","双井公章申请"));
 
             // 输出结果
             ResponseUtil.writeJson(response, dataGrid, lstResult);
         }else {
             // 拼接查询条件
-            QueryWrapper<FlowOfficalSealApprovalEntity> queryWrapper = QueryUtils.installQueryWrapper(flowOfficalSealApprovalEntity, request.getParameterMap(), dataGrid);
+            QueryWrapper<WorkflowBaseEntity> queryWrapper = QueryUtils.installQueryWrapper(workflowBaseEntity, request.getParameterMap(), dataGrid);
             // 执行查询
-            IPage<FlowOfficalSealApprovalEntity> lstResult = flowOfficalSealApprovalService.page(new Page<FlowOfficalSealApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()),queryWrapper.eq("DEPARTMENTNAME",userDept));
+            IPage<WorkflowBaseEntity> lstResult = workflowBaseService.page(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()),queryWrapper.eq("APPLYER_DEPART",userDept).eq("WORKFLOW_NAME","双井公章申请"));
 
             // 输出结果
             ResponseUtil.writeJson(response, dataGrid, lstResult);
