@@ -97,6 +97,12 @@ public class SysUserEntity extends BaseEntity{
 	 */
 	@TableField("MEMO")
 	private String memo;
+
+	/**
+	 * 排序字段
+	 */
+	@TableField("SORT")
+	private int sort;
 	
 	
 }

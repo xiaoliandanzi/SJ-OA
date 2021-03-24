@@ -180,7 +180,20 @@ public class SysUserController extends BaseController {
 			
 			//角色
 			String[] roleIds = req.getParameterValues("roleid");
-			
+			QueryWrapper<SysRoleEntity> queryWrapper= new QueryWrapper();
+			for (String roleId : roleIds) {
+				queryWrapper.select("ROLE_NAME").eq("ID",roleId);
+				List<SysRoleEntity> list = sysRoleService.list(queryWrapper);
+				for (SysRoleEntity sysRoleEntity : list) {
+					String name =sysRoleEntity.getRoleName();
+					if (name.substring(name.length()-3).equals("负责人")){
+						sysUserEntity.setSort(1);
+						break;
+					}else{
+						sysUserEntity.setSort(999);
+					}
+				}
+			}
 			if(StringUtils.isEmpty(sysUserEntity.getId())) {
 				//新增保存
 				SysUserEntity tmpUser = sysUserService.getUserByUseName(sysUserEntity.getUserName());

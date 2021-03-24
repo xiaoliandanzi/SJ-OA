@@ -119,8 +119,24 @@ public class CommonController extends BaseController {
 		req.setAttribute("treeData", sb.toString());
 		return view;
 	}
-	
-	
+
+
+//	/**
+//	 * 用户选择弹出框
+//	 * @param req
+//	 * @return
+//	 */
+//	@RequestMapping("/selectUsers")
+//	public ModelAndView selectUsers(HttpServletRequest req) {
+//		ModelAndView view = new ModelAndView("system/common/selectusers");
+//
+//
+//		String userTreeStr = getCompanyOfUser(null);
+//		view.addObject("userTreeStr", userTreeStr);
+//
+//		return view;
+//	}
+
 	/**
 	 * 用户选择弹出框
 	 * @param req
@@ -147,6 +163,17 @@ public class CommonController extends BaseController {
 
 		return view;
 	}
+
+
+
+
+	//获取所有二级部门+
+	@RequestMapping("/getAllChildDepts")
+	@ResponseBody
+	public List<SysDeptEntity> getAllChildDepts() {
+		return sysDeptService.getAllChildDepts();
+	}
+
 
 	private String getCompanyOfManagers(Set<String> lstUserIds) {
 		//先查询顶级部门
@@ -284,8 +311,24 @@ public class CommonController extends BaseController {
 		sb = sb.append("[");
 		departUserContact(lstDeparts, sb, lstUserIds);
 		
-		sb = sb.append("]");
+		sb = sb.append("]}]");
 		
+		return sb.toString();
+	}
+
+	//获取所有二级部门
+	public String getCompanyOfUserAll(Set<String> lstUserIds) {
+		//先查询顶级部门
+		List<SysDeptEntity> lstDeparts = sysDeptService.getAllChildDepts();
+
+		//拼接字符串
+		StringBuffer sb = new StringBuffer();
+		sb = sb.append("[");
+
+		departUserContact(lstDeparts, sb, lstUserIds);
+
+		sb = sb.append("]");
+
 		return sb.toString();
 	}
 	
@@ -295,6 +338,115 @@ public class CommonController extends BaseController {
 	 * @param sb
 	 */
 	private void departUserContact(List<SysDeptEntity> lstDeparts, StringBuffer sb, Set<String> lstUserIds) {
+		if(null != lstDeparts && lstDeparts.size() > 0) {
+			for(int i = 0; i < lstDeparts.size(); i++) {
+				SysDeptEntity depart = lstDeparts.get(i);
+				//查询所有组织架构\
+
+				sb = sb.append("{").append("icon:").append("\"fa fa-sitemap\"").append(",").append("type:").append("\"C\"").append(",").append("text:").append("\"").append(depart.getName()).append("\",").append("id:").append("\"").append(depart.getId()).append("\"");;
+				List<SysDeptEntity> lstTmp = sysDeptService.getAllChildDepts();
+				sb = sb.append(", nodes: [");
+				for(int j = 0;j < lstTmp.size();j++){
+					sb = sb.append("{").append("icon:").append("\"fa fa-sitemap\"").append(",").append("type:").append("\"C\"").append(",").append("text:").append("\"").append(lstTmp.get(j).getName()).append("\",").append("id:").append("\"").append(depart.getId()).append("\"");;
+					sb = sb.append(", nodes: [");
+					if(null != lstTmp && lstTmp.size() > 0) {
+						//根据type过滤数据
+						if(lstTmp.size() > 0) {
+							//departUserContact(lstTmp, sb, lstUserIds);
+							List<SysUserEntity> lstUsers = sysUserService.findUsersByDept(lstTmp.get(j));
+							if(null != lstUsers && lstUsers.size() > 0) {
+								//sb = sb.append(",");
+								for(int m = 0; m < lstUsers.size(); m++) {
+									SysUserEntity user = lstUsers.get(m);
+									if(m == lstUsers.size() - 1) {
+										if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
+											sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("}");
+										}else {
+											sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("}");
+										}
+
+									}else {
+										if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
+											sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("},");
+										}else {
+											sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("},");
+										}
+									}
+								}
+							}
+							sb.append("]");
+						}else {
+							List<SysUserEntity> lstUsers = sysUserService.findUsersByDept(lstTmp.get(j));
+							if(null != lstUsers && lstUsers.size() > 0) {
+								sb = sb.append(", nodes:[");
+								for(int m = 0; m < lstUsers.size(); m++) {
+									SysUserEntity user = lstUsers.get(m);
+									if(m == lstUsers.size() - 1) {
+										if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
+											sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("}");
+										}else {
+											sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("}");
+										}
+
+									}else {
+										if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
+											sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("},");
+										}else {
+											sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("},");
+										}
+
+									}
+								}
+								sb.append("]");
+							}
+						}
+					}else {
+						List<SysUserEntity> lstUsers = sysUserService.findUsersByDept(depart);
+						if(null != lstUsers && lstUsers.size() > 0) {
+							sb = sb.append(", nodes:[");
+							for(int m = 0; m < lstUsers.size(); m++) {
+								SysUserEntity user = lstUsers.get(m);
+								if(m == lstUsers.size() - 1) {
+									if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
+										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("}");
+									}else {
+										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("}");
+									}
+
+								}else {
+									if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
+										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("},");
+									}else {
+										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("},");
+									}
+
+								}
+							}
+							sb.append("]");
+						}
+
+					}
+					if(j == lstTmp.size() - 1) {
+						sb = sb.append("}");
+					}else {
+						sb = sb.append("},");
+					}
+				}
+				/*if(i == lstDeparts.size() - 1) {
+					sb = sb.append("}");
+				}else {
+					sb = sb.append("},");
+				}*/
+			}
+		}
+	}
+
+	/**
+	 * 递归调用，正式公司类型的组织机构下
+	 * @param lstDeparts
+	 * @param sb
+	 */
+	/*private void departUserContact(List<SysDeptEntity> lstDeparts, StringBuffer sb, Set<String> lstUserIds) {
 		if(null != lstDeparts && lstDeparts.size() > 0) {
 			for(int i = 0; i < lstDeparts.size(); i++) {
 				SysDeptEntity depart = lstDeparts.get(i);
@@ -317,14 +469,14 @@ public class CommonController extends BaseController {
 									}else {
 										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("}");
 									}
-									
+
 								}else {
 									if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
 										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("},");
 									}else {
 										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("},");
 									}
-									
+
 								}
 							}
 						}
@@ -341,14 +493,14 @@ public class CommonController extends BaseController {
 									}else {
 										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("}");
 									}
-									
+
 								}else {
 									if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
 										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("},");
 									}else {
 										sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("},");
 									}
-									
+
 								}
 							}
 							sb.append("]");
@@ -366,21 +518,21 @@ public class CommonController extends BaseController {
 								}else {
 									sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("}");
 								}
-								
+
 							}else {
 								if(null != lstUserIds && lstUserIds.size() > 0 && lstUserIds.contains(user.getId())) {
 									sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("state:{").append("checked:true").append("},").append("id:").append("\"").append(user.getId()).append("\"").append("},");
 								}else {
 									sb = sb.append("{").append("icon:").append("\"fa fa-user\"").append(",").append("type:").append("\"U\"").append(",").append("text:").append("\"").append(user.getRealName()).append("\",").append("id:").append("\"").append(user.getId()).append("\"").append("},");
 								}
-								
+
 							}
 						}
 						sb.append("]");
 					}
-					
-				} 
-				
+
+				}
+
 				if(i == lstDeparts.size() - 1) {
 					sb = sb.append("}");
 				}else {
@@ -388,7 +540,7 @@ public class CommonController extends BaseController {
 				}
 			}
 		}
-	}
+	}*/
 	
 	/**
 	 * 递归的方式 循环显示各部门及其子部门
@@ -471,7 +623,7 @@ public class CommonController extends BaseController {
 	
 	/**
 	 * 递归的方式 循环显示各菜单及其子菜单
-	 * @param lstDeparts
+	 * @param lstMenus
 	 * @param sb
 	 */
 	private void menuContact(List<SysFunctionEntity> lstMenus, StringBuffer sb, List<String> loginActionlist) {
