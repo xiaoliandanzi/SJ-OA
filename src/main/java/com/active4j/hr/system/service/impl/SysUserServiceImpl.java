@@ -114,7 +114,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
      */
     public List<SysUserEntity> findUsersByDept(SysDeptEntity sysDeptEntity) {
         QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<SysUserEntity>();
-        queryWrapper.eq("DEPT_ID", sysDeptEntity.getId());
+        queryWrapper.eq("DEPT_ID", sysDeptEntity.getId()).orderByAsc("SORT");
         return this.list(queryWrapper);
     }
 

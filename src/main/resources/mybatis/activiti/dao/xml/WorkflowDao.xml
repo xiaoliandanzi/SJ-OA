@@ -350,6 +350,7 @@
 		and u.DEPT_ID=d.ID
 		and d.`NAME` = #{dept}
 		and b.status=3
+		AND b.WORKFLOW_NAME='车辆申请'
 		<if test="categoryId!=null and categoryId!=''">and b.CATEGORY_ID = #{categoryId}
 		</if>
 		<if test="projectNo!=null and projectNo!=''">
