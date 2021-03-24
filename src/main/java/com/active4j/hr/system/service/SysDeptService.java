@@ -30,6 +30,16 @@ public interface SysDeptService extends IService<SysDeptEntity> {
 	 */
 	public List<SysDeptEntity> getChildDeptsByDeptId(String deptId);
 
+
+	/**
+	 * @description
+	 *  	根据部门ID  获取所有子部门
+	 * @return List<SysDeptEntity>
+	 * @author xfzhang
+	 * @time 2020年1月28日 下午3:35:12
+	 */
+	public List<SysDeptEntity> getAllChildDepts();
+
 	
 	/**
 	 * 

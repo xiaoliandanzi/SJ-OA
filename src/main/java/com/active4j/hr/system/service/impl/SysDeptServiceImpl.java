@@ -1,8 +1,6 @@
 package com.active4j.hr.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +39,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptDao, SysDeptEntity> i
 		// 先查父级菜单 注意排序
 		QueryWrapper<SysDeptEntity> queryWrapper = new QueryWrapper<SysDeptEntity>();
 		queryWrapper.isNull("PARENT_ID");
-		queryWrapper.orderByAsc("LEVEL");
+		queryWrapper.orderByDesc("LEVEL");
 		List<SysDeptEntity> lstDeparts = this.list(queryWrapper);
 
 		return lstDeparts;
@@ -56,9 +54,36 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptDao, SysDeptEntity> i
 	public List<SysDeptEntity> getChildDeptsByDeptId(String deptId) {
 		QueryWrapper<SysDeptEntity> queryWrapper = new QueryWrapper<SysDeptEntity>();
 		queryWrapper.eq("PARENT_ID", deptId);
-		queryWrapper.orderByAsc("LEVEL");
+		queryWrapper.orderByDesc("LEVEL");
 		List<SysDeptEntity> lstDeparts = this.list(queryWrapper);
+		return lstDeparts;
 
+	}
+
+	/**
+	 * @description 根据部门ID 获取子部门
+	 * @return List<SysDeptEntity>
+	 * @author xfzhang
+	 * @time 2020年1月28日 下午3:35:12
+	 */
+	public List<SysDeptEntity> getAllChildDepts() {
+		QueryWrapper<SysDeptEntity> queryWrapper = new QueryWrapper<SysDeptEntity>();
+		queryWrapper.eq("LEVEL", 2).orderByAsc("SORT");;
+/*		QueryWrapper<SysUserEntity> userWrapper = new QueryWrapper<SysUserEntity>();*/
+		List<SysDeptEntity> lstDeparts = this.list(queryWrapper);
+	//	List<SysDeptEntity> all=new ArrayList<>();
+
+		/*for (SysDeptEntity lstDepart : lstDeparts) {
+				userWrapper.eq("DEPT_ID",lstDepart.getId());
+				userWrapper.orderByAsc("SORT");
+				List<SysUserEntity> user = sysUserService.list(userWrapper);
+			List<SysUserEntity> list1=new ArrayList<>();
+			for (SysUserEntity sysUserEntity : user) {
+				list1.add(sysUserEntity);
+			}
+			lstDepart.setAlluser(list1);
+			all.add(lstDepart);
+		}*/
 		return lstDeparts;
 
 	}

@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * @title SysDeptEntity.java
  * @description 
@@ -66,5 +68,11 @@ public class SysDeptEntity extends BaseEntity{
 	 */
 	@TableField("MEMO")
 	private String memo;
+
+	/**
+	 * 排序字段
+	 */
+	@TableField("SORT")
+	private int sort;
 }
 
