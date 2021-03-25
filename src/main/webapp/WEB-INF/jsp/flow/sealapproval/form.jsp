@@ -65,7 +65,7 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-3 control-label">借用人：</label>
+    <label class="col-sm-3 control-label">使用人：</label>
     <div class="col-sm-5">
         <textarea id="userName" name="userName" class="form-control">${biz.userName }</textarea>
     </div>

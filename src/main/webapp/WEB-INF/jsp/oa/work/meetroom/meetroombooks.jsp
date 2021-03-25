@@ -42,21 +42,21 @@
                             <div class="form-group">
 								<label class="col-sm-2 control-label m-b">开始时间：</label>
 								<div class="col-sm-4 m-b">
-									<div class="input-group clockpicker" data-autoclose="true">
-			                            <input type="text" class="form-control" name="startDate" value='<fmt:formatDate value="${meet.startDate }" type="time" pattern="HH:mm"/>'>
-			                            <span class="input-group-addon">
+									<%--<div class="col-sm-4 m-b">--%>
+			                            <input class="laydate-icon form-control layer-date" id="startDate" name="startDate" required="" value='<fmt:formatDate value="${meet.startDate }" type="time" pattern="yyyy-MM-dd HH:mm"/>'>
+			                            <%--<span class="input-group-addon">
 			                                   <span class="fa fa-clock-o"></span>
-			                            </span>
-			                        </div>
+			                            </span>--%>
+			                        <%--</div>--%>
 								</div>
 								<label class="col-sm-2 control-label m-b">结束时间：</label>
 								<div class="col-sm-4 m-b">
-									<div class="input-group clockpicker" data-autoclose="true">
-										<input type="text" class="form-control" name="endDate" value='<fmt:formatDate value="${meet.endDate }" type="time" pattern="HH:mm"/>'>
-										<span class="input-group-addon">
+									<%--<div class="input-group clockpicker" data-autoclose="true">--%>
+										<input class="laydate-icon form-control layer-date" id="endDate" name="endDate" required="" value='<fmt:formatDate value="${meet.endDate }" type="time" pattern="yyyy-MM-dd HH:mm"/>'>
+										<%--<span class="input-group-addon">
 			                                   <span class="fa fa-clock-o"></span>
-			                            </span>
-									</div>
+			                            </span>--%>
+									<%--</div>--%>
 								</div>
 							</div>
 							<div class="form-group">
@@ -100,6 +100,18 @@
 			event : "focus",
 			istime : false,
 			format : 'YYYY-MM-DD'
+		});
+		laydate({
+			elem : "#startDate",
+			event : "focus",
+			istime : true,
+			format : 'YYYY-MM-DD hh:mm'
+		});
+		laydate({
+			elem : "#endDate",
+			event : "focus",
+			istime : true,
+			format : 'YYYY-MM-DD hh:mm'
 		});
 		
 		
