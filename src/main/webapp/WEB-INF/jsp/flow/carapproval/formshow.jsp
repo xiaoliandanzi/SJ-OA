@@ -10,7 +10,7 @@
 <div class="form-group">
     <label class="col-sm-3 control-label">用车单位*：</label>
     <div class="col-sm-5">
-        <input id="useDepartment" name="useDepartment" minlength="2" type="text" class="form-control" required="" value="${biz.useDepartment }">
+        <input id="useDepatment" name="useDepatment" minlength="2" type="text" class="form-control" required="" value="${biz.useDepatment }">
     </div>
 </div>
 <div class="form-group">

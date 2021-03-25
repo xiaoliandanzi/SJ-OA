@@ -154,7 +154,7 @@ public class FlowCarApprovalController extends BaseController {
         //获取当前用户个人资料
         SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
         FlowCarApprovalEntity biz = new FlowCarApprovalEntity();
-        biz.setUseDepartment(user.getDeptName());
+        biz.setUseDepatment(user.getDeptName());
 
         view.addObject("biz", biz);
 

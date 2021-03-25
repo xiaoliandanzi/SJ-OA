@@ -361,7 +361,7 @@ public class CarRecordController extends BaseController {
                 cell2.setCellValue(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(item.getCreateDate()));
                 //用车单位
                 Cell cell3 = row.getCell(2);
-                cell3.setCellValue(item.getUseDepartment());
+                cell3.setCellValue(item.getUseDepatment());
                 //乘车人
                 Cell cell4 = row.getCell(3);
                 cell4.setCellValue(item.getUserName());

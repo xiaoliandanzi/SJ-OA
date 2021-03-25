@@ -24,7 +24,7 @@ public class FlowCarApprovalEntity extends BaseEntity {
      * 用车单位
      */
     @TableField("USEDEPATMENT")
-    private String useDepartment;
+    private String useDepatment;
 
 
     /**
