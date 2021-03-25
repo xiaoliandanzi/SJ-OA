@@ -3,6 +3,7 @@ package com.active4j.hr.car.controller;
 import com.active4j.hr.activiti.biz.entity.FlowCarApprovalEntity;
 import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowCarApprovalService;
+import com.active4j.hr.activiti.biz.service.FlowGetSpeRoleService;
 import com.active4j.hr.activiti.biz.service.FlowOfficalSealApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
 import com.active4j.hr.activiti.entity.WorkflowCategoryEntity;
@@ -11,6 +12,7 @@ import com.active4j.hr.activiti.service.WorkflowService;
 import com.active4j.hr.activiti.util.WorkflowConstant;
 import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.base.controller.BaseController;
+import com.active4j.hr.car.service.CarRecordService;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.query.QueryUtils;
@@ -53,6 +55,7 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("car/record")
@@ -80,6 +83,12 @@ public class CarRecordController extends BaseController {
 
     @Autowired
     private SysDeptService sysDeptService;
+
+    @Autowired
+    private FlowGetSpeRoleService flowGetSpeRoleService;
+
+    @Autowired
+    private CarRecordService carRecordService;
 
     @RequestMapping("/show")
     public ModelAndView show(HttpServletRequest request) {
@@ -321,56 +330,71 @@ public class CarRecordController extends BaseController {
             Workbook workbook = new XSSFWorkbook(is);
             Sheet sheet = workbook.getSheetAt(0);
 
-
-
-            QueryWrapper<FlowCarApprovalEntity> queryWrapper = QueryUtils.installQueryWrapper(flowCarApprovalEntity, request.getParameterMap(), dataGrid);
-
-            queryWrapper.isNull("UPDATE_DATE");
-            // 执行查询
-            IPage<FlowCarApprovalEntity> lstResult = flowCarApprovalService.page(new Page<FlowCarApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
-            List<FlowCarApprovalEntity> list = lstResult.getRecords();
+            Set userrole = ShiroUtils.getSessionUserRole();
+            String carrole = this.flowGetSpeRoleService.getCarAdminrole();
+            Boolean sign = false;
+            for (Object role : userrole) {
+                if (carrole.equals(role))
+                    sign = true;//是车辆管理员
+            }
+            List<FlowCarApprovalEntity> list = new ArrayList();
+            if (sign){//车辆管理员查询全部已完成数据
+                list = this.carRecordService.getAllCarMessage();
+            }else {//其他成员查询对应科室的数据
+                String userdept = ShiroUtils.getSessionUserDept();
+                list = this.carRecordService.getCarMessageByDept(userdept);
+            }
+//            QueryWrapper<FlowCarApprovalEntity> queryWrapper = QueryUtils.installQueryWrapper(flowCarApprovalEntity, request.getParameterMap(), dataGrid);
+//
+//            queryWrapper.isNull("UPDATE_DATE");
+//            // 执行查询
+//            IPage<FlowCarApprovalEntity> lstResult = flowCarApprovalService.page(new Page<FlowCarApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+//            List<FlowCarApprovalEntity> list = lstResult.getRecords();
 
             int i = 0;
             for (FlowCarApprovalEntity item : list) {
                 Row row = sheet.getRow(i + 3);
                 Cell cell1 = row.getCell(0);
                 cell1.setCellValue((i+1) + "");
+                //创建日期
                 Cell cell2 = row.getCell(1);
                 cell2.setCellValue(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(item.getCreateDate()));
+                //用车单位
                 Cell cell3 = row.getCell(2);
-                cell3.setCellValue(item.getReason());
+                cell3.setCellValue(item.getUseDepartment());
+                //乘车人
                 Cell cell4 = row.getCell(3);
-                cell4.setCellValue(item.getDestination());
+                cell4.setCellValue(item.getUserName());
+                //乘车人数
                 Cell cell5 = row.getCell(4);
-                cell5.setCellValue(item.getUserName());
+                cell5.setCellValue(item.getPerson());
+                //用车类别
                 Cell cell6 = row.getCell(5);
-                cell6.setCellValue(item.getPerson());
+                cell6.setCellValue(item.getReason());
+                //用车事由
                 Cell cell7 = row.getCell(6);
-                cell6.setCellValue("");
+                cell7.setCellValue(item.getUsecarreason());
+                //目的地
                 Cell cell8 = row.getCell(7);
-                cell6.setCellValue("");
+                cell8.setCellValue(item.getDestination());
+                //用车时间
                 Cell cell9 = row.getCell(8);
-                cell6.setCellValue(item.getCommit());
-
-//                Row row = sheet.createRow(i + 2);
-//                Cell cell1 = row.createCell(0);
-//                cell1.setCellValue((i+1) + "");
-//                Cell cell2 = row.createCell(1);
-//                cell2.setCellValue(item.getCreateDate());
-//                Cell cell3 = row.createCell(2);
-//                cell3.setCellValue(item.getReason());
-//                Cell cell4 = row.createCell(3);
-//                cell4.setCellValue(item.getDestination());
-//                Cell cell5 = row.createCell(4);
-//                cell5.setCellValue(item.getUserName());
-//                Cell cell6 = row.createCell(5);
-//                cell6.setCellValue(item.getPerson());
-//                Cell cell7 = row.createCell(6);
-//                cell6.setCellValue("");
-//                Cell cell8 = row.createCell(7);
-//                cell6.setCellValue("");
-//                Cell cell9 = row.createCell(8);
-//                cell6.setCellValue(item.getCommit());
+                cell9.setCellValue(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(item.getUseTime()));
+                //用车时间段
+                Cell cell10 = row.getCell(9);
+                cell10.setCellValue(item.getMorningOrAfternoon()==1?"上午":"下午");
+                //车牌
+                Cell cell11 = row.getCell(10);
+                cell11.setCellValue(item.getPlatenum());
+                //司机
+                Cell cell12 = row.getCell(11);
+                cell12.setCellValue(item.getPlateuser());
+                //etc使用情况
+                Cell cell13 = row.getCell(12);
+                cell13.setCellValue(item.getEtcmessage());
+                //备注
+                Cell cell14 = row.getCell(13);
+                cell14.setCellValue(item.getCommit());
                 i++;
             }
 
@@ -389,7 +413,7 @@ public class CarRecordController extends BaseController {
 
 
 
-            String fileName = "物品申请记录.xlsx";
+            String fileName = "车辆申请记录.xlsx";
             downLoadExcel(fileName, response, workbook);
 
 
