@@ -433,7 +433,8 @@ public class OfficalSealReturnController extends BaseController {
             // 拼接查询条件
             QueryWrapper<WorkflowBaseEntity> queryWrapper = QueryUtils.installQueryWrapper(workflowBaseEntity, request.getParameterMap(), dataGrid);
             // 执行查询
-            IPage<WorkflowBaseEntity> lstResult = workflowBaseService.page(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper.eq("WORKFLOW_NAME","双井公章申请"));
+            IPage<WorkflowBaseEntity> lstResult = workflowBaseService.page(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper.eq("WORKFLOW_NAME","双井公章申请")
+                    .eq("STATUS",3).ge("APPLY_DATE",startTime).le("APPLY_DATE",endTime));
 
             // 输出结果
             ResponseUtil.writeJson(response, dataGrid, lstResult);
@@ -441,7 +442,8 @@ public class OfficalSealReturnController extends BaseController {
             // 拼接查询条件
             QueryWrapper<WorkflowBaseEntity> queryWrapper = QueryUtils.installQueryWrapper(workflowBaseEntity, request.getParameterMap(), dataGrid);
             // 执行查询
-            IPage<WorkflowBaseEntity> lstResult = workflowBaseService.page(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()),queryWrapper.eq("APPLYER_DEPART",userDept).eq("WORKFLOW_NAME","双井公章申请"));
+            IPage<WorkflowBaseEntity> lstResult = workflowBaseService.page(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()),queryWrapper.eq("APPLYER_DEPART",userDept)
+                    .eq("WORKFLOW_NAME","双井公章申请").eq("STATUS",3).ge("APPLY_DATE",startTime).le("APPLY_DATE",endTime));
 
             // 输出结果
             ResponseUtil.writeJson(response, dataGrid, lstResult);
