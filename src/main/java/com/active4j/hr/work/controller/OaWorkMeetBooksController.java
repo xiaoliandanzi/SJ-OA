@@ -116,6 +116,34 @@ public class OaWorkMeetBooksController extends BaseController {
 		
 		return view;
 	}
+
+
+	/**
+	 * 跳转到编辑查看页面
+	 * @param oaWorkMeetRoomBooksEntity
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/addorupdatenew")
+	public ModelAndView addorupdatenew(OaWorkMeetRoomBooksEntity oaWorkMeetRoomBooksEntity, HttpServletRequest request) {
+		ModelAndView view = new ModelAndView("oa/work/meetroom/meetroombooksnew");
+
+		//查询可用的会议室
+		List<OaWorkMeetRoomEntity> lstRooms = oaWorkMeetRoomService.findNormalMeetRoom();
+		view.addObject("lstRooms", lstRooms);
+
+		String userId = ShiroUtils.getSessionUserId();
+		SysUserModel userModel = sysUserService.getInfoByUserId(userId).get(0);
+		view.addObject("userName", userModel.getRealName());
+		view.addObject("dept", userModel.getDeptName());
+
+		if(StringUtils.isNotEmpty(oaWorkMeetRoomBooksEntity.getId())) {
+			oaWorkMeetRoomBooksEntity = oaWorkMeetRoomBooksService.getById(oaWorkMeetRoomBooksEntity.getId());
+			view.addObject("meet", oaWorkMeetRoomBooksEntity);
+		}
+
+		return view;
+	}
 	
 	
 	/**

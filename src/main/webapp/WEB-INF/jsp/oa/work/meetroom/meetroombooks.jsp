@@ -62,13 +62,24 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">设备配置：</label>
 								<div class="col-sm-4">
-									<input id="equipment" name="equipment" class="form-control" >${meet.equipment}</>
+									<button class="btn btn-default dropdown-toggle form-control select_multiple" style="width: 100%;margin-left: 0px;" type="button" id="dropdownMenu21" data-toggle="dropdown">
+										<span class="select_text" data-is-select="false">选择设备</span>
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu dropdown_item" style="bottom: auto;">
+										<li><input type="checkbox" class="check_box" value="话筒" /> <span>话筒</span></li>
+										<li><input type="checkbox" class="check_box" value="投影"/> <span>投影</span></li>
+										<li><input type="checkbox" class="check_box" value="水"/> <span>水</span></li>
+
+									</ul><!-- 为了方便演示，type设置text了，实际中可以设置成hidden -->
+										<input id="equipment" name="equipment" class="form-control" style="display:none"/>
+<%--									<input id="equipment" name="equipment" class="form-control" >${meet.equipment}</>--%>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">参会人：</label>
 								<div class="col-sm-4">
-									<div class="input-group">
+									<div class="input-group" style="width: 220%">
 										<t:choose url="common/selectUsers" hiddenName="attendeeId" hiddenValue="${attendeeId}" textValue="${meet.attendee}" textName="attendee" hiddenId="attendeeId" textId="attendee"></t:choose>
 									</div>
 								</div>
@@ -118,10 +129,66 @@
 		$('.clockpicker').clockpicker();
 		
 	});
+
+	$(document).on("click",".check_box",function(event){
+		event.stopPropagation();//阻止事件冒泡，防止触发li的点击事件
+		//勾选的项
+		var $selectTextDom=$(this).parent().parent("ul").siblings("button").children(".select_text");
+		//勾选项的值
+		var $selectValDom=$(this).parent().parent("ul").siblings(".select_val");
+		//是否有选择项了
+		var isSelected=$selectTextDom[0].getAttribute("data-is-select");
+		var selectText="";//文本值，用于显示
+
+		var selectVal=$selectValDom.val();//实际值，会提交到后台的
+		var selected_text=$(this).siblings("span").text();//当次勾选的文本值
+		var selected_val=$(this).val();//当次勾选的实际值
+		//判断是否选择过
+		if(isSelected=="true"){
+			selectText=$selectTextDom.text();
+		}
+		if(selectText!=""){
+			if(selectText.indexOf(selected_text)>=0){//判断是否已经勾选过
+				selectText=selectText.replace(selected_text,"").replace(",,",",");//替换掉
+				selectVal=selectVal.replace(selected_val,"").replace(",,",",");//替换掉
+				//判断最后一个字符是否是逗号
+				if(selectText.charAt(selectText.length - 1)==","){
+					//去除末尾逗号
+					selectText=selectText.substring(0,selectText.length - 1);
+					selectVal=selectVal.substring(0,selectVal.length - 1);
+				}
+			}else{
+				selectText+=","+selected_text;
+				selectVal+=","+selected_val;
+			}
+		}else{
+			selectText=selected_text;
+			selectVal=selected_val;
+		}
+		$selectTextDom.text(selectText);
+		$selectValDom.val(selectVal);
+		debugger
+		if(selectText==""){
+			$selectTextDom.text("请选择");
+			$selectTextDom[0].setAttribute("data-is-select","false");
+		}else{
+			$selectTextDom[0].setAttribute("data-is-select","true");
+		}
+		document.getElementById('equipment').value = selectText;
+	})
 	
 	
 	
 
 </script>
+<style>
+
+	/*.dropdown_item{width: 100%}*/
+	/*.dropdown_item>li:HOVER{background-color: #eee;cursor: pointer;}*/
+	/*.dropdown_item>li {display: block;padding: 3px 10px;clear: both;font-weight: normal;line-height: 1.428571429;color: #333;white-space: nowrap;}*/
+	/*.dropdown_item>li>.check_box{width: 18px;height: 18px;vertical-align: middle;margin: 0px;}*/
+	/*.dropdown_item>li>span{vertical-align: middle;}*/
+	/*.select_multiple .caret{border-top: 4px solid!important;border-bottom: 0;*/
+</style>
 </html>
 

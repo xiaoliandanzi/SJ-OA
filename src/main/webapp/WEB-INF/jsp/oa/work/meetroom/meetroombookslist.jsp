@@ -34,8 +34,8 @@
 		<t:dgCol name="opt" label="操作" ></t:dgCol>
 		<t:dgDelOpt label="删除" url="oa/work/meetRoomBooks/delete?id={id}"/>
 		<t:dgToolBar label="预定" url="oa/work/meetRoomBooks/addorupdate" type="add" width="50%" height="70%"></t:dgToolBar>
-		<t:dgToolBar url="oa/work/meetRoomBooks/addorupdate" type="edit" width="50%" height="70%"></t:dgToolBar>
-		<t:dgToolBar url="oa/work/meetRoomBooks/addorupdate" type="view" width="50%" height="70%"></t:dgToolBar>
+		<t:dgToolBar url="oa/work/meetRoomBooks/addorupdatenew" type="edit" width="50%" height="70%"></t:dgToolBar>
+		<t:dgToolBar url="oa/work/meetRoomBooks/addorupdatenew" type="view" width="50%" height="70%"></t:dgToolBar>
 		<t:dgToolBar  type="refresh" ></t:dgToolBar>
 	</t:datagrid>
 </body>
