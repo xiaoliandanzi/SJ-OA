@@ -31,16 +31,43 @@
 <%--    </div>--%>
 <%--</div>--%>
 <div class="form-group">
-    <label class="col-sm-3 control-label">用车事由*：</label>
+    <label class="col-sm-3 control-label">用车类别*：</label>
     <div class="col-sm-3">
-        <select class="form-control" name="reason" id="reason">
-            <option value="应急类">应急类</option>
-            <option value="文件">文件</option>
-            <option value="重大活动">重大活动</option>
-            <option value="临时调研">临时调研</option>
-            <option value="财务">财务</option>
-            <option value="城六区外参加会议或公务活动">城六区外参加会议或公务活动</option>
+        <select class="form-control" style="width: 160%" name="reason" id="reason">
+            <option value="处置辖区内紧急突发的各类自然灾害、事故灾难、公共卫生事件、上访、群体讨薪事件">
+                处置辖区内紧急突发的各类自然灾害、事故灾难、公共卫生事件、上访、群体讨薪事件
+            </option>
+            <option value="领取紧急、保密、时限性强的文件资料">
+                领取紧急、保密、时限性强的文件资料
+            </option>
+            <option value="重大活动">
+                重大活动
+            </option>
+            <option value="集中领取和办理组织人事、社会劳动关系档案等">
+                集中领取和办理组织人事、社会劳动关系档案等
+            </option>
+            <option value="协助辖区派出所接回重点人员">
+                协助辖区派出所接回重点人员
+            </option>
+            <option value="参加各类重大活动，参加与之相关的各类应急保障专项任务">
+                参加各类重大活动，参加与之相关的各类应急保障专项任务
+            </option>
+            <option value="参加临时通知（仅限当天）的区级部门以及区领导召集的紧急会议、调研、接待等紧急公务事项">
+                参加临时通知（仅限当天）的区级部门以及区领导召集的紧急会议、调研、接待等紧急公务事项
+            </option>
+            <option value="财务人员集中赴银行办理大额现金业务等涉及财物安全的工作">
+                财务人员集中赴银行办理大额现金业务等涉及财物安全的工作
+            </option>
+            <option value="赴不具备社会化出行保障条件的地区参加会议、考察、调研、学习等公务活动">
+                赴不具备社会化出行保障条件的地区参加会议、考察、调研、学习等公务活动
+            </option>
         </select>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">用车事由*：</label>
+    <div class="col-sm-5">
+        <input id="usecarreason" name="usecarreason" minlength="1" type="text" class="form-control" required="" value="${biz.usecarreason }">
     </div>
 </div>
 

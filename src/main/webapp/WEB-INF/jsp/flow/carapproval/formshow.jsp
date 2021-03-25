@@ -26,9 +26,15 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-3 control-label">用车事由*：</label>
+    <label class="col-sm-3 control-label">用车类别*：</label>
     <div class="col-sm-5">
         <input id="reason" name="reason" minlength="1" type="text" class="form-control" required="" value="${biz.reason }">
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">用车事由*：</label>
+    <div class="col-sm-5">
+        <input id="usecarreason" name="usecarreason" minlength="1" type="text" class="form-control" required="" value="${biz.usecarreason }">
     </div>
 </div>
 <div class="form-group">

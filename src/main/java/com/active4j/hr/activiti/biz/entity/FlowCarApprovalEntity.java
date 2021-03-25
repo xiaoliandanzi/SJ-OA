@@ -40,10 +40,16 @@ public class FlowCarApprovalEntity extends BaseEntity {
     private Integer person;
 
     /**
-     * 用车事由
+     * 用车类别
      */
     @TableField("REASON")
     private String reason ;
+
+    /**
+     * 用车事由
+     */
+    @TableField("USECARREASON")
+    private String usecarreason ;
 
     /**
      * 用车时间
