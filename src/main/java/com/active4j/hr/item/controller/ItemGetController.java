@@ -78,6 +78,7 @@ public class ItemGetController extends BaseController {
         SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
 //        SysDeptEntity department = sysUserService.getUserDepart(userId);
 
+
         if (StringUtils.isNotEmpty(getItemEntity.getId())) {
             getItemEntity = getItemService.getById(getItemEntity.getId());
             getItemEntity.setUserName(user.getRealName());
@@ -108,6 +109,11 @@ public class ItemGetController extends BaseController {
             if(StringUtils.isEmpty(getItemEntity.getItemName())) {
                 j.setSuccess(false);
                 j.setMsg("领用物品名称不能为空!");
+                return j;
+            }
+            if (!SystemUtils.getWeekOfDate(getItemEntity.getGetDay()).equals("星期二")){
+                j.setSuccess(false);
+                j.setMsg("领用日期只能为星期二!");
                 return j;
             }
             if(StringUtils.isEmpty(getItemEntity.getDepartmentName())) {

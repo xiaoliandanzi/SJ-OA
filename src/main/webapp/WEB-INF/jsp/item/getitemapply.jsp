@@ -56,7 +56,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label m-b">领取时间*：</label>
                             <div class="col-sm-4 m-b">
-                                <input class="laydate-icon form-control layer-date" id="getDay" name="getDay"  value='<fmt:formatDate value="${item.getDay }" type="both" pattern="yyyy-MM-dd"/>'>
+                                <input class="laydate-icon form-control layer-date" id="getDay" name="getDay" placeholder="领取日期只能为星期二" value='<fmt:formatDate value="${item.getDay }" type="both" pattern="yyyy-MM-dd"/>'>
                             </div>
                         </div>
                         <div class="form-group">
@@ -89,6 +89,7 @@
                             qhTipSuccess('保存成功');   
                             location.href='common/goSuccess';
                         } else {
+                           // $('#msg').removeAttr("hidden");
                             qhTipWarning(o.msg);
                         }
                     },
