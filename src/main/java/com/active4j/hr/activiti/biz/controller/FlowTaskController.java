@@ -79,7 +79,11 @@ public class FlowTaskController extends BaseController {
 		// 获取流程类别数据
 		List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
 		view.addObject("categoryReplace", ListUtils.listToReplaceStr(lstCatogorys, "name", "id"));
-		
+		// 获取流程名字数据
+
+		// 获取流程类别数据
+		List<WorkflowFormEntity> lstFlowName = workflowFormService.list();
+		view.addObject("flowNameReplace", ListUtils.listToReplaceStr(lstFlowName, "name", "id"));
 		return view;
 	}
 	
