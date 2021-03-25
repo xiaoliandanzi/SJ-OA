@@ -182,13 +182,6 @@
 
                         <div class="container">
                             <div class="list" id="listImg" style="left:0px;">
-                                <!--<img src="../static/image/photo1.jpg" alt="5"/>-->
-<%--                                <img src="./upload/borderImg.png" alt="1"/>--%>
-<%--                                <img src="./upload/bor1.jpg" alt="2"/>--%>
-<%--                                <img src="./upload/bor2.png" alt="3"/>--%>
-<%--                                <img src="./upload/bor3.jpg" alt="4"/>--%>
-<%--                                <img src="./upload/bor4.jpg" alt="5"/>--%>
-                                <!--<img src="../static/image/banner.jpg" alt="1"/>-->
                             </div>
                             <div class="pointer">
                                 <span index="1" class="on"></span>
@@ -236,7 +229,7 @@
                             <div>
                                 <%--                        <span class="jia">+</span>--%>
                                 <span class="jia" style="display: block;position: relative;top:25px;"><img src="./img/more.png"></span>
-                                <span class="gengduo"><a href="/oa/oa/index/viewArticleList?messageType=5"
+                                <span class="gengduo"><a href="/oa/oa/index/viewArticleList?messageType=4"
                                                          class="gengduo">更多</a></span>
                             </div>
                         </div>
@@ -604,13 +597,13 @@
         el: "#app",
         data() {
             return {
-                selectMsg: '',
-                selectHold: true,
                 oneList: [],
                 twoList: [],
                 threeList: [],
                 fourList: [],
                 fiveList: [],
+                selectMsg: '',
+                selectHold: true,
                 relName: '',
                 shijian: [],
                 count: [],
@@ -620,7 +613,7 @@
             }
         },
         mounted() {
-            this.oneMounted(),
+                this.oneMounted(),
                 this.twoMounted(),
                 this.threeMounted(),
                 this.fourMounted(),
@@ -630,20 +623,6 @@
                 this.getCounts()
         },
         methods: {
-            getCounts() {
-                axios.get('oa/index/workCount').then((msg) => {
-                    console.log(msg)
-                    console.log(msg.data.obj)
-                    this.duban = msg.data.obj[0]
-                    this.shenhe = msg.data.obj[1]
-                    this.bohui = msg.data.obj[2]
-                })
-            },
-            shijianMounted() {
-                axios.get('oa/index/msgList?rows=' + 6).then((msg) => {
-                    this.shijian = msg.data.obj.records
-                })
-            },
             oneMounted() {
                 axios.get('oa/login/messageList?messageType=' + 1 + '&rows=' + 6).then((msg) => {
                     this.oneList = msg.data.obj.records
@@ -665,8 +644,25 @@
                 })
             },
             fiveMounted() {
-                axios.get('oa/login/messageList?messageType=' + 5 + '&rows=' + 6).then((msg) => {
+                axios.get('oa/login/messageList?messageType=' + 4 + '&rows=' + 6).then((msg) => {
                     this.fiveList = msg.data.obj.records
+                })
+                // axios.get('oa/login/messageList?messageType=' + 5 + '&rows=' + 6).then((msg) => {
+                //     this.fiveList = msg.data.obj.records
+                // })
+            },
+            getCounts() {
+                axios.get('oa/index/workCount').then((msg) => {
+                    console.log(msg)
+                    console.log(msg.data.obj)
+                    this.duban = msg.data.obj[0]
+                    this.shenhe = msg.data.obj[1]
+                    this.bohui = msg.data.obj[2]
+                })
+            },
+            shijianMounted() {
+                axios.get('oa/index/msgList?rows=' + 6).then((msg) => {
+                    this.shijian = msg.data.obj.records
                 })
             },
             getSelectHold() {
