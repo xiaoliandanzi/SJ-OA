@@ -25,10 +25,10 @@
 
 
 	<!-- 脚本部分 -->
-	<t:datagrid actionUrl="flow/biz/my/datagridFinish" tableContentId="myFinishTable" searchGroupId="searchGroupId" fit="true" caption="我的申请" name="myFinishTableList" pageSize="20" sortName="applyDate" sortOrder="desc">
+	<t:datagrid actionUrl="flow/biz/my/datagridFinish" tableContentId="myFinishTable" fit="true" caption="我的申请" name="myFinishTableList" pageSize="20" sortName="applyDate" sortOrder="desc">
 		<t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-		<t:dgCol name="categoryId" label="流程类别" replace="${categoryReplace}" query="true" queryId="categoryId" width="70"></t:dgCol>
-		<t:dgCol name="workFlowName" label="流程名称" width="100"></t:dgCol>
+		<t:dgCol name="categoryId" hidden="true" label="流程类别" replace="${categoryReplace}" query="true" queryId="categoryId" width="90"></t:dgCol>
+		<t:dgCol name="workFlowName" label="流程名称" width="70" ></t:dgCol>
 		<t:dgCol name="projectNo" label="编号" width="120"></t:dgCol>
 <%--		<t:dgCol name="name" label="标题名称" width="120" query="true"></t:dgCol>--%>
 		<t:dgCol name="status" label="状态" width="70" dictionary="actstatus" classes="text-navy"></t:dgCol>

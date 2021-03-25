@@ -111,7 +111,7 @@ public class FlowAssetAddController {
         if(StringUtils.equals("0", type)) {
             view = new ModelAndView("flow/assetapproval/assetaddapply");
         }else if(StringUtils.equals("1", type)) {
-            view = new ModelAndView("flow/assetapproval/assetaddshow");
+            view = new ModelAndView("flow/assetapproval/applyaddshow");
 
             //根据businessKey查询任务list
             String currentName = ShiroUtils.getSessionUserName();
@@ -152,10 +152,10 @@ public class FlowAssetAddController {
             view.addObject("base", base);
 
             FlowAssetAddEntity biz = flowAssetAddService.getById(base.getBusinessId());
-            QueryWrapper<SysDeptEntity> wrapper = new QueryWrapper<>();
+            /*QueryWrapper<SysDeptEntity> wrapper = new QueryWrapper<>();
             wrapper.select("NAME").eq("ID",biz.getDept());
             List<SysDeptEntity> list = sysDeptService.list(wrapper);
-            biz.setDept(list.get(0).getName());
+            biz.setDept(list.get(0).getName());*/
             view.addObject("biz", biz);
             return view;
         }
