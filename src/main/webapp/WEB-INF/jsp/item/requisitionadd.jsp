@@ -58,6 +58,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-3 control-label">限额*：</label>
+                            <div class="col-sm-8">
+                                <input id="numLimit" name="numLimit" type="digits" class="form-control" required="" value="${item.numLimit }">
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-3 control-label">低量预警*：</label>
                             <div class="col-sm-8">
                                 <input id="minQuantity" name="minQuantity" type="digits" class="form-control" required="" value="${item.minQuantity }">

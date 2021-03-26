@@ -132,6 +132,12 @@ public class RequisitionedItemsManageController extends BaseController {
                 return j;
             }
 
+            if ("null".equals(requisitionedItemEntity.getNumLimit())) {
+                j.setSuccess(false);
+                j.setMsg("物品限额不能为空!");
+                return j;
+            }
+
             if (StringUtils.isEmpty(requisitionedItemEntity.getUnit())) {
                 j.setSuccess(false);
                 j.setMsg("物品单位不能为空!");

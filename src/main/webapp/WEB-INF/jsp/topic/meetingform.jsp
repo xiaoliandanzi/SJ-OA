@@ -9,7 +9,7 @@
             $("#roleid").val("${roleId}".split(",")).trigger("change");
         });
         $(function(){
-            $('#meetingId').attr('disabled', 'disabled');
+            $('#meetingId').attr('', '');
         });
         $(function () {
             $("#meetingId").val("111".split(",")).trigger("change");
@@ -55,9 +55,9 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">会议室*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2" name="meetingId" id="meetingId"    onchange="funchy()" required="" >
+                                <select class="form-control m-b select2" name="meetingId" id="meetingId" onchange="funchy()" required="" >
                                     <c:forEach items="${roomList}" var="room">
-                                        <option value="${room.name }">${room.name }</option>
+                                        <option value="${room.name}">${room.name}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -315,9 +315,9 @@
                 var meetingTime=datas;
                 var meetingendTime=$("#meetingendTime").val();
                 if (meetingTime==""||meetingTime==null||meetingendTime==""||meetingendTime==null) {
-                    $('#meetingId').attr('disabled', 'disabled');
+                    $('#meetingId').attr('', '');
                 }else{
-                    $("#meetingId").removeAttr("disabled");
+                    $("#meetingId").removeAttr("");
                 };
                 }
         });
@@ -330,9 +330,9 @@
                 var meetingTime=$("#meetingTime").val();
                 var meetingendTime=datas;
     if (meetingTime==""||meetingTime==null||meetingendTime==""||meetingendTime==null) {
-        $('#meetingId').attr('disabled', 'disabled');
+        $('#meetingId').attr('', '');
     }else{
-        $("#meetingId").removeAttr("disabled");
+        $("#meetingId").removeAttr("");
     };
             }
         });
