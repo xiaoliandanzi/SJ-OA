@@ -11,4 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @Description:
  */
 public interface GetItemService extends IService<GetItemEntity> {
+    void savegoodstaus(String id,String goodstaus);
 }

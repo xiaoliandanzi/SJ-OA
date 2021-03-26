@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.active4j.hr.item.dao.GetItemDao">
+    <update id="savegoodstaus">
+        update oa_get_item
+        set GOODSTAUS =#{goodstaus}
+        where id=#{id}
+    </update>
+
+</mapper>

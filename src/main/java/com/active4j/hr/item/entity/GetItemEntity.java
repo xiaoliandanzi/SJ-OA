@@ -67,4 +67,11 @@ public class GetItemEntity extends BaseEntity {
     @TableField("MEMO")
     private String memo;
 
+    /**
+     * 领用状态：已领取/未领取
+     * */
+    @TableField("GOODSTAUS")
+    private String goodstaus;
+
+
 }

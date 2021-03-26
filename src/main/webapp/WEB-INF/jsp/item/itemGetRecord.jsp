@@ -39,10 +39,11 @@
     <t:dgCol name="quantity" label="领用数量" width="80"></t:dgCol>
     <t:dgCol name="getDay" label="领用时间" width="80" datefmt="yyyy-MM-dd" queryModel="group" datePlugin="laydate" query="true"></t:dgCol>
     <t:dgCol name="memo" label="备注" width="80"></t:dgCol>
+    <t:dgCol name="GOODSTAUS" label="领用状态" width="80"></t:dgCol>
 <%--    <t:dgCol name="opt" label="操作" ></t:dgCol>--%>
 <%--    <t:dgDelOpt label="删除" url="item/manage/requisition/delete?id={id}"/>--%>
 <%--    <t:dgToolBar url="item/manage/requisition/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>--%>
-<%--    <t:dgToolBar url="item/manage/requisition/addorupdate" type="edit" width="40%" height="70%"></t:dgToolBar>--%>
+    <t:dgToolBar url="item/manage/requisition/addorupdatenew" type="edit" width="40%" height="70%" operationCode="IsgoodEdit" funName="isGoodAdmin"></t:dgToolBar>
 </t:datagrid>
 
 

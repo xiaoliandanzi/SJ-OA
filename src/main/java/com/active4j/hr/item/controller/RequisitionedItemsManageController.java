@@ -8,7 +8,9 @@ import com.active4j.hr.core.query.QueryUtils;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
+import com.active4j.hr.item.entity.GetItemEntity;
 import com.active4j.hr.item.entity.RequisitionedItemEntity;
+import com.active4j.hr.item.service.GetItemService;
 import com.active4j.hr.item.service.RequisitionedItemService;
 import com.active4j.hr.system.service.SysRoleService;
 import com.active4j.hr.system.service.SysUserService;
@@ -55,6 +57,9 @@ public class RequisitionedItemsManageController extends BaseController {
 
     @Autowired
     private OaEditStoreService oaEditStoreService;
+
+    @Autowired
+    private GetItemService getItemService;
 
     /**
      * @param request
@@ -235,6 +240,25 @@ public class RequisitionedItemsManageController extends BaseController {
         if (StringUtils.isNotEmpty(requisitionedItemEntity.getId())) {
             requisitionedItemEntity = requisitionedItemService.getById(requisitionedItemEntity.getId());
             view.addObject("item", requisitionedItemEntity);
+        }
+
+        return view;
+    }
+
+    /**
+     * 跳转到新增编辑页面
+     *
+     * @param requisitionedItemEntity
+     * @param request
+     * @return
+     */
+    @RequestMapping("/addorupdatenew")
+    public ModelAndView addorupdatenew(GetItemEntity getItemEntity, HttpServletRequest request) {
+        ModelAndView view = new ModelAndView("item/itemGetEdit");
+
+        if (StringUtils.isNotEmpty(getItemEntity.getId())) {
+            getItemEntity = getItemService.getById(getItemEntity.getId());
+            view.addObject("item", getItemEntity);
         }
 
         return view;

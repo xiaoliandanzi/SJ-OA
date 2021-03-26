@@ -27,6 +27,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.jexl3.parser.ASTJxltLiteral;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -55,6 +57,7 @@ public class ItemGetController extends BaseController {
 
     @Autowired
     private SysRoleService roleService;
+
 
 
 
@@ -220,5 +223,21 @@ public class ItemGetController extends BaseController {
             ResponseUtil.writeJson(response, dataGrid, lstResult);
         }
 
+    }
+
+    @RequestMapping("savegoodstaus")
+    @ResponseBody
+    public AjaxJson savegoodstaus(String id,String goodstaus,HttpServletRequest request, HttpServletResponse response){
+        AjaxJson j = new AjaxJson();
+        j.setMsg("修改成功");
+        j.setSuccess(true);
+        try{
+            this.getItemService.savegoodstaus(id,goodstaus);
+        }catch(Exception e){
+            j.setSuccess(false);
+            j.setMsg("操作失败，请联系管理员"+e);
+            e.printStackTrace();
+        }
+        return j;
     }
 }
