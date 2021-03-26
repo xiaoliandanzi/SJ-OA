@@ -19,6 +19,7 @@ import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysUserService;
+import com.baomidou.mybatisplus.extension.api.IErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -131,8 +132,22 @@ public class FlowCarApprovalController extends BaseController {
             view.addObject("lstTasks", lstTasks);
 
             //查看历史审批意见
+            //String realName=ShiroUtils.getSessionUserRealName();
             List<Comment> lstComments =  workflowService.findCommentsListByBusinessKey(id);
-            view.addObject("lstComments", lstComments);
+            List<Map> comments = new ArrayList<>();
+            //Map map = new HashMap<>();
+            for (Comment lstComment : lstComments) {
+                Map map = new HashMap<>();
+                map.put("id",lstComment.getId());
+                map.put("userId",sysUserService.getUserByUseName(lstComment.getUserId()).getRealName());
+                map.put("time",lstComment.getTime());
+                map.put("taskId",lstComment.getTaskId());
+                map.put("processInstanceId",lstComment.getProcessInstanceId());
+                map.put("type",lstComment.getType());
+                map.put("fullMessage",lstComment.getFullMessage());
+                comments.add(map);
+            }
+            view.addObject("lstComments", comments);
             view.addObject("currentName", currentName);
             view.addObject("show", "1");
             view.addObject("action", "flow/biz/carapproval/doApprove");
