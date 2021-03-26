@@ -131,6 +131,15 @@ public class ShiroUtils {
     	ActiveUser user = getSessionUser();
     	return user.getUserName();
     }
+
+    /**
+     	* 取得当前登录用户真实名字
+     * @return
+     */
+    public static String getSessionUserRealName() {
+    	ActiveUser user = getSessionUser();
+    	return user.getRealName();
+    }
     
     public static boolean isAdmin() {
     	ActiveUser user = getSessionUser();

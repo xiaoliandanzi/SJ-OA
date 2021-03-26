@@ -130,17 +130,17 @@
 		
 	});
 
-	$(document).on("click",".check_box",function(event){
+	$(document).on("change",".check_box",function(event){
 		event.stopPropagation();//阻止事件冒泡，防止触发li的点击事件
 		//勾选的项
 		var $selectTextDom=$(this).parent().parent("ul").siblings("button").children(".select_text");
 		//勾选项的值
-		var $selectValDom=$(this).parent().parent("ul").siblings(".select_val");
+		//var $selectValDom=$(this).parent().parent("ul").siblings(".select_val");
 		//是否有选择项了
 		var isSelected=$selectTextDom[0].getAttribute("data-is-select");
 		var selectText="";//文本值，用于显示
 
-		var selectVal=$selectValDom.val();//实际值，会提交到后台的
+		//var selectVal=$selectValDom.val();//实际值，会提交到后台的
 		var selected_text=$(this).siblings("span").text();//当次勾选的文本值
 		var selected_val=$(this).val();//当次勾选的实际值
 		//判断是否选择过
@@ -150,24 +150,23 @@
 		if(selectText!=""){
 			if(selectText.indexOf(selected_text)>=0){//判断是否已经勾选过
 				selectText=selectText.replace(selected_text,"").replace(",,",",");//替换掉
-				selectVal=selectVal.replace(selected_val,"").replace(",,",",");//替换掉
+				//selectVal=selectVal.replace(selected_val,"").replace(",,",",");//替换掉
 				//判断最后一个字符是否是逗号
 				if(selectText.charAt(selectText.length - 1)==","){
 					//去除末尾逗号
 					selectText=selectText.substring(0,selectText.length - 1);
-					selectVal=selectVal.substring(0,selectVal.length - 1);
+					//selectVal=selectVal.substring(0,selectVal.length - 1);
 				}
 			}else{
 				selectText+=","+selected_text;
-				selectVal+=","+selected_val;
+				//selectVal+=","+selected_val;
 			}
 		}else{
 			selectText=selected_text;
-			selectVal=selected_val;
+			//selectVal=selected_val;
 		}
 		$selectTextDom.text(selectText);
-		$selectValDom.val(selectVal);
-		debugger
+		//$selectValDom.val(selectVal);
 		if(selectText==""){
 			$selectTextDom.text("请选择");
 			$selectTextDom[0].setAttribute("data-is-select","false");
