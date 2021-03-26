@@ -370,26 +370,27 @@
                 input2: '',
                 isActive: 1,
                 loginName: '',
-                tabs: [{
-                    name: "公式文件",
-                    messageType: 1,
-                },
+                tabs: [
+                    // {
+                    // name: "公式文件",
+                    // messageType: 1,
+                    // },
                     {
                         name: "通知公告",
                         messageType: 2,
                     },
-                    {
-                        name: "媒体聚焦",
-                        messageType: 3,
-                    },
+                    // {
+                    //     name: "媒体聚焦",
+                    //     messageType: 3,
+                    // },
                     {
                         name: "工作信息",
                         messageType: 4,
-                    },
-                    {
-                        name: "制度范围",
-                        messageType: 5,
                     }
+                    // {
+                    //     name: "制度范围",
+                    //     messageType: 5,
+                    // }
                 ],
                 currentPage4: 1,
                 pageSize: 20,

@@ -42,6 +42,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -376,6 +377,35 @@ public class IndexPostController extends BaseController {
             }
         }
         return pics;
+    }
+
+    @RequestMapping("index/returnAllImgPath")
+    @ResponseBody
+    public ModelAndView getAllImgPath(){
+        ModelAndView mv = new ModelAndView("main/imgview");
+        return mv;
+
+    }
+    @RequestMapping("index/getAllImgPath")
+    public List get(){
+        String s = "src/main/webapp/upload";
+        File file = new File(s);
+        List list = new ArrayList();
+        try{
+            File[] f = file.listFiles();
+            for (File i : f) {
+                boolean matches = i.getName().toLowerCase().matches(".+\\.(jpg|png|gif|jpeg)");
+                if(matches == true) {
+                    StringBuilder name = new StringBuilder();
+                    name.append("/oa/upload/"+i.getName());
+                    list.add(name);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return list;
     }
 
 }

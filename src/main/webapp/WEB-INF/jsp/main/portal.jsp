@@ -170,7 +170,7 @@
                             <div>
                                 <span class="jia" style="display: block;position: relative;top:24px;"><img
                                         src="./img/more.png"></span>
-                                <span class="gengduo">更多</span>
+                                <span class="gengduo"><a href="/oa/oa/index/returnAllImgPath">更多</a></span>
                             </div>
                         </div>
                     </div>
