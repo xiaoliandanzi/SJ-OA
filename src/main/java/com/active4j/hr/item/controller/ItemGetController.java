@@ -134,6 +134,14 @@ public class ItemGetController extends BaseController {
                 j.setMsg("领用数量不能为空");
                 return j;
             }
+            QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.select("NUMLIMIT").eq("TYPE",0).eq("NAME",getItemEntity.getItemName());
+            List<RequisitionedItemEntity> list = requisitionedItemService.list(queryWrapper);
+            if(getItemEntity.getQuantity()>list.get(0).getNumLimit()) {
+                j.setSuccess(false);
+                j.setMsg("领用数量不能大于限额："+ list.get(0).getNumLimit());
+                return j;
+            }
 
             int quantity = getItemEntity.getQuantity();
             List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(getItemEntity.getItemName());

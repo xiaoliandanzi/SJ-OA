@@ -24,6 +24,7 @@ import com.active4j.hr.system.util.MessageUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -384,7 +385,14 @@ public class FlowItemBorrowApprovalController extends BaseController {
 //                j.setMsg("借用数量不能为空");
 //                return j;
 //            }
-
+            QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.select("NUMLIMIT").eq("TYPE",1).eq("NAME",flowItemBorrowApprovalEntity.getItemName());
+            List<RequisitionedItemEntity> list = requisitionedItemService.list(queryWrapper);
+            if(flowItemBorrowApprovalEntity.getQuantity()>list.get(0).getNumLimit()) {
+                j.setSuccess(false);
+                j.setMsg("领用数量不能大于限额："+ list.get(0).getNumLimit());
+                return j;
+            }
 
 
 
@@ -611,6 +619,15 @@ public class FlowItemBorrowApprovalController extends BaseController {
             if(null == flowItemBorrowApprovalEntity.getReturnDay()) {
                 j.setSuccess(false);
                 j.setMsg("归还日期不能为空");
+                return j;
+            }
+
+            QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.select("NUMLIMIT").eq("TYPE",1).eq("NAME",flowItemBorrowApprovalEntity.getItemName());
+            List<RequisitionedItemEntity> list = requisitionedItemService.list(queryWrapper);
+            if(flowItemBorrowApprovalEntity.getQuantity()>list.get(0).getNumLimit()) {
+                j.setSuccess(false);
+                j.setMsg("领用数量不能大于限额："+ list.get(0).getNumLimit());
                 return j;
             }
 

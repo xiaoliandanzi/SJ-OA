@@ -48,7 +48,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">借用数量*：</label>
+                            <label class="col-sm-3 control-label">领取数量*：</label>
                             <div class="col-sm-5">
                                 <input id="quantity" name="quantity" type="number" class="form-control" required="" value="${item.quantity }">
                             </div>

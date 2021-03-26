@@ -45,6 +45,7 @@
     <t:dgCol name="name" label="物品名称" width="80"></t:dgCol>
     <t:dgCol name="model" label="规格/类型" width="80"></t:dgCol>
     <t:dgCol name="quantity" label="数量" width="80"></t:dgCol>
+    <t:dgCol name="numLimit" label="一次领取/借用限额" width="80"></t:dgCol>
     <t:dgCol name="unit" label="数量单位" width="80"></t:dgCol>
     <t:dgCol name="location" label="存放地点" width="80"></t:dgCol>
     <t:dgCol name="keeper" label="保管人" width="80"></t:dgCol>

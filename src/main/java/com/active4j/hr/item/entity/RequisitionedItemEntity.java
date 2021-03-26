@@ -39,6 +39,9 @@ public class RequisitionedItemEntity extends BaseEntity {
     @TableField("QUANTITY")
     private int quantity;
 
+    @TableField("NUMLIMIT")
+    private int numLimit;
+
     @TableField("UNIT")
     private String unit;
 
