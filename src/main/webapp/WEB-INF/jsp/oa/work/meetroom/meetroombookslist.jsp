@@ -28,7 +28,7 @@
 		<t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
 		<t:dgCol name="meetRoomId" label="会议室名称" width="100" query="true" queryId="meetRoomId" replace="${lstRooms }"></t:dgCol>
 		<t:dgCol name="userName" label="预定人" width="80"></t:dgCol>
-		<t:dgCol name="bookDate" label="预定日期" width="100" datefmt="yyyy-MM-dd" query="true" datePlugin="laydate"></t:dgCol>
+		<t:dgCol name="strBookDate" label="预定日期" width="100" datefmt="yyyy-MM-dd" query="true" datePlugin="laydate"></t:dgCol>
 		<t:dgCol name="startDate" label="开始时间" width="80" datefmt="HH:mm"></t:dgCol>
 		<t:dgCol name="endDate" label="结束时间" width="80" datefmt="HH:mm"></t:dgCol>
 		<t:dgCol name="opt" label="操作" ></t:dgCol>
@@ -42,7 +42,7 @@
 <script type="text/javascript">
 	$(function() {
 		laydate({
-			elem : "#bookDate",
+			elem : "#strBookDate",
 			event : "focus",
 			istime : false,
 			format : 'YYYY-MM-DD'

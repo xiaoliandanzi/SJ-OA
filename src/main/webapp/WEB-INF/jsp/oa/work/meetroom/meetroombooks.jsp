@@ -33,17 +33,17 @@
 									<input id="userName" name="userName"  type="text" class="form-control" required="" readonly value="${userName }">
 								</div>
 							</div>
-                            <div class="form-group">
+                            <%--<div class="form-group">
 								<label class="col-sm-2 control-label m-b">会议日期：</label>
 								<div class="col-sm-4 m-b">
 									<input class="laydate-icon form-control layer-date" id="bookDate" name="bookDate" required="" value='<fmt:formatDate value="${meet.bookDate }" type="date" pattern="yyyy-MM-dd"/>'>
 								</div>
-							</div>
+							</div>--%>
                             <div class="form-group">
 								<label class="col-sm-2 control-label m-b">开始时间：</label>
 								<div class="col-sm-4 m-b">
 									<%--<div class="col-sm-4 m-b">--%>
-			                            <input class="laydate-icon form-control layer-date" id="startDate" name="startDate" required="" value='<fmt:formatDate value="${meet.startDate }" type="time" pattern="yyyy-MM-dd HH:mm"/>'>
+			                            <input class="laydate-icon form-control layer-date" id="startDate" name="startDate" required="" value='<fmt:formatDate value="${meet.startDate }" type="date" pattern="yyyy-MM-dd HH:mm"/>'>
 			                            <%--<span class="input-group-addon">
 			                                   <span class="fa fa-clock-o"></span>
 			                            </span>--%>
@@ -52,7 +52,7 @@
 								<label class="col-sm-2 control-label m-b">结束时间：</label>
 								<div class="col-sm-4 m-b">
 									<%--<div class="input-group clockpicker" data-autoclose="true">--%>
-										<input class="laydate-icon form-control layer-date" id="endDate" name="endDate" required="" value='<fmt:formatDate value="${meet.endDate }" type="time" pattern="yyyy-MM-dd HH:mm"/>'>
+										<input class="laydate-icon form-control layer-date" id="endDate" name="endDate" required="" value='<fmt:formatDate value="${meet.endDate }" type="date" pattern="yyyy-MM-dd HH:mm"/>'>
 										<%--<span class="input-group-addon">
 			                                   <span class="fa fa-clock-o"></span>
 			                            </span>--%>
@@ -106,12 +106,12 @@
 <script type="text/javascript">
 
 	$(function() {
-		laydate({
+		/*laydate({
 			elem : "#bookDate",
 			event : "focus",
 			istime : false,
 			format : 'YYYY-MM-DD'
-		});
+		});*/
 		laydate({
 			elem : "#startDate",
 			event : "focus",

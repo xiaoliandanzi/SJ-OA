@@ -33,12 +33,12 @@
                                 <input id="userName" name="userName"  type="text" class="form-control" required="" readonly value="${userName }">
                             </div>
                         </div>
-                        <div class="form-group">
+                        <%--<div class="form-group">
                             <label class="col-sm-2 control-label m-b">会议日期：</label>
                             <div class="col-sm-4 m-b">
                                 <input class="laydate-icon form-control layer-date" id="bookDate" name="bookDate" required="" value='<fmt:formatDate value="${meet.bookDate }" type="date" pattern="yyyy-MM-dd"/>'>
                             </div>
-                        </div>
+                        </div>--%>
                         <div class="form-group">
                             <label class="col-sm-2 control-label m-b">开始时间：</label>
                             <div class="col-sm-4 m-b">
@@ -99,12 +99,12 @@
 <script type="text/javascript">
 
     $(function() {
-        laydate({
+        /*laydate({
             elem : "#bookDate",
             event : "focus",
             istime : false,
             format : 'YYYY-MM-DD'
-        });
+        });*/
         laydate({
             elem : "#startDate",
             event : "focus",

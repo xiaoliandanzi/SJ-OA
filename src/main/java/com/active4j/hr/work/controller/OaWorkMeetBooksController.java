@@ -163,21 +163,25 @@ public class OaWorkMeetBooksController extends BaseController {
 			oaWorkMeetRoomBooksEntity.setUserName(ShiroUtils.getSessionUser().getRealName());
 			oaWorkMeetRoomBooksEntity.setUserId(userId);
 			oaWorkMeetRoomBooksEntity.setDept(sysUserService.getInfoByUserId(userId).get(0).getDeptName());
-			
-			if(null == oaWorkMeetRoomBooksEntity.getBookDate()) {
+
+			SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			String currentDate = df.format(new Date());
+			Date now = df.parse(currentDate);
+			if(oaWorkMeetRoomBooksEntity.getStartDate().compareTo(now) == -1){
 				j.setSuccess(false);
-				j.setMsg("预定日期不能为空");
+				j.setMsg("预定日期和时间不能在当前时间之前");
 				return j;
 			}
 
-			SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-			String currentDate = df.format(new Date());
-			Date now = df.parse(currentDate);
-			if(oaWorkMeetRoomBooksEntity.getBookDate().compareTo(now) == -1){
+			//判断会议室是否跨天使用
+			String startDate = df.format(oaWorkMeetRoomBooksEntity.getStartDate()).substring(0,10);
+			String endDate = df.format(oaWorkMeetRoomBooksEntity.getEndDate()).substring(0,10);
+			if (!startDate.equals(endDate)){
 				j.setSuccess(false);
-				j.setMsg("预定日期日期不能在当前日期之前");
+				j.setMsg("会议室必须当日使用结束！");
 				return j;
 			}
+
 
 			if(null == oaWorkMeetRoomBooksEntity.getStartDate() || null == oaWorkMeetRoomBooksEntity.getEndDate()) {
 				j.setSuccess(false);
@@ -186,11 +190,11 @@ public class OaWorkMeetBooksController extends BaseController {
 			}
 			if (!oaWorkMeetRoomBooksEntity.getEndDate().after(oaWorkMeetRoomBooksEntity.getStartDate())){
 				j.setSuccess(false);
-				j.setMsg("请填写正确的预定时间");
+				j.setMsg("请按顺序填写会议时间");
 				return j;
 			}
 			//日期赋值
-			oaWorkMeetRoomBooksEntity.setStrBookDate(DateUtils.date2Str(oaWorkMeetRoomBooksEntity.getBookDate(), DateUtils.SDF_YYYY_MM_DD));
+			oaWorkMeetRoomBooksEntity.setStrBookDate(DateUtils.date2Str(oaWorkMeetRoomBooksEntity.getStartDate(), DateUtils.SDF_YYYY_MM_DD));
 			
 			//时间的校验，预定的会议室，时间不能重合
 			List<OaWorkMeetRoomBooksEntity> lstRooms = oaWorkMeetRoomBooksService.findMeetBooks(meetRoomId, oaWorkMeetRoomBooksEntity.getStrBookDate());
@@ -233,6 +237,8 @@ public class OaWorkMeetBooksController extends BaseController {
 				}
 				
 				//新增方法
+				SimpleDateFormat bdate=new SimpleDateFormat("yyyy-MM-dd");
+				oaWorkMeetRoomBooksEntity.setBookDate(bdate.parse(oaWorkMeetRoomBooksEntity.getStrBookDate()));
 				oaWorkMeetRoomBooksService.save(oaWorkMeetRoomBooksEntity);
 				
 				
