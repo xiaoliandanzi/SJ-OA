@@ -157,7 +157,8 @@
         </div>--%>
         <div class="userBox" id="user-box" style="margin-right: 136px !important;">
             <img src="./img/user.png" class="navIcon" style="margin-top: 0px;">&nbsp
-            <span class="navItemName nava" style="font-size: 30px;color: white;">{{relName}}</span>
+                    <span class="navItemName nava" style="font-size: 30px;color: white;">{{relName}}</span>
+                    <span  class="navItemName nava" style="font-size: 28px;color: white;" href="javascript:;" onclick="exit();">退出</span>
         </div>
     </div>
     <div class="listBox">

@@ -90,26 +90,32 @@
                                 <div id="topictable" class="topictable"></div>
                             </div>
                         </div>
+<%--                        <div class="form-group">--%>
+<%--                            <label class="col-sm-2 control-label">参会人员*：</label>--%>
+<%--                            <div class="col-sm-8">--%>
+<%--                        <select   class="col-sm-8"  name="canhuipeo" id="canhuipeo"  onchange="funcchui()"  style=" width:663px;height: 32px" >--%>
+<%--                            <option class="col-sm-8"  id="1">主要领导</option>--%>
+<%--                            <option  class="col-sm-8" id="2">主管领导</option>--%>
+<%--                            <option  class="col-sm-8"  id="3" >科室负责人</option>--%>
+<%--                            <option  class="col-sm-8"  id="4" >科员</option>--%>
+<%--                        </select>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">参会人员*：</label>
-                            <div class="col-sm-8">
-                        <select   class="col-sm-8"  name="canhuipeo" id="canhuipeo"  onchange="funcchui()"  style=" width:663px;height: 32px" >
-                            <option class="col-sm-8"  id="1">主要领导</option>
-                            <option  class="col-sm-8" id="2">主管领导</option>
-                            <option  class="col-sm-8"  id="3" >科室负责人</option>
-                            <option  class="col-sm-8"  id="4" >科员</option>
-                        </select>
+                            <label class="col-sm-2 control-label">人员：</label>
+                            <div class="col-sm-4">
+                                <div class="input-group" style="width: 220%">
+                                    <t:choose url="common/selectUsers" hiddenName="attendeeId" hiddenValue="${attendeeId}" textValue="${meet.attendee}" textName="conferee" hiddenId="attendeeId" textId="conferee"></t:choose>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">人员*：</label>
-                            <div class="col-sm-8" >
-                                <select class="form-control m-b select2" name="conferee"  style=" width:663px; height: 80px" id="conferee" multiple="multiple"  style="  height: 100px"  required="">
-                                    <c:forEach items="${dataList}" var="peo">
-                                        <option value="${peo.realName }">${peo.realName}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
+<%--                            <label class="col-sm-2 control-label">人员*：</label>--%>
+<%--                            <div class="col-sm-8" >--%>
+<%--                                <select class="form-control m-b select2" name="conferee"  style=" width:663px; height: 80px" id="conferee" multiple="multiple"  style="  height: 100px"  required="">--%>
+<%--                                    <c:forEach items="${dataList}" var="peo">--%>
+<%--                                        <option value="${peo.realName }">${peo.realName}</option>--%>
+<%--                                    </c:forEach>--%>
+<%--                                </select>--%>
+<%--                            </div>--%>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label m-b">备注：</label>

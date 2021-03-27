@@ -44,10 +44,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -134,7 +131,20 @@ public class FlowTmpCardApprovalController extends BaseController{
 
             //查看历史审批意见
             List<Comment> lstComments =  workflowService.findCommentsListByBusinessKey(id);
-            view.addObject("lstComments", lstComments);
+            List<Map> comments = new ArrayList<>();
+            //Map map = new HashMap<>();
+            for (Comment lstComment : lstComments) {
+                Map map = new HashMap<>();
+                map.put("id",lstComment.getId());
+                map.put("userId",sysUserService.getUserByUseName(lstComment.getUserId()).getRealName());
+                map.put("time",lstComment.getTime());
+                map.put("taskId",lstComment.getTaskId());
+                map.put("processInstanceId",lstComment.getProcessInstanceId());
+                map.put("type",lstComment.getType());
+                map.put("fullMessage",lstComment.getFullMessage());
+                comments.add(map);
+            }
+            view.addObject("lstComments", comments);
             view.addObject("currentName", currentName);
             view.addObject("show", "0");
 
@@ -156,7 +166,20 @@ public class FlowTmpCardApprovalController extends BaseController{
 
             //查看历史审批意见
             List<Comment> lstComments =  workflowService.findCommentsListByBusinessKey(id);
-            view.addObject("lstComments", lstComments);
+            List<Map> comments = new ArrayList<>();
+            //Map map = new HashMap<>();
+            for (Comment lstComment : lstComments) {
+                Map map = new HashMap<>();
+                map.put("id",lstComment.getId());
+                map.put("userId",sysUserService.getUserByUseName(lstComment.getUserId()).getRealName());
+                map.put("time",lstComment.getTime());
+                map.put("taskId",lstComment.getTaskId());
+                map.put("processInstanceId",lstComment.getProcessInstanceId());
+                map.put("type",lstComment.getType());
+                map.put("fullMessage",lstComment.getFullMessage());
+                comments.add(map);
+            }
+            view.addObject("lstComments", comments);
             view.addObject("currentName", currentName);
             view.addObject("show", "1");
             view.addObject("action", "flow/biz/tmpcard/doApprove");

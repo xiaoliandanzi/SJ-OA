@@ -1,11 +1,13 @@
 package com.active4j.hr.activiti.biz.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.active4j.hr.system.service.SysUserService;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
@@ -56,6 +58,9 @@ public class FlowCostApprovalController extends BaseController {
 	
 	@Autowired
 	private WorkflowService workflowService;
+
+	@Autowired
+	private SysUserService sysUserService;
 	
 	
 	/**
@@ -92,7 +97,20 @@ public class FlowCostApprovalController extends BaseController {
 			
 			//查看历史审批意见
 			List<Comment> lstComments =  workflowService.findCommentsListByBusinessKey(id);
-			view.addObject("lstComments", lstComments);
+			List<Map> comments = new ArrayList<>();
+			//Map map = new HashMap<>();
+			for (Comment lstComment : lstComments) {
+				Map map = new HashMap<>();
+				map.put("id",lstComment.getId());
+				map.put("userId",sysUserService.getUserByUseName(lstComment.getUserId()).getRealName());
+				map.put("time",lstComment.getTime());
+				map.put("taskId",lstComment.getTaskId());
+				map.put("processInstanceId",lstComment.getProcessInstanceId());
+				map.put("type",lstComment.getType());
+				map.put("fullMessage",lstComment.getFullMessage());
+				comments.add(map);
+			}
+			view.addObject("lstComments", comments);
 			view.addObject("currentName", currentName);
 			view.addObject("show", "0");
 			
@@ -114,7 +132,20 @@ public class FlowCostApprovalController extends BaseController {
 			
 			//查看历史审批意见
 			List<Comment> lstComments =  workflowService.findCommentsListByBusinessKey(id);
-			view.addObject("lstComments", lstComments);
+			List<Map> comments = new ArrayList<>();
+			//Map map = new HashMap<>();
+			for (Comment lstComment : lstComments) {
+				Map map = new HashMap<>();
+				map.put("id",lstComment.getId());
+				map.put("userId",sysUserService.getUserByUseName(lstComment.getUserId()).getRealName());
+				map.put("time",lstComment.getTime());
+				map.put("taskId",lstComment.getTaskId());
+				map.put("processInstanceId",lstComment.getProcessInstanceId());
+				map.put("type",lstComment.getType());
+				map.put("fullMessage",lstComment.getFullMessage());
+				comments.add(map);
+			}
+			view.addObject("lstComments", comments);
 			view.addObject("currentName", currentName);
 			view.addObject("show", "1");
 			view.addObject("action", "flow/biz/costapproval/doApprove");

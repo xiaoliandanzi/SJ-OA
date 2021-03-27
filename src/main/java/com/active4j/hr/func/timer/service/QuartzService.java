@@ -46,6 +46,7 @@ public class QuartzService {
     public void startScheduler() {
         try {
             scheduler.start();
+            //scheduler.shutdown();
         } catch (SchedulerException e) {
         	log.error("scheduler 启动报错，错误信息：{}", e.getMessage());
             e.printStackTrace();
