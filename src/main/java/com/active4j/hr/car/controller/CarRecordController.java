@@ -31,10 +31,17 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -338,6 +345,27 @@ public class CarRecordController extends BaseController {
             Workbook workbook = new XSSFWorkbook(is);
             Sheet sheet = workbook.getSheetAt(0);
 
+            XSSFFont contFont = (XSSFFont) workbook.createFont();
+            // 加粗
+            contFont.setBold(false);
+            // 字体名称
+            contFont.setFontName("楷体");
+            // 字体大小
+            contFont.setFontHeight(14);
+            // 内容样式
+            XSSFCellStyle contentStyle = (XSSFCellStyle) workbook.createCellStyle();
+            // 设置字体css
+            contentStyle.setFont(contFont);
+            // 竖向居中
+            contentStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
+            // 边框
+            contentStyle.setBorderBottom(BorderStyle.THIN);
+            contentStyle.setBorderLeft(BorderStyle.THIN);
+            contentStyle.setBorderRight(BorderStyle.THIN);
+            contentStyle.setBorderTop(BorderStyle.THIN);
+
+
+
             Set userrole = ShiroUtils.getSessionUserRole();
             String carrole = this.flowGetSpeRoleService.getCarAdminrole();
             Boolean sign = false;
@@ -371,6 +399,7 @@ public class CarRecordController extends BaseController {
                     cell1 = row.createCell(0);
                 }
                 cell1.setCellValue((i+1) + "");
+                cell1.setCellStyle(contentStyle);
 //                //创建日期
 //                Cell cell2 = row.getCell(1);
 //                cell2.setCellValue(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(item.getCreateDate()));
@@ -380,6 +409,7 @@ public class CarRecordController extends BaseController {
                     cell2 = row.createCell(1);
                 }
                 cell2.setCellValue(item.getUseDepatment());
+                cell2.setCellStyle(contentStyle);
 
                 //乘车人
                 Cell cell3 = row.getCell(2);
@@ -387,30 +417,35 @@ public class CarRecordController extends BaseController {
                     cell3 = row.createCell(2);
                 }
                 cell3.setCellValue(item.getUserName());
+                cell3.setCellStyle(contentStyle);
                 //乘车人数
                 Cell cell4 = row.getCell(3);
                 if (cell4 == null){
                     cell4 = row.createCell(3);
                 }
                 cell4.setCellValue(item.getPerson());
+                cell4.setCellStyle(contentStyle);
                 //用车类别
                 Cell cell6 = row.getCell(4);
                 if (cell6 == null){
                     cell6 = row.createCell(4);
                 }
                 cell6.setCellValue(item.getReason());
+                cell6.setCellStyle(contentStyle);
                 //用车事由
                 Cell cell7 = row.getCell(5);
                 if (cell7 == null){
                     cell7 = row.createCell(5);
                 }
                 cell7.setCellValue(item.getUsecarreason());
+                cell7.setCellStyle(contentStyle);
                 //目的地
                 Cell cell8 = row.getCell(6);
                 if (cell8 == null){
                     cell8 = row.createCell(6);
                 }
                 cell8.setCellValue(item.getDestination());
+                cell8.setCellStyle(contentStyle);
 
                 //用车时间
                 Cell cell9 = row.getCell(7);
@@ -418,6 +453,7 @@ public class CarRecordController extends BaseController {
                     cell9 = row.createCell(7);
                 }
                 cell9.setCellValue(new SimpleDateFormat("yyyy-MM-dd").format(item.getUseTime()));
+                cell9.setCellStyle(contentStyle);
 
                 //用车时间段
                 Cell cell10 = row.getCell(8);
@@ -425,6 +461,7 @@ public class CarRecordController extends BaseController {
                     cell10 = row.createCell(8);
                 }
                 cell10.setCellValue(item.getMorningOrAfternoon()==0?"上午":"下午");
+                cell10.setCellStyle(contentStyle);
 
                 //车牌
                 Cell cell11 = row.getCell(9);
@@ -432,6 +469,7 @@ public class CarRecordController extends BaseController {
                     cell11 = row.createCell(9);
                 }
                 cell11.setCellValue(item.getPlatenum());
+                cell11.setCellStyle(contentStyle);
 
                 //司机
                 Cell cell12 = row.getCell(10);
@@ -439,6 +477,7 @@ public class CarRecordController extends BaseController {
                     cell12 = row.createCell(10);
                 }
                 cell12.setCellValue(item.getPlateuser());
+                cell12.setCellStyle(contentStyle);
 
                 //etc使用情况
                 Cell cell13 = row.getCell(11);
@@ -446,6 +485,7 @@ public class CarRecordController extends BaseController {
                     cell13 = row.createCell(11);
                 }
                 cell13.setCellValue(item.getEtcmessage());
+                cell13.setCellStyle(contentStyle);
 
                 //备注
                 Cell cell14 = row.getCell(12);
@@ -453,6 +493,7 @@ public class CarRecordController extends BaseController {
                     cell14 = row.createCell(12);
                 }
                 cell14.setCellValue(item.getCommit());
+                cell14.setCellStyle(contentStyle);
                 i++;
             }
             Row row1 = sheet.getRow(i + 4);
