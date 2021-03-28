@@ -44,7 +44,7 @@
     <%--    <t:dgCol name="opt" label="操作" ></t:dgCol>--%>
     <%--    <t:dgDelOpt label="删除" url="officalSeal/audit/delete?id={id}"/>--%>
     <t:dgCol name="applyDate" label="申请时间" width="120" query="true" datefmt="yyyy-MM-dd HH:mm:ss" queryModel="group" datePlugin="laydate"></t:dgCol>
-    <%--    <t:dgCol name="useDepartment" label="用车单位"  width="70"></t:dgCol>--%>
+    <t:dgCol name="useDepatment"  label="用车单位" query="true" width="70" hidden="true" queryId="useDepatment" valueId="useDepatment"></t:dgCol>
 <%--    <t:dgCol name="userName" label="乘车人" width="120"></t:dgCol>--%>
 <%--    <t:dgCol name="person" label="乘车人数" width="120" ></t:dgCol>--%>
 <%--    <t:dgCol name="reason" label="申请事由" width="120" ></t:dgCol>--%>
@@ -68,7 +68,10 @@
     });
 
     function doAttachment() {
-        window.open("/oa/car/record/excelExport");
+        var useDepatment = document.getElementById("useDepatment").value;
+        var applyDate_begin = document.getElementById("applyDate_begin").value;
+        var applyDate_end = document.getElementById("applyDate_end").value;
+        window.open("/oa/car/record/excelExport?useDepatment="+useDepatment+"&applyDate_begin="+applyDate_begin+"&applyDate_end="+applyDate_end);
     }
 </script>
 </body>

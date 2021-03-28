@@ -322,8 +322,16 @@ public class CarRecordController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/excelExport")
-    public ResponseEntity<Resource> excel2007Export(FlowCarApprovalEntity flowCarApprovalEntity , HttpServletResponse response, HttpServletRequest request, DataGrid dataGrid) {
+    public ResponseEntity<Resource> excel2007Export(String useDepatment , HttpServletResponse response, HttpServletRequest request, String applyDate_begin,String applyDate_end) {
         try {
+
+            if (applyDate_begin == null || applyDate_begin=="") {
+                applyDate_begin = "2000-01-01";
+            }
+
+            if (applyDate_end == null || applyDate_end == "") {
+                applyDate_end = "2099-12-31";
+            }
             ClassPathResource cpr = new ClassPathResource("/static/car_record.xlsx");
 
             InputStream is = cpr.getInputStream();
@@ -339,10 +347,10 @@ public class CarRecordController extends BaseController {
             }
             List<FlowCarApprovalEntity> list = new ArrayList();
             if (sign){//车辆管理员查询全部已完成数据
-                list = this.carRecordService.getAllCarMessage();
+                list = this.carRecordService.getAllCarMessage(useDepatment,applyDate_begin,applyDate_end);
             }else {//其他成员查询对应科室的数据
                 String userdept = ShiroUtils.getSessionUserDept();
-                list = this.carRecordService.getCarMessageByDept(userdept);
+                list = this.carRecordService.getAllCarMessage(userdept,applyDate_begin,applyDate_end);
             }
 //            QueryWrapper<FlowCarApprovalEntity> queryWrapper = QueryUtils.installQueryWrapper(flowCarApprovalEntity, request.getParameterMap(), dataGrid);
 //
@@ -352,66 +360,117 @@ public class CarRecordController extends BaseController {
 //            List<FlowCarApprovalEntity> list = lstResult.getRecords();
 
             int i = 0;
+            int k = 0;
             for (FlowCarApprovalEntity item : list) {
                 Row row = sheet.getRow(i + 3);
+                if (row == null) {
+                    row = sheet.createRow(i+3);
+                }
                 Cell cell1 = row.getCell(0);
+                if (cell1 == null){
+                    cell1 = row.createCell(0);
+                }
                 cell1.setCellValue((i+1) + "");
-                //创建日期
-                Cell cell2 = row.getCell(1);
-                cell2.setCellValue(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(item.getCreateDate()));
+//                //创建日期
+//                Cell cell2 = row.getCell(1);
+//                cell2.setCellValue(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(item.getCreateDate()));
                 //用车单位
-                Cell cell3 = row.getCell(2);
-                cell3.setCellValue(item.getUseDepatment());
+                Cell cell2 = row.getCell(1);
+                if (cell2 == null){
+                    cell2 = row.createCell(1);
+                }
+                cell2.setCellValue(item.getUseDepatment());
+
                 //乘车人
-                Cell cell4 = row.getCell(3);
-                cell4.setCellValue(item.getUserName());
+                Cell cell3 = row.getCell(2);
+                if (cell3 == null){
+                    cell3 = row.createCell(2);
+                }
+                cell3.setCellValue(item.getUserName());
                 //乘车人数
-                Cell cell5 = row.getCell(4);
-                cell5.setCellValue(item.getPerson());
+                Cell cell4 = row.getCell(3);
+                if (cell4 == null){
+                    cell4 = row.createCell(3);
+                }
+                cell4.setCellValue(item.getPerson());
                 //用车类别
-                Cell cell6 = row.getCell(5);
+                Cell cell6 = row.getCell(4);
+                if (cell6 == null){
+                    cell6 = row.createCell(4);
+                }
                 cell6.setCellValue(item.getReason());
                 //用车事由
-                Cell cell7 = row.getCell(6);
+                Cell cell7 = row.getCell(5);
+                if (cell7 == null){
+                    cell7 = row.createCell(5);
+                }
                 cell7.setCellValue(item.getUsecarreason());
                 //目的地
-                Cell cell8 = row.getCell(7);
+                Cell cell8 = row.getCell(6);
+                if (cell8 == null){
+                    cell8 = row.createCell(6);
+                }
                 cell8.setCellValue(item.getDestination());
+
                 //用车时间
-                Cell cell9 = row.getCell(8);
-                cell9.setCellValue(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(item.getUseTime()));
+                Cell cell9 = row.getCell(7);
+                if (cell9 == null){
+                    cell9 = row.createCell(7);
+                }
+                cell9.setCellValue(new SimpleDateFormat("yyyy-MM-dd").format(item.getUseTime()));
+
                 //用车时间段
-                Cell cell10 = row.getCell(9);
-                cell10.setCellValue(item.getMorningOrAfternoon()==1?"上午":"下午");
+                Cell cell10 = row.getCell(8);
+                if (cell10 == null){
+                    cell10 = row.createCell(8);
+                }
+                cell10.setCellValue(item.getMorningOrAfternoon()==0?"上午":"下午");
+
                 //车牌
-                Cell cell11 = row.getCell(10);
+                Cell cell11 = row.getCell(9);
+                if (cell11 == null){
+                    cell11 = row.createCell(9);
+                }
                 cell11.setCellValue(item.getPlatenum());
+
                 //司机
-                Cell cell12 = row.getCell(11);
+                Cell cell12 = row.getCell(10);
+                if (cell12 == null){
+                    cell12 = row.createCell(10);
+                }
                 cell12.setCellValue(item.getPlateuser());
+
                 //etc使用情况
-                Cell cell13 = row.getCell(12);
+                Cell cell13 = row.getCell(11);
+                if (cell13 == null){
+                    cell13 = row.createCell(11);
+                }
                 cell13.setCellValue(item.getEtcmessage());
+
                 //备注
-                Cell cell14 = row.getCell(13);
+                Cell cell14 = row.getCell(12);
+                if (cell14 == null){
+                    cell14 = row.createCell(12);
+                }
                 cell14.setCellValue(item.getCommit());
                 i++;
             }
+            Row row1 = sheet.getRow(i + 4);
+            if (row1 == null) {
+                row1 = sheet.createRow(i+3);
+            }
 
-//            int rowNum = 0;
-//            Cell cell;
-//            // 这里作为演示，造几个演示数据，模拟数据库里查数据
-//            List<String> list = new ArrayList<String>();
-//            list.add("1111");
-//            list.add("22");
-//            list.add("333");
-//            Row row = sheet.createRow(rowNum + 1);
-//            for (int i = 0; i < list.size(); i++) {
-//                cell = row.createCell(i);
-//                cell.setCellValue(list.get(i));
-//            }
+            Cell cell15 = row1.getCell(1);
+            if (cell15 == null){
+                cell15 = row1.createCell(1);
+            }
+            cell15.setCellValue("科室负责人：");
 
-
+            Cell cell16 = row1.getCell(5);
+            if (cell16 == null){
+                cell16 = row1.createCell(5);
+            }
+            cell16.setCellValue("主管领导：");
 
             String fileName = "车辆申请记录.xlsx";
             downLoadExcel(fileName, response, workbook);

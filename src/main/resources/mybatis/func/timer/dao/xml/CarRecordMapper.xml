@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.active4j.hr.car.dao.CarRecordDao">
+<!--    <select id="getAllCarMessage" resultType="com.active4j.hr.activiti.biz.entity.FlowCarApprovalEntity">-->
+<!--        SELECT-->
+<!--	        a.id,-->
+<!--	        a.CREATE_DATE,-->
+<!--	        a.usetime,-->
+<!--	        a.usedepatment,-->
+<!--	        a.username,-->
+<!--	        a.person,-->
+<!--	        a.reason,-->
+<!--	        a.usecarreason,-->
+<!--	        a.destination,-->
+<!--	        a.commit,-->
+<!--	        a.morningorafternoon,-->
+<!--	        a.platenum,-->
+<!--	        a.plateuser,-->
+<!--	        a.etcmessage-->
+<!--        FROM-->
+<!--	        flow_car_approval a-->
+<!--	    LEFT JOIN wf_base b ON a.id = b.BUSINESS_ID-->
+<!--        WHERE-->
+<!--	        b.STATUS = '3'-->
+<!--	    AND b.WORKFLOW_NAME = "车辆申请"-->
+<!--    </select>-->
+
     <select id="getAllCarMessage" resultType="com.active4j.hr.activiti.biz.entity.FlowCarApprovalEntity">
         SELECT
 	        a.id,
@@ -16,39 +40,19 @@
 	        a.morningorafternoon,
 	        a.platenum,
 	        a.plateuser,
-	        a.etcmessage
-        FROM
-	        flow_car_approval a
-	    LEFT JOIN wf_base b ON a.id = b.BUSINESS_ID
-        WHERE
-	        b.STATUS = '3'
-	    AND b.WORKFLOW_NAME = "车辆申请"
-    </select>
-
-    <select id="getCarMessageByDept" resultType="com.active4j.hr.activiti.biz.entity.FlowCarApprovalEntity">
-        SELECT
-	        a.id,
-	        a.CREATE_DATE,
-	        a.usetime,
-	        a.usedepatment,
-	        a.username,
-	        a.person,
-	        a.reason,
-	        a.usecarreason,
-	        a.destination,
-	        a.commit,
-	        a.morningorafternoon,
-	        a.platenum,
-	        a.plateuser,
-	        a.etcmessage
+	        a.etcmessage,
+			b.APPLY_DATE
         FROM
 	        flow_car_approval a
 	    LEFT JOIN wf_base b ON a.id = b.BUSINESS_ID
 	    LEFT JOIN sys_user u on b.USER_NAME=u.USER_NAME
 	    LEFT JOIN sys_depart d on u.DEPT_ID=d.ID
         WHERE
-	        d.NAME = #{userdept}
+        	<if test="useDepatment !=null and useDepatment !=''">d.NAME like concat('%',#{useDepatment},'%')</if>
+		AND b.APPLY_DATE &gt;= #{applyDate_begin}
+		and b.APPLY_DATE &lt;= #{applyDate_end}
         AND b.STATUS = '3'
         AND b.WORKFLOW_NAME = "车辆申请"
+        order by b.APPLY_DATE
     </select>
 </mapper>
