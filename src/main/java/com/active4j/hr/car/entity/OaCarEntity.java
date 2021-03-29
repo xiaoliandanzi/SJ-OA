@@ -26,32 +26,34 @@ public class OaCarEntity extends BaseEntity {
     private String carId;
 
     @TableField("KIND")
-    @NotEmpty(message = "车辆类型不能为空")
+    @NotEmpty(message = "车辆使用状态不能为空")
     private String kind;
 
     @TableField("ONROADTIME")
-    @NotEmpty(message = "上路时间不能为空")
+    @NotEmpty(message = "车辆购置时间不能为空")
     private Date onRoadTime;
+
+    @TableField("CHECKCARTIME")
+    @NotEmpty(message = "验车日期不能为空")
+    private Date checkCarTime;
 
     @TableField("ENSURETIME")
     @NotEmpty(message = "保险生效时间不能为空")
     private Date ensureTime;
 
-    @TableField("ENSUREDAY")
-    @NotEmpty(message = "保险提醒时间不能为空")
-    private int ensureDay;
+//    @TableField("ENSUREDAY")
+//    @NotEmpty(message = "保险提醒时间不能为空")
+//    private int ensureDay;car/manage
+
+
+//    @TableField("MAINTAINDAY")
+////    @NotEmpty(message = "保险生效时间不能为空")
+////    private int maintainDay;
+
 
     @TableField("MAINTAINTIME")
-    @NotEmpty(message = "保养日期不能为空")
+    @NotEmpty(message = "维修日期不能为空")
     private Date maintainTime;
-
-    @TableField("MAINTAINDAY")
-    @NotEmpty(message = "保险生效时间不能为空")
-    private int maintainDay;
-
-    @TableField("CHECKCARTIME")
-    @NotEmpty(message = "保养日期不能为空")
-    private Date checkCarTime;
 
     @TableField("MEMO")
     private String memo;
