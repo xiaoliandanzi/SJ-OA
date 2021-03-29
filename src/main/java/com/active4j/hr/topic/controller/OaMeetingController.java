@@ -94,6 +94,9 @@ public class OaMeetingController {
 
     @Autowired
     private UploadAttachmentService uploadAttachmentService;
+
+    @Autowired
+    private OaMeetingService oaMeetingService;
     /**
      * list视图
      *
@@ -1230,10 +1233,56 @@ public class OaMeetingController {
      * 判断会议室内占用状态
      */
     @RequestMapping(value = "isoccUpy")
+    @ResponseBody
     private AjaxJson isoccUpy(OaMeeting oaMeeting,HttpServletRequest request, HttpServletResponse response) {
         AjaxJson j =new AjaxJson();
         try{
-            String meettime=oaMeeting.getMeetingTime();
+
+            OaWorkMeetRoomBooksEntity oaWorkMeetRoomBooksEntity = new OaWorkMeetRoomBooksEntity();
+            /*QueryWrapper<OaMeeting> queryWrapper = new QueryWrapper<>();
+            queryWrapper.select("ID").eq("Meeting_ID",oaMeeting.getMeetingId());
+            List<OaMeeting> oaMeetings = oaMeetingService.list(queryWrapper);*/
+
+            QueryWrapper<OaWorkMeetRoomEntity> wrapper = new QueryWrapper<>();
+            wrapper.eq("NAME",oaMeeting.getMeetingId());
+            List<OaWorkMeetRoomEntity> roomBooksEntities = oaWorkMeetRoomService.list(wrapper);
+
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat dnf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            String currentDate = df.format(df.parse(oaMeeting.getMeetingTime()));
+            oaWorkMeetRoomBooksEntity.setStartDate(dnf.parse(oaMeeting.getMeetingTime()));
+            oaWorkMeetRoomBooksEntity.setEndDate(dnf.parse(oaMeeting.getMeetingendTime()));
+            //时间的校验，预定的会议室，时间不能重合
+            List<OaWorkMeetRoomBooksEntity> lstRooms = oaWorkMeetRoomBooksService.findMeetBooks(roomBooksEntities.get(0).getId(), currentDate);
+            boolean isValid = true;
+            if(null != lstRooms && lstRooms.size() > 0) {
+                for(OaWorkMeetRoomBooksEntity bookRoom : lstRooms) {
+                    if (!oaWorkMeetRoomBooksEntity.getStartDate().after(bookRoom.getStartDate())
+                            && oaWorkMeetRoomBooksEntity.getEndDate().after(bookRoom.getStartDate())){
+                        isValid = false;
+                        break;
+                    }
+                    if (!oaWorkMeetRoomBooksEntity.getEndDate().before(bookRoom.getEndDate())
+                            && oaWorkMeetRoomBooksEntity.getStartDate().before(bookRoom.getEndDate())){
+                        isValid = false;
+                        break;
+                    }
+                    if (!oaWorkMeetRoomBooksEntity.getStartDate().before(bookRoom.getStartDate())
+                            && !oaWorkMeetRoomBooksEntity.getEndDate().after(bookRoom.getEndDate())) {
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+            if (!isValid) {
+                j.setObj("111");
+                //j.setSuccess(false);
+                j.setMsg("当前会议室已经被预定");
+                return j;
+            }
+
+           /* String meettime=oaMeeting.getMeetingTime();
             String meetendtime=oaMeeting.getMeetingendTime();
 
             String MeetingId =oaMeeting.getMeetingId();
@@ -1267,7 +1316,7 @@ public class OaMeetingController {
                     j.setObj("111");
                     j.setMsg("会议室已被占用");
                 }
-            }
+            }*/
          }catch (Exception exception){
             j.setSuccess(false);
             j.setMsg("操作失败");

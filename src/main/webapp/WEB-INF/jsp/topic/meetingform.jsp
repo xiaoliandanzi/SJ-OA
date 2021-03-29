@@ -55,7 +55,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">会议室*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2" name="meetingId" id="meetingId"    onchange="funchy()" required="" >
+                                <select class="form-control m-b select2" name="meetingId" id="meetingId" required="" >
                                     <c:forEach items="${roomList}" var="room">
                                         <option value="${room.name }">${room.name }</option>
                                     </c:forEach>
@@ -224,17 +224,24 @@
         x.send();
 
     }
-    function funchy(){
-        var meetingTime=$("#meetingTime").val();
-        var meetingendTime=$("#meetingendTime").val();
-        var meetingId=$("#meetingId").val();
-        //是
-        $.post("meeting/isoccUpy", {meetingTime: meetingTime,meetingendTime:meetingendTime,meetingId:meetingId}, function (data) {
-            if ("111"==data.obj) {
-                qhAlert('会议室被占用');
-            }
-        });
-    }
+
+    $(function () {
+        $('#meetingId').removeAttr("disabled");
+        $('#meetingId').change(function () {
+            var meetingTime=$("#meetingTime").val();
+            var meetingendTime=$("#meetingendTime").val();
+            var meetingId=$("#meetingId").val();
+            //var id=$("#id").val();
+            //是
+            $.post("meeting/isoccUpy", {meetingTime: meetingTime,meetingendTime:meetingendTime,meetingId:meetingId}, function (data) {
+                if ("111"==data.obj) {
+                    parent.layer.msg('会议室被占用');
+                    // qhAlert('');
+                }
+            });
+        })
+    })
+
     function printItAll() {
         var meetingId=$("#meetingId").val();
         var meetingName=$("#meetingName").val();
