@@ -255,17 +255,17 @@
                 </span>
         </div>
         <%--<div class="btnBox">--%>
-            <%--<img class="btnImg" src="./img/c.png" alt="">--%>
-            <%--<span class="btnTxt">--%>
-                    <%--<a href="#" class="nava">财务系统</a>--%>
-                <%--</span>--%>
+        <%--<img class="btnImg" src="./img/c.png" alt="">--%>
+        <%--<span class="btnTxt">--%>
+        <%--<a href="#" class="nava">财务系统</a>--%>
+        <%--</span>--%>
         <%--</div>--%>
         <%--<div class="selectBox">--%>
-            <%--<el-input size="mini" placeholder="请输入关键字" prefix-icon="el-icon-search" v-model="input2">--%>
-            <%--</el-input>--%>
+        <%--<el-input size="mini" placeholder="请输入关键字" prefix-icon="el-icon-search" v-model="input2">--%>
+        <%--</el-input>--%>
         <%--</div>--%>
         <%--<div class="selectBtn">--%>
-            <%--搜索--%>
+        <%--搜索--%>
         <%--</div>--%>
     </div>
     <div class="tabs">
@@ -370,27 +370,22 @@
                 input2: '',
                 isActive: 1,
                 loginName: '',
-                tabs: [
-                    // {
-                    // name: "公式文件",
-                    // messageType: 1,
-                    // },
+                tabs: [{
+                    //name: "公式文件",
+                    //messageType: 1,
+                },
                     {
                         name: "通知公告",
                         messageType: 2,
                     },
-                    // {
-                    //     name: "媒体聚焦",
-                    //     messageType: 3,
-                    // },
+                    {
+                       // name: "媒体聚焦",
+                       // messageType: 3,
+                    },
                     {
                         name: "工作信息",
                         messageType: 4,
                     }
-                    // {
-                    //     name: "制度范围",
-                    //     messageType: 5,
-                    // }
                 ],
                 currentPage4: 1,
                 pageSize: 20,

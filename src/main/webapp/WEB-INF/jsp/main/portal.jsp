@@ -236,7 +236,7 @@
                         </div>
                     </div>
                     <div>
-                        <div class="articleItem" v-for="(item,index) in fiveList" :key="index" @click="listClick(item)">
+                        <div class="articleItem" v-for="(item,index) in fourList" :key="index" @click="listClick(item)">
                             <div class="articleTitle">{{item.title}}</div>
                             <div class="articleDate">({{item.publicTime}}</div>
                             <div class="articleNums">阅{{item.count}}次)</div>
@@ -645,12 +645,12 @@
                 })
             },
             fiveMounted() {
-                axios.get('oa/login/messageList?messageType=' + 4 + '&rows=' + 6).then((msg) => {
-                    this.fiveList = msg.data.obj.records
-                })
-                // axios.get('oa/login/messageList?messageType=' + 5 + '&rows=' + 6).then((msg) => {
+                // axios.get('oa/login/messageList?messageType=' + 4 + '&rows=' + 6).then((msg) => {
                 //     this.fiveList = msg.data.obj.records
                 // })
+                axios.get('oa/login/messageList?messageType=' + 5 + '&rows=' + 6).then((msg) => {
+                    this.fiveList = msg.data.obj.records
+                })
             },
             getCounts() {
                 axios.get('oa/index/workCount').then((msg) => {
