@@ -38,7 +38,7 @@ public class OaCarEntity extends BaseEntity {
     private Date checkCarTime;
 
     @TableField("ENSURETIME")
-    @NotEmpty(message = "保险生效时间不能为空")
+    @NotEmpty(message = "保险到期时间不能为空")
     private Date ensureTime;
 
 //    @TableField("ENSUREDAY")

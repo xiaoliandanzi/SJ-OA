@@ -1,10 +1,21 @@
 package com.active4j.hr.system.controller;
 
+import com.active4j.hr.activiti.util.WorkflowTaskUtil;
+import com.active4j.hr.car.entity.OaCarEntity;
+import com.active4j.hr.car.service.OaCarService;
+import com.active4j.hr.core.util.DateUtils;
+import com.active4j.hr.system.entity.SysRoleEntity;
+import com.active4j.hr.system.entity.SysUserEntity;
+import com.active4j.hr.system.service.SysUserService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +30,11 @@ import com.active4j.hr.core.shiro.ShiroUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  * @author xfzhang
  * @version 1.0
@@ -28,6 +44,10 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 public class LoginController {
+    @Autowired
+    private OaCarService oaCarService;
+    @Autowired
+    private SysUserService sysUserService;
 
     /**
      * 跳转门户
@@ -148,6 +168,38 @@ public class LoginController {
 //				j.setMsg("验证码填写错误");
 //				return j;
 //			}
+            QueryWrapper<SysUserEntity> wrapper = new QueryWrapper<>();
+            wrapper.select("ID").eq("USER_NAME",userName);
+            List<SysUserEntity> entityList = sysUserService.list(wrapper);
+            List<SysRoleEntity> roles = sysUserService.getUserRoleByUserId(entityList.get(0).getId());
+            //OaCarEntity oaCarEntity = new OaCarEntity();
+            QueryWrapper<OaCarEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.select("CARID","CHECKCARTIME","ENSURETIME").eq("KIND","正在使用");
+            List<OaCarEntity> list = oaCarService.list(queryWrapper);
+            Boolean sign =false;
+            for (SysRoleEntity role : roles) {
+                if (role.getRoleName().equals("车辆管理员")){
+                    sign = true;
+                    break;
+                }
+            }
+            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+            if (sign){
+                for (OaCarEntity cars : list) {
+                    int day = DateUtils.getDayDiff(new Date(),cars.getCheckCarTime());
+                    if (50<day&&60>day||20<day&&30>day){
+                        //添加到系统信息
+                        WorkflowTaskUtil.sendCarMessageCheck(cars.getCarId(),userName,
+                                cars.getCheckCarTime());
+                    }
+                    int dayInsure = DateUtils.getDayDiff(new Date(),cars.getEnsureTime());
+                    if (50<dayInsure&&60>dayInsure||20<dayInsure&&30>dayInsure){
+                        //添加到系统信息
+                        WorkflowTaskUtil.sendCarMessageInsure(cars.getCarId(),userName,
+                                cars.getEnsureTime());
+                    }
+                }
+            }
 
             UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
             ShiroUtils.getSubject().login(token);

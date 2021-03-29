@@ -29,7 +29,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">车辆使用状态*：</label>
                             <div class="col-sm-8">
-<%--                                <input id="kind" name="kind" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${car.kind }">--%>
+                                    <%--                                <input id="kind" name="kind" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${car.kind }">--%>
                                 <select name="kind" class="form-control" required="">
                                     <option value="正在使用" <c:if test="${car.kind =='正在使用'}">selected="selected"</c:if>>正在使用</option>
                                     <option value="停用" <c:if test="${car.kind =='停用'}">selected="selected"</c:if>>停用</option>
@@ -40,14 +40,14 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label m-b">车辆购置时间*：</label>
                             <div class="col-sm-8 m-b">
-                                <input class="laydate-icon form-control layer-date" id="onRoadTime" name="onRoadTime" required="" value='<fmt:formatDate value="${car.onRoadTime }" type="date" pattern="yyyy-MM"/>'>
+                                <input class="laydate-icon form-control layer-date" id="onRoadTime" name="onRoadTime" required="" value='<fmt:formatDate value="${car.onRoadTime }" type="date" pattern="yyyy-MM-dd"/>'>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label m-b">验车日期*：</label>
                             <div class="col-sm-8 m-b">
-                                <input class="laydate-icon form-control layer-date" id="checkCarTime" name="checkCarTime" required="" value='<fmt:formatDate value="${car.checkCarTime }" type="date" pattern="yyyy-MM"/>'>
+                                <input class="laydate-icon form-control layer-date" id="checkCarTime" name="checkCarTime" required="" value='<fmt:formatDate value="${car.checkCarTime }" type="date" pattern="yyyy-MM-dd"/>'>
                             </div>
                         </div>
 
@@ -55,27 +55,27 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label m-b">保险到期日期*：</label>
                             <div class="col-sm-8 m-b">
-                                <input class="laydate-icon form-control layer-date" id="ensureTime" name="ensureTime" required="" value='<fmt:formatDate value="${car.ensureTime }" type="date" pattern="yyyy-MM"/>'>
+                                <input class="laydate-icon form-control layer-date" id="ensureTime" name="ensureTime" required="" value='<fmt:formatDate value="${car.ensureTime }" type="date" pattern="yyyy-MM-dd"/>'>
                             </div>
                         </div>
-<%--                        <div class="form-group">--%>
-<%--                            <label class="col-sm-3 control-label">保险提醒频率/天*：</label>--%>
-<%--                            <div class="col-sm-8">--%>
-<%--                                <input id="ensureDay" name="ensureDay" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${car.ensureDay }">--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
+                        <%--                        <div class="form-group">--%>
+                        <%--                            <label class="col-sm-3 control-label">保险提醒频率/天*：</label>--%>
+                        <%--                            <div class="col-sm-8">--%>
+                        <%--                                <input id="ensureDay" name="ensureDay" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${car.ensureDay }">--%>
+                        <%--                            </div>--%>
+                        <%--                        </div>--%>
                         <div class="form-group">
                             <label class="col-sm-3 control-label m-b">维修日期：</label>
                             <div class="col-sm-8 m-b">
                                 <input class="laydate-icon form-control layer-date" id="maintainTime" name="maintainTime"  value='<fmt:formatDate value="${car.maintainTime }" type="date" pattern="yyyy-MM-dd"/>'>
                             </div>
                         </div>
-<%--                        <div class="form-group">--%>
-<%--                            <label class="col-sm-3 control-label">保养提醒频率/天*：</label>--%>
-<%--                            <div class="col-sm-8">--%>
-<%--                                <input id="maintainDay" name="maintainDay" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${car.maintainDay }">--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
+                        <%--                        <div class="form-group">--%>
+                        <%--                            <label class="col-sm-3 control-label">保养提醒频率/天*：</label>--%>
+                        <%--                            <div class="col-sm-8">--%>
+                        <%--                                <input id="maintainDay" name="maintainDay" minlength="1" maxlength="30" type="text" class="form-control" required="" value="${car.maintainDay }">--%>
+                        <%--                            </div>--%>
+                        <%--                        </div>--%>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">备注：</label>
                             <div class="col-sm-8">
@@ -97,14 +97,14 @@
             elem : "#onRoadTime",
             event : "focus",
             istime : false,
-            format : 'YYYY-MM'
+            format : 'YYYY-MM-DD'
         });
 
         laydate({
             elem : "#ensureTime",
             event : "focus",
             istime : false,
-            format : 'YYYY-MM'
+            format : 'YYYY-MM-DD'
         });
 
         laydate({
@@ -117,7 +117,7 @@
             elem : "#checkCarTime",
             event : "focus",
             istime : false,
-            format : 'YYYY-MM'
+            format : 'YYYY-MM-DD'
         });
 
         $('.clockpicker').clockpicker();

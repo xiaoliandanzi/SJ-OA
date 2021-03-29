@@ -1,5 +1,6 @@
 package com.active4j.hr.car.controller;
 
+import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.car.domain.OaBookCarDomain;
 import com.active4j.hr.car.entity.OaCarBooksEntity;
@@ -10,6 +11,7 @@ import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.query.QueryUtils;
+import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
 import com.active4j.hr.core.util.ResponseUtil;
 import com.active4j.hr.core.web.tag.model.DataGrid;
@@ -27,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -108,6 +111,45 @@ public class CarManageController extends BaseController {
                 j.setSuccess(false);
                 j.setMsg("车辆类型不能为空!");
                 return j;
+            }
+
+            if(StringUtils.isEmpty(oaCarEntity.getKind())) {
+                j.setSuccess(false);
+                j.setMsg("车辆状态不能为空!");
+                return j;
+            }
+
+            if(null == oaCarEntity.getOnRoadTime()) {
+                j.setSuccess(false);
+                j.setMsg("车辆购置时间不能为空!");
+                return j;
+            }
+
+            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+            if(null == oaCarEntity.getCheckCarTime()) {
+                j.setSuccess(false);
+                j.setMsg("验车日期不能为空!");
+                return j;
+            }else {
+                int day = DateUtils.getDayDiff(new Date(),oaCarEntity.getCheckCarTime());
+                if (60>day){
+                    //添加到系统信息
+                    WorkflowTaskUtil.sendCarMessageCheck(oaCarEntity.getCarId(), ShiroUtils.getSessionUserName(),
+                            oaCarEntity.getCheckCarTime());
+                }
+            }
+
+            if(null == oaCarEntity.getEnsureTime()) {
+                j.setSuccess(false);
+                j.setMsg("保险到期时间不能为空!");
+                return j;
+            }else {
+                int day = DateUtils.getDayDiff(new Date(),oaCarEntity.getCheckCarTime());
+                if (60>day){
+                    //添加到系统信息
+                    WorkflowTaskUtil.sendCarMessageInsure(oaCarEntity.getCarId(), ShiroUtils.getSessionUserName(),
+                            oaCarEntity.getEnsureTime());
+                }
             }
 
             if(StringUtils.isEmpty(oaCarEntity.getId())) {

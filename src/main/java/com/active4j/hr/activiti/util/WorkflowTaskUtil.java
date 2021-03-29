@@ -148,4 +148,35 @@ public class WorkflowTaskUtil {
 			log.error("sendRejectMessage", ex);
 		}
 	}
+
+	//车辆验车消息提醒
+	public static void sendCarMessageCheck(String carId,String applyName, Date time) {
+		System.out.println(applyName);
+		//System.out.println(approvalName);
+		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			MessageUtils.SendSysMessage(sysUserService.getUserByUseName(applyName).getId(),
+					String.format("您好，%s将于%s验车，请查收",carId,df.format(time),
+							formatter.format(new Date())));
+		} catch (Exception ex) {
+			log.error("sendApprovalMessgae", ex);
+		}
+	}
+
+	//车辆保险消息提醒
+	public static void sendCarMessageInsure(String carId,String applyName, Date time) {
+		System.out.println(applyName);
+		//System.out.println(approvalName);
+		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			MessageUtils.SendSysMessage(sysUserService.getUserByUseName(applyName).getId(),
+					String.format("您好，%s将于%s保险过期，请查收",carId,df.format(time),
+							formatter.format(new Date())));
+		} catch (Exception ex) {
+			log.error("sendApprovalMessgae", ex);
+		}
+	}
+
+
 }
+
