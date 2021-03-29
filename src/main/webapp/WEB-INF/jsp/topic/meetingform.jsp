@@ -9,7 +9,7 @@
             $("#roleid").val("${roleId}".split(",")).trigger("change");
         });
         $(function(){
-            $('#meetingId').attr('', '');
+            $('#meetingId').attr('disabled', 'disabled');
         });
         $(function () {
             $("#meetingId").val("111".split(",")).trigger("change");
@@ -24,8 +24,8 @@
                 <div class="ibox-content">
                     <t:formvalid action="meeting/save">
                         <div class="form-group">
-                                <label class="col-sm-2 control-label">科室*：</label>
-                                <div class="col-sm-8">
+                            <label class="col-sm-2 control-label">科室*：</label>
+                            <div class="col-sm-8">
                                 <div class="input-group">
                                     <t:choose url="common/selectDepart" hiddenName="depId"
                                               hiddenValue="${depid }"
@@ -55,9 +55,9 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">会议室*：</label>
                             <div class="col-sm-8">
-                                <select class="form-control m-b select2" name="meetingId" id="meetingId" onchange="funchy()" required="" >
+                                <select class="form-control m-b select2" name="meetingId" id="meetingId"    onchange="funchy()" required="" >
                                     <c:forEach items="${roomList}" var="room">
-                                        <option value="${room.name}">${room.name}</option>
+                                        <option value="${room.name }">${room.name }</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -93,21 +93,15 @@
 <%--                        <div class="form-group">--%>
 <%--                            <label class="col-sm-2 control-label">参会人员*：</label>--%>
 <%--                            <div class="col-sm-8">--%>
-<%--                        <select   class="col-sm-8"  name="canhuipeo" id="canhuipeo"  onchange="funcchui()"  style=" width:663px;height: 32px" >--%>
-<%--                            <option class="col-sm-8"  id="1">主要领导</option>--%>
-<%--                            <option  class="col-sm-8" id="2">主管领导</option>--%>
-<%--                            <option  class="col-sm-8"  id="3" >科室负责人</option>--%>
-<%--                            <option  class="col-sm-8"  id="4" >科员</option>--%>
-<%--                        </select>--%>
+<%--                                <select   class="col-sm-8"  name="canhuipeo" id="canhuipeo"  onchange="funcchui()"  style=" width:663px;height: 32px" >--%>
+<%--                                    <option class="col-sm-8"  id="1">主要领导</option>--%>
+<%--                                    <option  class="col-sm-8" id="2">主管领导</option>--%>
+<%--                                    <option  class="col-sm-8"  id="3" >科室负责人</option>--%>
+<%--                                    <option  class="col-sm-8"  id="4" >科员</option>--%>
+<%--                                </select>--%>
 <%--                            </div>--%>
 <%--                        </div>--%>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">人员：</label>
-                            <div class="col-sm-4">
-                                <div class="input-group" style="width: 220%">
-                                    <t:choose url="common/selectUsers" hiddenName="attendeeId" hiddenValue="${attendeeId}" textValue="${meet.attendee}" textName="conferee" hiddenId="attendeeId" textId="conferee"></t:choose>
-                                </div>
-                            </div>
 <%--                            <label class="col-sm-2 control-label">人员*：</label>--%>
 <%--                            <div class="col-sm-8" >--%>
 <%--                                <select class="form-control m-b select2" name="conferee"  style=" width:663px; height: 80px" id="conferee" multiple="multiple"  style="  height: 100px"  required="">--%>
@@ -116,6 +110,12 @@
 <%--                                    </c:forEach>--%>
 <%--                                </select>--%>
 <%--                            </div>--%>
+                                    <label class="col-sm-2 control-label">人员：</label>
+                                    <div class="col-sm-4">
+                                        <div class="input-group" style="width: 220%">
+                                            <t:choose url="common/selectUsers" hiddenName="attendeeId" hiddenValue="${attendeeId}" textValue="${meet.attendee}" textName="conferee" hiddenId="attendeeId" textId="conferee"></t:choose>
+                                        </div>
+                                    </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label m-b">备注：</label>
@@ -182,48 +182,48 @@
     function sleep(delay) {
         for(let start = Date.now(); Date.now() - start< delay;);
     }
-   /* function funtimes(){
-        var meetingTime=$("#meetingTime").val();
-        var meetingendTime=$("#meetingendTime").val();
-        alert(meetingTime)
-        alert(meetingendTime)
-        alert(3)
-        if (meetingTime==""||meetingTime==null||meetingendTime==""||meetingendTime==null) {
-            alert(2)
-            $('#meetingId').attr('disabled', 'disabled');
-        }else{
-            alert(1)
-            $("#meetingId").removeAttr("disabled");
+    /* function funtimes(){
+         var meetingTime=$("#meetingTime").val();
+         var meetingendTime=$("#meetingendTime").val();
+         alert(meetingTime)
+         alert(meetingendTime)
+         alert(3)
+         if (meetingTime==""||meetingTime==null||meetingendTime==""||meetingendTime==null) {
+             alert(2)
+             $('#meetingId').attr('disabled', 'disabled');
+         }else{
+             alert(1)
+             $("#meetingId").removeAttr("disabled");
+         }
+     }
+     function funtime(){
+         var meetingTime=$("#meetingTime").val();
+         var meetingendTime=$("#meetingendTime").val();
+         if (meetingTime==""||meetingTime==null||meetingendTime==""||meetingendTime==null) {
+             $('#meetingId').attr('disabled', 'disabled');
+         }else{
+             $("#meetingId").removeAttr("disabled");
+         }
+     }*/
+    function printqd() {
+        var conferee=$("#conferee").val();
+        if(conferee==""||conferee==null){
+            qhAlert('参会人员为空不能打印');
+            return;
         }
-    }
-    function funtime(){
-        var meetingTime=$("#meetingTime").val();
-        var meetingendTime=$("#meetingendTime").val();
-        if (meetingTime==""||meetingTime==null||meetingendTime==""||meetingendTime==null) {
-            $('#meetingId').attr('disabled', 'disabled');
-        }else{
-            $("#meetingId").removeAttr("disabled");
+        var x = new XMLHttpRequest();
+        x.open("GET", "topicFile/getprintqdHtml?conferee="+conferee,true);
+        x.responseType = 'blob';
+        x.onload = function (e) {
+            var url = window.URL.createObjectURL(x.response)
+            var a = document.createElement('a');
+            a.href = url
+            a.download = "签到表.doc"
+            a.click()
         }
-    }*/
-   function printqd() {
-       var conferee=$("#conferee").val();
-       if(conferee==""||conferee==null){
-           qhAlert('参会人员为空不能打印');
-           return;
-       }
-       var x = new XMLHttpRequest();
-       x.open("GET", "topicFile/getprintqdHtml?conferee="+conferee,true);
-       x.responseType = 'blob';
-       x.onload = function (e) {
-           var url = window.URL.createObjectURL(x.response)
-           var a = document.createElement('a');
-           a.href = url
-           a.download = "签到表.doc"
-           a.click()
-       }
-       x.send();
+        x.send();
 
-   }
+    }
     function funchy(){
         var meetingTime=$("#meetingTime").val();
         var meetingendTime=$("#meetingendTime").val();
@@ -310,57 +310,57 @@
         });
     }
 
-     var start=    ({
-            elem: "#meetingTime",
-            event: "focus",
-            istime: true,
-            format: 'YYYY-MM-DD hh:mm:ss',
-            min: laydate.now(), //最大日期,
-            choose: function(datas){
-                end.min = datas; //开始日选好后，重置结束日的最小日期
-                var meetingTime=datas;
-                var meetingendTime=$("#meetingendTime").val();
-                if (meetingTime==""||meetingTime==null||meetingendTime==""||meetingendTime==null) {
-                    $('#meetingId').attr('', '');
-                }else{
-                    $("#meetingId").removeAttr("");
-                };
-                }
+    var start=    ({
+        elem: "#meetingTime",
+        event: "focus",
+        istime: true,
+        format: 'YYYY-MM-DD hh:mm:ss',
+        min: laydate.now(), //最大日期,
+        choose: function(datas){
+            end.min = datas; //开始日选好后，重置结束日的最小日期
+            var meetingTime=datas;
+            var meetingendTime=$("#meetingendTime").val();
+            if (meetingTime==""||meetingTime==null||meetingendTime==""||meetingendTime==null) {
+                $('#meetingId').attr('disabled', 'disabled');
+            }else{
+                $("#meetingId").removeAttr("disabled");
+            };
+        }
+    });
+    var end=   ({
+        elem: "#meetingendTime",
+        event: "focus",
+        istime: true,
+        format: 'YYYY-MM-DD hh:mm:ss',
+        choose: function(datas){
+            var meetingTime=$("#meetingTime").val();
+            var meetingendTime=datas;
+            if (meetingTime==""||meetingTime==null||meetingendTime==""||meetingendTime==null) {
+                $('#meetingId').attr('disabled', 'disabled');
+            }else{
+                $("#meetingId").removeAttr("disabled");
+            };
+        }
+    });
+    //  });
+    function addbt(){
+        var  topid= $("#topid").val();
+        if (topid==null){
+            topid="";
+        }
+        $.ajax({
+            url:"meeting/setTopid" ,
+            data: {ids:topid.toString()},
+            success: function(){
+                reloadTable('toptable');
+            },
         });
-        var end=   ({
-            elem: "#meetingendTime",
-            event: "focus",
-            istime: true,
-            format: 'YYYY-MM-DD hh:mm:ss',
-            choose: function(datas){
-                var meetingTime=$("#meetingTime").val();
-                var meetingendTime=datas;
-    if (meetingTime==""||meetingTime==null||meetingendTime==""||meetingendTime==null) {
-        $('#meetingId').attr('', '');
-    }else{
-        $("#meetingId").removeAttr("");
-    };
-            }
-        });
-  //  });
-  function addbt(){
-      var  topid= $("#topid").val();
-      if (topid==null){
-          topid="";
-      }
-          $.ajax({
-              url:"meeting/setTopid" ,
-              data: {ids:topid.toString()},
-              success: function(){
-                  reloadTable('toptable');
-              },
-          });
 
-  }
+    }
     laydate(start);
     laydate(end);
     function funcchui(){
-    //    $("#conferee").empty();
+        //    $("#conferee").empty();
         $.ajax({
             url:"meeting/groupBycanhui" ,
             data: {canHuitype: $('#canhuipeo option:selected').attr('id')},
@@ -369,7 +369,7 @@
                 for(var i=0;i<len;i++){
                     var option=document.createElement("option");
                     option.value = data.obj[i].realName;
-                     option.Text = data.obj[i].realName;
+                    option.Text = data.obj[i].realName;
                     option.innerHTML=data.obj[i].realName;
                     $("#conferee").append(option);
                 }
