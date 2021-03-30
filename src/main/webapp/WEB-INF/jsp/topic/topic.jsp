@@ -156,8 +156,8 @@
                             <label class="col-sm-3 control-label">财务科：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
-                                        id="financeOffice" name="financeOffice" >
-                                    <c:forEach items="${financeOffice}" var="finance">
+                                        id="financeOffice" name="financeOffice" onchange="select1(this.value)">
+                                    <c:forEach items="${financeOffice}" var="finance" >
                                         <option value="${finance.id }">${finance.realName}</option>
                                     </c:forEach>
                                 </select>
@@ -167,7 +167,7 @@
                             <label class="col-sm-3 control-label">纪委科长：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
-                                        id="disciplineOffice" name="disciplineOffice" onchange="select1(this.value,id)">
+                                        id="disciplineOffice" name="disciplineOffice" onchange="select1(this.value)">
                                     <c:forEach items="${disciplineOffice}" var="discipline">
                                         <option value="${discipline.id }">${discipline.realName}</option>
                                     </c:forEach>
@@ -179,7 +179,7 @@
                             <label class="col-sm-3 control-label">纪委主管领导：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
-                                        id="managerOffice" name="managerOffice">
+                                        id="managerOffice" name="managerOffice" onchange="select1(this.value)">
                                     <c:forEach items="${managerOffice}" var="managerOfficelist">
                                         <option value="${managerOfficelist.id }">${managerOfficelist.realName}</option>
                                     </c:forEach>
@@ -314,11 +314,15 @@
         })
     }
     
-    function select1(val,id) {
-        if (val==""){
-            document.getElementById(id).setAttribute("required",false);
+    function select1(val) {
+        if (val==""){//financeOffice   disciplineOffice  managerOffice
+            document.getElementById("financeOffice").setAttribute("required",false);
+            document.getElementById("disciplineOffice").setAttribute("required",false);
+            document.getElementById("managerOffice").setAttribute("required",false);
         }else{
-            document.getElementById(id).setAttribute("required",true);
+            document.getElementById("financeOffice").setAttribute("required",true);
+            document.getElementById("disciplineOffice").setAttribute("required",true);
+            document.getElementById("managerOffice").setAttribute("required",true);
         }
 
     }
