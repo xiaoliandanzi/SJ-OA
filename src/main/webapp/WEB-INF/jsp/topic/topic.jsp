@@ -26,6 +26,11 @@
         $(function () {
             $("#disciplineOffice").val("${oaTopic.disciplineOffice}".split(",")).trigger("change");
         });
+        $(function () {
+
+            $("#managerOffice").val("${oaTopic.managerOffice}".split(",")).trigger("change");
+
+        });
     </script>
 </head>
 <body class="gray-bg">
@@ -151,7 +156,7 @@
                             <label class="col-sm-3 control-label">财务科：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
-                                        id="financeOffice" name="financeOffice">
+                                        id="financeOffice" name="financeOffice" >
                                     <c:forEach items="${financeOffice}" var="finance">
                                         <option value="${finance.id }">${finance.realName}</option>
                                     </c:forEach>
@@ -159,12 +164,24 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">纪委：</label>
+                            <label class="col-sm-3 control-label">纪委科长：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
-                                        id="disciplineOffice" name="disciplineOffice">
+                                        id="disciplineOffice" name="disciplineOffice" onchange="select1(this.value,id)">
                                     <c:forEach items="${disciplineOffice}" var="discipline">
                                         <option value="${discipline.id }">${discipline.realName}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">纪委主管领导：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control m-b select2"
+                                        id="managerOffice" name="managerOffice">
+                                    <c:forEach items="${managerOffice}" var="managerOfficelist">
+                                        <option value="${managerOfficelist.id }">${managerOfficelist.realName}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -295,6 +312,15 @@
                 qhTipWarning(data.msg);
             }
         })
+    }
+    
+    function select1(val,id) {
+        if (val==""){
+            document.getElementById(id).setAttribute("required",false);
+        }else{
+            document.getElementById(id).setAttribute("required",true);
+        }
+
     }
 
     function downThis(date) {

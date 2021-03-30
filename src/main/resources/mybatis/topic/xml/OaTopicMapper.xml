@@ -19,4 +19,20 @@
         order by b.APPLY_DATE desc
     </select>
 
+    <select id="getDeptName" resultType="String">
+        SELECT
+            a.NAME
+        from
+            sys_depart a
+        left join sys_depart b on a.id = b.parent_id
+        where
+            b.id =#{disciplineOfficeId}
+    </select>
+    <select id="getUserMessage" resultType="com.active4j.hr.system.entity.SysUserEntity">
+        select
+            *
+        from sys_user
+        where real_name =#{username}
+    </select>
+
 </mapper>

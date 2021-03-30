@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  * Mapper 接口
@@ -18,5 +20,8 @@ public interface OaTopicMapper extends BaseMapper<OaTopic> {
     <T> IPage<OaTopic> findTopicList(OaTopic oaTopic);
 
     Integer getDBCount (@Param("userName") String userName);
+
+    String getDeptName(String disciplineOfficeId);
+    List getUserMessage(String username);
 
 }
