@@ -718,7 +718,8 @@
             url: 'oa/goto12345',//目标地址
             success: function (data) {
                 if (data.success) {
-                    window.location.href = data.obj;
+                    // window.location.href = data.obj;
+                    window.open(data.obj);
                 } else {
                     qhTipWarning(data.msg);
                 }
