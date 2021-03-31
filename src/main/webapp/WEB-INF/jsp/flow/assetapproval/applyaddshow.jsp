@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,laydate,icheck,summernote,clock"></t:base>
+    <t:base type="default,laydate,icheck"></t:base>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -28,7 +28,7 @@
                         <input type="hidden" name="workflowId" id="workflowId" value="${workflowId }">
                         <input type="hidden" name="optType" id="optType">
                         <input type="hidden" name="id" id="id" value="${base.id }">
-                        <%@include file="/WEB-INF/jsp/flow/assetapproval/applyaddformshow.jsp" %>
+                        <%@include file="/WEB-INF/jsp/flow/assetapproval/addform.jsp" %>
                     </form>
                 </div>
             </div>
@@ -41,45 +41,18 @@
         <%@include file="/WEB-INF/jsp/flow/include/inputapp.jsp" %>
     </c:if>
 
-    <%--    <div class="form-group" style="margin-top: 30px;">--%>
-    <%--        <div class="col-sm-4 col-sm-offset-3">--%>
-    <%--            <button type="button"  class="btn btn-primary" onclick="printIt()">打印</button>--%>
-    <%--        </div>--%>
-    <%--    </div>--%>
-
 </div>
 </body>
 
 <script type="text/javascript">
-    var printIt = function(){
-        if (confirm('确定打印吗？')) {
-            //wb.execwb(6,6)   ;
-            window.print();//update by liuguocheng
-
-        }
-    }
     //时间控件初始化
     $(function() {
 
         //让页面管理表单的字段不可编辑
         $("#commonForm input").attr("disabled", "disabled");
         $("#commonForm textarea").attr("disabled", "disabled");
+        $("#commonForm select").attr("disabled", "disabled");
 
-    });
-    //时间控件初始化
-    $(function() {
-        laydate({
-            elem : "#useTime",
-            event : "focus",
-            istime : false,
-            format : 'YYYY-MM-DD'
-        });
-        // laydate({
-        //     elem : "#endDay",
-        //     event : "focus",
-        //     istime : true,
-        //     format : 'YYYY-MM-DD hh:mm'
-        // });
     });
 
 </script>

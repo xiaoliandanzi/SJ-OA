@@ -24,7 +24,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>入库审批流程</h5>
+                    <h5>入库申请</h5>
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="commonForm" action="flow/biz/assetadd/save" method="post">
@@ -32,8 +32,10 @@
                         <input type="hidden" name="optType" id="optType">
                         <input type="hidden" name="id" id="id" value="${base.id }">
                         <%@include file="/WEB-INF/jsp/flow/assetapproval/addform.jsp" %>
+
                         <div class="form-group" style="margin-top: 30px;">
-                            <div class="col-sm-4 col-sm-offset-3">
+                            <div class="col-sm-5 col-sm-offset-4">
+                                <button class="btn btn-primary" type="button" onclick="doBtnSaveDraftAction();">保存草稿</button>
                                 <button class="btn btn-primary" type="button" onclick="doBtnSaveApplyAction();">发起申请</button>
                             </div>
                         </div>

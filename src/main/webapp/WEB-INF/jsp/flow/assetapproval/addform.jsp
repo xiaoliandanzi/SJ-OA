@@ -10,7 +10,7 @@
     <label class="col-sm-3 control-label">资产管理部门*：</label>
     <div class="col-sm-8">
         <div class="input-group">
-            <t:choose url="common/selectDepart" hiddenName="dept" hiddenValue="${biz.dept}" textValue="" textName="departLabel" hiddenId="departId" textId="departLabel"></t:choose>
+            <t:choose url="common/selectDepart" hiddenName="dept" hiddenValue="${biz.dept}" textValue="${biz.dept}" textName="departLabel" hiddenId="departId" textId="departLabel"></t:choose>
         </div>
     </div>
 </div>
@@ -32,28 +32,15 @@
 <div class="form-group">
     <label class="col-sm-3 control-label">合计*：</label>
     <div class="col-sm-5">
-        <input id="amount" name="amount" type="number" class="form-control" required="">
+        <input id="total" name="total" type="number" class="form-control" required="">
     </div>
 </div>
 <input type="hidden" name="jsonData" id="jsonData">
-<%--<div class="form-group">
-    <label class="col-sm-2 control-label">数量*：</label>
-    <div class="col-sm-3">
-        <input id="quantity" name="quantity"  type="text" class="form-control" required="" value="${biz.quantity }">
-    </div>
-    <label class="col-sm-2 control-label">价格*：</label>
-    <div class="col-sm-3">
-        <input id="amount" name="amount"  type="text" class="form-control" required="" value="${biz.amount }">
-    </div>
-</div>--%>
+
 <div class="form-group">
-    <%--<label class="col-sm-2 control-label">规格型号*：</label>
-    <div class="col-sm-3">
-        <input id="model" name="model"  type="text" class="form-control" required="" value="${biz.model }">
-    </div>--%>
     <label class="col-sm-3 control-label m-b">取得日期*：</label>
     <div class="col-sm-4 m-b">
-        <input class="laydate-icon form-control layer-date" id="time" name="time" value='<fmt:formatDate value="${biz.time }" type="time" pattern="yyyy-MM-dd"/>'>
+        <input class="laydate-icon form-control layer-date" id="time" name="time" value="${biz.time }">
     </div>
 </div>
 <div class="form-group">
@@ -105,7 +92,6 @@
             '        <input  id="quantity" name="quantity" required="" class="form-control" />\n' +
             '    </div>\n' +
             '</div>\n' +
-            '\n' +
             '<div class="input-hidden form-group">\n' +
             '    <label class="col-sm-3 control-label">价格*：</label>\n' +
             '    <div class="col-sm-8">\n' +
@@ -126,7 +112,6 @@
                 var amount = $("#amount").val();
                 var model = $("#model").val();
                 var Subtotal = quantity * amount;
-
                 console.log(assetName + "," + quantity + "," +amount + "," +model + "," +Subtotal)
 
                 var i= list.length;
@@ -162,7 +147,7 @@
             var item = list[i];
             count += item['Subtotal'];
         }
-        $("#amount").val(count)
+        $("#total").val(count)
         //第一个实例
         if(is_show){
             table.render({

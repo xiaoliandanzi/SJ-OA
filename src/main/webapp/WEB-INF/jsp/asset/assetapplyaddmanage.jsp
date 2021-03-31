@@ -41,7 +41,7 @@
     <t:dgCol name="address" label="移交地点" width="60"></t:dgCol>
     <t:dgDelOpt label="删除" url="aseet/manage/apply/delete?id={id}"/>
     <t:dgToolBar url="asset/manage/apply/addgo" label="入库申请" type="define" funName="apply" width="70%"></t:dgToolBar>
-    <t:dgToolBar label="查看详情" icon="fa fa-eye" url="flow/biz/task/viewApprove" type="check" width="90%" height="90%"></t:dgToolBar>
+    <%--<t:dgToolBar label="查看详情" icon="fa fa-eye" url="flow/biz/task/viewApprove" type="check" width="90%" height="90%"></t:dgToolBar>--%>
     <%--<t:dgToolBar url="asset/manage/addorupdate" label="编辑" type="edit" width="70%"></t:dgToolBar>--%>
     <t:dgToolBar type="refresh" ></t:dgToolBar>
     <t:dgToolBar label="导出" type="define" funName="printIt" ></t:dgToolBar>

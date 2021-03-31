@@ -96,7 +96,7 @@ public class FlowAssetAddController {
      * @return
      */
     @RequestMapping("/addgo")
-    public ModelAndView go(String formId, String type, String workflowId, String id, HttpServletRequest request) {
+    public ModelAndView addgo(String formId, String type, String workflowId, String id, HttpServletRequest request) {
         ModelAndView view = new ModelAndView("flow/assetapproval/assetaddapply");
 
         if(StringUtils.isEmpty(formId)) {
@@ -169,7 +169,7 @@ public class FlowAssetAddController {
         //获取当前用户个人资料
         SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
         FlowAssetAddEntity biz = new FlowAssetAddEntity();
-        biz.setDept(user.getDeptName());
+        //biz.setDept(user.getDeptName());
 
         view.addObject("biz", biz);
 
@@ -285,10 +285,36 @@ public class FlowAssetAddController {
                     //保存业务数据
                     Map<String, Object> variables = new HashMap<String, Object>();
                     variables.put("deptId",flowAssetAddEntity.getDept());
-                    flowAssetAddEntity.setApplystatus(1);//草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
-
-
+                    flowAssetAddEntity.setDept(sysDeptService.getById(flowAssetAddEntity.getDept()).getName());
                     flowAssetAddService.saveNewAsset(workflowBaseEntity, flowAssetAddEntity);
+
+                    String jsonData = flowAssetAddEntity.getJsonData();
+                    JSONArray arrays = JSON.parseArray(jsonData);
+                    for (int i = 0; i < arrays.size(); i++) {
+                        //添加到固定资产库存
+                        OaAssetStoreEntity oaAssetStoreEntity = new OaAssetStoreEntity();
+
+                        JSONObject jo = arrays.getJSONObject(i);
+                        String assetName = jo.getString("assetName");
+                        Integer quantity = jo.getInteger("quantity");
+                        Double amount = jo.getDouble("amount");
+                        String model = jo.getString("model");
+
+                        flowAssetAddEntity.setAssetName(assetName);
+                        flowAssetAddEntity.setQuantity(quantity);
+                        flowAssetAddEntity.setAmount(amount);
+                        flowAssetAddEntity.setModel(model);
+
+                        flowAssetAddEntity.setId(null);
+                        oaAssetStoreEntity.setDept(flowAssetAddEntity.getDept());
+                        oaAssetStoreEntity.setReceiver(flowAssetAddEntity.getCreateName());
+                        oaAssetStoreEntity.setId(null);
+                        oaAssetStoreEntity.setChangeTime(new Date());
+                        BeanUtils.copyProperties(flowAssetAddEntity,oaAssetStoreEntity);
+                        //设置状态为3
+                        oaAssetStoreEntity.setApplyStatus(1);
+                        oaAssetService.save(oaAssetStoreEntity);
+                    }
 
                     //启动流程
                     //赋值流程变量
@@ -457,14 +483,15 @@ public class FlowAssetAddController {
                 /*Date date = new Date();
                 String strDateFormat = "yyyy-MM-dd";
                 SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);*/
-                //添加到固定资产库存
-                OaAssetStoreEntity oaAssetStoreEntity = new OaAssetStoreEntity();
 
-                String dept = SystemUtils.getDeptNameById(flowAssetAddEntity.getDept());
+                //String dept = SystemUtils.getDeptNameById(flowAssetAddEntity.getDept());
 
                 String jsonData = flowAssetAddEntity.getJsonData();
                 JSONArray array = JSON.parseArray(jsonData);
-                for (int i = 0; i < array.size()-1; i++) {
+                for (int i = 0; i < array.size(); i++) {
+                    //添加到固定资产库存
+                    OaAssetStoreEntity oaAssetStoreEntity = new OaAssetStoreEntity();
+
                     JSONObject jo = array.getJSONObject(i);
                     String assetName = jo.getString("assetName");
                     Integer quantity = jo.getInteger("quantity");
@@ -476,7 +503,8 @@ public class FlowAssetAddController {
                     flowAssetAddEntity.setAmount(amount);
                     flowAssetAddEntity.setModel(model);
 
-                    oaAssetStoreEntity.setDept(dept);
+                    flowAssetAddEntity.setId(null);
+                    oaAssetStoreEntity.setDept(flowAssetAddEntity.getDept());
                     oaAssetStoreEntity.setReceiver(flowAssetAddEntity.getCreateName());
                     oaAssetStoreEntity.setId(null);
                     oaAssetStoreEntity.setChangeTime(new Date());
