@@ -58,7 +58,7 @@
     </div>--%>
     <div class="col-sm-3">
         <div class="input-group">
-            <t:choose url="common/selectUsers" hiddenName="monitorId" hiddenValue="${monitorId }" textValue="${monitor }" textName="monitor" hiddenId="monitorId" textId="monitor"></t:choose>
+            <t:choose url="common/selectUsers" hiddenName="monitorId" hiddenValue="${monitorId }" textValue="${biz.monitor }" textName="monitor" hiddenId="monitorId" textId="monitor"></t:choose>
         </div>
     </div>
     <label class="col-sm-2 control-label">接受人：*</label>
@@ -67,7 +67,7 @@
     <%--</div>--%>
     <div class="col-sm-3">
         <div class="input-group">
-            <t:choose url="common/selectUsers" hiddenName="receiverId" hiddenValue="${receiverId }" textValue="${receiver }" textName="receiver" hiddenId="receiverId" textId="receiver"></t:choose>
+            <t:choose url="common/selectUsers" hiddenName="receiverId" hiddenValue="${receiverId }" textValue="${biz.receiver }" textName="receiver" hiddenId="receiverId" textId="receiver"></t:choose>
         </div>
     </div>
 </div>

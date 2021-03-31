@@ -1,7 +1,10 @@
 package com.active4j.hr.asset.controller;
 
+import com.active4j.hr.activiti.biz.dao.FlowAssetAddMapper;
+import com.active4j.hr.activiti.biz.entity.FlowAssetAddEntity;
 import com.active4j.hr.asset.dao.OaAssetDao;
 import com.active4j.hr.asset.entity.OaAssetStoreEntity;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import fr.opensagres.xdocreport.core.XDocReportException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +36,9 @@ public class AssetWordController  {
     @Resource
     private OaAssetDao oaAssetDao;
 
+    @Resource
+    private FlowAssetAddMapper flowAssetAddMapper;
+
 
 
 //    @Test
@@ -43,7 +49,7 @@ public class AssetWordController  {
 //    public void generateWord() throws IOException, XDocReportException , ParseException {
 //
 //                // 获取Word模板，模板存放路径在项目的resources目录下
-//                InputStream ins = this.getClass().getResourceAsStream("/1.docx");
+//                InputStream ins = this.getClass().getResourceAsStream("/word.docx");
 //
 //                //注册xdocreport实例并加载FreeMarker模板引擎
 //                IXDocReport report = XDocReportRegistry.getRegistry().loadReport(ins,
@@ -82,7 +88,7 @@ public class AssetWordController  {
 //                fm.load("list", OaAssetStoreEntity.class, true);
 //
 //                //输出到本地目录
-//                OutputStream out = new FileOutputStream(new File("D://1.docx"));
+//                OutputStream out = new FileOutputStream(new File("D://word.docx"));
 //                report.process(context,out);
 //                out.close();
 //
@@ -91,10 +97,9 @@ public class AssetWordController  {
     @RequestMapping(value = "exportWord",method = RequestMethod.GET)
     public void generateWord(HttpServletResponse response) throws IOException, XDocReportException , ParseException {
 
-
         try {
         // 获取Word模板，模板存放路径在项目的resources目录下
-        InputStream ins = this.getClass().getResourceAsStream("/1.docx");
+        InputStream ins = this.getClass().getResourceAsStream("/apply.docx");
 
         //注册xdocreport实例并加载FreeMarker模板引擎
         IXDocReport report = XDocReportRegistry.getRegistry().loadReport(ins,
@@ -112,7 +117,9 @@ public class AssetWordController  {
         context.put("year",year);
         context.put("mouth",mouth);
         context.put("day",day);
-        List<OaAssetStoreEntity> listall=oaAssetDao.selectList(null);
+            QueryWrapper<OaAssetStoreEntity> queryWrapper = new QueryWrapper<OaAssetStoreEntity>();
+            queryWrapper.eq("APPLYSTATUS",3);
+        List<OaAssetStoreEntity> listall=oaAssetDao.selectList(queryWrapper);
         context.put("list",listall);
         //创建字段元数据
         FieldsMetadata fm = report.createFieldsMetadata();
@@ -120,7 +127,56 @@ public class AssetWordController  {
         fm.load("list", OaAssetStoreEntity.class, true);
 
 //        //输出到本地目录
-//        OutputStream out = new FileOutputStream(new File("D://1.docx"));
+//        OutputStream out = new FileOutputStream(new File("D://word.docx"));
+//        report.process(context,out);
+
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("application/msword");
+            String fileName = "双井街道固定资产入库表.docx";
+            response.setHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(fileName, "UTF-8"))));
+            report.process(context, response.getOutputStream());
+            ins.close();
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("打印失败，错误原因：{}", e.getMessage());
+        }
+
+    }
+
+    @RequestMapping(value = "exportApplyWord",method = RequestMethod.GET)
+    public void generateApplyWord(HttpServletResponse response) throws IOException, XDocReportException , ParseException {
+
+        try {
+        // 获取Word模板，模板存放路径在项目的resources目录下
+        InputStream ins = this.getClass().getResourceAsStream("/apply.docx");
+
+        //注册xdocreport实例并加载FreeMarker模板引擎
+        IXDocReport report = XDocReportRegistry.getRegistry().loadReport(ins,
+                TemplateEngineKind.Freemarker);
+        //创建xdocreport上下文对象
+        IContext context = report.createContext();
+
+        //创建要替换的文本变量
+//        context.put("city", "北京市");
+//        context.put("startDate", "2020-09-17");
+        Date dt=new Date();
+        String year=String.format("%tY", dt);
+        String mouth=String .format("%tm", dt);
+        String day=String .format("%td", dt);
+        context.put("year",year);
+        context.put("mouth",mouth);
+        context.put("day",day);
+            QueryWrapper<OaAssetStoreEntity> queryWrapper = new QueryWrapper<OaAssetStoreEntity>();
+            queryWrapper.eq("APPLYSTATUS",1);
+        List<OaAssetStoreEntity> listall=oaAssetDao.selectList(queryWrapper);
+        context.put("list",listall);
+        //创建字段元数据
+        FieldsMetadata fm = report.createFieldsMetadata();
+        //Word模板中的表格数据对应的集合类型
+        fm.load("list", OaAssetStoreEntity.class, true);
+
+//        //输出到本地目录
+//        OutputStream out = new FileOutputStream(new File("D://apply.docx"));
 //        report.process(context,out);
 
             response.setCharacterEncoding("utf-8");

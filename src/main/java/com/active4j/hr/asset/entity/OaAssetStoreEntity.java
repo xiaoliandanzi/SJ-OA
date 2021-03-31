@@ -74,12 +74,6 @@ public class OaAssetStoreEntity extends BaseEntity {
     private String commit;
 
     /**
-     *
-     */
-    @TableField(value = "CHANGE_TIME" ,fill= FieldFill.UPDATE)
-    private Date changeTime;
-
-    /**
      * 状态
      */
     @TableField("APPLYSTATUS")
@@ -90,6 +84,13 @@ public class OaAssetStoreEntity extends BaseEntity {
      */
     @TableField("APPLICATION")
     private String application;
+
+    /**
+     *
+     */
+    @TableField(value = "CHANGE_TIME" ,fill= FieldFill.UPDATE)
+    private Date changeTime;
+
 //    /**
 //     * 多规格数据
 //     */
