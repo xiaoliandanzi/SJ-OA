@@ -10,6 +10,7 @@ import com.active4j.hr.activiti.service.WorkflowFormService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.activiti.service.WorkflowService;
 import com.active4j.hr.asset.entity.OaAssetStoreEntity;
+import com.active4j.hr.asset.service.OaAssetService;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.model.AjaxJson;
@@ -62,10 +63,18 @@ public class AssetApplyController extends BaseController {
     private WorkflowService workflowService;
     @Autowired
     private FlowAssetAddService flowAssetAddService;
+    @Autowired
+    private OaAssetService oaAssetService;
 
     @RequestMapping("/list")
     public ModelAndView show(HttpServletRequest request) {
         ModelAndView view = new ModelAndView("asset/assetapplymanage");
+        return view;
+    }
+
+    @RequestMapping("/addlist")
+    public ModelAndView addshow(HttpServletRequest request) {
+        ModelAndView view = new ModelAndView("asset/assetapplyaddmanage");
         return view;
     }
 
@@ -84,6 +93,17 @@ public class AssetApplyController extends BaseController {
         // 执行查询
         IPage<FlowAssetApprovalEntity> lstResult = flowAssetApprovalService.page(new Page<FlowAssetApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
 
+
+
+        ResponseUtil.writeJson(response, dataGrid, lstResult);
+    }
+
+    @RequestMapping("/adddatagrid")
+    public void adddatagrid(OaAssetStoreEntity oaAssetStoreEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        // 拼接查询条件
+        QueryWrapper<OaAssetStoreEntity> queryWrapper = QueryUtils.installQueryWrapper(oaAssetStoreEntity, request.getParameterMap(), dataGrid);
+        // 执行查询
+        IPage<OaAssetStoreEntity> lstResult = oaAssetService.page(new Page<OaAssetStoreEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper.in("APPLYSTATUS",1,3));
 
 
         ResponseUtil.writeJson(response, dataGrid, lstResult);

@@ -79,6 +79,17 @@ public class OaAssetStoreEntity extends BaseEntity {
     @TableField(value = "CHANGE_TIME" ,fill= FieldFill.UPDATE)
     private Date changeTime;
 
+    /**
+     * 状态
+     */
+    @TableField("APPLYSTATUS")
+    private Integer applyStatus;
+
+    /**
+     * 用途
+     */
+    @TableField("APPLICATION")
+    private String application;
 //    /**
 //     * 多规格数据
 //     */

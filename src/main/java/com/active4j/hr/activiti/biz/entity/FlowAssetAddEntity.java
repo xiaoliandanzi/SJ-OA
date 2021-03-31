@@ -1,6 +1,7 @@
 package com.active4j.hr.activiti.biz.entity;
 
 
+import com.active4j.hr.common.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
@@ -20,24 +21,24 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Getter
 @Setter
 @TableName("flow_asset_add")
-public class FlowAssetAddEntity {
+public class FlowAssetAddEntity extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "ID", type = IdType.UUID)
-    private String id;
+    /*@TableId(value = "ID", type = IdType.UUID)
+    private String id;*/
 
-    @ApiModelProperty(value = "版本号")
+    /*@ApiModelProperty(value = "版本号")
     @TableField(fill=FieldFill.INSERT)
-    private Integer versions;
+    private Integer versions;*/
 
-    @ApiModelProperty(value = "申请人")
+    /*@ApiModelProperty(value = "申请人")
     @TableField(value="CREATE_NAME", fill=FieldFill.INSERT)
     private String createName;
 
     @ApiModelProperty(value = "申请时间")
     @TableField(value="CREATE_DATE", fill=FieldFill.INSERT)
-    private Date createDate;
+    private Date createDate;*/
 
     @ApiModelProperty(value = "入库日期")
     //@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -80,5 +81,9 @@ public class FlowAssetAddEntity {
     @TableField("APPLICATION")
     private String application;
 
-
+    /**
+     * 多规格数据
+     */
+    @TableField("JSON_DATA")
+    private String jsonData;
 }

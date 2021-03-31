@@ -25,7 +25,11 @@ import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.system.util.SystemUtils;
 import com.active4j.hr.topic.entity.OaEditStore;
 import com.active4j.hr.topic.service.OaEditStoreService;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import jdk.nashorn.internal.scripts.JO;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -111,7 +115,7 @@ public class FlowAssetAddController {
         if(StringUtils.equals("0", type)) {
             view = new ModelAndView("flow/assetapproval/assetaddapply");
         }else if(StringUtils.equals("1", type)) {
-            view = new ModelAndView("flow/assetapproval/applyaddshow");
+            /*view = new ModelAndView("flow/assetapproval/applyaddshow");
 
             //根据businessKey查询任务list
             String currentName = ShiroUtils.getSessionUserName();
@@ -120,16 +124,16 @@ public class FlowAssetAddController {
             List<Comment> lstComments =  workflowService.findCommentsListByBusinessKey(id);
             view.addObject("lstComments", lstComments);
             view.addObject("currentName", currentName);
-            view.addObject("show", "0");
+            view.addObject("show", "0");*/
 
         }else if(StringUtils.equals("2", type)) {
-            view = new ModelAndView("flow/include/approve");
+            /*view = new ModelAndView("flow/include/approve");
 
             //根据businessKey查询任务list
             String currentName = ShiroUtils.getSessionUserName();
             List<Task> lstTasks = workflowService.findTaskListByBusinessKey(id, currentName);
             view.addObject("lstTasks", lstTasks);
-            view.addObject("action", "flow/biz/carapproval/doApprove");
+            view.addObject("action", "flow/biz/carapproval/doApprove");*/
         }else if(StringUtils.equals("3", type)) {
             view = new ModelAndView("flow/assetapproval/applyaddshow");
 
@@ -207,12 +211,6 @@ public class FlowAssetAddController {
                 return j;
             }
 
-            if (StringUtils.isEmpty(flowAssetAddEntity.getAssetName())) {
-                j.setSuccess(false);
-                j.setMsg("资产名称不能为空!");
-                return j;
-            }
-
             if (null == flowAssetAddEntity.getTime()) {
                 j.setSuccess(false);
                 j.setMsg("入库时间不能为空!");
@@ -225,27 +223,47 @@ public class FlowAssetAddController {
                 return j;
             }
 
-            if ("null".equals(flowAssetAddEntity.getQuantity())) {
-                j.setSuccess(false);
-                j.setMsg("物品数量不能为空!");
-                return j;
+            String json_data = flowAssetAddEntity.getJsonData();
+            JSONArray array = JSON.parseArray(json_data);
+            for (int i = 0; i < array.size()-1; i++) {
+                JSONObject jo = array.getJSONObject(i);
+                String assetName = jo.getString("assetName");
+                Integer quantity = jo.getInteger("quantity");
+                Double amount = jo.getDouble("amount");
+                String model = jo.getString("model");
+
+                /*flowAssetAddEntity.setAssetName(assetName);
+                flowAssetAddEntity.setQuantity(quantity);
+                flowAssetAddEntity.setAmount(amount);
+                flowAssetAddEntity.setModel(model);*/
+
+                if (StringUtils.isEmpty(assetName)) {
+                    j.setSuccess(false);
+                    j.setMsg("资产名称不能为空!");
+                    return j;
+                }
+                if ("null".equals(quantity)) {
+                    j.setSuccess(false);
+                    j.setMsg("物品数量不能为空!");
+                    return j;
+                }
+                if ("null".equals(amount)) {
+                    j.setSuccess(false);
+                    j.setMsg("价格不能为空!");
+                    return j;
+                }
+                if (StringUtils.isEmpty(model)) {
+                    j.setSuccess(false);
+                    j.setMsg("规格/型号不能为空!");
+                    return j;
+                }
             }
-            if ("null".equals(flowAssetAddEntity.getAmount())) {
-                j.setSuccess(false);
-                j.setMsg("价格不能为空!");
-                return j;
-            }
-            if (StringUtils.isEmpty(flowAssetAddEntity.getModel())) {
-                j.setSuccess(false);
-                j.setMsg("规格/型号不能为空!");
-                return j;
-            }
+
             if (StringUtils.isEmpty(flowAssetAddEntity.getApplication())) {
                 j.setSuccess(false);
                 j.setMsg("用途不能为空!");
                 return j;
             }
-
 
             WorkflowMngEntity workflow = workflowMngService.getById(workflowBaseEntity.getWorkflowId());
             if (null == workflow) {
@@ -267,6 +285,7 @@ public class FlowAssetAddController {
                     //保存业务数据
                     Map<String, Object> variables = new HashMap<String, Object>();
                     variables.put("deptId",flowAssetAddEntity.getDept());
+                    flowAssetAddEntity.setApplystatus(1);//草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
 
 
                     flowAssetAddService.saveNewAsset(workflowBaseEntity, flowAssetAddEntity);
@@ -440,19 +459,38 @@ public class FlowAssetAddController {
                 SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);*/
                 //添加到固定资产库存
                 OaAssetStoreEntity oaAssetStoreEntity = new OaAssetStoreEntity();
-                BeanUtils.copyProperties(flowAssetAddEntity,oaAssetStoreEntity);
-                String dept = SystemUtils.getDeptNameById(flowAssetAddEntity.getDept());
-                oaAssetStoreEntity.setDept(dept);
-                oaAssetStoreEntity.setReceiver(flowAssetAddEntity.getCreateName());
-                oaAssetStoreEntity.setId(null);
-                oaAssetStoreEntity.setChangeTime(new Date());
-                oaAssetService.save(oaAssetStoreEntity);
 
-                //同步保存到oa_edit_store表格
-                oaAssetStoreEntity.setId(null);
-                OaEditStore editStore = new OaEditStore();
-                BeanUtils.copyProperties(oaAssetStoreEntity,editStore);
-                oaEditStoreService.save(editStore);
+                String dept = SystemUtils.getDeptNameById(flowAssetAddEntity.getDept());
+
+                String jsonData = flowAssetAddEntity.getJsonData();
+                JSONArray array = JSON.parseArray(jsonData);
+                for (int i = 0; i < array.size()-1; i++) {
+                    JSONObject jo = array.getJSONObject(i);
+                    String assetName = jo.getString("assetName");
+                    Integer quantity = jo.getInteger("quantity");
+                    Double amount = jo.getDouble("amount");
+                    String model = jo.getString("model");
+
+                    flowAssetAddEntity.setAssetName(assetName);
+                    flowAssetAddEntity.setQuantity(quantity);
+                    flowAssetAddEntity.setAmount(amount);
+                    flowAssetAddEntity.setModel(model);
+
+                    oaAssetStoreEntity.setDept(dept);
+                    oaAssetStoreEntity.setReceiver(flowAssetAddEntity.getCreateName());
+                    oaAssetStoreEntity.setId(null);
+                    oaAssetStoreEntity.setChangeTime(new Date());
+                    BeanUtils.copyProperties(flowAssetAddEntity,oaAssetStoreEntity);
+                    //设置状态为3
+                    oaAssetStoreEntity.setApplyStatus(3);
+                    oaAssetService.save(oaAssetStoreEntity);
+
+                    //同步保存到oa_edit_store表格
+                    oaAssetStoreEntity.setId(null);
+                    OaEditStore editStore = new OaEditStore();
+                    BeanUtils.copyProperties(oaAssetStoreEntity,editStore);
+                    oaEditStoreService.save(editStore);
+                }
 
                 //添加到系统信息
                 WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getCreateName(), task.getAssignee(),
