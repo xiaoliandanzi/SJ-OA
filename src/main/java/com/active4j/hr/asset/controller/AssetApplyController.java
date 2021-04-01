@@ -103,7 +103,7 @@ public class AssetApplyController extends BaseController {
         // 拼接查询条件
         QueryWrapper<OaAssetStoreEntity> queryWrapper = QueryUtils.installQueryWrapper(oaAssetStoreEntity, request.getParameterMap(), dataGrid);
         // 执行查询
-        IPage<OaAssetStoreEntity> lstResult = oaAssetService.page(new Page<OaAssetStoreEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper.eq("APPLYSTATUS",1));
+        IPage<OaAssetStoreEntity> lstResult = oaAssetService.page(new Page<OaAssetStoreEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper.in("APPLYSTATUS",1,3));
 
 
         ResponseUtil.writeJson(response, dataGrid, lstResult);
