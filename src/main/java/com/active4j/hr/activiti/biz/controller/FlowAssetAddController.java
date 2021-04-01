@@ -225,7 +225,8 @@ public class FlowAssetAddController {
 
             String json_data = flowAssetAddEntity.getJsonData();
             JSONArray array = JSON.parseArray(json_data);
-            for (int i = 0; i < array.size()-1; i++) {
+            QueryWrapper<OaAssetStoreEntity> queryWrapper = new QueryWrapper<>();
+            for (int i = 0; i < array.size(); i++) {
                 JSONObject jo = array.getJSONObject(i);
                 String assetName = jo.getString("assetName");
                 Integer quantity = jo.getInteger("quantity");
@@ -236,6 +237,12 @@ public class FlowAssetAddController {
                 flowAssetAddEntity.setQuantity(quantity);
                 flowAssetAddEntity.setAmount(amount);
                 flowAssetAddEntity.setModel(model);*/
+
+                if (null != queryWrapper.eq("ASSETNAME",assetName).eq("APPLYSTATUS",3).eq("DEPT",sysDeptService.getById(flowAssetAddEntity.getDept()).getName())){
+                    j.setSuccess(false);
+                    j.setMsg("资产已存在!");
+                    return j;
+                }
 
                 if (StringUtils.isEmpty(assetName)) {
                     j.setSuccess(false);
@@ -488,30 +495,19 @@ public class FlowAssetAddController {
 
                 String jsonData = flowAssetAddEntity.getJsonData();
                 JSONArray array = JSON.parseArray(jsonData);
+                QueryWrapper<OaAssetStoreEntity> wrapper = new QueryWrapper<>();
                 for (int i = 0; i < array.size(); i++) {
                     //添加到固定资产库存
                     OaAssetStoreEntity oaAssetStoreEntity = new OaAssetStoreEntity();
-
                     JSONObject jo = array.getJSONObject(i);
                     String assetName = jo.getString("assetName");
-                    Integer quantity = jo.getInteger("quantity");
-                    Double amount = jo.getDouble("amount");
-                    String model = jo.getString("model");
+                    wrapper.eq("ASSETNAME",assetName).eq("DEPT",flowAssetAddEntity.getDept());
+                    List<OaAssetStoreEntity> list = oaAssetService.list(wrapper);
+                    BeanUtils.copyProperties(list.get(0),oaAssetStoreEntity);
 
-                    flowAssetAddEntity.setAssetName(assetName);
-                    flowAssetAddEntity.setQuantity(quantity);
-                    flowAssetAddEntity.setAmount(amount);
-                    flowAssetAddEntity.setModel(model);
-
-                    flowAssetAddEntity.setId(null);
-                    oaAssetStoreEntity.setDept(flowAssetAddEntity.getDept());
-                    oaAssetStoreEntity.setReceiver(flowAssetAddEntity.getCreateName());
-                    oaAssetStoreEntity.setId(null);
-                    oaAssetStoreEntity.setChangeTime(new Date());
-                    BeanUtils.copyProperties(flowAssetAddEntity,oaAssetStoreEntity);
                     //设置状态为3
                     oaAssetStoreEntity.setApplyStatus(3);
-                    oaAssetService.save(oaAssetStoreEntity);
+                    oaAssetService.updateById(oaAssetStoreEntity);
 
                     //同步保存到oa_edit_store表格
                     oaAssetStoreEntity.setId(null);
