@@ -118,7 +118,7 @@ public class AssetWordController  {
         context.put("mouth",mouth);
         context.put("day",day);
             QueryWrapper<OaAssetStoreEntity> queryWrapper = new QueryWrapper<OaAssetStoreEntity>();
-            queryWrapper.eq("APPLYSTATUS",3);
+            queryWrapper.in("APPLYSTATUS",2,3);
         List<OaAssetStoreEntity> listall=oaAssetDao.selectList(queryWrapper);
         context.put("list",listall);
         //创建字段元数据

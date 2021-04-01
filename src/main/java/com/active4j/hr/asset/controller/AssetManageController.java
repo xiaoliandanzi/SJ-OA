@@ -75,7 +75,7 @@ public class AssetManageController extends BaseController {
         // 拼接查询条件
         QueryWrapper<OaAssetStoreEntity> queryWrapper = QueryUtils.installQueryWrapper(oaAssetStoreEntity, request.getParameterMap(), dataGrid);
         // 执行查询
-        IPage<OaAssetStoreEntity> lstResult = oaAssetService.page(new Page<OaAssetStoreEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+        IPage<OaAssetStoreEntity> lstResult = oaAssetService.page(new Page<OaAssetStoreEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper.in("APPLYSTATUS",2,3));
 
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
@@ -148,6 +148,7 @@ public class AssetManageController extends BaseController {
 
             if(StringUtils.isEmpty(oaAssetStoreEntity.getId())) {
                 //新增方法
+                oaAssetStoreEntity.setApplyStatus(2);
                 oaAssetService.save(oaAssetStoreEntity);
 
                 //同步保存到oa_edit_store表格
