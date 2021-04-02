@@ -238,7 +238,7 @@ public class FlowAssetAddController {
                 flowAssetAddEntity.setAmount(amount);
                 flowAssetAddEntity.setModel(model);*/
 
-                if (null != queryWrapper.eq("ASSETNAME",assetName).eq("APPLYSTATUS",3).eq("DEPT",sysDeptService.getById(flowAssetAddEntity.getDept()).getName())){
+                if (0 != oaAssetService.list(queryWrapper.eq("ASSETNAME",assetName).eq("APPLYSTATUS",3).eq("DEPT",sysDeptService.getById(flowAssetAddEntity.getDept()).getName())).size()){
                     j.setSuccess(false);
                     j.setMsg("资产已存在!");
                     return j;
