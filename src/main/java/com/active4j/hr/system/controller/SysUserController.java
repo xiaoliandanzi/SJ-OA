@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.active4j.hr.core.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -184,10 +185,14 @@ public class SysUserController extends BaseController {
 			for (String roleId : roleIds) {
 				queryWrapper.select("ROLE_NAME").eq("ID",roleId);
 				List<SysRoleEntity> list = sysRoleService.list(queryWrapper);
-				if (list.contains("科室负责人")){
-					sysUserEntity.setSort(1);
-				}else{
-					sysUserEntity.setSort(999);
+				for (SysRoleEntity sysRoleEntity : list) {
+					String name =sysRoleEntity.getRoleName();
+					if (name.contains("科室负责人")){
+						sysUserEntity.setSort(1);
+						break;
+					}else{
+						sysUserEntity.setSort(999);
+					}
 				}
 			}
 			if(StringUtils.isEmpty(sysUserEntity.getId())) {
