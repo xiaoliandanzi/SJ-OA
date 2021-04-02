@@ -184,14 +184,10 @@ public class SysUserController extends BaseController {
 			for (String roleId : roleIds) {
 				queryWrapper.select("ROLE_NAME").eq("ID",roleId);
 				List<SysRoleEntity> list = sysRoleService.list(queryWrapper);
-				for (SysRoleEntity sysRoleEntity : list) {
-					String name =sysRoleEntity.getRoleName();
-					if (name.substring(name.length()-3).equals("负责人")){
-						sysUserEntity.setSort(1);
-						break;
-					}else{
-						sysUserEntity.setSort(999);
-					}
+				if (list.contains("科室负责人")){
+					sysUserEntity.setSort(1);
+				}else{
+					sysUserEntity.setSort(999);
 				}
 			}
 			if(StringUtils.isEmpty(sysUserEntity.getId())) {
