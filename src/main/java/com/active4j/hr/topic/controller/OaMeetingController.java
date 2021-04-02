@@ -938,9 +938,12 @@ public class OaMeetingController {
         List<String>  coniddata=new ArrayList<>();
         for (int i=0; i<conlist.size();i++){
             QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
-            queryWrapper.in("REAL_NAME",conlist.get(i));
-            SysUserEntity user = userService.list(queryWrapper).get(0);
-            coniddata.add(user.getId());
+            queryWrapper.eq("REAL_NAME",conlist.get(i));
+            List<SysUserEntity> list = userService.list(queryWrapper);
+            if (0 != list.size()){
+                SysUserEntity user =list.get(0);
+                coniddata.add(user.getId());
+            }
         }
             String   idza="";
             for(int i=0; i<coniddata.size(); i++){
