@@ -76,9 +76,17 @@
 
     function getTransByTaskId(){
         var taskId = $("#taskId").val();
-        $.post("flow/biz/task/getTransByTaskId", {taskId:taskId}, function(o) {
+        // var sign = false;
+        // debugger
+        // $.ajaxSettings.async = false;
+        // $.get("flow/biz/getSpe/ismanager",function (zx) {
+        //     console.log("zxxxxxxxxxxxxx"+zx)
+        //     var sign = zx;
+        // })
+        $.post("flow/biz/task/getTransByTaskIdIsManager", {taskId:taskId}, function(o) {
             if(o.success) {
                 var count = o.attributes.count;
+                var sign = o.attributes.sign;
                 if(count == 1){
                     //默认通过
 
@@ -93,7 +101,10 @@
                     $("#btnLabel").append("<button class='col-sm-2 btn btn-primary m-t' type='button' onclick='doBtnApproveAction();'>" +
                         "审批通过</button>");
                     $("#btnLabel").append("<button class='col-sm-1 btn btn-danger m-t' style='margin-left:20px;' type='button' onclick='doBtnBackAction();'>驳回</button>");
-                    //$("#btnLabel").append("<button class='col-sm-2 btn btn-primary m-t' style='margin-left:20px;' type='button' onclick='doBtnOverApproveAction();'>通过&结束审批</button>");
+                    if (sign == true){
+                        $("#btnLabel").append("<button class='col-sm-2 btn btn-primary m-t' style='margin-left:20px;' type='button' onclick='doBtnOverApproveAction();'>通过&结束审批</button>");
+                    }
+
                 }
             }
         });
