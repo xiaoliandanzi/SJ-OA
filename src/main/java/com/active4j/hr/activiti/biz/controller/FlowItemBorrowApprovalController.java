@@ -9,6 +9,7 @@ import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.activiti.service.WorkflowFormService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.activiti.service.WorkflowService;
+import com.active4j.hr.asset.entity.OaAssetStoreEntity;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
@@ -397,27 +398,35 @@ public class FlowItemBorrowApprovalController extends BaseController {
                 return j;
             }
 
-//            if(null == flowItemBorrowApprovalEntity.getItemName()) {
-//                j.setSuccess(false);
-//                j.setMsg("物品名称不能为空");
-//                return j;
-//            }
-//
-//            if(null == flowItemBorrowApprovalEntity.getQuantity()) {
-//                j.setSuccess(false);
-//                j.setMsg("借用数量不能为空");
-//                return j;
-//            }
-            QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<>();
-            queryWrapper.select("NUMLIMIT").eq("TYPE",1).eq("NAME",flowItemBorrowApprovalEntity.getItemName());
-            List<RequisitionedItemEntity> list = requisitionedItemService.list(queryWrapper);
-            if(flowItemBorrowApprovalEntity.getQuantity()>list.get(0).getNumLimit()) {
-                j.setSuccess(false);
-                j.setMsg("领用数量不能大于限额："+ list.get(0).getNumLimit());
-                return j;
+
+            String json_data = flowItemBorrowApprovalEntity.getJsonData();
+            JSONArray array = JSON.parseArray(json_data);
+            for (int i = 0; i < array.size(); i++) {
+                JSONObject jo = array.getJSONObject(i);
+                String itemName = jo.getString("itemName");
+                Integer quantity = jo.getInteger("quantity");
+
+                if (StringUtils.isEmpty(itemName)) {
+                    j.setSuccess(false);
+                    j.setMsg("资产名称不能为空!");
+                    return j;
+                }
+
+                if ("null".equals(quantity)) {
+                    j.setSuccess(false);
+                    j.setMsg("物品数量不能为空!");
+                    return j;
+                }
+
+                QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<>();
+                queryWrapper.select("NUMLIMIT").eq("TYPE",1).eq("NAME",itemName);
+                List<RequisitionedItemEntity> list = requisitionedItemService.list(queryWrapper);
+                if(quantity>list.get(0).getNumLimit()) {
+                    j.setSuccess(false);
+                    j.setMsg("领用数量不能大于限额："+ list.get(0).getNumLimit());
+                    return j;
+                }
             }
-
-
 
             if(null == flowItemBorrowApprovalEntity.getDepartmentName()) {
                 j.setSuccess(false);
@@ -483,8 +492,6 @@ public class FlowItemBorrowApprovalController extends BaseController {
                     flowItemBorrowApprovalService.saveNewItemBorrow(workflowBaseEntity, flowItemBorrowApprovalEntity);
 
                     //==============减去库存==============
-                    String json_data = flowItemBorrowApprovalEntity.getJsonData();
-                    JSONArray array = JSON.parseArray(json_data);
                     for (int i = 0; i < array.size(); i++) {
                         JSONObject jo = array.getJSONObject(i);
                         String itemName = jo.getString("itemName");
@@ -535,8 +542,6 @@ public class FlowItemBorrowApprovalController extends BaseController {
 
 
                     //==============减去库存==============
-                    String json_data = flowItemBorrowApprovalEntity.getJsonData();
-                    JSONArray array = JSON.parseArray(json_data);
                     for (int i = 0; i < array.size(); i++) {
                         JSONObject jo = array.getJSONObject(i);
                         String itemName = jo.getString("itemName");
