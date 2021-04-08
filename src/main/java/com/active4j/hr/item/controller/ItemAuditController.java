@@ -71,6 +71,31 @@ public class ItemAuditController extends BaseController {
     }
 
 
+    /**
+     * 跳转到承接审批流程
+     *
+     * @param req
+     * @return
+     */
+    @RequestMapping("/groupwaittasklist")
+    public ModelAndView groupwaittasklist(HttpServletRequest req) {
+        ModelAndView view = new ModelAndView("item/groupwaittasklist");
+
+        // 获取流程类别数据
+        List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
+
+        List<WorkflowCategoryEntity> lstSeal = new ArrayList<WorkflowCategoryEntity>();
+        int size = lstCatogorys.size();
+        for (int i = size - 1; i >= 0; i--) {
+            WorkflowCategoryEntity catogorys = lstCatogorys.get(i);
+            if (catogorys.getName().equals("物品审批")) {
+                lstSeal.add(catogorys);
+            }
+        }
+        view.addObject("categoryReplace", ListUtils.listToReplaceStr(lstSeal, "name", "id"));
+
+        return view;
+    }
 
     /**
      * 删除
@@ -146,7 +171,7 @@ public class ItemAuditController extends BaseController {
         IPage<WorkflowBaseEntity> lstResult = workflowService.findGroupTaskStrsByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName());
         long size = lstResult.getTotal();
         for (long i = size - 1; i >= 0; --i) {
-            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("物品审批")){
+            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("物品借用申请")){
                 lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
             }
         }

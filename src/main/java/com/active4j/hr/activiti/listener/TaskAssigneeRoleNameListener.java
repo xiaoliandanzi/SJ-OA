@@ -84,6 +84,12 @@ public class TaskAssigneeRoleNameListener implements TaskListener {
 		}else {
 			for(String user : lstUsers) {
 				taskService.addCandidateUser(delegateTask.getId(), user);
+				ProcessInstance pi = runtimeService.createProcessInstanceQuery()
+						.processInstanceId(delegateTask.getProcessInstanceId())
+						.singleResult();
+				String business_key = pi.getBusinessKey();
+				WorkflowBaseEntity base = workflowBaseService.getById(business_key);
+				WorkflowTaskUtil.sendApplyMessage(user,applyName,base.getApplyDate(), base.getWorkFlowName());
 			}
 		}
 	}
