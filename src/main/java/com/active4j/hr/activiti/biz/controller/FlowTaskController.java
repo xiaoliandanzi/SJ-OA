@@ -341,6 +341,39 @@ public class FlowTaskController extends BaseController {
 		
 		return j;
 	}
+	/**
+	 * 根据任务ID，获取连线
+	 * @param id
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("/getTransByTaskIdIsManager")
+	@ResponseBody
+	public AjaxJson getTransByTaskIdIsManager(String taskId, HttpServletRequest request) {
+		AjaxJson j = new AjaxJson();
+		try{
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			int count = workflowService.findTaskOutgoByTaskId(taskId);
+			map.put("count", count);
+			Set userRole = ShiroUtils.getSessionUserRole();
+			Boolean sign=false;
+			for (Object str:userRole){
+				if (str.equals("011")){
+					sign = true;
+					break;
+				}
+			}
+			map.put("sign",sign);
+			j.setAttributes(map);
+		}catch(Exception e) {
+			j.setSuccess(false);
+			j.setMsg(GlobalConstant.ERROR_MSG);
+			log.error("获取任务连线失败，错误信息{}", e);
+		}
+
+		return j;
+	}
 	
 	/**
 	 * 回退承接审批
