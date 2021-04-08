@@ -397,7 +397,7 @@ public class IndexPostController extends BaseController {
                 boolean matches = i.getName().toLowerCase().matches(".+\\.(jpg|png|gif|jpeg)");
                 if(matches == true) {
                     StringBuilder name = new StringBuilder();
-                    name.append("/upload/"+i.getName());
+                    name.append("/oa/upload/"+i.getName());
                     list.add(name);
                 }
             }

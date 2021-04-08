@@ -205,7 +205,7 @@ public class FileUploadController extends BaseController {
 					
 					String strYYYYMMDD = DateUtils.getYYYYMMDDStr();
 					
-					String realPath = request.getSession().getServletContext().getRealPath("/") + "/upload/" + strYYYYMMDD + "/";// 文件的硬盘真实路径
+					String realPath = request.getSession().getServletContext().getRealPath("/") + "upload/" + strYYYYMMDD + "/";// 文件的硬盘真实路径
 					String path = "upload/" + strYYYYMMDD + "/";
 					File file = new File(realPath);
 					if (!file.exists()) {
@@ -230,7 +230,7 @@ public class FileUploadController extends BaseController {
 					attach.setPath(savePath);
 					attach.setUploaderDate(DateUtils.getDate());
 					attach.setUploaderName(ShiroUtils.getSessionUserName());
-					attach.setType(GlobalConstant.FILE_UPLOADER_TYPE_OTHER);
+					attach.setType(GlobalConstant.FILE_UPLOADER_SAVE_FILE);
 					//保存
 					uploadAttachmentService.save(attach);
 					
