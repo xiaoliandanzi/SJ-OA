@@ -405,97 +405,104 @@ public class FlowPaperApprovalController extends BaseController {
                 j.setMsg("公开选择不能为空");
                 return j;
             }
-            if (flowPaperApprovalEntity.getPaperPublic() == 0) {
-                j.setSuccess(false);
-                j.setMsg("当前选择为不公开，请在线下完成申请");
-                if(StringUtils.equals(download,"1")){
-                    flowPaperApprovalService.save(flowPaperApprovalEntity);
-                    j.setObj("/oa/flow/biz/paperapproval/excelExport?id="+flowPaperApprovalEntity.getId());
-                    j.setMsg("redirect");
-                    return j;
-                }
+            if(StringUtils.equals(download,"1")){
+                flowPaperApprovalService.save(flowPaperApprovalEntity);
+                j.setObj("/oa/flow/biz/paperapproval/excelExport?id="+flowPaperApprovalEntity.getId());
+                j.setMsg("redirect");
                 return j;
             }
+//            if (flowPaperApprovalEntity.getPaperPublic() == 0) {
+//                j.setSuccess(false);
+//                j.setMsg("当前选择为不公开，请在线下完成申请");
+//                if(StringUtils.equals(download,"1")){
+//                    flowPaperApprovalService.save(flowPaperApprovalEntity);
+//                    j.setObj("/oa/flow/biz/paperapproval/excelExport?id="+flowPaperApprovalEntity.getId());
+////                    j.setMsg("redirect");
+////                    return j;
+//                }
+//                return j;
+//            }
 
-            if(null == flowPaperApprovalEntity.getAttachment()) {
-                j.setSuccess(false);
-                j.setMsg("上传文件不能为空!");
-                return j;
-            }
+//            if(null == flowPaperApprovalEntity.getAttachment()) {
+//                j.setSuccess(false);
+//                j.setMsg("上传文件不能为空!");
+//                return j;
+//            }
 
-            WorkflowMngEntity workflow = workflowMngService.getById(workflowBaseEntity.getWorkflowId());
-            if(null == workflow) {
-                j.setSuccess(false);
-                j.setMsg("参数错误，系统中没有该流程");
-                return j;
-            }
+//            WorkflowMngEntity workflow = workflowMngService.getById(workflowBaseEntity.getWorkflowId());
+//            if(null == workflow) {
+//                j.setSuccess(false);
+//                j.setMsg("参数错误，系统中没有该流程");
+//                return j;
+//            }
 
-            if(StringUtils.equals(optType, "1")) {
-                flowPaperApprovalEntity.setApplyStatus(0);
-                //直接申请流程
-                if(StringUtils.isBlank(workflowBaseEntity.getId())) {
-                    workflowBaseEntity.setApplyDate(DateUtils.getDate());
-                    workflowBaseEntity.setApplyName(ShiroUtils.getSessionUser().getRealName());
-                    workflowBaseEntity.setUserName(ShiroUtils.getSessionUserName());
-                    workflowBaseEntity.setCategoryId(workflow.getCategoryId());
-                    workflowBaseEntity.setWorkflowId(workflow.getId());
-                    workflowBaseEntity.setWorkFlowName(workflow.getName());
-                    workflowBaseEntity.setStatus("1"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
-                    workflowBaseEntity.setName("发文申请-"+flowPaperApprovalEntity.getTitle());
-                    //保存业务数据
-                    flowPaperApprovalService.saveNewPaper(workflowBaseEntity, flowPaperApprovalEntity);
-
-                    //启动流程
-                    //赋值流程变量
-                    Map<String, Object> variables = new HashMap<String, Object>();
-                    workflowService.startProcessInstanceByKey(workflow.getProcessKey(), workflowBaseEntity.getId(), true, workflowBaseEntity.getUserName(), variables);
-                }else {
-                    WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
-                    MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
-
-                    FlowPaperApprovalEntity biz = flowPaperApprovalService.getById(base.getBusinessId());
-                    MyBeanUtils.copyBeanNotNull2Bean(flowPaperApprovalEntity, biz);
-                    //已申请
-                    base.setStatus("1");
-                    flowPaperApprovalService.saveUpdate(base, biz);
-
-                    //启动流程
-                    //赋值流程变量
-                    Map<String, Object> variables = new HashMap<String, Object>();
-                    workflowService.startProcessInstanceByKey(workflow.getProcessKey(), biz.getId(), true, base.getUserName(), variables);
-
-                }
-
-                if(StringUtils.equals(download,"1")){
-                    j.setObj("/oa/flow/biz/paperapproval/excelExport?id="+flowPaperApprovalEntity.getId());
-                    j.setMsg("redirect");
-                    return j;
-                }
-
-            }else {
-                //保存草稿
-                //新增
-                if(StringUtils.isEmpty(workflowBaseEntity.getId())) {
-                    workflowBaseEntity.setApplyDate(DateUtils.getDate());
-                    workflowBaseEntity.setApplyName(ShiroUtils.getSessionUser().getRealName());
-                    workflowBaseEntity.setUserName(ShiroUtils.getSessionUserName());
-                    workflowBaseEntity.setCategoryId(workflow.getCategoryId());
-                    workflowBaseEntity.setWorkflowId(workflow.getId());
-                    workflowBaseEntity.setWorkFlowName(workflow.getName());
-                    workflowBaseEntity.setStatus("0"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
-                    flowPaperApprovalEntity.setApplyStatus(3); //文件状态 3：草稿中
-                    workflowBaseEntity.setName("发文申请-"+flowPaperApprovalEntity.getTitle());
-                    flowPaperApprovalService.saveNewPaper(workflowBaseEntity, flowPaperApprovalEntity);
-                }else {
-                    WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
-                    MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
-
-                    FlowPaperApprovalEntity biz = flowPaperApprovalService.getById(base.getBusinessId());
-                    MyBeanUtils.copyBeanNotNull2Bean(flowPaperApprovalEntity, biz);
-
-                    flowPaperApprovalService.saveUpdate(base, biz);
-                }
-            }
+//            if(StringUtils.equals(optType, "1")) {
+//                flowPaperApprovalEntity.setApplyStatus(0);
+//                //直接申请流程
+//                if(StringUtils.isBlank(workflowBaseEntity.getId())) {
+//                    workflowBaseEntity.setApplyDate(DateUtils.getDate());
+//                    workflowBaseEntity.setApplyName(ShiroUtils.getSessionUser().getRealName());
+//                    workflowBaseEntity.setUserName(ShiroUtils.getSessionUserName());
+//                    workflowBaseEntity.setCategoryId(workflow.getCategoryId());
+//                    workflowBaseEntity.setWorkflowId(workflow.getId());
+//                    workflowBaseEntity.setWorkFlowName(workflow.getName());
+//                    workflowBaseEntity.setStatus("1"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
+//                    workflowBaseEntity.setName("发文申请-"+flowPaperApprovalEntity.getTitle());
+//                    //保存业务数据
+//                    flowPaperApprovalService.saveNewPaper(workflowBaseEntity, flowPaperApprovalEntity);
+//
+//                    //启动流程
+//                    //赋值流程变量
+//                    Map<String, Object> variables = new HashMap<String, Object>();
+//                    workflowService.startProcessInstanceByKey(workflow.getProcessKey(), workflowBaseEntity.getId(), true, workflowBaseEntity.getUserName(), variables);
+//                }else {
+//                    WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
+//                    MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
+//
+//                    FlowPaperApprovalEntity biz = flowPaperApprovalService.getById(base.getBusinessId());
+//                    MyBeanUtils.copyBeanNotNull2Bean(flowPaperApprovalEntity, biz);
+//                    //已申请
+//                    base.setStatus("1");
+//                    flowPaperApprovalService.saveUpdate(base, biz);
+//
+//                    //启动流程
+//                    //赋值流程变量
+//                    Map<String, Object> variables = new HashMap<String, Object>();
+//                    workflowService.startProcessInstanceByKey(workflow.getProcessKey(), biz.getId(), true, base.getUserName(), variables);
+//
+//                }
+//
+//            }else if(StringUtils.equals(optType, "3")){
+//                if(StringUtils.equals(download,"1")){
+//                    flowPaperApprovalService.save(flowPaperApprovalEntity);
+//                    j.setObj("/oa/flow/biz/paperapproval/excelExport?id="+flowPaperApprovalEntity.getId());
+//                    j.setMsg("redirect");
+//                    return j;
+//                }
+//            }else{
+//                //保存草稿
+//                //新增
+//                if(StringUtils.isEmpty(workflowBaseEntity.getId())) {
+//                    workflowBaseEntity.setApplyDate(DateUtils.getDate());
+//                    workflowBaseEntity.setApplyName(ShiroUtils.getSessionUser().getRealName());
+//                    workflowBaseEntity.setUserName(ShiroUtils.getSessionUserName());
+//                    workflowBaseEntity.setCategoryId(workflow.getCategoryId());
+//                    workflowBaseEntity.setWorkflowId(workflow.getId());
+//                    workflowBaseEntity.setWorkFlowName(workflow.getName());
+//                    workflowBaseEntity.setStatus("0"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
+//                    flowPaperApprovalEntity.setApplyStatus(3); //文件状态 3：草稿中
+//                    workflowBaseEntity.setName("发文申请-"+flowPaperApprovalEntity.getTitle());
+//                    flowPaperApprovalService.saveNewPaper(workflowBaseEntity, flowPaperApprovalEntity);
+//                }else {
+//                    WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
+//                    MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
+//
+//                    FlowPaperApprovalEntity biz = flowPaperApprovalService.getById(base.getBusinessId());
+//                    MyBeanUtils.copyBeanNotNull2Bean(flowPaperApprovalEntity, biz);
+//
+//                    flowPaperApprovalService.saveUpdate(base, biz);
+//                }
+//            }
 
 
         }catch(Exception e) {
