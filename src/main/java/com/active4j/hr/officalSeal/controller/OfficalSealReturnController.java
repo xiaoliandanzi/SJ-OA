@@ -1,5 +1,6 @@
 package com.active4j.hr.officalSeal.controller;
 
+import com.active4j.hr.activiti.biz.dao.FlowGetSpeRole;
 import com.active4j.hr.activiti.biz.entity.FlowCarApprovalEntity;
 import com.active4j.hr.activiti.biz.entity.FlowMessageApprovalEntity;
 import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
@@ -11,6 +12,7 @@ import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.activiti.service.WorkflowCategoryService;
 import com.active4j.hr.activiti.service.WorkflowService;
 import com.active4j.hr.activiti.util.WorkflowConstant;
+import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.common.constant.SysConstant;
@@ -65,6 +67,7 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -103,6 +106,9 @@ public class OfficalSealReturnController extends BaseController {
 
     @Autowired
     private SysRoleService roleService;
+
+    @Autowired
+    private FlowGetSpeRole flowGetSpeRole;
 
     @RequestMapping("/show")
     public ModelAndView show(HttpServletRequest request) {
@@ -395,6 +401,7 @@ public class OfficalSealReturnController extends BaseController {
     public void datagridFinish(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
         String startTime = request.getParameter("applyDate_begin");
         String endTime = request.getParameter("applyDate_end");
+        String sealtype = request.getParameter("sealtype");
         if (startTime == null || startTime=="") {
             startTime = "2000-01-01";
         }
@@ -404,11 +411,24 @@ public class OfficalSealReturnController extends BaseController {
         }
 
 
-        /*String userName = ShiroUtils.getSessionUserName();
-        SysUserEntity user = sysUserService.getUserByUseName(userName);
-        IPage<WorkflowBaseEntity> lstResult = new Page<>();
+        String userDept = ShiroUtils.getSessionUserDept();
+        Set userRole = ShiroUtils.getSessionUserRole();
+        //获取物品管理员编号
+        String rolecode = this.flowGetSpeRole.getSealAdminrole();
+        for (Object item: userRole){
+            if (item.equals(rolecode)){
+                userDept = null;
+            }
+        }
+
+        IPage<HashMap> lstResult = new Page<>();
+
+        lstResult = workflowService.findFinishedTaskSealByUserDept(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity,sealtype,userDept,startTime, endTime, WorkflowConstant.Task_Category_approval);
+
+        ResponseUtil.writeJson(response, dataGrid, lstResult);
+        /*IPage<WorkflowBaseEntity> lstResult = new Page<>();
         if(SystemUtils.getDeptNameById(user.getDeptId()).equals("综合办公室")){
-            lstResult = workflowService.findFinishedTaskByALL(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, WorkflowConstant.Task_Category_approval);
+            lstResult = workflowService.findFinishedTaskByRoleName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity,sealtype, startTime, endTime, WorkflowConstant.Task_Category_approval);
         }else{
             lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
         }
@@ -423,7 +443,7 @@ public class OfficalSealReturnController extends BaseController {
         }*/
 
         //获取当前用户的部门
-        String userDept = ShiroUtils.getSessionUserDept();
+        /*String userDept = ShiroUtils.getSessionUserDept();
         Set userRole = ShiroUtils.getSessionUserRole();
 
         QueryWrapper<SysRoleEntity> wrapper = new QueryWrapper<>();
@@ -447,7 +467,7 @@ public class OfficalSealReturnController extends BaseController {
 
             // 输出结果
             ResponseUtil.writeJson(response, dataGrid, lstResult);
-        }
+        }*/
 
         /*long num = lstResult.getRecords().size();
         if (ShiroUtils.getSessionUserRole().contains("公章管理员")){

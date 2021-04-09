@@ -2,11 +2,7 @@ package com.active4j.hr.activiti.service.impl;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipInputStream;
 
@@ -880,4 +876,10 @@ public class WorkflowServiceImpl implements WorkflowService {
 
         return workflowDao.findFinishedTaskGoodsByUserDept(page, userDept, base.getCategoryId(), base.getProjectNo(), base.getName(), base.getApplyName(), base.getApplyerDepart(), startTime, endTime);
     }
+
+    @Override
+    public IPage<HashMap> findFinishedTaskSealByUserDept(Page<WorkflowBaseEntity> page, WorkflowBaseEntity base, String sealtype, String userDept, String startTime, String endTime, String task_category_approval) {
+        return workflowDao.findFinishedTaskSealByUserDept(page, userDept,sealtype, base.getCategoryId(), base.getProjectNo(), base.getName(), base.getApplyName(), base.getApplyerDepart(), startTime, endTime);
+    }
+
 }

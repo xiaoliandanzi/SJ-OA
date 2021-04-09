@@ -18,4 +18,8 @@
     <select id="getGoodsAdminrole" resultType="string">
         SELECT ROLE_CODE FROM sys_role where ROLE_NAME='物品管理员'
     </select>
+    <select id="getSealAdminrole" resultType="string">
+        SELECT ROLE_CODE FROM sys_role where ROLE_NAME='公章管理员'
+    </select>
+
 </mapper>

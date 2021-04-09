@@ -99,6 +99,60 @@
 		order by b.APPLY_DATE desc
 	</select>
 
+	<select id="findFinishedTaskSealByUserDept" resultType="HashMap">
+		SELECT DISTINCT
+		B.ID,
+		B.APPLY_DATE,
+		B.APPLY_NAME,
+		B.APPLYER_DEPART,
+		B.BUSINESS_ID,
+		B.CATEGORY_ID,
+		B.CREATE_DATE,
+		B.CREATE_NAME,
+		B. LEVEL,
+		B. NAME,
+		B.PROJECT_NO,
+		B. STATUS,
+		B.USER_NAME,
+		B.WORKFLOW_ID,
+		B.WORKFLOW_NAME,
+		f.sealtype
+		FROM
+		wf_base B
+		left JOIN act_hi_procinst p on B.ID = p.BUSINESS_KEY_
+		left JOIN act_hi_taskinst t on p.PROC_INST_ID_ = t.PROC_INST_ID_
+		left JOIN flow_officalseal_approval f on b.BUSINESS_ID = f.ID
+		where B.WORKFLOW_NAME = '双井公章申请'
+		<if test="userDpet !=null and userDpet != ''">
+			and b.APPLYER_DEPART = #{userDpet}
+		</if>
+		<if test="sealtype!=null and sealtype!=''">
+			and f.sealtype = #{sealtype}
+		</if>
+		<if test="categoryId!=null and categoryId!=''">
+			and b.CATEGORY_ID = #{categoryId}
+		</if>
+		<if test="projectNo!=null and projectNo!=''">
+			and b.PROJECT_NO = #{projectNo}
+		</if>
+		<if test="name!=null and name!=''">
+			and b.NAME like concat('%',#{name},'%')
+		</if>
+		<if test="applyName!=null and applyName!=''">
+			and b.APPLY_NAME = #{applyName}
+		</if>
+		<if test="applyerDepart!=null and applyerDepart!=''">
+			and b.APPLYER_DEPART = #{applyerDepart}
+		</if>
+		<if test="applyDateStart!=null and applyDateStart!=''">
+			and b.APPLY_DATE &gt;= #{applyDateStart}
+		</if>
+		<if test="applyDateEnd!=null and applyDateEnd!=''">
+			and b.APPLY_DATE &lt;= #{applyDateEnd}
+		</if>
+		order by b.APPLY_DATE desc
+	</select>
+
 	<select id="findFinishedCarTaskByALL" resultType="com.active4j.hr.activiti.entity.WorkflowBaseEntity">
 		SELECT DISTINCT
 		B.ID,

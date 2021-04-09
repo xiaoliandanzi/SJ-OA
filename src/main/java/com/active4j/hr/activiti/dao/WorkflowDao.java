@@ -1,7 +1,9 @@
 package com.active4j.hr.activiti.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
@@ -60,4 +62,8 @@ public interface WorkflowDao {
 																@Param("name") String name, @Param("applyName") String applyName,@Param("applyerDepart") String applyerDepart,
 																@Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd);
 
+	IPage<HashMap> findFinishedTaskSealByUserDept(IPage<WorkflowBaseEntity> page, @Param("userDpet") String userDept, @Param("sealtype") String sealtype,
+												  @Param("categoryId") String categoryId, @Param("projectNo") String projectNo,
+												  @Param("name") String name, @Param("applyName") String applyName, @Param("applyerDepart") String applyerDepart,
+												  @Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd);
 }

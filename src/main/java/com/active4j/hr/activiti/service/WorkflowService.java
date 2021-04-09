@@ -1,9 +1,11 @@
 package com.active4j.hr.activiti.service;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Comment;
@@ -277,4 +279,13 @@ public interface WorkflowService {
 	 */
 	public IPage<WorkflowBaseEntity> findFinishedTaskGoodsByUserDept(IPage<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String userDept, String category);
 
+	/**
+	 * 根据当前用户角色，获取业务表ID
+	 * @param userName
+	 * @param category 区别审批还是办理
+	 * @return
+	 */
+	//IPage<WorkflowBaseEntity> findFinishedTaskByRoleName(Page<WorkflowBaseEntity> workflowBaseEntityPage, WorkflowBaseEntity workflowBaseEntity, String sealtype, String startTime, String endTime, String task_category_approval);
+
+	IPage<HashMap> findFinishedTaskSealByUserDept(Page<WorkflowBaseEntity> workflowBaseEntityPage, WorkflowBaseEntity workflowBaseEntity, String sealtype, String userDept, String startTime, String endTime, String task_category_approval);
 }
