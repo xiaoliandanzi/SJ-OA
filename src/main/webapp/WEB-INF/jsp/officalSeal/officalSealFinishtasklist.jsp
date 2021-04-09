@@ -34,9 +34,10 @@
 <!-- 脚本部分 -->
 <t:datagrid actionUrl="officalSeal/return/datagridFinish" tableContentId="finishTaskTable" searchGroupId="searchGroupId" fit="true" caption="公章使用记录" name="finishTaskList" sortName="applyDate" pageSize="20">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20" ></t:dgCol>
-    <t:dgCol name="projectNo" label="编号"  width="80" query="true"></t:dgCol>
+    <t:dgCol name="projectNo" label="编号"  width="80" ></t:dgCol>
     <t:dgCol name="categoryId" label="流程类别" hidden="true"  replace="${categoryReplace}" queryId="categoryId" width="90"></t:dgCol>
     <t:dgCol name="workFlowName" label="流程名称" hidden="true"  width="70"></t:dgCol>
+    <t:dgCol name="sealtype" label="公章类型" width="80" query="true"></t:dgCol>
     <t:dgCol name="userName" label="借用人" width="80" query="true"></t:dgCol>
     <t:dgCol name="applyDate" label="申请时间" width="120" query="true" datefmt="yyyy-MM-dd" queryModel="group" datePlugin="laydate"></t:dgCol>
     <%--<t:dgCol name="projectNo" label="编号" width="120" ></t:dgCol>--%>
