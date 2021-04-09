@@ -298,17 +298,18 @@ public class CarRecordController extends BaseController {
             j.setMsg("车辆管理员不存在");
             j.setSuccess(false);
             return j;
-        }else if(lstUsers.size() == 1) {
-            if(lstUsers.get(0).equals(user.getUserName())){
+        }else{
+            if(lstUsers.contains(user.getUserName())){
                 lstResult = workflowService.findFinishedCarTaskByALL(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, WorkflowConstant.Task_Category_approval);
             }else{
                 lstResult = workflowService.findFinishedTaskCarByUserDept(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserDept(), WorkflowConstant.Task_Category_approval);
             }
-        }else {
-            j.setMsg("车辆管理员存在多人，请联系管理员");
-            j.setSuccess(false);
-            return j;
         }
+//        else {
+//            j.setMsg("车辆管理员存在多人，请联系管理员");
+//            j.setSuccess(false);
+//            return j;
+//        }
 //        long size = lstResult.getRecords().size();
 //        for (long i = size - 1; i >= 0; --i) {
 //            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("车辆申请")){
