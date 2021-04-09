@@ -14,4 +14,8 @@
         WHERE
 	        a.USER_ID = #{userId}
     </select>
+
+    <select id="getGoodsAdminrole" resultType="string">
+        SELECT ROLE_CODE FROM sys_role where ROLE_NAME='物品管理员'
+    </select>
 </mapper>

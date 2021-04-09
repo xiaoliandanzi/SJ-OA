@@ -6,4 +6,5 @@ public interface FlowGetSpeRoleService {
     String getCarAdminrole();
 
     List getUserRoleName(String userId);
+
 }

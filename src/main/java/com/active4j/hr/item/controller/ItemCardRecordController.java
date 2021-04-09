@@ -1,5 +1,6 @@
 package com.active4j.hr.item.controller;
 
+import com.active4j.hr.activiti.biz.dao.FlowGetSpeRole;
 import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
 import com.active4j.hr.activiti.biz.service.FlowOfficalSealApprovalService;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
@@ -34,10 +35,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("itemcard/return")
@@ -55,6 +58,9 @@ public class ItemCardRecordController extends BaseController {
 
     @Autowired
     private SysDeptService sysDeptService;
+
+    @Resource
+    private  FlowGetSpeRole flowGetSpeRole;
 
     /**
      * 跳转到已审批流程页面
@@ -97,11 +103,20 @@ public class ItemCardRecordController extends BaseController {
         if (endTime == null || endTime == "") {
             endTime = "2099-12-31";
         }
+        String userDept = ShiroUtils.getSessionUserDept();
+        Set userRole = ShiroUtils.getSessionUserRole();
+        //获取物品管理员编号
+        String rolecode = this.flowGetSpeRole.getGoodsAdminrole();
+        for (Object item: userRole){
+            if (item.equals(rolecode)){
+                userDept = null;
+            }
+        }
 
         String workflow_name="物品借用申请";
         // 执行查询
         IPage<WorkflowBaseEntity> lstResult = workflowService.findFinishedTaskGoodsByUserDept(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows())
-                , workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserDept(), WorkflowConstant.Task_Category_approval);
+                , workflowBaseEntity, startTime, endTime, userDept, WorkflowConstant.Task_Category_approval);
 //        long size = lstResult.getRecords().size();
 
 //        for (long i = size - 1; i >= 0; --i) {
