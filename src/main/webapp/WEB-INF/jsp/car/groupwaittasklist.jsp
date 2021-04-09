@@ -32,7 +32,7 @@
 
 
 <!-- 脚本部分 -->
-<t:datagrid actionUrl="item/audit/datagridGroup" tableContentId="groupWaitTaskTable" searchGroupId="searchGroupId" fit="true" caption="承接审批" name="groupWaitTask" pageSize="20" sortName="applyDate" sortOrder="desc">
+<t:datagrid actionUrl="car/audit/datagridGroup" tableContentId="groupWaitTaskTable" searchGroupId="searchGroupId" fit="true" caption="承接审批" name="groupWaitTask" pageSize="20" sortName="applyDate" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="categoryId" label="流程类别" hidden="true"  replace="${categoryReplace}" queryId="categoryId" width="90"></t:dgCol>
     <t:dgCol name="workFlowName" label="流程名称" width="70"></t:dgCol>
@@ -45,7 +45,7 @@
     <%--    <t:dgToolBar label="审批" icon="fa fa-check-circle" url="flow/biz/itemborrow/approve" type="check" width="60%" height="80%"></t:dgToolBar>--%>
     <t:dgToolBar label="承接" icon="fa fa-check-circle" type="define" funName="getApprove"></t:dgToolBar>
     <t:dgToolBar label="查看流程图" icon="fa fa-binoculars" url="flow/biz/my/viewImage" type="read" width="80%" height="80%"></t:dgToolBar>
-    <%--<t:dgToolBar label="回退组任务" icon="fa fa-check-circle" type="define" funName="setApprove"></t:dgToolBar>--%>
+   <%-- <t:dgToolBar label="回退组任务" icon="fa fa-check-circle" type="define" funName="setApprove"></t:dgToolBar>--%>
     <t:dgToolBar type="refresh" ></t:dgToolBar>
 </t:datagrid>
 
@@ -76,19 +76,20 @@
                     var url = 'flow/biz/task/viewApprove?id=' + id;
                     parent.layer.open({
                         type : 2,
-                        title : '物品借用审批',
+                        title : '车辆审批',
                         shadeClose : true,
                         shade : 0.8,
                         area: ['90%', '90%'],
-                        content : url
+                        content : url,
+                        end:function () {
+                            location.reload();
+                        }
                     });
-                    reloadTable('groupWaitTask');
                 } else {
                     qhTipWarning(d.msg);
                     reloadTable('groupWaitTask');
                 }
             });
-            reloadTable('groupWaitTask');
         }, function() {
             //否
             });

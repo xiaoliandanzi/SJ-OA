@@ -89,7 +89,7 @@ public class TaskAssigneeRoleNameListener implements TaskListener {
 						.singleResult();
 				String business_key = pi.getBusinessKey();
 				WorkflowBaseEntity base = workflowBaseService.getById(business_key);
-				WorkflowTaskUtil.sendApplyMessage(user,applyName,base.getApplyDate(), base.getWorkFlowName());
+				WorkflowTaskUtil.sendAllApplyMessage(user,applyName,base.getApplyDate(), base.getWorkFlowName());
 			}
 		}
 	}

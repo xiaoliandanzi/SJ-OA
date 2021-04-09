@@ -125,6 +125,17 @@ public class WorkflowTaskUtil {
 		}
 	}
 
+	//承接申请
+	public static void sendAllApplyMessage(String approvalName, String applyName, Date taskTime , String taskName) {
+		try {
+			MessageUtils.SendSysMessage(sysUserService.getUserByUseName(approvalName).getId(),
+					String.format("您好，%s于%s提出%s，请承接。",
+							sysUserService.getUserByUseName(applyName).getRealName(), formatter.format(taskTime), taskName));
+		} catch (Exception ex) {
+			log.error("sendAllApplyMessage", ex);
+		}
+	}
+
 	//审批通过
 	public static void sendApprovalMessage(String applyName, String approvalName, Date taskTime, String taskName) {
 		System.out.println(applyName);
@@ -137,6 +148,7 @@ public class WorkflowTaskUtil {
 			log.error("sendApprovalMessgae", ex);
 		}
 	}
+
 
 	//审批驳回
 	public static void sendRejectMessage(String applyName, String approvalName, Date taskTime, String taskName) {

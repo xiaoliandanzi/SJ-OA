@@ -64,6 +64,32 @@ public class CarAudistController  extends BaseController {
     }
 
     /**
+     * 跳转到承接审批流程
+     *
+     * @param req
+     * @return
+     */
+    @RequestMapping("/groupwaittasklist")
+    public ModelAndView groupwaittasklist(HttpServletRequest req) {
+        ModelAndView view = new ModelAndView("car/groupwaittasklist");
+
+        // 获取流程类别数据
+        List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
+
+        List<WorkflowCategoryEntity> lstSeal = new ArrayList<WorkflowCategoryEntity>();
+        int size = lstCatogorys.size();
+        for (int i = size - 1; i >= 0; i--) {
+            WorkflowCategoryEntity catogorys = lstCatogorys.get(i);
+            if (catogorys.getName().equals("行政类")) {
+                lstSeal.add(catogorys);
+            }
+        }
+        view.addObject("categoryReplace", ListUtils.listToReplaceStr(lstSeal, "name", "id"));
+
+        return view;
+    }
+
+    /**
      * 删除
      *
      * @param workflowCategoryEntity

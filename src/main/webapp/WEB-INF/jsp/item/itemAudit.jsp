@@ -52,7 +52,7 @@
 <%--    <t:dgToolBar label="审批" icon="fa fa-check-circle" url="flow/biz/itemborrow/approve" type="check" width="60%" height="80%"></t:dgToolBar>--%>
     <t:dgToolBar label="审批" icon="fa fa-eye" url="flow/biz/task/viewApprove" type="check" width="90%" height="90%"></t:dgToolBar>
     <t:dgToolBar label="查看流程图" icon="fa fa-binoculars" url="flow/biz/my/viewImage" type="read" width="80%" height="80%"></t:dgToolBar>
-    <t:dgToolBar label="回退组任务" icon="fa fa-check-circle" type="define" funName="setApprove"></t:dgToolBar>
+<%--    <t:dgToolBar label="回退组任务" icon="fa fa-check-circle" type="define" funName="setApprove"></t:dgToolBar>--%>
     <t:dgToolBar type="refresh" ></t:dgToolBar>
 </t:datagrid>
 <script type="text/javascript">
