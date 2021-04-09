@@ -404,6 +404,7 @@ public class FlowCarApprovalController extends BaseController {
                     workflowBaseEntity.setCategoryId(workflow.getCategoryId());
                     workflowBaseEntity.setWorkflowId(workflow.getId());
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
+                    workflowBaseEntity.setApplyerDepart(ShiroUtils.getSessionUserDept());
                     workflowBaseEntity.setStatus("1"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
                     //保存业务数据
                     flowCarApprovalService.saveNewCar(workflowBaseEntity, flowCarApprovalEntity);
@@ -439,6 +440,7 @@ public class FlowCarApprovalController extends BaseController {
                     workflowBaseEntity.setCategoryId(workflow.getCategoryId());
                     workflowBaseEntity.setWorkflowId(workflow.getId());
                     workflowBaseEntity.setWorkFlowName(workflow.getName());
+                    workflowBaseEntity.setApplyerDepart(ShiroUtils.getSessionUserDept());
                     workflowBaseEntity.setStatus("0"); //草稿状态 0：草稿 1： 已申请  2： 审批中 3： 已完成 4： 已归档
 
                     flowCarApprovalService.saveNewCar(workflowBaseEntity, flowCarApprovalEntity);
