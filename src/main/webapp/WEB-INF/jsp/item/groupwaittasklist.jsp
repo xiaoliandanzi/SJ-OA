@@ -67,21 +67,31 @@
         qhConfirm("你确定要承接该审批任务吗?", function(index) {
             //关闭询问
             parent.layer.close(index);
-
             //是
             $.post("flow/biz/task/getApproves", {id : rowId}, function(d){
                 if(d.success) {
                     qhTipSuccess(d.msg);
                     //操作结束，刷新表格
+                    var id = rowId;
+                    var url = 'flow/biz/task/viewApprove?id=' + id;
+                    parent.layer.open({
+                        type : 2,
+                        title : '物品借用审批',
+                        shadeClose : true,
+                        shade : 0.8,
+                        area: ['90%', '90%'],
+                        content : url
+                    });
                     reloadTable('groupWaitTask');
                 } else {
                     qhTipWarning(d.msg);
+                    reloadTable('groupWaitTask');
                 }
             });
-
+            reloadTable('groupWaitTask');
         }, function() {
             //否
-        });
+            });
     }
 </script>
 </body>
