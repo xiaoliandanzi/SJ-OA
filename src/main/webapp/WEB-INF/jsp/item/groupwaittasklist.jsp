@@ -80,7 +80,10 @@
                         shadeClose : true,
                         shade : 0.8,
                         area: ['90%', '90%'],
-                        content : url
+                        content : url,
+                        end:function () {
+                            location.reload();
+                        }
                     });
                     reloadTable('groupWaitTask');
                 } else {
