@@ -26,11 +26,11 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">科室：</label>
                             <div class="col-sm-4">
-                                <input id="dept" name="dept"  type="text" class="form-control" required="" readonly value="${dept }">
+                                <input id="dept" name="dept"  type="text" class="form-control" required="" readonly value="${meet.dept }">
                             </div>
                             <label class="col-sm-2 control-label">登记人：</label>
                             <div class="col-sm-4">
-                                <input id="userName" name="userName"  type="text" class="form-control" required="" readonly value="${userName }">
+                                <input id="userName" name="userName"  type="text" class="form-control" required="" readonly value="${meet.userName }">
                             </div>
                         </div>
                         <%--<div class="form-group">

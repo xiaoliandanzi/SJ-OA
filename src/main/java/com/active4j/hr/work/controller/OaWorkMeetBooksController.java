@@ -132,10 +132,10 @@ public class OaWorkMeetBooksController extends BaseController {
 		List<OaWorkMeetRoomEntity> lstRooms = oaWorkMeetRoomService.findNormalMeetRoom();
 		view.addObject("lstRooms", lstRooms);
 
-		String userId = ShiroUtils.getSessionUserId();
-		SysUserModel userModel = sysUserService.getInfoByUserId(userId).get(0);
-		view.addObject("userName", userModel.getRealName());
-		view.addObject("dept", userModel.getDeptName());
+		//String userId = ShiroUtils.getSessionUserId();
+		//SysUserModel userModel = sysUserService.getInfoByUserId(userId).get(0);
+		//view.addObject("userName", oaWorkMeetRoomBooksEntity.getUserName());
+		//view.addObject("dept", oaWorkMeetRoomBooksEntity.getDept());
 
 		if(StringUtils.isNotEmpty(oaWorkMeetRoomBooksEntity.getId())) {
 			oaWorkMeetRoomBooksEntity = oaWorkMeetRoomBooksService.getById(oaWorkMeetRoomBooksEntity.getId());
