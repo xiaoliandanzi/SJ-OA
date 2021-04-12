@@ -33,5 +33,6 @@ public class DeptLeaderRole {
         this.roleForDept.put("11fb89e6923d9a1d8d1e8dc58fe352bd", "d206352cbe3ba912fd72699f8b8469f1"); //综合办公室
         this.roleForDept.put("72a5f33531eb2ecad8de3076712b99ff", "f3f55ed9576dc463423e8f37c7c54a38"); //市民诉求处置中心
         this.roleForDept.put("088c84560ed47db5d1ce11696a4915e3", "734b44036fc085b69ad3cd34f1ff98fe"); //财务处
+        this.roleForDept.put("a0ecc0085a4b5a13afb55bd1ed356ee8","32bccb86c75974c3d4bdf3c18e658253");  //综合二办
     }
 }
