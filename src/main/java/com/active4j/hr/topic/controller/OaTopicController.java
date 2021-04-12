@@ -1,6 +1,7 @@
 package com.active4j.hr.topic.controller;
 
 
+import com.active4j.hr.activiti.util.WorkflowConstant;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.shiro.ShiroUtils;
@@ -29,6 +30,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.inject.internal.cglib.proxy.$Callback;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.xpath.functions.FuncUnparsedEntityURI;
 import org.aspectj.weaver.loadtime.Aj;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -875,8 +877,12 @@ public class OaTopicController extends BaseController {
         //
         SysDeptEntity dept = deptService.getById(userEntity.getDeptId());
         modelAndView.addObject("deptName", dept.getName());
-        DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
-        String leaderRole = deptLeaderRole.getRoleForDept().get(userEntity.getDeptId());
+        //DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
+
+        // 确定科室负责人角色名称
+        String leaderRoleName = dept.getName() + WorkflowConstant.Str_Dept_Manager;
+        String leaderRole = deptService.getLeaderRoleIdByRole(leaderRoleName);
+        //String leaderRole = deptLeaderRole.getRoleForDept().get(userEntity.getDeptId());
         //汇报人
         modelAndView.addObject("reportList", users);
         //提议领导 各处主管领导
@@ -911,8 +917,11 @@ public class OaTopicController extends BaseController {
         //
         SysDeptEntity dept = deptService.getById(deptId);
         modelAndView.addObject("deptName", dept.getName());
-        DeptLeaderRole deptLeaderRole = new DeptLeaderRole();
-        String leaderRole = deptLeaderRole.getRoleForDept().get(deptId);
+
+        // 确定科室负责人角色名称
+        String leaderRoleName = dept.getName() + WorkflowConstant.Str_Dept_Manager;
+        String leaderRole = deptService.getLeaderRoleIdByRole(leaderRoleName);
+
         //汇报人
         modelAndView.addObject("reportList", users);
         //提议领导 查询主要领导

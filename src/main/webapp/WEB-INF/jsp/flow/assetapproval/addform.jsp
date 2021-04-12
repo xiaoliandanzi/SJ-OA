@@ -44,14 +44,14 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-2 control-label">库存地址*：</label>
-    <div class="col-sm-3">
+    <label class="col-sm-3 control-label">库存地址*：</label>
+    <div class="col-sm-5">
         <input id="address" name="address"  type="text" class="form-control" required="" value="${biz.address }">
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-2 control-label">用途*：</label>
-    <div class="col-sm-3">
+    <label class="col-sm-3 control-label">用途*：</label>
+    <div class="col-sm-5">
         <input id="application" name="application"  type="text" class="form-control" required="" value="${biz.application }">
     </div>
 </div>

@@ -38,6 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -112,6 +113,11 @@ public class ItemGetController extends BaseController {
             if(StringUtils.isEmpty(getItemEntity.getItemName())) {
                 j.setSuccess(false);
                 j.setMsg("领用物品名称不能为空!");
+                return j;
+            }
+            if (getItemEntity.getGetDay().compareTo(new Date()) == -1){
+                j.setSuccess(false);
+                j.setMsg("领用日期不能在当前日期之前");
                 return j;
             }
             if (!SystemUtils.getWeekOfDate(getItemEntity.getGetDay()).equals("星期二")){

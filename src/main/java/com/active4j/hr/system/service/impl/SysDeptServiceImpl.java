@@ -159,4 +159,11 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptDao, SysDeptEntity> i
 		
 		return lstUsers;
 	}
+
+	//根据部门负责人角色查询角色id
+	@Override
+	public String getLeaderRoleIdByRole(String leaderRole) {
+		String leaderRoleId = baseMapper.getLeaderRoleIdByRole(leaderRole);
+		return leaderRoleId;
+	}
 }

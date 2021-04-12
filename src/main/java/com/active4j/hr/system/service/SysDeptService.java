@@ -62,4 +62,11 @@ public interface SysDeptService extends IService<SysDeptEntity> {
 	 */
 	public List<SysUserEntity> getUsersByDept(String deptId);
 
+	/**
+	 * 根据部门负责人角色查询角色id
+	 *
+	 * @param leaderRole
+	 * @return
+	 */
+	String getLeaderRoleIdByRole(String leaderRole);
 }

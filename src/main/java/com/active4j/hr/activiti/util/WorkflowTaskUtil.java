@@ -63,8 +63,12 @@ public class WorkflowTaskUtil {
 	 * @time 2020年4月23日 下午9:29:33
 	 */
 	public static List<String> getDepartManagerByDeptId(String deptId) {
+		SysDeptEntity deptEntity = sysDeptService.getById(deptId);
 
-		List<SysUserEntity> users = sysDeptService.getUsersByDept(deptId);
+		// 确定科室负责人角色名称
+		String leaderRoleName = deptEntity.getName() + WorkflowConstant.Str_Dept_Manager;
+		List<SysUserEntity> lstUsers = sysRoleService.findUserByRoleName(leaderRoleName);
+		/*List<SysUserEntity> users = sysDeptService.getUsersByDept(deptId);
 		// 确定用户
 		SysUserEntity user = sysUserService.getUserByUseName(users.get(0).getUserName());
 		// 部门查询
@@ -72,8 +76,7 @@ public class WorkflowTaskUtil {
 		// 确定角色名称
 		String roleName = dept.getName() + WorkflowConstant.Str_Dept_Manager;
 		// 根据角色名称查询角色
-		List<SysUserEntity> lstUsers = sysRoleService.findUserByRoleName(roleName);
-
+		List<SysUserEntity> lstUsers = sysRoleService.findUserByRoleName(roleName);*/
 		return lstUsers.stream().map(u -> u.getUserName()).collect(Collectors.toList());
 
 	}
