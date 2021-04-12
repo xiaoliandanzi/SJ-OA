@@ -36,7 +36,7 @@
         <div class="tabs">
             <div class="tabsBox">
                 <div class="tabs_item">
-                    双井图库
+                    双井风采
                 </div>
             </div>
         </div>
