@@ -166,7 +166,7 @@
             <div class="nowCenter" style="width: 1230px;">
                 <div class="one_a boxShadow" style="width: 1230px !important;height: 703px !important;margin-bottom: 20px;">
                     <div class="borderTitle">
-                        <div class="border_left" style="border-left: 5px solid #347BB7">双井图库</div>
+                        <div class="border_left" style="border-left: 5px solid #347BB7">双井风采</div>
                         <div class="border_right">
                             <div>
                                 <span class="jia" style="display: block;position: relative;top:24px;"><img
