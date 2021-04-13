@@ -27,6 +27,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -42,8 +43,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -387,9 +390,13 @@ public class IndexPostController extends BaseController {
 
     }
     @RequestMapping("index/getAllImgPath")
-    public List get(){
+    public List get(ServletRequest request){
+        String a=request.getServletContext().getRealPath("/upload");
+        System.out.print(a);
+        String userDir = System.getProperties().getProperty("user.dir");
+        System.out.print(userDir);
         String s = "src/main/webapp/upload";
-        File file = new File(s);
+        File file = new File(a);
         List list = new ArrayList();
         try{
             File[] f = file.listFiles();
@@ -398,6 +405,7 @@ public class IndexPostController extends BaseController {
                 if(matches == true) {
                     StringBuilder name = new StringBuilder();
                     name.append("/oa/upload/"+i.getName());
+                    System.out.print(name.toString());
                     list.add(name);
                 }
             }
@@ -406,6 +414,12 @@ public class IndexPostController extends BaseController {
         }
 
         return list;
+    }
+
+    public  String[] img(){
+        InputStream ins = this.getClass().getResourceAsStream("/");
+
+        return null;
     }
 
 }
