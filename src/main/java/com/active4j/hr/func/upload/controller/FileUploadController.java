@@ -200,7 +200,7 @@ public class FileUploadController extends BaseController {
 				String fileName = mf.getOriginalFilename();// 获取文件名
 				String extend = FileUtils.getExtend(fileName);// 获取文件扩展名
 				
-//				if(StringUtils.equals(db, GlobalConstant.FILE_UPLOADER_SAVE_FILE)) {
+				if(StringUtils.equals(db, GlobalConstant.FILE_UPLOADER_SAVE_FILE)) {
 					//保存文件系统
 					
 					String strYYYYMMDD = DateUtils.getYYYYMMDDStr();
@@ -239,28 +239,28 @@ public class FileUploadController extends BaseController {
 					map.put("filePath", attach.getId());
 					j.setAttributes(map);
 					
-//				}else if(StringUtils.equals(db, GlobalConstant.FILE_UPLOADER_SAVE_DB)) {
-//					//保存进数据库
-//					UploadAttachmentEntity attach = new UploadAttachmentEntity();
-//					attach.setContent(mf.getBytes());
-//					attach.setName(fileName);
-//					attach.setExtendName(extend);
-//
-//					String noextfilename = DateUtils.getDataString(DateUtils.SDF_YYYYMMDDHHMMSS) + StringUtil.random(10);//自定义文件名称
-//					String myfilename= noextfilename+"."+extend;//自定义文件名称
-//
-//					attach.setSaveName(myfilename);
-//					attach.setPath(GlobalConstant.CONFIG_FILE_SAVE_DB_URL + myfilename);
-//					attach.setUploaderDate(DateUtils.getDate());
-//					attach.setUploaderName(ShiroUtils.getSessionUserName());
-//					attach.setType(GlobalConstant.FILE_UPLOADER_TYPE_OTHER);
-//					uploadAttachmentService.save(attach);
-//
-//					//页面返回值
-//					Map<String, Object> map = new HashMap<String, Object>();
-//					map.put("filePath", attach.getId());
-//					j.setAttributes(map);
-//				}
+				}else if(StringUtils.equals(db, GlobalConstant.FILE_UPLOADER_SAVE_DB)) {
+					//保存进数据库
+					UploadAttachmentEntity attach = new UploadAttachmentEntity();
+					attach.setContent(mf.getBytes());
+					attach.setName(fileName);
+					attach.setExtendName(extend);
+
+					String noextfilename = DateUtils.getDataString(DateUtils.SDF_YYYYMMDDHHMMSS) + StringUtil.random(10);//自定义文件名称
+					String myfilename= noextfilename+"."+extend;//自定义文件名称
+
+					attach.setSaveName(myfilename);
+					attach.setPath(GlobalConstant.CONFIG_FILE_SAVE_DB_URL + myfilename);
+					attach.setUploaderDate(DateUtils.getDate());
+					attach.setUploaderName(ShiroUtils.getSessionUserName());
+					attach.setType(GlobalConstant.FILE_UPLOADER_TYPE_OTHER);
+					uploadAttachmentService.save(attach);
+
+					//页面返回值
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("filePath", attach.getId());
+					j.setAttributes(map);
+				}
 				
 				break;
 			}
