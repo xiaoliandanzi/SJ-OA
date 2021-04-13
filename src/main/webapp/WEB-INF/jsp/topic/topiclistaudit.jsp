@@ -25,7 +25,7 @@
 
 
 <!-- 脚本部分 -->
-<t:datagrid actionUrl="topic/table" tableContentId="jqGrid_wrapper" searchGroupId="searchGroupId" fit="true"
+<t:datagrid actionUrl="topic/audittable" tableContentId="jqGrid_wrapper" searchGroupId="searchGroupId" fit="true"
             caption="议题审核" name="topicAddList" pageSize="20" sortName="creatTime" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
     <t:dgCol name="creatTime" label="申报日期" width="300" datefmt="yyyy-MM-dd HH:mm:ss" datePlugin="laydate" query="true" align="center"

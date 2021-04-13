@@ -144,6 +144,51 @@ public class OaTopicController extends BaseController {
     }
 
     /**
+     * 表格数据
+     *
+     * @param oaTopic
+     * @param request
+     * @param response
+     * @param dataGrid
+     */
+    @RequestMapping(value = "audittable")
+    public void topicAuditTable(OaTopic oaTopic, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        ActiveUser user = ShiroUtils.getSessionUser();
+        if ("".equals(oaTopic.getTopicName())) {
+            oaTopic.setTopicName(null);
+        }
+        //判断 表格显示数据 查询条件
+        oaTopic = getSelectAuditTopic(oaTopic, user);
+        //纪委与财务 负责人查询数据为两种
+        QueryWrapper<OaTopic> queryWrapper = new QueryWrapper<>();
+        //名称模糊查询
+        if (!StringUtil.isEmpty(oaTopic.getTopicName())) {
+            queryWrapper.like("TOPIC_NAME", oaTopic.getTopicName());
+            oaTopic.setTopicName(null);
+        }
+        queryWrapper.setEntity(oaTopic);
+        //处理时间查询
+        Map<String, String[]> paramsMap = request.getParameterMap();
+        if (null != paramsMap) {
+            String[] beginValue = paramsMap.get("creatTime_begin");
+            if (null != beginValue && beginValue.length > 0) {
+                if (StringUtils.isNotEmpty(beginValue[0].trim())) {
+                    queryWrapper.ge("CREAT_TIME", beginValue[0].trim());
+                }
+            }
+            String[] endValue = paramsMap.get("creatTime_end");
+            if (null != endValue && endValue.length > 0) {
+                if (StringUtils.isNotEmpty(endValue[0].trim())) {
+                    queryWrapper.le("CREAT_TIME", endValue[0].trim());
+                }
+            }
+        }
+        queryWrapper.orderByDesc("CREAT_TIME");
+        IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+        ResponseUtil.writeJson(response, dataGrid, page);
+    }
+
+    /**
      * 增改视图
      * topic/saveOrUpdateView
      *
@@ -677,7 +722,7 @@ public class OaTopicController extends BaseController {
      */
     private OaTopic getSelectTopic(OaTopic oaTopic, ActiveUser user) {
         SysUserEntity userEntity = getUser();
-        if(ShiroUtils.hasRole("0106")){
+        if (ShiroUtils.hasRole("0106")) {
             //纪委科室上级主管领导
             oaTopic.setChoicePassFive("true");
             ShiroUtils.setSessionValue("auditLV", "6");
@@ -687,13 +732,50 @@ public class OaTopicController extends BaseController {
             oaTopic.setLeaderId(user.getId());
             oaTopic.setIsPassOne(1);
             ShiroUtils.setSessionValue("auditLV", "2");
-        } else if (ShiroUtils.hasRole("01061")) {
-            //判断是否纪委负责人
-            //06纪委科长 disciplineOffice isPassThree choicePassFive
-            /*oaTopic.setDisciplineOffice(user.getId());
+        } else if (ShiroUtils.hasRole("01014")) {
+            //判断是否财务负责人
+            //05财务科科长 financeOffice isPassThree choicePassFour
+           /* oaTopic.setFinanceOffice(user.getId());
             oaTopic.setIsPassThree(1);*/
+            oaTopic.setChoicePassFour("true");
+            ShiroUtils.setSessionValue("auditLV", "4");
+        } else if (ShiroUtils.hasRole("topicadd")) {
+            //判断是否议题发起人
+            //01议题发起人  deptId查询条件
+            oaTopic.setDeptId(userEntity.getDeptId());
+        } else if (ShiroUtils.hasRole("topicaudit")) {
+            //判断是否综合办议题审核人员
+            //04综合办议题审核员 isPassOne isPassTwo
+            oaTopic.setIsPassTwo(1);
+            ShiroUtils.setSessionValue("auditLV", "3");
+        } else {
+            //剩下的 为 本科室 负责人
+            //02本科室科长  deptLeaderId
+            oaTopic.setDeptLeaderId(user.getId());
+            ShiroUtils.setSessionValue("auditLV", "1");
+        }
+        return oaTopic;
+    }
+
+    /**
+     * 判断登录角色的查询条件
+     *
+     * @param oaTopic
+     * @param user
+     * @return
+     */
+    private OaTopic getSelectAuditTopic(OaTopic oaTopic, ActiveUser user) {
+        SysUserEntity userEntity = getUser();
+        if (ShiroUtils.hasRole("0106")) {
+            //纪委科室上级主管领导
             oaTopic.setChoicePassFive("true");
-            ShiroUtils.setSessionValue("auditLV", "5");
+            ShiroUtils.setSessionValue("auditLV", "6");
+        } else if (ShiroUtils.hasRole("011")) {
+            //判断是否主管领导
+            //03本科室主管领导  leaderId 通过科长审核
+            oaTopic.setLeaderId(user.getId());
+            oaTopic.setIsPassOne(1);
+            ShiroUtils.setSessionValue("auditLV", "2");
         } else if (ShiroUtils.hasRole("01014")) {
             //判断是否财务负责人
             //05财务科科长 financeOffice isPassThree choicePassFour
