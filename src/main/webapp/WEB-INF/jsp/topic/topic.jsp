@@ -374,7 +374,7 @@
                 id: '#filePicker'
             },
 
-            fileSizeLimit: 5 * 1024 * 1024
+            fileSizeLimit:  200* 1024 * 1024
 
         });
 
