@@ -80,7 +80,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">议题标题*：</label>
                             <div class="col-sm-8">
-                                <input id="topicName" name="topicName" minlength="2" maxlength="20" type="text"
+                                <input id="topicName" name="topicName" minlength="2"  type="text"
                                        class="form-control" required value="${oaTopic.topicName}">
                             </div>
                         </div>

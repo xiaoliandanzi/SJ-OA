@@ -72,7 +72,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">会议名称*：</label>
                             <div class="col-sm-8">
-                                <input id="meetingName" name="meetingName" minlength="2" maxlength="10" type="text" class="form-control" required=""  >
+                                <input id="meetingName" name="meetingName" minlength="2"  type="text" class="form-control" required=""  >
                             </div>
                         </div>
                         <div class="form-group">

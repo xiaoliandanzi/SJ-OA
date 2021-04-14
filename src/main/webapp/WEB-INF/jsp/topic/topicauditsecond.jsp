@@ -68,7 +68,7 @@
                                             <option value="${report.id }">${report.realName}</option>
                                         </c:forEach>
                                     </select>--%>
-                                <input id="reportName" name="reportName" minlength="2" maxlength="20" type="text"
+                                <input id="reportName" name="reportName" minlength="2"  type="text"
                                        class="form-control" required value="${oaTopic.reportName}">
                             </div>
                         </div>
@@ -87,7 +87,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">备注：</label>
+                            <label class="col-sm-3 control-label">备注xxxxxxxxxxxx：</label>
                             <div class="col-sm-8">
                                 <textarea name="topicRemark" class="form-control"
                                 >${oaTopic.topicRemark}</textarea>

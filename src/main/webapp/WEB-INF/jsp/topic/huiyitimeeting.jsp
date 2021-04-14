@@ -21,7 +21,7 @@
                             <label class="col-sm-2 control-label m-b">会议名称*：</label>
                             <div class="col-sm-4 m-b">
                                 <input id="meetingName" style="width: 401px" name="meetingName"
-                                       value="${oaMeeting.meetingName}" minlength="2" maxlength="10" type="text"
+                                       value="${oaMeeting.meetingName}" minlength="2"  type="text"
                                        class="form-control" required="">
                             </div>
                         </div>
