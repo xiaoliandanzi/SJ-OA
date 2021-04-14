@@ -87,7 +87,7 @@
                         <div class=" form-group">
                             <label class="col-sm-3 control-label">内容摘要*：</label>
                             <div class="col-sm-8">
-                                <textarea name="topicContent" class="form-control"
+                                <textarea name="topicContent" class="form-control" required
                                 >${oaTopic.topicContent}</textarea>
                             </div>
                         </div>
@@ -156,7 +156,7 @@
                             <label class="col-sm-3 control-label">财务科：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
-                                        id="financeOffice" name="financeOffice" onchange="select1(this.value)">
+                                        id="financeOffice" name="financeOffice" onchange="select1()">
                                     <c:forEach items="${financeOffice}" var="finance" >
                                         <option value="${finance.id }">${finance.realName}</option>
                                     </c:forEach>
@@ -167,7 +167,7 @@
                             <label class="col-sm-3 control-label">纪委科长：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
-                                        id="disciplineOffice" name="disciplineOffice" onchange="select1(this.value)">
+                                        id="disciplineOffice" name="disciplineOffice" onchange="select1()">
                                     <c:forEach items="${disciplineOffice}" var="discipline">
                                         <option value="${discipline.id }">${discipline.realName}</option>
                                     </c:forEach>
@@ -179,7 +179,7 @@
                             <label class="col-sm-3 control-label">纪委主管领导：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
-                                        id="managerOffice" name="managerOffice" onchange="select1(this.value)">
+                                        id="managerOffice" name="managerOffice" onchange="select1()">
                                     <c:forEach items="${managerOffice}" var="managerOfficelist">
                                         <option value="${managerOfficelist.id }">${managerOfficelist.realName}</option>
                                     </c:forEach>
@@ -314,17 +314,20 @@
         })
     }
     
-    function select1(val) {
-        if (val==""){//financeOffice   disciplineOffice  managerOffice
-            document.getElementById("financeOffice").setAttribute("required",false);
-            document.getElementById("disciplineOffice").setAttribute("required",false);
-            document.getElementById("managerOffice").setAttribute("required",false);
+    function select1() {
+        debugger
+        var v1 = document.getElementById("financeOffice").value;
+        var v2 =document.getElementById("disciplineOffice").value;
+        var v3 =document.getElementById("managerOffice").value;
+        if (v1 == ""&&v2 == ""&&v3 == "" ){//financeOffice   disciplineOffice  managerOffice
+            $('#financeOffice').removeAttr('required');
+            $('#disciplineOffice').removeAttr('required');
+            $('#managerOffice').removeAttr('required');
         }else{
-            document.getElementById("financeOffice").setAttribute("required",true);
+            document.getElementById("financeOffice").setAttribute('required',true);
             document.getElementById("disciplineOffice").setAttribute("required",true);
             document.getElementById("managerOffice").setAttribute("required",true);
         }
-
     }
 
     function downThis(date) {
