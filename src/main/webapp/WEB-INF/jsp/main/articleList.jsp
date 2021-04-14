@@ -327,8 +327,8 @@
             <p class="tab1_zwDate" style="text-align: center;padding-bottom: 10px">
                 {{tab1zwMsg.publicTime}}
             </p>
-            <p class="tab1_zwVal" style="font-size: 20px">
-                {{tab1zwMsg.content}}
+            <p class="tab1_zwVal" style="font-size: 20px" HtmlEncode="false">
+                {{tab1zwMsg.content.toString()}}
             </p>
         </div>
         <div style="position: absolute;bottom: 0px">
@@ -342,7 +342,7 @@
 
     <div class="friendBox">
         <span class="friendTxt"> 链接</span>
-        <a class="friendHerf" href="http://www.chy.egov.cn/"> 朝阳政务</a>
+        <a class="friendHerf" href="http://www.chy.egov.cn/"> 朝阳政务s</a>
         <a class="friendHerf" href="http://www.bjchy.gov.cn/"> 朝阳区政务网</a>
         <a class="friendHerf" href="http://bgpc.beijing.gov.cn/"> 市政府采购中心</a>
         <a class="friendHerf" href="http://3d.bjchy.gov.cn"> 云享朝阳·感知互动体验中心</a>

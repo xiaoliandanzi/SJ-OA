@@ -135,7 +135,35 @@ public class FileDownController extends BaseController {
                 outputStream.write(data);
                 outputStream.flush();
                 outputStream.close();
-            }
+            }else
+                //本地文件下载
+                if(StringUtils.equals(GlobalConstant.FILE_UPLOADER_SAVE_FILE, tsAttachment.getType())) {
+
+                    //获取文件路径
+                    String downLoadPath = tsAttachment.getPath();
+                    String fileName = tsAttachment.getName();
+                    //获取文件长度
+                    long fileLength = new File(downLoadPath).length();
+                    //设置文件输出类型
+                    response.setContentType("application/octet-stream");
+
+                    response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+                    response.setHeader("Content-Length", String.valueOf(fileLength));
+
+                    //获取输入流
+                    BufferedInputStream bis = new BufferedInputStream(new FileInputStream(downLoadPath));
+                    //输出流
+                    BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+
+                    byte[] buff = new byte[2048];
+                    int bytesRead;
+                    while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+                        bos.write(buff, 0, bytesRead);
+                    }
+                    //关闭流
+                    bis.close();
+                    bos.close();
+                }
         } catch (Exception e) {
             log.error("文件下载报错，错误原因：{}", e.getMessage());
             e.printStackTrace();

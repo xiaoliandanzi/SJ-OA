@@ -55,8 +55,8 @@
 <script type="text/javascript">
     var editor = CKEDITOR.replace('content');
     function getContenet(){
-        //return CKEDITOR.instances.content.getData();    //获取textarea的值
-        return  CKEDITOR.instances.content.document.getBody().getText();
+        return CKEDITOR.instances.content.getData();    //获取textarea的值
+        //return  CKEDITOR.instances.content.document.getBody().getText();
     }
 
 

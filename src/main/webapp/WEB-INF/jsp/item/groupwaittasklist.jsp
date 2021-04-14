@@ -85,13 +85,10 @@
                             location.reload();
                         }
                     });
-                    reloadTable('groupWaitTask');
                 } else {
                     qhTipWarning(d.msg);
-                    reloadTable('groupWaitTask');
                 }
             });
-            reloadTable('groupWaitTask');
         }, function() {
             //否
             });
