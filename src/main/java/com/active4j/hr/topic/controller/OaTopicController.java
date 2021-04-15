@@ -787,6 +787,7 @@ public class OaTopicController extends BaseController {
             //判断是否综合办议题审核人员
             //04综合办议题审核员 isPassOne isPassTwo
             oaTopic.setIsPassTwo(1);
+            oaTopic.setIsPassSix(1);
             ShiroUtils.setSessionValue("auditLV", "3");
         } else if (ShiroUtils.hasRole("topicadd")) {
             //判断是否议题发起人
