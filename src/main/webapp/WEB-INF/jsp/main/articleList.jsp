@@ -327,8 +327,9 @@
             <p class="tab1_zwDate" style="text-align: center;padding-bottom: 10px">
                 {{tab1zwMsg.publicTime}}
             </p>
-            <p class="tab1_zwVal" style="font-size: 20px" HtmlEncode="false">
-                {{tab1zwMsg.content.toString()}}
+            <p id="tab1_zwVal" class="tab1_zwVal" style="font-size: 20px">
+                                {{tab1zwMsg.content}}
+
             </p>
         </div>
         <div style="position: absolute;bottom: 0px">
@@ -358,11 +359,11 @@
 
     var massages = [];
 
-
     /* {
          name: "双井图库"
      },
  */
+    var tests;
     var dom = new Vue({
         el: '#app',
         data() {
@@ -472,9 +473,7 @@
                     this.zhengwen = true;
                     this.tab1zwMsg = msg.data.obj;
                     this.attachList = JSON.parse(this.tab1zwMsg.attachment) ? JSON.parse(this.tab1zwMsg.attachment) : this.tab1zwMsg.attachment;
-
                 })
-
             },
             loginForThis(item) {
                 axios.get('oa/login/getArticle?id=' + item).then((msg) => {

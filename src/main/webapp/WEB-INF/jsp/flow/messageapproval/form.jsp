@@ -30,7 +30,10 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">信息类型：*</label>
     <div class="col-sm-3">
-        <t:dictSelect name="messageType" type="select" typeGroupCode="messagetypes" defaultVal="${biz.messageType}"></t:dictSelect>
+<%--        <select class="form-control" name="messageType" id="messageType" style="width: 100px">--%>
+<%--            <option value="${biz.messageType}">${biz.messageType }</option>--%>
+<%--        </select>--%>
+        <t:dictSelect  name="messageType"   type="select" typeGroupCode="messagetypes" defaultVal="${biz.messageType}"></t:dictSelect>
     </div>
 </div>
 
