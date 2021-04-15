@@ -54,9 +54,23 @@
 
 <script type="text/javascript">
     var editor = CKEDITOR.replace('content');
+
+
+    // $().ready(function () {
+    //
+    //     $("select[name='messageType']").change(function () {
+    //         var ss=$("select[name='messageType']").children('option:selected').text();
+    //         alert(ss);
+    //     })
+    // })
+
     function getContenet(){
-        //return CKEDITOR.instances.content.getData();    //获取textarea的值
-        return  CKEDITOR.instances.content.document.getBody().getText();
+        var ss=$("select[name='messageType']").children('option:selected').text();
+        if (ss=="双井图库"){
+            return CKEDITOR.instances.content.getData();    //获取textarea的值
+        }else{
+            return  CKEDITOR.instances.content.document.getBody().getText();
+        }
     }
 
 
@@ -145,7 +159,7 @@
                 id : '#filePicker'
             },
 
-            fileSizeLimit: 5 * 1024 * 1024
+            fileSizeLimit: 200 * 1024 * 1024
 
         });
 
@@ -226,5 +240,8 @@
         $("#optType").val("1");
         $("#commonForm").submit();
     }
+
+
+
 </script>
 </html>
