@@ -53,7 +53,25 @@ public class DateUtils extends PropertyEditorSupport {
 	private static final long HOUR_IN_MILLIS = 3600 * 1000;
 	private static final long MINUTE_IN_MILLIS = 60 * 1000;
 	private static final long SECOND_IN_MILLIS = 1000;
-	
+
+	//获取当天的开始时间
+	public static Date getDayBegin() {
+		Calendar cal = new GregorianCalendar();
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		return cal.getTime();
+	}
+
+	//获取当天的结束时间
+	public static Date getDayEnd() {
+		Calendar cal = new GregorianCalendar();
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		return cal.getTime();
+	}
 	/**
 	 * 获取当前时间
 	 * 

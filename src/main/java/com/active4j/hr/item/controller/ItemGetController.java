@@ -115,7 +115,7 @@ public class ItemGetController extends BaseController {
                 j.setMsg("领用物品名称不能为空!");
                 return j;
             }
-            if (getItemEntity.getGetDay().compareTo(new Date()) == -1){
+            if (getItemEntity.getGetDay().compareTo(DateUtils.getDayBegin()) == -1){
                 j.setSuccess(false);
                 j.setMsg("领用日期不能在当前日期之前");
                 return j;
