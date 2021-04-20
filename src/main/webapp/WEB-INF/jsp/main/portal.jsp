@@ -102,7 +102,7 @@
         background: #FFF;
     }
     .eventIndex {
-        max-height: 220px;
+        max-height: 300px;
         overflow: hidden;
     }
 </style>
@@ -317,12 +317,12 @@
                                     <%--                        <span class="jia">+</span>--%>
                                     <span class="jia" style="display: block;position: relative;top:25px;"><img
                                             src="./img/more.png"></span>
-                                    <span class="gengduo"><a href="sys/message/list" class="gengduo">更多</a></span>
+                                    <span class="gengduo"><a href="flow/biz/task/list" class="gengduo">更多</a></span>
                                 </div>
                             </div>
                         </div>
                         <div class="eventIndex">
-                            <div class="articleItem" v-for="(item,index) in shijian" :key="index">
+                            <div class="articleItem" v-for="(item,index) in shijian" :key="index" onclick="doTaskList()">
                                 <div class="">{{index + 1}}、{{item.content}}</div>
                                 <!-- <div class="eventTitle"></div>
                                 <div class="eventMsg"></div> -->
@@ -427,6 +427,9 @@
     });
 
 
+    function doTaskList() {
+        location.href = "flow/biz/task/list"
+    }
     function closes() {
         $("#rbbox").hide();
     }
