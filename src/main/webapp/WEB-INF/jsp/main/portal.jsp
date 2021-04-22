@@ -307,7 +307,7 @@
                         </div>
                     </div>
                 </div>
-
+                <%--href="index"--%>
                 <div class="oneLine" style="height: 369px;">
                     <div class="one_a boxShadow" style="height: 369px;">
                         <div class="borderTitle">
@@ -317,7 +317,7 @@
                                     <%--                        <span class="jia">+</span>--%>
                                     <span class="jia" style="display: block;position: relative;top:25px;"><img
                                             src="./img/more.png"></span>
-                                    <span class="gengduo"><a href="flow/biz/task/list" class="gengduo">更多</a></span>
+                                    <span class="gengduo"><a class="gengduo" onclick="doTaskList()">更多</a></span>
                                 </div>
                             </div>
                         </div>
@@ -427,8 +427,12 @@
     });
 
 
-    function doTaskList() {
-        location.href = "flow/biz/task/list"
+    function doTaskList(){
+        debugger
+        setTimeout(function(){
+            window.open('flow/biz/task/list');
+        }, 1000);
+        window.location.href= "index";
     }
     function closes() {
         $("#rbbox").hide();

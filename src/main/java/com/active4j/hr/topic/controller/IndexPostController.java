@@ -345,7 +345,7 @@ public class IndexPostController extends BaseController {
                 imgPath.add(strlis);
             }
             if (imgPath.size()==0||imgPath==null){
-                imgPath.add("/oa/upload/borderImg.png");
+                imgPath.add("/upload/borderImg.jpg");
             }
         }catch (Exception e){
             throw e;
@@ -404,7 +404,7 @@ public class IndexPostController extends BaseController {
                 boolean matches = i.getName().toLowerCase().matches(".+\\.(jpg|png|gif|jpeg)");
                 if(matches == true) {
                     StringBuilder name = new StringBuilder();
-                    name.append("/oa/upload/"+i.getName());
+                    name.append("/upload/"+i.getName());
                     System.out.print(name.toString());
                     list.add(name);
                 }

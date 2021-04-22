@@ -54,7 +54,10 @@ public class ImageUploadUtil {
                 fileName = mf.getOriginalFilename();// 获取文件名
                 String extend = FileUtils.getExtend(fileName);// 获取文件扩展名
 
-                String realPath = request.getSession().getServletContext().getRealPath("/") + "/upload/";// 文件的硬盘真实路径
+                //String realPath = request.getSession().getServletContext().getRealPath("/") + "/upload/";// 文件的硬盘真实路径
+                String realPath = request.getSession().getServletContext().getRealPath("/");
+                String substr=realPath.substring(0,realPath.lastIndexOf("/",realPath.lastIndexOf("/")-1));
+                realPath = substr + "/upload/";// 文件的硬盘真实路径
                 String path = "upload/" ;
 
                 File file = new File(realPath);
@@ -89,11 +92,12 @@ public class ImageUploadUtil {
         // 结合ckeditor功能
         // imageContextPath为图片在服务器地址，如upload/123.jpg,非绝对路径
         String imageContextPath =request.getContextPath()+"/"+DirectoryName+"/"+fileName;
+        String substring = imageContextPath.substring(3);
 
         PrintWriter out = response.getWriter();
-        request.setAttribute("image", imageContextPath);
+        request.setAttribute("image", substring);
 
-        String remotefilePath = imageContextPath;
+        String remotefilePath = substring;
         String callback = request.getParameter("CKEditorFuncNum");
         out.println("<script type=\"text/javascript\">");
         out.println("window.parent.CKEDITOR.tools.callFunction(" + callback

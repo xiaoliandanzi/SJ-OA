@@ -119,7 +119,13 @@ public class FileUploadController extends BaseController {
 					//本地保存文件系统
 					String strYYYYMMDD = DateUtils.getYYYYMMDDStr();
 					
-					String realPath = request.getSession().getServletContext().getRealPath("/") + "/upload/" + strYYYYMMDD + "/";// 文件的硬盘真实路径
+					//String realPath = request.getSession().getServletContext().getRealPath("/") + "/upload/" + strYYYYMMDD + "/";// 文件的硬盘真实路径
+					//String path = "upload/" + strYYYYMMDD + "/";
+					String realPath = request.getSession().getServletContext().getRealPath("/");
+					String substr=realPath.substring(0,realPath.lastIndexOf("/",realPath.lastIndexOf("/")-1));
+					realPath = substr + "/upload/" + strYYYYMMDD + "/";// 文件的硬盘真实路径
+					System.out.println("realPath:"+realPath);
+					System.out.println("----------------------------------------------------");
 					String path = "upload/" + strYYYYMMDD + "/";
 					File file = new File(realPath);
 					if (!file.exists()) {
