@@ -117,6 +117,7 @@
 		B.WORKFLOW_ID,
 		B.WORKFLOW_NAME,
 		f.sealtype
+
 		FROM
 		wf_base B
 		left JOIN act_hi_procinst p on B.ID = p.BUSINESS_KEY_
@@ -125,6 +126,9 @@
 		where B.WORKFLOW_NAME = '双井公章申请'
 		<if test="userDpet !=null and userDpet != ''">
 			and b.APPLYER_DEPART = #{userDpet}
+		</if>
+		<if test="user_name != null and user_name != ''">
+			and B.USER_NAME = #{user_name}
 		</if>
 		<if test="sealtype!=null and sealtype!=''">
 			and f.sealtype = #{sealtype}

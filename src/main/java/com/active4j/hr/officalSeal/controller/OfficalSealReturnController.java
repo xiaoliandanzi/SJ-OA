@@ -399,9 +399,10 @@ public class OfficalSealReturnController extends BaseController {
      */
     @RequestMapping("/datagridFinish")
     public void datagridFinish(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
-        String startTime = request.getParameter("applyDate_begin");
-        String endTime = request.getParameter("applyDate_end");
+        String startTime = request.getParameter("APPLY_DATE_begin");
+        String endTime = request.getParameter("APPLY_DATE_begin");
         String sealtype = request.getParameter("sealtype");
+        String user_name = request.getParameter("USER_NAME");
         if (startTime == null || startTime=="") {
             startTime = "2000-01-01";
         }
@@ -423,7 +424,7 @@ public class OfficalSealReturnController extends BaseController {
 
         IPage<HashMap> lstResult = new Page<>();
 
-        lstResult = workflowService.findFinishedTaskSealByUserDept(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity,sealtype,userDept,startTime, endTime, WorkflowConstant.Task_Category_approval);
+        lstResult = workflowService.findFinishedTaskSealByUserDept(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity,sealtype,user_name,userDept,startTime, endTime, WorkflowConstant.Task_Category_approval);
 
         ResponseUtil.writeJson(response, dataGrid, lstResult);
         /*IPage<WorkflowBaseEntity> lstResult = new Page<>();
