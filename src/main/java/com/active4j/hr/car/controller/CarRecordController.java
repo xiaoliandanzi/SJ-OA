@@ -373,6 +373,7 @@ public class CarRecordController extends BaseController {
             for (Object role : userrole) {
                 if (carrole.equals(role))
                     sign = true;//是车辆管理员
+                    break;
             }
             List<FlowCarApprovalEntity> list = new ArrayList();
             if (sign){//车辆管理员查询全部已完成数据

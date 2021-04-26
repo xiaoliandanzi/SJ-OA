@@ -48,11 +48,11 @@
 	    LEFT JOIN sys_user u on b.USER_NAME=u.USER_NAME
 	    LEFT JOIN sys_depart d on u.DEPT_ID=d.ID
         WHERE
-        	<if test="useDepatment !=null and useDepatment !=''">d.NAME like concat('%',#{useDepatment},'%')</if>
+		b.WORKFLOW_NAME = "车辆申请"
+        	<if test="useDepatment !=null and useDepatment !=''"> and d.NAME like concat('%',#{useDepatment},'%')</if>
 		AND b.APPLY_DATE &gt;= #{applyDate_begin}
 		and b.APPLY_DATE &lt;= #{applyDate_end}
         AND b.STATUS = '3'
-        AND b.WORKFLOW_NAME = "车辆申请"
         order by b.APPLY_DATE
     </select>
 </mapper>
