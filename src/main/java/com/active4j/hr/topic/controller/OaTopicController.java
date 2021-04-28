@@ -783,6 +783,13 @@ public class OaTopicController extends BaseController {
             oaTopic.setIsPassThree(1);*/
             oaTopic.setChoicePassFour("true");
             ShiroUtils.setSessionValue("auditLV", "4");
+        } else if (ShiroUtils.hasRole("012")) {
+            //判断是否纪委
+            //04纪委
+            oaTopic.setIsPassTwo(1);
+            oaTopic.setIsPassFour(1);
+            oaTopic.setIsPassFive(0);
+            ShiroUtils.setSessionValue("auditLV", "5");
         } else if (ShiroUtils.hasRole("topicaudit")) {
             //判断是否综合办议题审核人员
             //04综合办议题审核员 isPassOne isPassTwo
