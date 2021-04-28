@@ -371,9 +371,10 @@ public class CarRecordController extends BaseController {
             String carrole = this.flowGetSpeRoleService.getCarAdminrole();
             Boolean sign = false;
             for (Object role : userrole) {
-                if (carrole.equals(role))
+                if (carrole.equals(role)){
                     sign = true;//是车辆管理员
                     break;
+                }
             }
             List<FlowCarApprovalEntity> list = new ArrayList();
             if (sign){//车辆管理员查询全部已完成数据
