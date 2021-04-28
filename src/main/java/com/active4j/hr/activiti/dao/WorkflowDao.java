@@ -62,7 +62,7 @@ public interface WorkflowDao {
 																@Param("name") String name, @Param("applyName") String applyName,@Param("applyerDepart") String applyerDepart,
 																@Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd);
 
-	IPage<HashMap> findFinishedTaskSealByUserDept(IPage<WorkflowBaseEntity> page, @Param("userDpet") String userDept, @Param("sealtype") String sealtype,
+	IPage<HashMap> findFinishedTaskSealByUserDept(IPage<WorkflowBaseEntity> page, @Param("userDpet") String userDept, @Param("sealtype") String sealtype,@Param("user_name") String user_name,
 												  @Param("categoryId") String categoryId, @Param("projectNo") String projectNo,
 												  @Param("name") String name, @Param("applyName") String applyName, @Param("applyerDepart") String applyerDepart,
 												  @Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd);

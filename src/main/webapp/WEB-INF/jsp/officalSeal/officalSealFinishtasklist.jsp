@@ -37,7 +37,7 @@
     <t:dgCol name="PROJECT_NO" label="编号"  width="80" ></t:dgCol>
     <t:dgCol name="CATEGORY_ID" label="流程类别" hidden="true"  replace="${categoryReplace}" queryId="categoryId" width="90"></t:dgCol>
     <t:dgCol name="WORKFLOW_NAME" label="流程名称" hidden="true"  width="70"></t:dgCol>
-    <t:dgCol name="sealtype" label="公章类型" width="80" query="true"></t:dgCol>
+    <t:dgCol name="sealtype" label="公章类型" width="80" query="true" replace="办事处章_办事处章,工委章_工委章"></t:dgCol>
     <t:dgCol name="USER_NAME" label="借用人" width="80" query="true"></t:dgCol>
     <t:dgCol name="APPLY_DATE" label="申请时间" width="120" query="true" datefmt="yyyy-MM-dd" queryModel="group" datePlugin="laydate"></t:dgCol>
     <%--<t:dgCol name="projectNo" label="编号" width="120" ></t:dgCol>--%>
@@ -57,8 +57,8 @@
 
 <script type="text/javascript">
     $(function(){
-        laydate({elem:"#applyDate_begin",event:"focus",istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
-        laydate({elem:"#applyDate_end",event:"focus",istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
+        laydate({elem:"#APPLY_DATE_begin",event:"focus",istime: true, format: 'YYYY-MM-DD'});
+        laydate({elem:"#APPLY_DATE_end",event:"focus",istime: true, format: 'YYYY-MM-DD'});
     });
     function doAttachment() {
         window.open("/oa/officalSeal/return/excelExport");

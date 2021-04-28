@@ -287,5 +287,5 @@ public interface WorkflowService {
 	 */
 	//IPage<WorkflowBaseEntity> findFinishedTaskByRoleName(Page<WorkflowBaseEntity> workflowBaseEntityPage, WorkflowBaseEntity workflowBaseEntity, String sealtype, String startTime, String endTime, String task_category_approval);
 
-	IPage<HashMap> findFinishedTaskSealByUserDept(Page<WorkflowBaseEntity> workflowBaseEntityPage, WorkflowBaseEntity workflowBaseEntity, String sealtype, String userDept, String startTime, String endTime, String task_category_approval);
+	IPage<HashMap> findFinishedTaskSealByUserDept(Page<WorkflowBaseEntity> workflowBaseEntityPage, WorkflowBaseEntity workflowBaseEntity, String sealtype,String user_name, String userDept, String startTime, String endTime, String task_category_approval);
 }
