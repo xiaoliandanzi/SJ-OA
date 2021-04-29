@@ -130,6 +130,7 @@
         <div class="webName" style="color: white;">
             双井街道智慧办公系统
         </div>
+        <a href="#" οnclick="javascript:Run('file://C:/Users/云天红移/Desktop/sscom5.13.1.exe','File')">gggggggggggggggggggggg</a>
         <div class="navberItem">
             <img class="navIcon" src="./img/d.png" alt="">
             <span class="navItemName"><a href="/oa/" class="nava" style="color: white;">门户首页</a></span>
@@ -139,10 +140,11 @@
             <%--<a href="/oa/index" class="nava">个人办公</a>--%>
             <%--span class="navItemName">--%><a href="/oa/index" class="navItemName nava" style="color: white;">个人办公</a><%--</span>--%>
         </div>
-        <%--<div class="navberItem">
+        <div class="navberItem">
             <img class="navIcon" src="./img/c.png" alt="">
-            <span class="navItemName">财务系统</span>
+            <a class="navItemName" href="vs:" style="color: white;" >财务系统</a>
         </div>
+        <%--
         <div class="selectBox">
             <div class="inpBox">
                 <input class="selectInp" v-model="selectMsg" type="text" @input="getSelectHold"/>
@@ -419,6 +421,7 @@
 
 
 <script type="text/javascript">
+
     $.post("oa/index/getIndexImg", function (data) {
         for(var i=0;i<data.length;i++){
             var ui="<img src="+data[i]+" alt="+(i+1)+"/>";
