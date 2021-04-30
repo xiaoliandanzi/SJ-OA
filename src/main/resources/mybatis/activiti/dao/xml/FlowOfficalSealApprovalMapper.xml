@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.active4j.hr.activiti.biz.dao.FlowOfficalSealApprovalDao">
+
+    <select id="getAllOfficalMessage" resultType="com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity">
+        SELECT
+            a.SEALTYPE AS sealtype,
+            a.DEPARTMENTNAME AS departmentName,
+            c.REAL_NAME AS userName,
+            a.USE_DAY AS useDay,
+            a.USEUNIT AS useUnit,
+            a.CONTENT AS content,
+            a.COMMIT AS commit
+        FROM
+            flow_officalseal_approval a
+            LEFT JOIN wf_base b ON b.BUSINESS_ID = a.id
+            LEFT JOIN sys_user c ON c.USER_NAME = a.CREATE_NAME
+        WHERE
+            b.STATUS = 3
+            AND WORKFLOW_NAME = '双井公章申请'
+            <if test="userdept !=null and userdept !=''">
+                and a.DEPARTMENTNAME = #{userdept}
+            </if>
+            <if test="username!= null and username !=''">
+                and a.CREATE_NAME like concat('%',#{username},'%')
+            </if>
+            <if test="sealtype !=null and sealtype != ''">
+                and a.SEALTYPE = #{sealtype}
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                and a.CREATE_DATE &gt;= #{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and a.CREATE_DATE &lt;= #{endTime}
+            </if>
+
+
+
+    </select>
+
+</mapper>

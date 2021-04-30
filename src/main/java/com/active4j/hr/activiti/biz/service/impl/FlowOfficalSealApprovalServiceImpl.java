@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -25,6 +28,10 @@ public class FlowOfficalSealApprovalServiceImpl extends ServiceImpl<FlowOfficalS
     @Autowired
     private WorkflowBaseService workflowBaseService;
 
+    @Resource
+    private FlowOfficalSealApprovalDao flowOfficalSealApprovalDao;
+
+
     public void saveNewSeal(WorkflowBaseEntity workflowBaseEntity, FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity) {
 
         this.save(flowOfficalSealApprovalEntity);
@@ -38,5 +45,10 @@ public class FlowOfficalSealApprovalServiceImpl extends ServiceImpl<FlowOfficalS
         this.saveOrUpdate(flowOfficalSealApprovalEntity);
 
         workflowBaseService.saveOrUpdate(workflowBaseEntity);
+    }
+
+    @Override
+    public List getAllOfficalMessage(String userdept, String startTime, String endTime, String sealtype, String username) {
+        return this.flowOfficalSealApprovalDao.getAllOfficalMessage(userdept,startTime,endTime,sealtype,username);
     }
 }

@@ -4,6 +4,8 @@ import com.active4j.hr.activiti.biz.entity.FlowOfficalSealApprovalEntity;
 import com.active4j.hr.activiti.entity.WorkflowBaseEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -15,4 +17,6 @@ public interface FlowOfficalSealApprovalService  extends IService<FlowOfficalSea
     public void saveNewSeal(WorkflowBaseEntity workflowBaseEntity, FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity);
 
     public void saveUpdate(WorkflowBaseEntity workflowBaseEntity, FlowOfficalSealApprovalEntity flowOfficalSealApprovalEntity);
+
+    List getAllOfficalMessage(String userdept,String startTime,String endTime,String sealtype,String username);
 }

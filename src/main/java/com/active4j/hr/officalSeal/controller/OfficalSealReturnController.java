@@ -44,10 +44,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -288,10 +292,12 @@ public class OfficalSealReturnController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/excelExport")
-    public ResponseEntity<Resource> excel2007Export(WorkflowBaseEntity workflowBaseEntity , HttpServletResponse response, HttpServletRequest request, DataGrid dataGrid) {
+    public ResponseEntity<Resource> excel2007Export(WorkflowBaseEntity workflowBaseEntity ,
+                                                    HttpServletResponse response,
+                                                    String startTime, String endTime,
+                                                    String sealtype,String username) {
         try {
-            String startTime = request.getParameter("applyDate_begin");
-            String endTime = request.getParameter("applyDate_end");
+
             if (startTime == null || startTime=="") {
                 startTime = "2000-01-01";
             }
@@ -306,66 +312,114 @@ public class OfficalSealReturnController extends BaseController {
             Workbook workbook = new XSSFWorkbook(is);
             Sheet sheet = workbook.getSheetAt(0);
 
-//            //获取当前用户id
-//            String userId = ShiroUtils.getSessionUserId();
-//            //获取当前用户个人资料
-//            SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
-//            String dep = user.getDeptName();
+            XSSFFont contFont = (XSSFFont) workbook.createFont();
+            // 加粗
+            contFont.setBold(false);
+            // 字体名称
+            contFont.setFontName("楷体");
+            // 字体大小
+            contFont.setFontHeight(14);
+            // 内容样式
+            XSSFCellStyle contentStyle = (XSSFCellStyle) workbook.createCellStyle();
+            // 设置字体css
+            contentStyle.setFont(contFont);
+            // 竖向居中
+            contentStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
+            // 边框
+            contentStyle.setBorderBottom(BorderStyle.THIN);
+            contentStyle.setBorderLeft(BorderStyle.THIN);
+            contentStyle.setBorderRight(BorderStyle.THIN);
+            contentStyle.setBorderTop(BorderStyle.THIN);
 
-            String userName = ShiroUtils.getSessionUserName();
-            SysUserEntity user = sysUserService.getUserByUseName(userName);
-            IPage<WorkflowBaseEntity> lstResult = new Page<>();
-            if(SystemUtils.getDeptNameById(user.getDeptId()).equals("综合办公室")){
-                Row row = sheet.getRow(1);
-                Cell cell = row.getCell(0);
-                cell.setCellValue("部门名称：双井街道全体");
-                lstResult = workflowService.findFinishedTaskByALL(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, WorkflowConstant.Task_Category_approval);
-            }else{
-                Row row = sheet.getRow(1);
-                Cell cell = row.getCell(0);
-                SysDeptEntity paperDept = sysDeptService.getById(user.getDeptId());
-                cell.setCellValue("部门名称："+paperDept.getName());
-                lstResult = workflowService.findFinishedTaskByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
-            }
-
-
-//            QueryWrapper<FlowOfficalSealApprovalEntity> queryWrapper = QueryUtils.installQueryWrapper(flowOfficalSealApprovalEntity, request.getParameterMap(), dataGrid);
-//
-//            queryWrapper.isNull("UPDATE_DATE");
-//            // 执行查询
-//            IPage<FlowOfficalSealApprovalEntity> lstResult = flowOfficalSealApprovalService.page(new Page<FlowOfficalSealApprovalEntity>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
-//            List<FlowOfficalSealApprovalEntity> list = lstResult.getRecords();
-
-            // 执行查询
-            long size = lstResult.getRecords().size();
-            for (long i = size - 1; i >= 0; --i) {
-                if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("双井公章申请")){
-                    lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
-                }else if(!lstResult.getRecords().get((int) i).getStatus().equals("3")){
-                    lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
+            Set userRole = ShiroUtils.getSessionUserRole();
+            //获取公章管理员编号
+            Boolean sign = false;
+            String rolecode = this.flowGetSpeRole.getSealAdminrole();
+            for (Object item: userRole){
+                if (item.equals(rolecode)){
+                    sign = true;
+                    break;
                 }
             }
-            List<WorkflowBaseEntity> list = lstResult.getRecords();
-//            FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
+
+            List<FlowOfficalSealApprovalEntity> list = new ArrayList();
+            if (sign){//公章管理员查询全部已完成数据
+                list = this.flowOfficalSealApprovalService.getAllOfficalMessage(null,startTime,endTime,sealtype,username);
+            }else {//其他成员查询对应科室的数据
+                String userdept = ShiroUtils.getSessionUserDept();
+                list = this.flowOfficalSealApprovalService.getAllOfficalMessage(userdept,startTime,endTime,sealtype,username);
+            }
+            System.out.println(list);
+
             int i = 0;
-            for (WorkflowBaseEntity base : list) {
-                FlowOfficalSealApprovalEntity item = flowOfficalSealApprovalService.getById(base.getBusinessId());
+            for (FlowOfficalSealApprovalEntity item : list) {
                 Row row = sheet.getRow(i + 3);
+                if (row == null) {
+                    row = sheet.createRow(i+3);
+                }
                 Cell cell1 = row.getCell(0);
+                if (cell1 == null){
+                    cell1 = row.createCell(0);
+                }
                 cell1.setCellValue((i+1) + "");
+                cell1.setCellStyle(contentStyle);
+                //使用时间
                 Cell cell2 = row.getCell(1);
+                if (cell2 == null){
+                    cell2 = row.createCell(1);
+                }
                 cell2.setCellValue(new SimpleDateFormat("yyyy-MM-dd").format(item.getUseDay()));
+                cell2.setCellStyle(contentStyle);
+
+                //乘公章类型
                 Cell cell3 = row.getCell(2);
-                cell3.setCellValue(item.getContent());
+                if (cell3 == null){
+                    cell3 = row.createCell(2);
+                }
+                cell3.setCellValue(item.getSealtype());
+                cell3.setCellStyle(contentStyle);
+
+                //用章内容
                 Cell cell4 = row.getCell(3);
-                cell4.setCellValue(item.getUserName());
-                Cell cell5 = row.getCell(4);
-                cell5.setCellValue(item.getUserName());
-                Cell cell6 = row.getCell(5);
-                cell6.setCellValue(item.getCommit());
+                if (cell4 == null){
+                    cell4 = row.createCell(3);
+                }
+                cell4.setCellValue(item.getContent());
+                cell4.setCellStyle(contentStyle);
+
+                //申请人
+                Cell cell6 = row.getCell(4);
+                if (cell6 == null){
+                    cell6 = row.createCell(4);
+                }
+                cell6.setCellValue(item.getUserName());
+                cell6.setCellStyle(contentStyle);
+
+                //备注
+                Cell cell7 = row.getCell(5);
+                if (cell7 == null){
+                    cell7 = row.createCell(5);
+                }
+                cell7.setCellValue(item.getCommit());
+                cell7.setCellStyle(contentStyle);
                 i++;
             }
+            Row row1 = sheet.getRow(i + 4);
+            if (row1 == null) {
+                row1 = sheet.createRow(i+3);
+            }
 
+            Cell cell15 = row1.getCell(1);
+            if (cell15 == null){
+                cell15 = row1.createCell(1);
+            }
+            cell15.setCellValue("科室负责人：");
+
+            Cell cell16 = row1.getCell(5);
+            if (cell16 == null){
+                cell16 = row1.createCell(5);
+            }
+            cell16.setCellValue("主管领导：");
 
             String fileName = "公章借用记录.xlsx";
             downLoadExcel(fileName, response, workbook);
@@ -400,7 +454,7 @@ public class OfficalSealReturnController extends BaseController {
     @RequestMapping("/datagridFinish")
     public void datagridFinish(WorkflowBaseEntity workflowBaseEntity, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
         String startTime = request.getParameter("APPLY_DATE_begin");
-        String endTime = request.getParameter("APPLY_DATE_begin");
+        String endTime = request.getParameter("APPLY_DATE_end");
         String sealtype = request.getParameter("sealtype");
         String user_name = request.getParameter("USER_NAME");
         if (startTime == null || startTime=="") {
@@ -414,11 +468,12 @@ public class OfficalSealReturnController extends BaseController {
 
         String userDept = ShiroUtils.getSessionUserDept();
         Set userRole = ShiroUtils.getSessionUserRole();
-        //获取物品管理员编号
+        //获取公章管理员编号
         String rolecode = this.flowGetSpeRole.getSealAdminrole();
         for (Object item: userRole){
             if (item.equals(rolecode)){
                 userDept = null;
+                break;
             }
         }
 

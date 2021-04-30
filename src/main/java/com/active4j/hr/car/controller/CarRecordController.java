@@ -330,7 +330,7 @@ public class CarRecordController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/excelExport")
-    public ResponseEntity<Resource> excel2007Export(String useDepatment , HttpServletResponse response, HttpServletRequest request, String applyDate_begin,String applyDate_end) {
+    public ResponseEntity<Resource> excel2007Export(String useDepatment , HttpServletResponse response, HttpServletRequest request, String applyDate_begin,String applyDate_end,String applyName) {
         try {
 
             if (applyDate_begin == null || applyDate_begin=="") {
@@ -378,10 +378,10 @@ public class CarRecordController extends BaseController {
             }
             List<FlowCarApprovalEntity> list = new ArrayList();
             if (sign){//车辆管理员查询全部已完成数据
-                list = this.carRecordService.getAllCarMessage(useDepatment,applyDate_begin,applyDate_end);
+                list = this.carRecordService.getAllCarMessage(useDepatment,applyDate_begin,applyDate_end,applyName);
             }else {//其他成员查询对应科室的数据
                 String userdept = ShiroUtils.getSessionUserDept();
-                list = this.carRecordService.getAllCarMessage(userdept,applyDate_begin,applyDate_end);
+                list = this.carRecordService.getAllCarMessage(userdept,applyDate_begin,applyDate_end,applyName);
             }
 //            QueryWrapper<FlowCarApprovalEntity> queryWrapper = QueryUtils.installQueryWrapper(flowCarApprovalEntity, request.getParameterMap(), dataGrid);
 //
@@ -391,7 +391,6 @@ public class CarRecordController extends BaseController {
 //            List<FlowCarApprovalEntity> list = lstResult.getRecords();
 
             int i = 0;
-            int k = 0;
             for (FlowCarApprovalEntity item : list) {
                 Row row = sheet.getRow(i + 3);
                 if (row == null) {

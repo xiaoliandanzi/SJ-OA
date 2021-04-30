@@ -15,8 +15,8 @@ public class CarRecordServiceImpl implements CarRecordService {
     @Resource
     private CarRecordDao carRecordDao;
     @Override
-    public List<FlowCarApprovalEntity> getAllCarMessage(String useDepatment,String applyDate_begin,String applyDate_end) {
-        return this.carRecordDao.getAllCarMessage(useDepatment,applyDate_begin,applyDate_end);
+    public List<FlowCarApprovalEntity> getAllCarMessage(String useDepatment,String applyDate_begin,String applyDate_end,String applyname) {
+        return this.carRecordDao.getAllCarMessage(useDepatment,applyDate_begin,applyDate_end,applyname);
     }
 
 //    @Override

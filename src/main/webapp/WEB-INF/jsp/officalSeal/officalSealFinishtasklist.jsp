@@ -37,8 +37,8 @@
     <t:dgCol name="PROJECT_NO" label="编号"  width="80" ></t:dgCol>
     <t:dgCol name="CATEGORY_ID" label="流程类别" hidden="true"  replace="${categoryReplace}" queryId="categoryId" width="90"></t:dgCol>
     <t:dgCol name="WORKFLOW_NAME" label="流程名称" hidden="true"  width="70"></t:dgCol>
-    <t:dgCol name="sealtype" label="公章类型" width="80" query="true" replace="办事处章_办事处章,工委章_工委章"></t:dgCol>
-    <t:dgCol name="USER_NAME" label="借用人" width="80" query="true"></t:dgCol>
+    <t:dgCol name="sealtype" label="公章类型" width="80" query="true" replace="办事处章_办事处章,工委章_工委章" valueId="sealtype"></t:dgCol>
+    <t:dgCol name="USER_NAME" label="借用人" width="80" query="true" valueId="USER_NAME"></t:dgCol>
     <t:dgCol name="APPLY_DATE" label="申请时间" width="120" query="true" datefmt="yyyy-MM-dd" queryModel="group" datePlugin="laydate"></t:dgCol>
     <%--<t:dgCol name="projectNo" label="编号" width="120" ></t:dgCol>--%>
 <%--    <t:dgCol name="name" label="标题名称" width="120" query="true"></t:dgCol>--%>
@@ -61,7 +61,13 @@
         laydate({elem:"#APPLY_DATE_end",event:"focus",istime: true, format: 'YYYY-MM-DD'});
     });
     function doAttachment() {
-        window.open("/oa/officalSeal/return/excelExport");
+        debugger
+        var startTime = document.getElementById("APPLY_DATE_begin").value;
+        var endTime = document.getElementById("APPLY_DATE_end").value;
+        var username = document.getElementById("USER_NAME").value;
+        var sealtype = document.getElementById("sealtype").value;
+        debugger
+        window.open("/oa/officalSeal/return/excelExport?startTime="+startTime+"&endTime="+endTime+"&username="+username+"&sealtype="+sealtype);
     }
 </script>
 </body>

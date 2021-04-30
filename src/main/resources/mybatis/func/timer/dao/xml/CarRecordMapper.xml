@@ -50,6 +50,9 @@
         WHERE
 		b.WORKFLOW_NAME = "车辆申请"
         	<if test="useDepatment !=null and useDepatment !=''"> and d.NAME like concat('%',#{useDepatment},'%')</if>
+			<if test="applyname !=null and applyname !=''">
+				and b.apply_name = #{applyname}
+			</if>
 		AND b.APPLY_DATE &gt;= #{applyDate_begin}
 		and b.APPLY_DATE &lt;= #{applyDate_end}
         AND b.STATUS = '3'

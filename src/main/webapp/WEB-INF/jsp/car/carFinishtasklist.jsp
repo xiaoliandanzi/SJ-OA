@@ -40,7 +40,7 @@
 <%--    <t:dgCol name="name" label="标题名称" width="120" query="true"></t:dgCol>--%>
     <t:dgCol name="status" label="状态" width="70" dictionary="actstatus" classes="text-navy"></t:dgCol>
     <%--    <t:dgCol name="level" label="紧急程度" width="70" dictionary="workflowlevel" display="level"></t:dgCol>--%>
-    <t:dgCol name="applyName" label="申请人" width="80" query="true"></t:dgCol>
+    <t:dgCol name="applyName" label="申请人" width="80" query="true" valueId="applyName"></t:dgCol>
     <%--    <t:dgCol name="opt" label="操作" ></t:dgCol>--%>
     <%--    <t:dgDelOpt label="删除" url="officalSeal/audit/delete?id={id}"/>--%>
     <t:dgCol name="applyDate" label="申请时间" width="120" query="true" datefmt="yyyy-MM-dd HH:mm:ss" queryModel="group" datePlugin="laydate"></t:dgCol>
@@ -71,7 +71,8 @@
         var useDepatment = document.getElementById("useDepatment").value;
         var applyDate_begin = document.getElementById("applyDate_begin").value;
         var applyDate_end = document.getElementById("applyDate_end").value;
-        window.open("/oa/car/record/excelExport?useDepatment="+useDepatment+"&applyDate_begin="+applyDate_begin+"&applyDate_end="+applyDate_end);
+        var applyName = document.getElementById("applyName").value;
+        window.open("/oa/car/record/excelExport?useDepatment="+useDepatment+"&applyDate_begin="+applyDate_begin+"&applyDate_end="+applyDate_end+"&applyName="+applyName);
     }
 </script>
 </body>
