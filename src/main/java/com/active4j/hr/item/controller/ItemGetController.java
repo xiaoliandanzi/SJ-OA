@@ -1,6 +1,7 @@
 package com.active4j.hr.item.controller;
 
 import com.active4j.hr.activiti.entity.WorkflowCategoryEntity;
+import com.active4j.hr.asset.entity.OaAssetStoreEntity;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
@@ -23,6 +24,9 @@ import com.active4j.hr.system.service.SysUserService;
 import com.active4j.hr.system.util.MessageUtils;
 import com.active4j.hr.system.util.SystemUtils;
 import com.active4j.hr.work.entity.OaWorkMeetRoomEntity;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -140,7 +144,55 @@ public class ItemGetController extends BaseController {
                 j.setMsg("领用数量不能为空");
                 return j;
             }
+
+            String json_data = getItemEntity.getJsonData();
+            JSONArray array = JSON.parseArray(json_data);
             QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.select("NUMLIMIT").eq("TYPE",0).eq("NAME",getItemEntity.getItemName());
+            List<RequisitionedItemEntity> list = requisitionedItemService.list(queryWrapper);
+            for (int i = 0; i < array.size(); i++) {
+                JSONObject jo = array.getJSONObject(i);
+                Integer quantity = jo.getInteger("quantity");
+                String itemName = jo.getString("itemName");
+                if(quantity>list.get(0).getNumLimit()) {
+                    j.setSuccess(false);
+                    j.setMsg("领用数量不能大于限额："+ list.get(0).getNumLimit());
+                    return j;
+                }
+                List<RequisitionedItemEntity> stockEntity = requisitionedItemService.getItemByname(itemName);
+                if (stockEntity.size() != 1) {
+                    j.setSuccess(false);
+                    j.setMsg("库存多项物品冲突");
+                    return j;
+                }
+                RequisitionedItemEntity entity = stockEntity.get(0);
+                if (quantity > entity.getQuantity()) {
+                    j.setSuccess(false);
+                    j.setMsg("库存不足，剩余" + entity.getQuantity());
+                    return j;
+                }
+
+                entity.setQuantity(entity.getQuantity() - quantity);
+                //低于阈值，修改状态
+                if(entity.getQuantity() <= Integer.parseInt(entity.getMinQuantity()) && Integer.parseInt(entity.getStatus()) == 0){
+                    MessageUtils.SendSysMessage(sysUserService.getUserByUseName(roleService.findUserByRoleName("物品管理员").get(0).getUserName()).getId(),String.format("%s仅剩%s个，已低于低量预警线%s个，请及时补充",entity.getName(),entity.getQuantity(),entity.getMinQuantity()));
+                    entity.setStatus("1");
+                }
+
+                if (StringUtils.isEmpty(getItemEntity.getId())) {
+                    //新增方法
+                    getItemEntity.setItemName(itemName);
+                    getItemEntity.setQuantity(quantity);
+                    getItemService.save(getItemEntity);
+                    requisitionedItemService.saveOrUpdate(entity);
+                }else {
+                    //编辑方法
+                    GetItemEntity tmp = getItemService.getById(getItemEntity.getId());
+                    MyBeanUtils.copyBeanNotNull2Bean(getItemEntity, tmp);
+                    getItemService.saveOrUpdate(tmp);
+                }
+            }
+            /*QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<>();
             queryWrapper.select("NUMLIMIT").eq("TYPE",0).eq("NAME",getItemEntity.getItemName());
             List<RequisitionedItemEntity> list = requisitionedItemService.list(queryWrapper);
             if(getItemEntity.getQuantity()>list.get(0).getNumLimit()) {
@@ -179,7 +231,7 @@ public class ItemGetController extends BaseController {
                 GetItemEntity tmp = getItemService.getById(getItemEntity.getId());
                 MyBeanUtils.copyBeanNotNull2Bean(getItemEntity, tmp);
                 getItemService.saveOrUpdate(tmp);
-            }
+            }*/
         }catch(Exception e) {
             j.setSuccess(false);
             j.setMsg(GlobalConstant.Err_Msg_All);

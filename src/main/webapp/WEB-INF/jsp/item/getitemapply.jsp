@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,laydate,icheck,summernote"></t:base>
+    <t:base type="default,laydate,icheck,summernote,clock"></t:base>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -38,6 +38,19 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-3 control-label">领用物品明细*：</label>
+                            <div class="col-sm-6">
+                                <table id="demo"></table>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 30px;">
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="col-sm-4">
+                                <button class="btn btn-primary" type="button" onclick="add();">添加</button>
+                            </div>
+                        </div>
+                        <input type="hidden" name="jsonData" id="jsonData">
+                        <%--<div class="form-group">
                             <label class="col-sm-3 control-label">领用物品*：</label>
                             <div class="col-sm-5">
                                 <select id="itemName" name="itemName" class="form-control" required="" >
@@ -46,13 +59,13 @@
                                     </c:forEach>
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-group">
+                        </div>--%>
+                        <%--<div class="form-group">
                             <label class="col-sm-3 control-label">领取数量*：</label>
                             <div class="col-sm-5">
                                 <input id="quantity" name="quantity" type="number" class="form-control" required="" value="${item.quantity }">
                             </div>
-                        </div>
+                        </div>--%>
                         <div class="form-group">
                             <label class="col-sm-3 control-label m-b">领取时间*：</label>
                             <div class="col-sm-4 m-b">
@@ -79,6 +92,84 @@
 </div>
 </body>
 <script type="text/javascript">
+    var list = [];
+    var table;
+    var is_show = false;
+    <c:if test="${item.jsonData != null }">
+    list = ${item.jsonData }
+        is_show = true;
+    </c:if>
+
+    function add(){
+        layer.confirm(
+            '<div class="form-group">\n' +
+            '    <label class="col-sm-3 control-label">领用物品*：</label>\n' +
+            '    <div class="col-sm-5">\n' +
+            '         <select id="itemName" name="itemName" class="form-control" required="" >\n' +
+            '               <c:forEach items="${lstItems }" var="c">\n' +
+            '                   <option value="${c.name }" <c:if test="${item.itemName == c.name }">selected="selected"</c:if>>${c.name}</option>\n' +
+            '               </c:forEach>\n' +
+            '         </select>\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '<div class="input-hidden form-group">\n' +
+            '    <label class="col-sm-3 control-label">数量*：</label>\n' +
+            '    <div class="col-sm-8">\n' +
+            '        <input  id="quantity" name="quantity" required="" class="form-control" />\n' +
+            '    </div>\n' +
+            '</div>\n'
+            ,{area:['800px']}, function(index){
+                //do something
+                var itemName = $("#itemName").val();
+                var quantity = $("#quantity").val();
+                console.log(itemName + "," + quantity);
+
+                var i= list.length;
+                list.push({
+                    itemName:itemName,
+                    quantity:quantity,
+                    action:'<button class="btn btn-primary" type="button" onclick="removeItem('+i+');">删除</button>',
+                });
+                render_table();
+                layer.close(index);
+            });
+    }
+
+    layui.use('table', function(){
+        table = layui.table;
+        render_table();
+    });
+
+
+    function render_table() {
+        $("#jsonData").val(JSON.stringify(list))
+        var count = 0
+        for(var i in list){
+            var item = list[i];
+            count += item['Subtotal'];
+        }
+        //第一个实例
+        if(is_show){
+            table.render({
+                elem: '#demo'
+                ,data: list
+                ,cols: [[ //表头
+                    {field: 'itemName', title: '名称', width:80}
+                    ,{field: 'quantity', title: '数量', width:80}
+                ]]
+            });
+        }else{
+            table.render({
+                elem: '#demo'
+                ,data: list
+                ,cols: [[ //表头
+                    {field: 'itemName', title: '名称', width:80}
+                    ,{field: 'quantity', title: '数量', width:80}
+                ]]
+            });
+        }
+    }
+
     //表单验证
     $(function() {
         $("#commonForm").validate({
