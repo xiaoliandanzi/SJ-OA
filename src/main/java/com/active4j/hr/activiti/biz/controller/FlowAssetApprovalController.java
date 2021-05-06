@@ -220,9 +220,14 @@ public class FlowAssetApprovalController extends BaseController {
 
         try{
             if(StringUtils.isEmpty(comment)) {
-                j.setMsg("审批意见不能为空");
-                j.setSuccess(false);
-                return j;
+//                j.setMsg("审批意见不能为空");
+//                j.setSuccess(false);
+//                return j;
+                if ("N".equals(result)){
+                    comment = "驳回";
+                }else{
+                    comment = "同意";
+                }
             }
             if(StringUtils.isEmpty(taskId)) {
                 j.setMsg("任务不能为空");

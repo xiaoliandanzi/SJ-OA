@@ -22,7 +22,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">审批意见：</label>
 								<div class="col-sm-5">
-									<textarea id="comment" name="comment" class="form-control" required="required"></textarea>
+									<textarea id="comment" name="comment" class="form-control"  placeholder="请输入审批意见："></textarea>
 								</div>
 							</div>
 							<div class="form-group" id="btnLabel">
