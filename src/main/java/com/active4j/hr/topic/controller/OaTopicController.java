@@ -363,18 +363,26 @@ public class OaTopicController extends BaseController {
                 oaTopic.setChoicePassFour("true");
                 oaTopic.setIsPassFour(0);
             }
-            //纪委科长与纪委主管领导并存
-            if (StringUtils.isEmpty(oaTopic.getDisciplineOffice())&&StringUtils.isEmpty(oaTopic.getManagerOffice())) {
+            if(StringUtils.isEmpty(oaTopic.getDisciplineOffice())){
                 oaTopic.setChoicePassFive("false");
                 oaTopic.setIsPassFive(1);
                 oaTopic.setOpinionDisciplineOffice("无需审核，默认通过");
-                oaTopic.setIsPassSix(1);
-                oaTopic.setManagerOfficeIdea("无需审核，默认通过");
-            } else {
+            }else{
                 oaTopic.setChoicePassFive("true");
                 oaTopic.setIsPassFive(0);
-                oaTopic.setIsPassSix(0);
             }
+//            //纪委科长与纪委主管领导并存
+//            if (StringUtils.isEmpty(oaTopic.getDisciplineOffice())&&StringUtils.isEmpty(oaTopic.getManagerOffice())) {
+//                oaTopic.setChoicePassFive("false");
+//                oaTopic.setIsPassFive(1);
+//                oaTopic.setOpinionDisciplineOffice("无需审核，默认通过");
+//                oaTopic.setIsPassSix(1);
+//                oaTopic.setManagerOfficeIdea("无需审核，默认通过");
+//            } else {
+//                oaTopic.setChoicePassFive("true");
+//                oaTopic.setIsPassFive(0);
+//                oaTopic.setIsPassSix(0);
+//            }
 
             oaTopic.setCreateUserId(user.getId());
             oaTopic.setCreateUserName(user.getRealName());
@@ -573,6 +581,12 @@ public class OaTopicController extends BaseController {
                 oaTopic = deptLeaderAudit(oaTopic, opinion, isOk);
             }
         } else if (lv == 5) {
+            /***
+             *
+             * 问题点
+             *
+             *
+             * ***/
             if (oaTopic.getChoicePassFive().equals("false")) {
                 throw new OaTopicException("该申请无须纪委审批");
             }
@@ -587,8 +601,15 @@ public class OaTopicController extends BaseController {
                     oaTopic.setIsPassFive(1);
                     oaTopic.setOpinionDisciplineOffice(opinion);
 
-                    sendAuditMsg(oaTopic.getManagerOffice(), oaTopic); //给纪委主管领导传消息
+//                    sendAuditMsg(oaTopic.getManagerOffice(), oaTopic); //给纪委主管领导传消息
 
+                    if(oaTopic.getIsPassFour().equals(0)){
+                        sendAuditMsg(oaTopic.getFinanceOffice(), oaTopic);
+                    }
+                    // //给综合办发消息
+                    if (oaTopic.getIsPassFour().equals(1)){
+                        sendAuditMsg(oaTopic.getGeneralOffice(), oaTopic);
+                    }
 //                    if (!"".equals(oaTopic.getFinanceOffice()) && oaTopic.getIsPassFour() == 1) {
 //                        //纪委ID不为空 且通过审核
 //                        oaTopic.setStateId(4);
@@ -616,41 +637,39 @@ public class OaTopicController extends BaseController {
                 //一次审核 上级已审核通过 禁止修改
                 oaTopic = deptLeaderAudit(oaTopic, opinion, isOk);
             }
-        }else if(lv == 6){
-            if (oaTopic.getChoicePassFive().equals("false")) {
-                throw new OaTopicException("该申请无须纪委审批");
-            }
-            if (oaTopic.getIsPassSix().equals(1)) {
-                throw new OaTopicException("纪委主管领导审批流程已结束，请勿重复审批");
-            }
-            //纪委主管领导
-            if(oaTopic.getStateId() == 2){
-                if (oaTopic.getIsPassFive() != 1){
-                    throw new OaTopicException("纪委科长暂未审批");
-                }else{
-                    //主管领导审批完成，纪委可以审批
-                    if (isOk == 1) {
-                        //后两个级别审核通过
-                        oaTopic.setIsPassSix(1);
-                        oaTopic.setManagerOfficeIdea(opinion);
-                        //给综合办发消息
-                        sendAuditMsg(oaTopic.getGeneralOffice(), oaTopic);
-
-                    } else {
-                        oaTopic.setIsPassSix(2);
-                        oaTopic.setManagerOfficeIdea(opinion);
-                        oaTopic.setStateId(1);
-                        //审核不通过信息
-                        sendRejectMsg(oaTopic, oaTopic.getManagerName());
-                    }
-                }
-            }else{
-                //没通过综合办审核的 是作为科室负责人 审核本科室提交议题
-                //一次审核 上级已审核通过 禁止修改
-                oaTopic = deptLeaderAudit(oaTopic, opinion, isOk);
-            }
-
-
+//        }else if(lv == 6){
+//            if (oaTopic.getChoicePassFive().equals("false")) {
+//                throw new OaTopicException("该申请无须纪委审批");
+//            }
+//            if (oaTopic.getIsPassSix().equals(1)) {
+//                throw new OaTopicException("纪委主管领导审批流程已结束，请勿重复审批");
+//            }
+//            //纪委主管领导
+//            if(oaTopic.getStateId() == 2){
+//                if (oaTopic.getIsPassFive() != 1){
+//                    throw new OaTopicException("纪委科长暂未审批");
+//                }else{
+//                    //主管领导审批完成，纪委可以审批
+//                    if (isOk == 1) {
+//                        //后两个级别审核通过
+//                        oaTopic.setIsPassSix(1);
+//                        oaTopic.setManagerOfficeIdea(opinion);
+//                        //给综合办发消息
+//                        sendAuditMsg(oaTopic.getGeneralOffice(), oaTopic);
+//
+//                    } else {
+//                        oaTopic.setIsPassSix(2);
+//                        oaTopic.setManagerOfficeIdea(opinion);
+//                        oaTopic.setStateId(1);
+//                        //审核不通过信息
+//                        sendRejectMsg(oaTopic, oaTopic.getManagerName());
+//                    }
+//                }
+//            }else{
+//                //没通过综合办审核的 是作为科室负责人 审核本科室提交议题
+//                //一次审核 上级已审核通过 禁止修改
+//                oaTopic = deptLeaderAudit(oaTopic, opinion, isOk);
+//            }
         }
         return oaTopic;
     }
@@ -768,7 +787,7 @@ public class OaTopicController extends BaseController {
         SysUserEntity userEntity = getUser();
         if (ShiroUtils.hasRole("0106")) {
             //纪委科室上级主管领导
-            oaTopic.setChoicePassFive("true");
+            //oaTopic.setChoicePassFive("true");
             ShiroUtils.setSessionValue("auditLV", "6");
         } else if (ShiroUtils.hasRole("011")) {
             //判断是否主管领导
@@ -781,20 +800,23 @@ public class OaTopicController extends BaseController {
             //05财务科科长 financeOffice isPassThree choicePassFour
            /* oaTopic.setFinanceOffice(user.getId());
             oaTopic.setIsPassThree(1);*/
+            oaTopic.setIsPassTwo(1);
+            oaTopic.setIsPassFour(0);
             oaTopic.setChoicePassFour("true");
             ShiroUtils.setSessionValue("auditLV", "4");
         } else if (ShiroUtils.hasRole("012")) {
             //判断是否纪委
             //04纪委
             oaTopic.setIsPassTwo(1);
-            oaTopic.setIsPassFour(1);
+            //oaTopic.setIsPassFour(1);
             oaTopic.setIsPassFive(0);
+            oaTopic.setChoicePassFive("true");
             ShiroUtils.setSessionValue("auditLV", "5");
         } else if (ShiroUtils.hasRole("topicaudit")) {
             //判断是否综合办议题审核人员
             //04综合办议题审核员 isPassOne isPassTwo
             oaTopic.setIsPassTwo(1);
-            oaTopic.setIsPassSix(1);
+//            oaTopic.setIsPassSix(1);
             ShiroUtils.setSessionValue("auditLV", "3");
         } else if (ShiroUtils.hasRole("topicadd")) {
             //判断是否议题发起人
@@ -939,9 +961,9 @@ public class OaTopicController extends BaseController {
         if (!StringUtil.isEmpty(oaTopic.getDisciplineOffice())) {
             oaTopic.setDisciplineName(userService.findNameById(oaTopic.getDisciplineOffice()));
         }
-        if (!StringUtil.isEmpty(oaTopic.getManagerOffice())){
-            oaTopic.setManagerName(userService.findNameById(oaTopic.getManagerOffice()));
-        }
+//        if (!StringUtil.isEmpty(oaTopic.getManagerOffice())){
+//            oaTopic.setManagerName(userService.findNameById(oaTopic.getManagerOffice()));
+//        }
         return oaTopic;
     }
 

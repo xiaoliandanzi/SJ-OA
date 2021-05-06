@@ -26,9 +26,9 @@
         $(function () {
             $("#disciplineOffice").val("${oaTopic.disciplineOffice}".split(",")).trigger("change");
         });
-        $(function () {
-            $("#managerOffice").val("${oaTopic.managerOffice}".split(",")).trigger("change");
-        });
+        <%--$(function () {--%>
+        <%--    $("#managerOffice").val("${oaTopic.managerOffice}".split(",")).trigger("change");--%>
+        <%--});--%>
     </script>
 </head>
 <body class="gray-bg">
@@ -206,17 +206,17 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">纪委主管领导：</label>
-                            <div class="col-sm-8">
-                                <select class="form-control m-b select2" disabled
-                                        id="managerOffice" name="managerOffice">
-                                    <c:forEach items="${managerOffice}" var="managerOfficelist">
-                                        <option value="${managerOfficelist.id }">${managerOfficelist.realName}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
+<%--                        <div class="form-group">--%>
+<%--                            <label class="col-sm-3 control-label">纪委主管领导：</label>--%>
+<%--                            <div class="col-sm-8">--%>
+<%--                                <select class="form-control m-b select2" disabled--%>
+<%--                                        id="managerOffice" name="managerOffice">--%>
+<%--                                    <c:forEach items="${managerOffice}" var="managerOfficelist">--%>
+<%--                                        <option value="${managerOfficelist.id }">${managerOfficelist.realName}</option>--%>
+<%--                                    </c:forEach>--%>
+<%--                                </select>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">综合办*：</label>
                             <div class="col-sm-8">
@@ -332,23 +332,23 @@
                                     </div>--%>
                             </div>
                         </c:if>
-                        <c:if test="${oaTopic.isPassSix != 0}">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">纪委主管领导意见：</label>
-                                <div class="col-sm-8">
-                                    <label class="control-label">审核结果：<c:choose>
-                                        <c:when test="${oaTopic.isPassSix == 1}">通过</c:when>
-                                        <c:when test="${oaTopic.isPassSix == 2}">不通过</c:when>
-                                    </c:choose> </label>
-                                    <textarea name="managerOfficeIdea" class="form-control"
-                                              disabled>${oaTopic.managerOfficeIdea}</textarea>
-                                </div>
-                                    <%--<div class="col-sm-1">
-                                        <p class="form-control-static">
+<%--                        <c:if test="${oaTopic.isPassSix != 0}">--%>
+<%--                            <div class="form-group">--%>
+<%--                                <label class="col-sm-3 control-label">纪委主管领导意见：</label>--%>
+<%--                                <div class="col-sm-8">--%>
+<%--                                    <label class="control-label">审核结果：<c:choose>--%>
+<%--                                        <c:when test="${oaTopic.isPassSix == 1}">通过</c:when>--%>
+<%--                                        <c:when test="${oaTopic.isPassSix == 2}">不通过</c:when>--%>
+<%--                                    </c:choose> </label>--%>
+<%--                                    <textarea name="managerOfficeIdea" class="form-control"--%>
+<%--                                              disabled>${oaTopic.managerOfficeIdea}</textarea>--%>
+<%--                                </div>--%>
+<%--                                    &lt;%&ndash;<div class="col-sm-1">--%>
+<%--                                        <p class="form-control-static">--%>
 
-                                    </div>--%>
-                            </div>
-                        </c:if>
+<%--                                    </div>&ndash;%&gt;--%>
+<%--                            </div>--%>
+<%--                        </c:if>--%>
                         <c:if test="${lookOrAdu == null}">
                             <hr/>
                             <div class="form-group">

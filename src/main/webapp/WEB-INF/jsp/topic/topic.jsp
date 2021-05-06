@@ -26,11 +26,11 @@
         $(function () {
             $("#disciplineOffice").val("${oaTopic.disciplineOffice}".split(",")).trigger("change");
         });
-        $(function () {
+        <%--$(function () {--%>
 
-            $("#managerOffice").val("${oaTopic.managerOffice}".split(",")).trigger("change");
+        <%--    $("#managerOffice").val("${oaTopic.managerOffice}".split(",")).trigger("change");--%>
 
-        });
+        <%--});--%>
     </script>
 </head>
 <body class="gray-bg">
@@ -175,17 +175,17 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">纪委主管领导：</label>
-                            <div class="col-sm-8">
-                                <select class="form-control m-b select2"
-                                        id="managerOffice" name="managerOffice" onchange="select1()">
-                                    <c:forEach items="${managerOffice}" var="managerOfficelist">
-                                        <option value="${managerOfficelist.id }">${managerOfficelist.realName}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
+<%--                        <div class="form-group">--%>
+<%--                            <label class="col-sm-3 control-label">纪委主管领导：</label>--%>
+<%--                            <div class="col-sm-8">--%>
+<%--                                <select class="form-control m-b select2"--%>
+<%--                                        id="managerOffice" name="managerOffice" onchange="select1()">--%>
+<%--                                    <c:forEach items="${managerOffice}" var="managerOfficelist">--%>
+<%--                                        <option value="${managerOfficelist.id }">${managerOfficelist.realName}</option>--%>
+<%--                                    </c:forEach>--%>
+<%--                                </select>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">综合办*：</label>
                             <div class="col-sm-8">
@@ -318,15 +318,15 @@
         debugger
         var v1 = document.getElementById("financeOffice").value;
         var v2 =document.getElementById("disciplineOffice").value;
-        var v3 =document.getElementById("managerOffice").value;
-        if (v1 == ""&&v2 == ""&&v3 == "" ){//financeOffice   disciplineOffice  managerOffice
+        // var v3 =document.getElementById("managerOffice").value;
+        if (v1 == ""&&v2 == "" ){//financeOffice   disciplineOffice  managerOffice
             $('#financeOffice').removeAttr('required');
             $('#disciplineOffice').removeAttr('required');
-            $('#managerOffice').removeAttr('required');
+            // $('#managerOffice').removeAttr('required');
         }else{
             document.getElementById("financeOffice").setAttribute('required',true);
             document.getElementById("disciplineOffice").setAttribute("required",true);
-            document.getElementById("managerOffice").setAttribute("required",true);
+            // document.getElementById("managerOffice").setAttribute("required",true);
         }
     }
 

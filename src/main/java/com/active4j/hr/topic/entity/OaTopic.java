@@ -122,16 +122,16 @@ public class OaTopic {
     @TableField("DISCIPLINE_NAME")
     private String disciplineName;
 
-    /**
-     * 新增纪委主管领导
-     * */
-    @ApiModelProperty(value = "纪委主管领导")
-    @TableField("MANAGER_OFFICE")
-    private String managerOffice;
+//    /**
+//     * 新增纪委主管领导
+//     * */
+//    @ApiModelProperty(value = "纪委主管领导")
+//    @TableField("MANAGER_OFFICE")
+//    private String managerOffice;
 
-    @ApiModelProperty(value = "纪委主管领导姓名")
-    @TableField("MANAGER_NAME")
-    private String managerName;
+//    @ApiModelProperty(value = "纪委主管领导姓名")
+//    @TableField("MANAGER_NAME")
+//    private String managerName;
 
     //书记会
     @TableField(exist = false)
@@ -165,12 +165,12 @@ public class OaTopic {
     @TableField("OPINION_DISCIPLINE_OFFICE")
     private String opinionDisciplineOffice;
 
-    /**
-     * 新增纪委主管领导意见
-     * */
-    @ApiModelProperty(value = "纪委主管领导意见")
-    @TableField("MANAGER_OFFICE_IDEA")
-    private String managerOfficeIdea;
+//    /**
+//     * 新增纪委主管领导意见
+//     * */
+//    @ApiModelProperty(value = "纪委主管领导意见")
+//    @TableField("MANAGER_OFFICE_IDEA")
+//    private String managerOfficeIdea;
 
     @ApiModelProperty(value = "0未审核 1通过 2不通过 科室负责人")
     @TableField("IS_PASS_ONE")
@@ -193,12 +193,12 @@ public class OaTopic {
     @TableField("IS_PASS_FIVE")
     private Integer isPassFive;
 
-    /**
-     * 新增纪委主管领导审核
-     * */
-    @ApiModelProperty(value = "0未审核 1通过 2不通过 纪委主管领导")
-    @TableField("IS_PASS_SIX")
-    private Integer isPassSix;
+//    /**
+//     * 新增纪委主管领导审核
+//     * */
+//    @ApiModelProperty(value = "0未审核 1通过 2不通过 纪委主管领导")
+//    @TableField("IS_PASS_SIX")
+//    private Integer isPassSix;
 
     @TableField("CREAT_TIME")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
