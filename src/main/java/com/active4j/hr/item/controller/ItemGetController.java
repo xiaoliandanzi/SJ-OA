@@ -179,6 +179,7 @@ public class ItemGetController extends BaseController {
                     entity.setStatus("1");
                 }
 
+                getItemEntity.setId(null);
                 if (StringUtils.isEmpty(getItemEntity.getId())) {
                     //新增方法
                     getItemEntity.setItemName(itemName);
