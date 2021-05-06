@@ -139,6 +139,8 @@ public class OaWorkMeetRoomController extends BaseController {
 					OaWorkBookRoomDomain domain = new OaWorkBookRoomDomain();
 					domain.setId(book.getId());
 					domain.setTitle("预定人:" + book.getUserName());
+					domain.setEquipment("设备:" + book.getEquipment());
+					domain.setContent("备注:" + book.getContent());
 					String startTime = DateUtils.date2Str(book.getStartDate(), DateUtils.SDF_HHMM);
 					String endTime = DateUtils.date2Str(book.getEndDate(), DateUtils.SDF_HHMM);
 					domain.setStart(book.getStrBookDate() + " " + startTime);
@@ -174,6 +176,8 @@ public class OaWorkMeetRoomController extends BaseController {
 						OaWorkBookRoomDomain domain = new OaWorkBookRoomDomain();
 						domain.setId(book.getId());
 						domain.setTitle("预定人:" + book.getUserName());
+						domain.setEquipment("设备:" + book.getEquipment());
+						domain.setContent("备注:" + book.getContent());
 						String startTime = DateUtils.date2Str(book.getStartDate(), DateUtils.SDF_HHMM);
 						String endTime = DateUtils.date2Str(book.getEndDate(), DateUtils.SDF_HHMM);
 						domain.setStart(book.getStrBookDate() + " " + startTime);

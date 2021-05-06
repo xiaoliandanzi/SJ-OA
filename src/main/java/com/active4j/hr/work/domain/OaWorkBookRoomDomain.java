@@ -20,6 +20,11 @@ public class OaWorkBookRoomDomain implements Serializable{
 	
 	private String end;
 
+	private String equipment;
+
+	private String content;
+
+
 	
 	
 }

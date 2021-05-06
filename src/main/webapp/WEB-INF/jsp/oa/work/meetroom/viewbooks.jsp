@@ -30,13 +30,18 @@
 
 	<script type="text/javascript">
 		$(function() {
+			debugger;
 			var tmp1 = ${lstBooks};
 			$('#calendar').fullCalendar({
+				editable: false,
+				eventLimit: true,
 				defaultView : 'agendaWeek',
 				header : {
 					left : 'prev,next today',
 					center : 'title'
 				},
+				minTime:"08:00:00",
+				maxTime:"20:00:00",
 				allDaySlot : false,
 				dayClick: function (date, allDay, jsEvent, view){
 					var currentDate = new Date(date).QHformat('yyyy-MM-dd');
@@ -83,6 +88,7 @@
 					
 					var lstBooks = o.attributes.lstBooks;
 					for(var i = 0; i < lstBooks.length; i++) {
+						//debugger;
 						var book = lstBooks[i];
 						$("#calendar").fullCalendar('renderEvent', book, true);
 					}
