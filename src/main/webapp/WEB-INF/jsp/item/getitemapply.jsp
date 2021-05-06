@@ -11,6 +11,7 @@
 <html>
 <head>
     <t:base type="default,laydate,icheck,summernote,clock"></t:base>
+    <link href="static/layui/css/layui.css" rel="stylesheet"/>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -39,7 +40,7 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">领用物品明细*：</label>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <table id="demo"></table>
                             </div>
                         </div>
@@ -91,34 +92,37 @@
     </div>
 </div>
 </body>
+<style>
+    .input-hidden{
+        overflow: hidden;
+    }
+</style>
+<script src="static/layui/layui.js"></script>
 <script type="text/javascript">
+
     var list = [];
     var table;
-    var is_show = false;
     <c:if test="${item.jsonData != null }">
-    list = ${item.jsonData }
-        is_show = true;
+        list = ${item.jsonData }
     </c:if>
 
     function add(){
-        layer.confirm(
-            '<div class="form-group">\n' +
-            '    <label class="col-sm-3 control-label">领用物品*：</label>\n' +
+        layer.confirm('<div class="form-group input-hidden">\n' +
+            '    <label class="col-sm-4 control-label">名称*：</label>\n' +
             '    <div class="col-sm-5">\n' +
-            '         <select id="itemName" name="itemName" class="form-control" required="" >\n' +
-            '               <c:forEach items="${lstItems }" var="c">\n' +
-            '                   <option value="${c.name }" <c:if test="${item.itemName == c.name }">selected="selected"</c:if>>${c.name}</option>\n' +
-            '               </c:forEach>\n' +
-            '         </select>\n' +
+            '        <select id="itemName" name="itemName" class="form-control" required="" >\n' +
+            '            <c:forEach items="${lstItems }" var="c">\n' +
+            '                <option value="${c.name }" <c:if test="${biz.itemName == c.name }">selected="selected"</c:if>>${c.name }</option>\n' +
+            '            </c:forEach>\n' +
+            '        </select>\n' +
             '    </div>\n' +
             '</div>\n' +
-            '<div class="input-hidden form-group">\n' +
-            '    <label class="col-sm-3 control-label">数量*：</label>\n' +
-            '    <div class="col-sm-8">\n' +
-            '        <input  id="quantity" name="quantity" required="" class="form-control" />\n' +
+            '<div class="form-group input-hidden">\n' +
+            '    <label class="col-sm-4 control-label">数量*：</label>\n' +
+            '    <div class="col-sm-5">\n' +
+            '        <input id="quantity" name="quantity" type="number" class="form-control" required="" value="">\n' +
             '    </div>\n' +
-            '</div>\n'
-            ,{area:['800px']}, function(index){
+            '</div>',{area:['800px']}, function(index){
                 //do something
                 var itemName = $("#itemName").val();
                 var quantity = $("#quantity").val();
@@ -143,31 +147,23 @@
 
     function render_table() {
         $("#jsonData").val(JSON.stringify(list))
-        var count = 0
-        for(var i in list){
-            var item = list[i];
-            count += item['Subtotal'];
-        }
+
         //第一个实例
-        if(is_show){
-            table.render({
-                elem: '#demo'
-                ,data: list
-                ,cols: [[ //表头
-                    {field: 'itemName', title: '名称', width:80}
-                    ,{field: 'quantity', title: '数量', width:80}
-                ]]
-            });
-        }else{
-            table.render({
-                elem: '#demo'
-                ,data: list
-                ,cols: [[ //表头
-                    {field: 'itemName', title: '名称', width:80}
-                    ,{field: 'quantity', title: '数量', width:80}
-                ]]
-            });
-        }
+        table.render({
+            elem: '#demo'
+            ,data: list
+            ,cols: [[ //表头
+                {field: 'itemName', title: '借用物品', width:120}
+                ,{field: 'quantity', title: '借用数量', width:120}
+                ,{field: 'action', title: '操作', width:100}
+            ]]
+        });
+    }
+
+    function removeItem(index) {
+
+        list.splice(index,1)
+        render_table();
     }
 
     //表单验证

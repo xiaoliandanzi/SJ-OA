@@ -114,11 +114,8 @@ public class ItemGetController extends BaseController {
 //        ModelAndView view = new ModelAndView("system/common/success");
         AjaxJson j = new AjaxJson();
         try{
-            if(StringUtils.isEmpty(getItemEntity.getItemName())) {
-                j.setSuccess(false);
-                j.setMsg("领用物品名称不能为空!");
-                return j;
-            }
+            String json_data = getItemEntity.getJsonData();
+            JSONArray array = JSON.parseArray(json_data);
             if (getItemEntity.getGetDay().compareTo(DateUtils.getDayBegin()) == -1){
                 j.setSuccess(false);
                 j.setMsg("领用日期不能在当前日期之前");
@@ -139,21 +136,24 @@ public class ItemGetController extends BaseController {
                 j.setMsg("领用人不能为空!");
                 return j;
             }
-            if(null == getItemEntity.getQuantity()) {
-                j.setSuccess(false);
-                j.setMsg("领用数量不能为空");
-                return j;
-            }
 
-            String json_data = getItemEntity.getJsonData();
-            JSONArray array = JSON.parseArray(json_data);
-            QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<>();
-            queryWrapper.select("NUMLIMIT").eq("TYPE",0).eq("NAME",getItemEntity.getItemName());
-            List<RequisitionedItemEntity> list = requisitionedItemService.list(queryWrapper);
             for (int i = 0; i < array.size(); i++) {
                 JSONObject jo = array.getJSONObject(i);
                 Integer quantity = jo.getInteger("quantity");
                 String itemName = jo.getString("itemName");
+                QueryWrapper<RequisitionedItemEntity> queryWrapper = new QueryWrapper<>();
+                queryWrapper.select("NUMLIMIT").eq("TYPE",0).eq("NAME",itemName);
+                List<RequisitionedItemEntity> list = requisitionedItemService.list(queryWrapper);
+                if(StringUtils.isEmpty(itemName)) {
+                    j.setSuccess(false);
+                    j.setMsg("领用物品名称不能为空!");
+                    return j;
+                }
+                if(null == quantity) {
+                    j.setSuccess(false);
+                    j.setMsg("领用数量不能为空");
+                    return j;
+                }
                 if(quantity>list.get(0).getNumLimit()) {
                     j.setSuccess(false);
                     j.setMsg("领用数量不能大于限额："+ list.get(0).getNumLimit());

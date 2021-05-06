@@ -96,8 +96,6 @@
 
             var itemName = $("#itemName").val();
             var quantity = $("#quantity").val();
-
-
             console.log(itemName + "," +quantity)
 
             var i= list.length;
@@ -107,14 +105,8 @@
                 action:'<button class="btn btn-primary" type="button" onclick="removeItem('+i+');">删除</button>',
             });
             render_table();
-
             layer.close(index);
         });
-
-        // layer.open({
-        //     title: '在线调试'
-        //     ,content: '可以填写任意的layer代码'
-        // });
     }
 
     layui.use('table', function(){
