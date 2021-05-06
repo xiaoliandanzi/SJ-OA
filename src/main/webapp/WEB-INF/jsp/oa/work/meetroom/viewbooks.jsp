@@ -30,9 +30,10 @@
 
 	<script type="text/javascript">
 		$(function() {
-			debugger;
+			//debugger;
 			var tmp1 = ${lstBooks};
 			$('#calendar').fullCalendar({
+				height:550,
 				editable: false,
 				eventLimit: true,
 				defaultView : 'agendaWeek',
