@@ -82,6 +82,12 @@
         <input id="etcmessage" name="etcmessage" minlength="1" type="text" class="form-control" value="${biz.etcmessage }">
     </div>
 </div>
+<div class="form-group">
+    <label class="col-sm-3 control-label">行驶公里数*：</label>
+    <div class="col-sm-5">
+        <input id="mileage" name="mileage" minlength="1" type="text" class="form-control" value="${biz.mileage }">
+    </div>
+</div>
 <script type="text/javascript">
 
     $("#plateuser").ready(function(){

@@ -489,10 +489,18 @@ public class CarRecordController extends BaseController {
                 cell13.setCellValue(item.getEtcmessage());
                 cell13.setCellStyle(contentStyle);
 
+                //行驶公里数
+                Cell cell17 = row.getCell(12);
+                if (cell17 == null){
+                    cell17 = row.createCell(12);
+                }
+                cell17.setCellValue(item.getMileage()+"km");
+                cell17.setCellStyle(contentStyle);
+
                 //备注
-                Cell cell14 = row.getCell(12);
+                Cell cell14 = row.getCell(13);
                 if (cell14 == null){
-                    cell14 = row.createCell(12);
+                    cell14 = row.createCell(13);
                 }
                 cell14.setCellValue(item.getCommit());
                 cell14.setCellStyle(contentStyle);

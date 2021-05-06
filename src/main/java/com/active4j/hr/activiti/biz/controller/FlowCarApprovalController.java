@@ -17,6 +17,7 @@ import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
+import com.active4j.hr.core.util.StringUtil;
 import com.active4j.hr.system.model.SysUserModel;
 import com.active4j.hr.system.service.SysUserService;
 import com.baomidou.mybatisplus.extension.api.IErrorCode;
@@ -386,6 +387,11 @@ public class FlowCarApprovalController extends BaseController {
                 j.setSuccess(false);
                 j.setMsg("事由不能为空");
                 return j;
+            }
+
+            if (null==flowCarApprovalEntity.getMileage()||flowCarApprovalEntity.getMileage()==0){
+                j.setSuccess(false);
+                j.setMsg("行驶公里数不可为空或为0");
             }
 
             WorkflowMngEntity workflow = workflowMngService.getById(workflowBaseEntity.getWorkflowId());

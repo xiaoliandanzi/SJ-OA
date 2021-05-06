@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Controller
@@ -128,8 +129,8 @@ public class CarAudistController  extends BaseController {
 
         // 执行查询
         IPage<WorkflowBaseEntity> lstResult = workflowService.findTaskStrsByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
-        long size = lstResult.getTotal();
-        for (long i = size - 1; i >= 0; --i) {
+        long size = lstResult.getRecords().size();
+        for (long i = size - 1; i >= 0; i--) {
             if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("车辆申请")){
                 lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
             }

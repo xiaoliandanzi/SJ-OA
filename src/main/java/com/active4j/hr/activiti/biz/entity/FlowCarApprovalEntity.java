@@ -98,4 +98,10 @@ public class FlowCarApprovalEntity extends BaseEntity {
      * */
     @TableField("ETCMESSAGE")
     private String etcmessage;
+
+    /**
+     * 行驶公里数
+     * */
+    @TableField("MILEAGE")
+    private Integer mileage;
 }

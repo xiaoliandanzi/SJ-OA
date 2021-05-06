@@ -41,6 +41,7 @@
 	        a.platenum,
 	        a.plateuser,
 	        a.etcmessage,
+	        a.mileage,
 			b.APPLY_DATE
         FROM
 	        flow_car_approval a
