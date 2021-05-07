@@ -30,12 +30,12 @@
 		<t:dgCol name="persons" label="容纳人数" width="80"></t:dgCol>
 		<t:dgCol name="status" label="状态" width="80" dictionary="oaworkmeet" display="zeroOrOne"></t:dgCol>
 		<t:dgCol name="opt" label="操作" ></t:dgCol>
-		<t:dgDelOpt label="删除" url="oa/work/meetRoom/delete?id={id}"/>
+		<t:dgDelOpt label="删除" operationCode="oa:meetroom:del" url="oa/work/meetRoom/delete?id={id}"/>
 		<t:dgToolBar url="oa/work/meetRoom/addorupdate" type="add" operationCode="oa:meetroom:add" width="40%" height="70%"></t:dgToolBar>
 		<t:dgToolBar url="oa/work/meetRoom/addorupdate" type="edit" operationCode="oa:meetroom:edit" width="40%" height="70%"></t:dgToolBar>
-		<t:dgToolBar url="oa/work/meetRoom/addorupdate" type="view" width="40%" height="70%"></t:dgToolBar>
-		<t:dgToolBar label="预定" icon="fa fa-cog" url="oa/work/meetRoomBooks/addorupdate" type="pop" width="50%" height="70%"></t:dgToolBar>
-		<t:dgToolBar label="查看预定" icon="fa fa-list-alt" url="oa/work/meetRoom/view" type="pop" width="80%" height="95%"></t:dgToolBar>
+		<t:dgToolBar url="oa/work/meetRoom/addorupdate" type="view" operationCode="oa:meetroom:view" width="40%" height="70%"></t:dgToolBar>
+		<t:dgToolBar label="预定" icon="fa fa-cog" url="oa/work/meetRoomBooks/addorupdate" type="pop" operationCode="oa:meetroom:reserve" width="50%" height="70%"></t:dgToolBar>
+		<t:dgToolBar label="查看预定" icon="fa fa-list-alt" url="oa/work/meetRoom/view" type="pop" operationCode="oa:meetroom:viewreserve" width="80%" height="88%"></t:dgToolBar>
 	</t:datagrid>
 </body>
 
