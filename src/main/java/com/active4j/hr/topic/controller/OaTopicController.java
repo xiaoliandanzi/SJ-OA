@@ -1066,13 +1066,16 @@ public class OaTopicController extends BaseController {
      */
     private ModelAndView getFileList(ModelAndView modelAndView, OaTopic oaTopic) {
         oaTopic = topicService.getById(oaTopic.getId());
+        oaTopic.setFileId(",");
         if (!StringUtil.isEmpty(oaTopic.getFileId())) {
-            System.err.println("getFileList");
+            //System.err.println("getFileList");
             String[] fileIds = oaTopic.getFileId().split(",");
-            QueryWrapper<UploadAttachmentEntity> queryWrapper = new QueryWrapper<>();
-            queryWrapper.in("ID", fileIds);
-            List<UploadAttachmentEntity> list = uploadAttachmentService.list(queryWrapper);
-            modelAndView.addObject("uploadList", list);
+            if (0 != fileIds.length){
+                QueryWrapper<UploadAttachmentEntity> queryWrapper = new QueryWrapper<>();
+                queryWrapper.in("ID", fileIds);
+                List<UploadAttachmentEntity> list = uploadAttachmentService.list(queryWrapper);
+                modelAndView.addObject("uploadList", list);
+            }
         }
         return modelAndView;
     }
