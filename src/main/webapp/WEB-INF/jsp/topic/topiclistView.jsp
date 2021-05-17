@@ -25,13 +25,12 @@
 
 
 <!-- 脚本部分 -->
-<t:datagrid actionUrl="topic/table" tableContentId="jqGrid_wrapper" searchGroupId="searchGroupId" fit="true"
-            caption="议题申请" name="topicAddList" pageSize="20" sortName="creatTime" sortOrder="desc">
+<t:datagrid actionUrl="topic/viewtable" tableContentId="jqGrid_wrapper" searchGroupId="searchGroupId" fit="true"
+            caption="议题查看" name="topicViewList" pageSize="20" sortName="creatTime" sortOrder="desc">
     <t:dgCol name="id" label="编号" hidden="true" key="true" width="20"></t:dgCol>
-    <%-- <t:dgCol name="creatTime" label="申报日期" width="300" query="true"></t:dgCol>--%>
     <t:dgCol name="creatTime" label="申报日期" width="300" datefmt="yyyy-MM-dd HH:mm:ss" datePlugin="laydate" query="true" align="center"
              queryModel="group"></t:dgCol>
-    <t:dgCol name="topicName" label="议题名称" width="150" query="true" align="center"></t:dgCol>
+    <t:dgCol name="topicName" label="议题名称" width="150" query="true"  align="center"></t:dgCol>
     <t:dgCol name="createUserName" label="申请人" width="150" query="false"  align="center"></t:dgCol>
     <t:dgCol name="proposeLeaderName" label="提议领导" query="false" align="center"></t:dgCol>
     <t:dgCol name="reportName" label="汇报人" query="false" align="center"></t:dgCol>
@@ -46,12 +45,10 @@
     <t:dgCol name="isWorkingCommittee" label="工委会" dictionary="byesorno" query="flase" align="center"></t:dgCol>
     <t:dgCol name="allPass" label="通过审核" query="true" replace="是_1,否_0" align="center"></t:dgCol>
     <t:dgCol name="isHistory" label="历史议题" query="true" replace="是_1,否_0" align="center"></t:dgCol>
-    <t:dgCol name="topicRemark" label="议题备注" width="180"></t:dgCol>
-    <t:dgToolBar url="topic/saveOrUpdateView" type="add" width="60%" operationCode="topic:add"></t:dgToolBar>
-    <t:dgToolBar url="topic/saveOrUpdateView" type="edit" width="60%" operationCode="topic:add"></t:dgToolBar>
     <t:dgToolBar label="查看" type="define" funName="getOne"></t:dgToolBar>
+    <%--<t:dgToolBar label="审核" type="define" funName="auditOne"></t:dgToolBar>
+    <t:dgToolBar label="二次审核" type="define" funName="secondAudit" operationCode="topic:second"></t:dgToolBar>--%>
     <t:dgToolBar label="导出" type="define" funName="printIt"></t:dgToolBar>
-    <t:dgToolBar label="取消" type="define" funName="remove" operationCode="topic:add"></t:dgToolBar>
 </t:datagrid>
 <script type="text/javascript">
     $(function () {
@@ -60,15 +57,21 @@
     });
 
     function getOne() {
-        var rowId = $('#topicAddList').jqGrid('getGridParam', 'selrow');
+        var rowId = $('#topicViewList').jqGrid('getGridParam', 'selrow');
         if (!rowId) {
             qhAlert('请选择要查看的议题');
             return;
         }
-        popNoForMe("topicAddList", "topic/saveOrUpdateView?id=" + rowId + "&params=1", "查看", "60%", "80%");
+        popNoForMe("topicViewList", "topic/auditModel?id=" + rowId + "&opinion=opinion", "查看", "60%", "80%");
     }
 
-    function printIt() {
+    /*function printIt() {
+        /!*var rowId = $('#topicAddList').jqGrid('getGridParam', 'selrow');
+        if (!rowId) {
+            qhAlert('请选择要打印的议题');
+            return;
+        }
+        printTopic("topicAddList", "topic/printTopic?id=" + rowId, "打印", "60%", "80%");*!/
         var rowId = $('#topicAddList').jqGrid('getGridParam', 'selrow');
         if (!rowId) {
             qhAlert('请选择要导出的议题');
@@ -88,43 +91,74 @@
     }
 
 
+    function secondAudit() {
+        var rowId = $('#topicAddList').jqGrid('getGridParam', 'selrow');
+        if (!rowId) {
+            qhAlert('请选择要审核的议题');
+            return;
+        }
+        var topic = {};
+        $.get("topic/getOne?id=" + rowId, null, function (data) {
+            if (data.success) {
+                topic = data.obj;
+            } else {
+                qhTipWarning(data.msg);
+            }
+        })
+        setTimeout(function () {
+            if (topic.allPass == 0) {
+                qhAlert('请选择通过审核的议题进行二次审核');
+                return;
+            }
+            auditTopic("topicAddList", "topic/auditSecondModel?id=" + rowId, "二次审核", "60%", "80%");
+        }, 500); // 延时半秒
+    }
+
+    function auditOne() {
+        var rowId = $('#topicAddList').jqGrid('getGridParam', 'selrow');
+        if (!rowId) {
+            qhAlert('请选择要审核的议题');
+            return;
+        }
+        auditTopic("topicAddList", "topic/auditModel?id=" + rowId, "审核", "60%", "80%", rowId);
+    }
+
+
     function remove() {
         var rowId = $('#topicAddList').jqGrid('getGridParam', 'selrow');
         var topic = {};
         if (!rowId) {
-            qhAlert('请选择要取消的议题');
+            qhAlert('请选择要删除的议题');
             return;
         }
         $.get("topic/getOne?id=" + rowId, null, function (data) {
             if (data.success) {
                 topic = data.obj;
-                if (topic.isPassOne == 1) {
-                    qhAlert('该议题禁止取消');
-                    return;
-                } else {
-                    qhConfirm("你确定要删除该议题吗?", function (index) {
-                        parent.layer.close(index);
-
-                        $.get("topic/remove?id=" + rowId, null, function (data) {
-                            if (data.success) {
-                                qhTipSuccess(data.msg);
-                                //操作结束，刷新表格
-                                reloadTable('topicAddList');
-                            } else {
-                                qhTipWarning(data.msg);
-                            }
-                        });
-                    }, function () {
-                        //否
-                    });
-                }
             } else {
                 qhTipWarning(data.msg);
             }
         })
+        if (topic.isPassFive == 1) {
+            qhAlert('该议题禁止删除');
+            return;
+        }
 
+        qhConfirm("你确定要删除该议题吗?", function (index) {
+            parent.layer.close(index);
 
-    }
+            $.get("topic/remove?id=" + rowId, null, function (data) {
+                if (data.success) {
+                    qhTipSuccess(data.msg);
+                    //操作结束，刷新表格
+                    reloadTable('topicAddList');
+                } else {
+                    qhTipWarning(data.msg);
+                }
+            });
+        }, function () {
+            //否
+        });
+    }*/
 </script>
 </body>
 </html>

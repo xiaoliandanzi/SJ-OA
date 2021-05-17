@@ -31,6 +31,7 @@
     <t:dgCol name="creatTime" label="申报日期" width="300" datefmt="yyyy-MM-dd HH:mm:ss" datePlugin="laydate" query="true" align="center"
              queryModel="group"></t:dgCol>
     <t:dgCol name="topicName" label="议题名称" width="150" query="true"  align="center"></t:dgCol>
+    <t:dgCol name="createUserName" label="申请人" width="150" query="false"  align="center"></t:dgCol>
     <t:dgCol name="proposeLeaderName" label="提议领导" query="false" align="center"></t:dgCol>
     <t:dgCol name="reportName" label="汇报人" query="false" align="center"></t:dgCol>
     <t:dgCol name="isPassOne" label="科室负责人" query="false" replace="驳回_2,通过_1, _0" align="center"></t:dgCol>

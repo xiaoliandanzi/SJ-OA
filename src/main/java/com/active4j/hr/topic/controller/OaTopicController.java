@@ -96,6 +96,10 @@ public class OaTopicController extends BaseController {
     public ModelAndView auditTopicList() {
         return new ModelAndView("topic/topiclistaudit");
     }
+    @RequestMapping(value = "view/list")
+    public ModelAndView viewTopicList() {
+        return new ModelAndView("topic/topiclistView");
+    }
 
 
     /**
@@ -157,6 +161,12 @@ public class OaTopicController extends BaseController {
         if ("".equals(oaTopic.getTopicName())) {
             oaTopic.setTopicName(null);
         }
+        Set sessionUserRole = ShiroUtils.getSessionUserRole();
+        boolean contains = sessionUserRole.contains("0106");
+        String role = null;
+        if (contains){
+            role = "0106";
+        }
         //判断 表格显示数据 查询条件
         oaTopic = getSelectAuditTopic(oaTopic, user);
         //纪委与财务 负责人查询数据为两种
@@ -184,6 +194,23 @@ public class OaTopicController extends BaseController {
             }
         }
         queryWrapper.orderByDesc("CREAT_TIME");
+
+        IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
+        ResponseUtil.writeJson(response, dataGrid, page);
+    }
+
+    /**
+     * 表格数据
+     *
+     * @param oaTopic
+     * @param request
+     * @param response
+     * @param dataGrid
+     */
+    @RequestMapping(value = "viewtable")
+    public void topicViewTable(OaTopic oaTopic, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        QueryWrapper<OaTopic> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("IS_PASS_FIVE",1).orderByDesc("CREAT_TIME");
         IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
         ResponseUtil.writeJson(response, dataGrid, page);
     }
@@ -200,6 +227,8 @@ public class OaTopicController extends BaseController {
         //创建人
         ModelAndView modelAndView = new ModelAndView("topic/topic");
         modelAndView = getMV(oaTopic, modelAndView);
+        String sessionUserName = ShiroUtils.getSessionUserRealName();
+        params = sessionUserName;
         if (!StringUtil.isEmpty(params)) {
             modelAndView.addObject("params", params);
         }
@@ -761,7 +790,8 @@ public class OaTopicController extends BaseController {
         } else if (ShiroUtils.hasRole("topicadd")) {
             //判断是否议题发起人
             //01议题发起人  deptId查询条件
-            oaTopic.setDeptId(userEntity.getDeptId());
+            //oaTopic.setDeptId(userEntity.getDeptId());
+            oaTopic.setAllPass(0);
         } else if (ShiroUtils.hasRole("topicaudit")) {
             //判断是否综合办议题审核人员
             //04综合办议题审核员 isPassOne isPassTwo
