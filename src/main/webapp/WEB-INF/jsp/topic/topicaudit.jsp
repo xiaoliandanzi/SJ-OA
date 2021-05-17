@@ -185,7 +185,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">财务科：</label>
+                            <label class="col-sm-3 control-label">财务审查：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2" disabled
                                         id="financeOffice" name="financeOffice">
@@ -196,7 +196,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">纪委科长：</label>
+                            <label class="col-sm-3 control-label">纪检审查：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2" disabled
                                         id="disciplineOffice" name="disciplineOffice">
@@ -294,7 +294,7 @@
                         </c:if>
                         <c:if test="${oaTopic.isPassFour != 0}">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">财务科意见：</label>
+                                <label class="col-sm-3 control-label">财务审查意见：</label>
                                 <div class="col-sm-8">
                                     <label class="control-label">审核结果：<c:choose>
                                         <c:when test="${oaTopic.isPassFour == 1}">通过</c:when>
@@ -317,7 +317,7 @@
                         <%----%>
                         <c:if test="${oaTopic.isPassFive != 0}">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">纪委科长意见：</label>
+                                <label class="col-sm-3 control-label">纪检审查意见：</label>
                                 <div class="col-sm-8">
                                     <label class="control-label">审核结果：<c:choose>
                                         <c:when test="${oaTopic.isPassFive == 1}">通过</c:when>

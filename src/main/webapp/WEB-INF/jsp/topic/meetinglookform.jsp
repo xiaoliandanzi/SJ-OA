@@ -96,8 +96,8 @@
     <t:dgCol name="deptLeaderName" label="科室负责人" query="false"></t:dgCol>
     <t:dgCol name="leaderName" label="主管领导" query="false"></t:dgCol>
     <t:dgCol name="generalOfficeName" label="综合办" query="false"></t:dgCol>
-    <t:dgCol name="financeName" label="财务科" query="false"></t:dgCol>
-    <t:dgCol name="disciplineName" label="纪委" query="false"></t:dgCol>
+    <t:dgCol name="financeName" label="财务审查" query="false"></t:dgCol>
+    <t:dgCol name="disciplineName" label="纪检审查" query="false"></t:dgCol>
     <t:dgCol name="isSecretary" label="书记会" dictionary="byesorno" query="false"></t:dgCol>
     <t:dgCol name="isWorkingCommittee" label="主任会" dictionary="byesorno" query="flase"></t:dgCol>
     <t:dgCol name="isDirector" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>

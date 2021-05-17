@@ -141,8 +141,8 @@
     <t:dgCol name="isPassOne" label="科室负责人" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
     <t:dgCol name="isPassTwo" label="主管领导" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
     <t:dgCol name="isPassThree" label="综合办" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
-    <t:dgCol name="isPassFour" label="财务科" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
-    <t:dgCol name="isPassFive" label="纪委" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isPassFour" label="财务审核" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
+    <t:dgCol name="isPassFive" label="纪检审核" query="false" replace="驳回_2,通过_1, _0"></t:dgCol>
     <t:dgCol name="isSecretary" label="书记会" dictionary="byesorno" query="false"></t:dgCol>
     <t:dgCol name="isDirector" label="主任会" dictionary="byesorno" query="flase"></t:dgCol>
     <t:dgCol name="isWorkingCommittee" label="工委会" dictionary="byesorno" query="flase"></t:dgCol>

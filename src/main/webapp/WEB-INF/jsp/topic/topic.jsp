@@ -153,7 +153,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">财务科：</label>
+                            <label class="col-sm-3 control-label">财务审查：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
                                         id="financeOffice" name="financeOffice" onchange="select1()">
@@ -164,7 +164,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">纪委科长：</label>
+                            <label class="col-sm-3 control-label">纪检审查：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
                                         id="disciplineOffice" name="disciplineOffice" onchange="select1()">
@@ -220,14 +220,14 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">财务科意见：</label>
+                                <label class="col-sm-3 control-label">财务审查意见：</label>
                                 <div class="col-sm-8">
                                 <textarea name="opinionFinanceOffice" class="form-control"
                                 >${oaTopic.opinionFinanceOffice}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">纪委意见：</label>
+                                <label class="col-sm-3 control-label">纪检审查意见：</label>
                                 <div class="col-sm-8">
                                 <textarea name="opinionDisciplineOffice" class="form-control"
                                 >${oaTopic.opinionDisciplineOffice}</textarea>

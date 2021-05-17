@@ -90,10 +90,10 @@
             </td>
         </tr>
         <tr>
-            <td class="height-td" colspan="3">财务科意见:
+            <td class="height-td" colspan="3">财务审查意见:
                 <div class="time-right">&nbsp&nbsp&nbsp&nbsp年&nbsp&nbsp&nbsp&nbsp月&nbsp&nbsp&nbsp&nbsp日</div>
             </td>
-            <td class="height-td" colspan="3">纪委意见:
+            <td class="height-td" colspan="3">纪检审查意见:
                 <div class="time-right">&nbsp&nbsp&nbsp&nbsp年&nbsp&nbsp&nbsp&nbsp月&nbsp&nbsp&nbsp&nbsp日</div>
             </td>
         </tr>

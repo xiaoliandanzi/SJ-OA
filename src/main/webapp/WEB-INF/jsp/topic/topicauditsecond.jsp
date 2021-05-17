@@ -144,7 +144,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">财务科：</label>
+                            <label class="col-sm-3 control-label">财务审查：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
                                         id="financeOffice" name="financeOffice">
@@ -164,7 +164,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">纪委：</label>
+                            <label class="col-sm-3 control-label">纪检审查：</label>
                             <div class="col-sm-8">
                                 <select class="form-control m-b select2"
                                         id="disciplineOffice" name="disciplineOffice">
