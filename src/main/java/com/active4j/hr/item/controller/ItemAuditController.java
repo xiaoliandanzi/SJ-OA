@@ -59,7 +59,7 @@ public class ItemAuditController extends BaseController {
         List<WorkflowCategoryEntity> lstCatogorys = workflowCategoryService.list();
         List<WorkflowCategoryEntity> lstItem = new ArrayList<WorkflowCategoryEntity>();
         int size = lstCatogorys.size();
-        for (int i = size - 1; i >= 0; i--) {
+        for (int i = size -1; i >= 0; i--) {
             WorkflowCategoryEntity catogorys = lstCatogorys.get(i);
             if (catogorys.getName().equals("物品审批")) {
                 lstItem.add(catogorys);

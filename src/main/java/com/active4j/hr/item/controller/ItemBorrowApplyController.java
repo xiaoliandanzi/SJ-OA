@@ -93,7 +93,7 @@ public class ItemBorrowApplyController {
 
         // 执行查询
         IPage<WorkflowBaseEntity> lstResult = workflowService.findTaskStrsByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
-        long size = lstResult.getTotal();
+        long size = lstResult.getRecords().size();
         for (long i = size - 1; i >= 0; --i) {
             if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("物品借用申请") && !lstResult.getRecords().get((int) i).getWorkFlowName().equals("临时餐卡申请")){
                 lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
