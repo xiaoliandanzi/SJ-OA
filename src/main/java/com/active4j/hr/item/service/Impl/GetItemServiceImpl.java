@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,5 +28,10 @@ public class GetItemServiceImpl extends ServiceImpl<GetItemDao, GetItemEntity>
     @Override
     public void savegoodstaus(String id,String goodstaus) {
         this.getItemDao.savegoodstaus(id,goodstaus);
+    }
+
+    @Override
+    public List<GetItemEntity> getAllItemMessage(String userDept) {
+        return this.getItemDao.getAllItemMessage(userDept);
     }
 }

@@ -62,7 +62,7 @@
         var applyDate_begin = document.getElementById("getDay_begin").value;
         var applyDate_end = document.getElementById("getDay_end").value;
         var applyName = document.getElementById("userName").value;
-        window.open("/oa/item/get/excelExport?useDepatment="+useDepatment+"&applyDate_begin="+applyDate_begin+"&applyDate_end="+applyDate_end+"&applyName="+applyName);
+        window.open("/oa/item/get/excelExport?applyDate_begin="+applyDate_begin+"&applyDate_end="+applyDate_end);
     }
 </script>
 </body>
