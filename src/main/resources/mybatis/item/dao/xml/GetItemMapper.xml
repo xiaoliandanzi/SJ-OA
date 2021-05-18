@@ -14,6 +14,6 @@
         <if test="userDept !=null and userDept !=''">
          and DEPARTMENTNAME like concat('%',#{userDept},'%')
          </if>
-         order CREATE_DATE desc
+         order by CREATE_DATE desc
     </select>
 </mapper>
