@@ -38,19 +38,32 @@
     <t:dgCol name="itemName" label="领用物品" width="80"></t:dgCol>
     <t:dgCol name="quantity" label="领用数量" width="80"></t:dgCol>
     <t:dgCol name="getDay" label="领用时间" width="80" datefmt="yyyy-MM-dd" queryModel="group" datePlugin="laydate" query="true"></t:dgCol>
+<%--    <t:dgCol name="applyDate" label="领用时间" width="120" datefmt="yyyy-MM-dd" queryModel="group" datePlugin="laydate" query="true"></t:dgCol>--%>
     <t:dgCol name="memo" label="备注" width="80"></t:dgCol>
     <t:dgCol name="GOODSTAUS" label="领用状态" width="80"></t:dgCol>
 <%--    <t:dgCol name="opt" label="操作" ></t:dgCol>--%>
 <%--    <t:dgDelOpt label="删除" url="item/manage/requisition/delete?id={id}"/>--%>
 <%--    <t:dgToolBar url="item/manage/requisition/addorupdate" type="add" width="40%" height="70%"></t:dgToolBar>--%>
     <t:dgToolBar url="item/manage/requisition/addorupdatenew" type="edit" width="40%" height="70%" operationCode="IsgoodEdit" funName="isGoodAdmin"></t:dgToolBar>
+    <t:dgToolBar label="导出Excel" icon="fa fa-cloud-download" type="define" funName="doAttachment"></t:dgToolBar>
+
 </t:datagrid>
 
 
 <script type="text/javascript">
     $(function(){
-        laydate({elem:"#getDay",event:"focus",istime: false, format: 'YYYY-MM-DD'});
+        laydate({elem:"#getDay_begin",event:"focus",istime: true, format: 'YYYY-MM-DD'});
+        laydate({elem:"#getDay_end",event:"focus",istime: true, format: 'YYYY-MM-DD'});
     });
+
+
+    function doAttachment() {
+        var useDepatment = document.getElementById("departmentName").value;
+        var applyDate_begin = document.getElementById("getDay_begin").value;
+        var applyDate_end = document.getElementById("getDay_end").value;
+        var applyName = document.getElementById("userName").value;
+        window.open("/oa/item/get/excelExport?useDepatment="+useDepatment+"&applyDate_begin="+applyDate_begin+"&applyDate_end="+applyDate_end+"&applyName="+applyName);
+    }
 </script>
 </body>
 
