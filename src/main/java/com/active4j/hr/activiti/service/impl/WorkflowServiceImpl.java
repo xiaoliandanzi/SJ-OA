@@ -882,4 +882,9 @@ public class WorkflowServiceImpl implements WorkflowService {
         return workflowDao.findFinishedTaskSealByUserDept(page, userDept,sealtype,user_name, base.getCategoryId(), base.getProjectNo(), base.getName(), base.getApplyName(), base.getApplyerDepart(), startTime, endTime);
     }
 
+    @Override
+    public IPage<WorkflowBaseEntity> findGoodsTaskStrsByUserName(Page<WorkflowBaseEntity> page, WorkflowBaseEntity base, String startTime, String endTime, String userName, String task_category_approval) {
+        return workflowDao.findGoodsTaskStrsByUserName(page, userName, base.getCategoryId(), base.getProjectNo(), base.getName(), base.getApplyName(), base.getApplyerDepart(), startTime, endTime);
+    }
+
 }

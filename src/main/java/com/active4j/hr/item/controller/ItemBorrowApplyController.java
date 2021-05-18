@@ -92,13 +92,13 @@ public class ItemBorrowApplyController {
         String endTime = request.getParameter("applyDate_end");
 
         // 执行查询
-        IPage<WorkflowBaseEntity> lstResult = workflowService.findTaskStrsByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
-        long size = lstResult.getRecords().size();
+        IPage<WorkflowBaseEntity> lstResult = workflowService.findGoodsTaskStrsByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName(), WorkflowConstant.Task_Category_approval);
+        /*long size = lstResult.getTotal();
         for (long i = size - 1; i >= 0; --i) {
-            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("物品借用申请") && !lstResult.getRecords().get((int) i).getWorkFlowName().equals("临时餐卡申请")){
+            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("物品借用申请") || !lstResult.getRecords().get((int) i).getWorkFlowName().equals("临时餐卡申请")){
                 lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
             }
-        }
+        }*/
         // 输出结果
         ResponseUtil.writeJson(response, dataGrid, lstResult);
     }

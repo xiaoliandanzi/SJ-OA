@@ -73,4 +73,9 @@ public interface WorkflowDao {
 												  @Param("applyerDepart") String applyerDepart,
 												  @Param("applyDateStart") String applyDateStart,
 												  @Param("applyDateEnd") String applyDateEnd);
+
+	IPage<WorkflowBaseEntity> findGoodsTaskStrsByUserName(IPage<WorkflowBaseEntity> page, @Param("userName") String userName,
+														  @Param("categoryId") String categoryId, @Param("projectNo") String projectNo,
+														  @Param("name") String name, @Param("applyName") String applyName,@Param("applyerDepart") String applyerDepart,
+														  @Param("applyDateStart") String applyDateStart, @Param("applyDateEnd") String applyDateEnd);
 }

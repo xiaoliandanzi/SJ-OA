@@ -56,9 +56,9 @@
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label">申请人*：</label>
-                            <div class="col-sm-8">
-                                <input id="applyName" name="applyName" minlength="2"  type="text"
-                                       class="form-control" required value="${params}" disabled="disabled">
+                            <div class="input-group">
+                                <input id="createUserName" name="createUserName" minlength="2" maxlength="20" type="text" readonly
+                                       class="form-control" value="${oaTopic.createUserName}">
                             </div>
                         </div>
                         <div class="form-group">

@@ -323,6 +323,56 @@
 		order by b.APPLY_DATE desc
 	</select>
 
+	<select id="findGoodsTaskStrsByUserName" resultType="com.active4j.hr.activiti.entity.WorkflowBaseEntity">
+		SELECT DISTINCT
+		B.ID,
+		B.APPLY_DATE,
+		B.APPLY_NAME,
+		B.APPLYER_DEPART,
+		B.BUSINESS_ID,
+		B.CATEGORY_ID,
+		B.CREATE_DATE,
+		B.CREATE_NAME,
+		B. LEVEL,
+		B. NAME,
+		B.PROJECT_NO,
+		B. STATUS,
+		B.USER_NAME,
+		B.WORKFLOW_ID,
+		B.WORKFLOW_NAME
+		FROM
+		wf_base b,
+		act_ru_execution e,
+		act_ru_task t
+		WHERE
+		b.ID = e.BUSINESS_KEY_
+		AND e.PROC_INST_ID_ = t.PROC_INST_ID_
+		AND t.ASSIGNEE_ = #{userName}
+		<if test="categoryId!=null and categoryId!=''">
+			and b.CATEGORY_ID = #{categoryId}
+		</if>
+		<if test="projectNo!=null and projectNo!=''">
+			and b.PROJECT_NO = #{projectNo}
+		</if>
+		<if test="name!=null and name!=''">
+			and b.NAME like concat('%',#{name},'%')
+		</if>
+		<if test="applyName!=null and applyName!=''">
+			and b.APPLY_NAME = #{applyName}
+		</if>
+		<if test="applyerDepart!=null and applyerDepart!=''">
+			and b.APPLYER_DEPART = #{applyerDepart}
+		</if>
+		<if test="applyDateStart!=null and applyDateStart!=''">
+			and b.APPLY_DATE &gt;= #{applyDateStart}
+		</if>
+		<if test="applyDateEnd!=null and applyDateEnd!=''">
+			and b.APPLY_DATE &lt;= #{applyDateEnd}
+		</if>
+		and WORKFLOW_NAME in ('物品借用申请','临时餐卡申请')
+		order by b.APPLY_DATE desc
+	</select>
+
 
 	<select id="findFinishedTaskByUserDept" resultType="com.active4j.hr.activiti.entity.WorkflowBaseEntity">
 		SELECT DISTINCT

@@ -228,7 +228,7 @@ public class OaTopicController extends BaseController {
         ModelAndView modelAndView = new ModelAndView("topic/topic");
         modelAndView = getMV(oaTopic, modelAndView);
         String sessionUserName = ShiroUtils.getSessionUserRealName();
-        params = sessionUserName;
+        oaTopic.setCreateUserName(sessionUserName);
         if (!StringUtil.isEmpty(params)) {
             modelAndView.addObject("params", params);
         }
