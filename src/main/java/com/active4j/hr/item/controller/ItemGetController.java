@@ -444,7 +444,7 @@ public class ItemGetController extends BaseController {
                 if (cell6 == null){
                     cell6 = row.createCell(5);
                 }
-                cell6.setCellValue(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(item.getGetDay()));
+                cell6.setCellValue(new SimpleDateFormat("yyyy-MM-dd").format(item.getGetDay()));
                 cell6.setCellStyle(contentStyle);
                 //备注
                 Cell cell7 = row.getCell(6);
