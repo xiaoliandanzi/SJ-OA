@@ -1098,7 +1098,6 @@ public class OaTopicController extends BaseController {
      */
     private ModelAndView getFileList(ModelAndView modelAndView, OaTopic oaTopic) {
         oaTopic = topicService.getById(oaTopic.getId());
-        oaTopic.setFileId(",");
         if (!StringUtil.isEmpty(oaTopic.getFileId())) {
             //System.err.println("getFileList");
             String[] fileIds = oaTopic.getFileId().split(",");
