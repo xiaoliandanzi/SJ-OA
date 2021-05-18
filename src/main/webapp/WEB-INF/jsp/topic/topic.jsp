@@ -56,11 +56,12 @@
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label">申请人*：</label>
-                            <div class="input-group">
-                                <input id="createUserName" name="createUserName" minlength="2" maxlength="20" type="text" readonly
-                                       class="form-control" value="${oaTopic.createUserName}">
+                            <div class="col-sm-8">
+                                <input id="createUserName" name="createUserName" minlength="2"  type="text"
+                                       class="form-control" required="" value="${sessionUserName}">
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="col-sm-3 control-label">提议领导*：</label>
                             <div class="col-sm-8">
