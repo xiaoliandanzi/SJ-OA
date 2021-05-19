@@ -210,7 +210,7 @@ public class OaTopicController extends BaseController {
     @RequestMapping(value = "viewtable")
     public void topicViewTable(OaTopic oaTopic, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
         QueryWrapper<OaTopic> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("IS_PASS_FIVE",1).orderByDesc("CREAT_TIME");
+        queryWrapper.eq("IS_PASS_FIVE",1).eq("IS_PASS_TWO",1).orderByDesc("CREAT_TIME");
         IPage<OaTopic> page = topicService.page(new Page<OaTopic>(dataGrid.getPage(), dataGrid.getRows()), queryWrapper);
         ResponseUtil.writeJson(response, dataGrid, page);
     }
@@ -789,17 +789,17 @@ public class OaTopicController extends BaseController {
             oaTopic.setIsPassThree(1);*/
             oaTopic.setChoicePassFour("true");
             ShiroUtils.setSessionValue("auditLV", "4");
-        } else if (ShiroUtils.hasRole("topicadd")) {
-            //判断是否议题发起人
-            //01议题发起人  deptId查询条件
-            //oaTopic.setDeptId(userEntity.getDeptId());
-            oaTopic.setAllPass(0);
         } else if (ShiroUtils.hasRole("topicaudit")) {
             //判断是否综合办议题审核人员
             //04综合办议题审核员 isPassOne isPassTwo
-            oaTopic.setIsPassTwo(1);
+            //oaTopic.setIsPassTwo(1);
             ShiroUtils.setSessionValue("auditLV", "3");
-        } else {
+        }else if (ShiroUtils.hasRole("topicadd")) {
+            //判断是否议题发起人
+            //01议题发起人  deptId查询条件
+            oaTopic.setDeptId(userEntity.getDeptId());
+            //oaTopic.setAllPass(0);
+        }  else {
             //剩下的 为 本科室 负责人
             //02本科室科长  deptLeaderId
             oaTopic.setDeptLeaderId(user.getId());
