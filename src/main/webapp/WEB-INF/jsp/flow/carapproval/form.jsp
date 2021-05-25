@@ -116,9 +116,9 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-3 control-label">行驶公里数*：</label>
+    <label class="col-sm-3 control-label">行驶公里数/km*：</label>
     <div class="col-sm-5">
-        <input id="mileage" name="mileage" minlength="1" required="" type="text" class="form-control">
+        <input id="mileage" name="mileage" minlength="1" required="" type="number" class="form-control" placeholder="请输入整数">
     </div>
 </div>
 <script type="text/javascript">
