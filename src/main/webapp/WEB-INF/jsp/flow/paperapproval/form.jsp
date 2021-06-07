@@ -48,9 +48,9 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-2 control-label">发文文号：*</label>
+    <label class="col-sm-2 control-label">发文文号：</label>
     <div class="col-sm-3">
-        <input id="paperNumber" name="paperNumber" minlength="1" type="text" class="form-control" required="" value="${biz.paperNumber }">
+        <input id="paperNumber" name="paperNumber" minlength="1" type="text" class="form-control" value="${biz.paperNumber }">
     </div>
     <label class="col-sm-2 control-label">发文范围：*</label>
     <div class="col-sm-3">
