@@ -17,7 +17,9 @@ import com.active4j.hr.core.beanutil.MyBeanUtils;
 import com.active4j.hr.core.model.AjaxJson;
 import com.active4j.hr.core.shiro.ShiroUtils;
 import com.active4j.hr.core.util.DateUtils;
+import com.active4j.hr.item.entity.GetItemEntity;
 import com.active4j.hr.item.entity.RequisitionedItemEntity;
+import com.active4j.hr.item.service.GetItemService;
 import com.active4j.hr.item.service.RequisitionedItemService;
 import com.active4j.hr.officalSeal.entity.OaOfficalSealEntity;
 import com.active4j.hr.officalSeal.service.OaOfficalSealService;
@@ -86,6 +88,9 @@ public class FlowTmpCardApprovalController extends BaseController{
 
     @Autowired
     private SysRoleService roleService;
+
+    @Autowired
+    private GetItemService getItemService;
 
 
     /**
@@ -337,6 +342,27 @@ public class FlowTmpCardApprovalController extends BaseController{
                 FlowTmpCardApprovalEntity flowTmpCardApprovalEntity = flowTmpCardApprovalService.getById(workflowBaseEntity.getBusinessId());
                 flowTmpCardApprovalEntity.setApplyStatus(1);
                 flowTmpCardApprovalService.saveOrUpdate(flowTmpCardApprovalEntity);
+                //把餐卡记录添加到领用表
+                String json_data = flowTmpCardApprovalEntity.getJsonData();
+                JSONArray array = JSON.parseArray(json_data);
+                for (int i = 0; i < array.size(); i++) {
+                    GetItemEntity getItemEntity=new GetItemEntity();
+                    JSONObject jo = array.getJSONObject(i);
+                    Integer quantity = jo.getInteger("quantity");
+                    String itemName = jo.getString("cardName");
+                    getItemEntity.setId(flowTmpCardApprovalEntity.getId());
+                    getItemEntity.setCreateName(flowTmpCardApprovalEntity.getCreateName());
+                    getItemEntity.setCreateDate(flowTmpCardApprovalEntity.getCreateDate());
+                    getItemEntity.setGetDay(flowTmpCardApprovalEntity.getUseDay());
+                    getItemEntity.setDepartmentName(flowTmpCardApprovalEntity.getDepartmentName());
+                    getItemEntity.setItemName(itemName);
+                    getItemEntity.setQuantity(quantity);
+                    getItemEntity.setUserName(flowTmpCardApprovalEntity.getUserName());
+                    getItemEntity.setMemo(flowTmpCardApprovalEntity.getCommit());
+                    getItemEntity.setJsonData(flowTmpCardApprovalEntity.getJsonData());
+                    getItemEntity.setGoodstaus("已领取");
+                    getItemService.save(getItemEntity);
+                }
             } else {
                 workflowBaseEntity.setStatus("2");
                 FlowTmpCardApprovalEntity flowTmpCardApprovalEntity = flowTmpCardApprovalService.getById(workflowBaseEntity.getBusinessId());

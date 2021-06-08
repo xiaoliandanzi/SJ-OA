@@ -514,7 +514,6 @@
 		and u.DEPT_ID=d.ID
 
 		and B.WORKFLOW_NAME="物品借用申请"
-		or B.WORKFLOW_NAME="临时餐卡申请"
 		<if test="userDpet !=null and userDpet != ''">
 			and d.`NAME` = #{userDpet}
 		</if>
