@@ -64,8 +64,13 @@ public class TaskAssigneeRoleNameListener implements TaskListener {
 		if(taskName.equalsIgnoreCase("车辆管理员审批")){
 			roleName="车辆管理员";
 		}
+
 		if ("监交人审批".equalsIgnoreCase(taskName)) {
 			roleName="综合办科员";
+		}
+
+		if ("两办科长".equalsIgnoreCase(taskName)) {
+			roleName="综合办公室（两办）科室负责人";
 		}
 
 		List<String> lstUsers = WorkflowTaskUtil.getApprovalUserByRoleName(roleName);

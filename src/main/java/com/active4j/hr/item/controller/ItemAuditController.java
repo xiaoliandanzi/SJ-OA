@@ -171,7 +171,7 @@ public class ItemAuditController extends BaseController {
         IPage<WorkflowBaseEntity> lstResult = workflowService.findGroupTaskStrsByUserName(new Page<WorkflowBaseEntity>(dataGrid.getPage(), dataGrid.getRows()), workflowBaseEntity, startTime, endTime, ShiroUtils.getSessionUserName());
         long size = lstResult.getTotal();
         for (long i = size - 1; i >= 0; --i) {
-            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("物品借用申请")){
+            if(!lstResult.getRecords().get((int) i).getWorkFlowName().equals("物品借用申请")&&!lstResult.getRecords().get((int) i).getWorkFlowName().equals("临时餐卡申请")){
                 lstResult.getRecords().remove(lstResult.getRecords().get((int) i));
             }
         }

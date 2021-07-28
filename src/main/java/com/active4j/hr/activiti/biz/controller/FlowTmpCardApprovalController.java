@@ -456,6 +456,7 @@ public class FlowTmpCardApprovalController extends BaseController{
                     //==============减去库存==============
                     String json_data = flowTmpCardApprovalEntity.getJsonData();
                     JSONArray array = JSON.parseArray(json_data);
+                    int count=0;
                     for (int i = 0; i < array.size(); i++) {
                         JSONObject jo = array.getJSONObject(i);
                         String cardName = jo.getString("cardName");
@@ -483,6 +484,7 @@ public class FlowTmpCardApprovalController extends BaseController{
                             entity.setStatus("1");
                         }
                         requisitionedItemService.saveOrUpdate(entity);
+                        count+=quantity;
                     }
 
 
@@ -509,6 +511,7 @@ public class FlowTmpCardApprovalController extends BaseController{
                     //启动流程
                     //赋值流程变量
                     Map<String, Object> variables = new HashMap<String, Object>();
+                    variables.put("count",count);
                     workflowService.startProcessInstanceByKey(workflow.getProcessKey(), workflowBaseEntity.getId(), true, workflowBaseEntity.getUserName(), variables);
                 }else {
                     WorkflowBaseEntity base = workflowBaseService.getById(workflowBaseEntity.getId());
@@ -523,6 +526,7 @@ public class FlowTmpCardApprovalController extends BaseController{
                     //==============减去库存==============
                     String json_data = flowTmpCardApprovalEntity.getJsonData();
                     JSONArray array = JSON.parseArray(json_data);
+                    int count=0;
                     for (int i = 0; i < array.size(); i++) {
                         JSONObject jo = array.getJSONObject(i);
                         String cardName = jo.getString("cardName");
@@ -551,11 +555,13 @@ public class FlowTmpCardApprovalController extends BaseController{
                             entity.setStatus("1");
                         }
                         requisitionedItemService.saveOrUpdate(entity);
+                        count+=quantity;
                     }
 
                     //启动流程
                     //赋值流程变量
                     Map<String, Object> variables = new HashMap<String, Object>();
+                    variables.put("count",count);
                     workflowService.startProcessInstanceByKey(workflow.getProcessKey(), biz.getId(), true, base.getUserName(), variables);
 
                 }
