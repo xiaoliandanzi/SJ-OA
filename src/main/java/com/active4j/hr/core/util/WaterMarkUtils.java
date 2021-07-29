@@ -30,7 +30,8 @@ public class WaterMarkUtils {
             g.drawImage(srcImg, 0, 0, srcImgWidth, srcImgHeight, null);
             g.setColor(Color.WHITE);; //根据图片的背景设置水印颜色
             Font font = new Font("微软雅黑", Font.BOLD, 90);//水印字体
-            g.setFont(font);              //设置字体
+            g.setBackground(Color.black);
+            g.setFont(font);//设置字体
 
             //设置水印的坐标
             int x = srcImgWidth/2 - getWatermarkLength(waterMarkContent, g)/2;
@@ -53,11 +54,11 @@ public class WaterMarkUtils {
     }
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         String srcImgPath="C:\\Users\\13353\\Desktop\\ceshi.jpg"; //源图片地址
         String tarImgPath="C:\\Users\\13353\\Desktop\\ceshi123.jpg"; //待存储的地址
         String waterMarkContent="测试测试测试测试测试，测试测试测试测试测试，测试测试测试测试...";  //水印内容
         new WaterMarkUtils().addWaterMark(srcImgPath, tarImgPath, waterMarkContent,"jpg");
-    }
+    }*/
 }
 

@@ -31,11 +31,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static com.active4j.hr.core.util.WaterMarkUtils.addWaterMark;
 
 /**
  * @author xfzhang
@@ -350,6 +352,26 @@ public class FlowMessageApprovalController extends BaseController {
                 return j;
             }
 
+            if (6 == flowMessageApprovalEntity.getMessageType()){
+                //类型为双井图库  处理图片加水印
+                String imgPath = getImgSrc(flowMessageApprovalEntity.getContent());
+                File imgPathFile = new File(imgPath);
+                String imgPathName = imgPathFile.getName();
+                String prefix=imgPathName.substring(imgPathName.lastIndexOf(".")+1);
+                SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式
+                String newImgPath = df.format(new Date())+"."+prefix;// new Date()为获取当前系统时间，也可使用当前时间戳
+                System.out.println("--------------------------------------------------------------");
+                System.out.println("--------------------------------------------------------------");
+                System.out.println("--------------------------------------------------------------");
+                System.out.println(newImgPath);
+                System.out.println("--------------------------------------------------------------");
+                System.out.println("--------------------------------------------------------------");
+                System.out.println("--------------------------------------------------------------");
+                addWaterMark(imgPath,"/upload/"+newImgPath,flowMessageApprovalEntity.getTitle(),prefix);
+                flowMessageApprovalEntity.setContent(flowMessageApprovalEntity.getContent().replaceFirst(imgPathName,newImgPath));
+            }
+
+
             if(StringUtils.equals(optType, "1")) {
                 flowMessageApprovalEntity.setApplyStatus(0);
                 //直接申请流程
@@ -419,6 +441,35 @@ public class FlowMessageApprovalController extends BaseController {
         }
 
         return j;
+    }
+
+
+    public String getImgSrc(String htmlStr) {
+
+        if( htmlStr == null ){
+
+            return null;
+        }
+
+        String img = "";
+        Pattern p_image;
+        Matcher m_image;
+        String pics = new String();
+
+        String regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>";
+        p_image = Pattern.compile(regEx_img, Pattern.CASE_INSENSITIVE);
+        m_image = p_image.matcher(htmlStr);
+        while (m_image.find()) {
+            img = img + "," + m_image.group();
+            // Matcher m =
+            // Pattern.compile("src=\"?(.*?)(\"|>|\\s+)").matcher(img); //匹配src
+            Matcher m = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img);
+
+            while (m.find()) {
+                pics=m.group(1);
+            }
+        }
+        return pics;
     }
 
     /**
