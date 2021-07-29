@@ -15,9 +15,8 @@ public class WaterMarkUtils {
      * @param srcImgPath 源图片路径
      * @param tarImgPath 保存的图片路径
      * @param waterMarkContent 水印内容
-     * @param font 水印字体
      */
-    public void addWaterMark(String srcImgPath, String tarImgPath, String waterMarkContent,Font font,String suffix) {
+    public void addWaterMark(String srcImgPath, String tarImgPath, String waterMarkContent,String suffix) {
 
         try {
             // 读取原图片信息
@@ -30,6 +29,7 @@ public class WaterMarkUtils {
             Graphics2D g = bufImg.createGraphics();
             g.drawImage(srcImg, 0, 0, srcImgWidth, srcImgHeight, null);
             g.setColor(Color.WHITE);; //根据图片的背景设置水印颜色
+            Font font = new Font("微软雅黑", Font.BOLD, 25);//水印字体
             g.setFont(font);              //设置字体
 
             //设置水印的坐标
@@ -54,11 +54,10 @@ public class WaterMarkUtils {
 
 
     public static void main(String[] args) {
-        Font font = new Font("微软雅黑", Font.BOLD, 25);//水印字体
         String srcImgPath="C:\\Users\\13353\\Desktop\\ceshi.jpg"; //源图片地址
         String tarImgPath="C:\\Users\\13353\\Desktop\\ceshi123.jpg"; //待存储的地址
         String waterMarkContent="测试测试测试测试，测试测试测试测试，测试测试测试测试，测试测试测试测试，测试测试测试测试，测试测试测试测试";  //水印内容
-        new WaterMarkUtils().addWaterMark(srcImgPath, tarImgPath, waterMarkContent,font,"jpg");
+        new WaterMarkUtils().addWaterMark(srcImgPath, tarImgPath, waterMarkContent,"jpg");
     }
 }
 
