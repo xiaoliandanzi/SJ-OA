@@ -187,6 +187,9 @@ public class FlowOfficalSealApprovalController extends BaseController {
             view.addObject("base", base);
 
             FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
+            if(StringUtils.isNotEmpty(biz.getAttachment())){
+                biz.setAttachment(biz.getAttachment().replaceAll("\"","").replaceAll("\\[","").replaceAll("\\]",""));
+            }
             view.addObject("biz", biz);
         } else {
             FlowOfficalSealApprovalEntity biz = new FlowOfficalSealApprovalEntity();
@@ -199,6 +202,9 @@ public class FlowOfficalSealApprovalController extends BaseController {
 
             biz.setUserName(user.getRealName());
             biz.setDepartmentName(user.getDeptName());
+            if(StringUtils.isNotEmpty(biz.getAttachment())){
+                biz.setAttachment(biz.getAttachment().replaceAll("\"","").replaceAll("\\[","").replaceAll("\\]",""));
+            }
             view.addObject("biz", biz);
         }
 
@@ -438,6 +444,11 @@ public class FlowOfficalSealApprovalController extends BaseController {
                 return j;
             }
 
+            if(StringUtils.isNotEmpty(flowOfficalSealApprovalEntity.getAttachment())) {
+                //替换除逗号外所有符号
+                String attachment = flowOfficalSealApprovalEntity.getAttachment().replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", "");
+                flowOfficalSealApprovalEntity.setAttachment(attachment);
+            }
             if(StringUtils.equals(optType, "1")) {
                 //直接申请流程
                 if(StringUtils.isBlank(workflowBaseEntity.getId())) {
@@ -545,6 +556,9 @@ public class FlowOfficalSealApprovalController extends BaseController {
             MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
 
             FlowOfficalSealApprovalEntity biz = flowOfficalSealApprovalService.getById(base.getBusinessId());
+            if(StringUtils.isNotEmpty(biz.getAttachment())){
+                biz.setAttachment(biz.getAttachment().replaceAll("\"","").replaceAll("\\[","").replaceAll("\\]",""));
+            }
             biz.setDepartmentName(flowOfficalSealApprovalEntity.getDepartmentName());
             biz.setCommit(flowOfficalSealApprovalEntity.getCommit());
             biz.setUseUnit(flowOfficalSealApprovalEntity.getUseUnit());

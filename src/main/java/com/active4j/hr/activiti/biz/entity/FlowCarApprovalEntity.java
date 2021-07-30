@@ -104,4 +104,10 @@ public class FlowCarApprovalEntity extends BaseEntity {
      * */
     @TableField("MILEAGE")
     private Integer mileage;
+
+    /**
+     * 附件
+     */
+    @TableField("ATTACHMENT")
+    private String attachment;
 }

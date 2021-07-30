@@ -28,6 +28,7 @@
                         <input type="hidden" name="workflowId" id="workflowId" value="${workflowId }">
                         <input type="hidden" name="optType" id="optType">
                         <input type="hidden" name="id" id="id" value="${base.id }">
+                        <input type="hidden" name="attachment" id="attachment" value="${biz.attachment }">
                         <%@include file="/WEB-INF/jsp/flow/carapproval/newformshow.jsp" %>
                     </form>
                 </div>

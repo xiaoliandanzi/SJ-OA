@@ -68,6 +68,56 @@
         <textarea id="commit" name="commit" class="form-control">${biz.commit }</textarea>
     </div>
 </div>
+<c:if test="${empty biz.id }">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">附件:</label>
+        <div class="col-sm-5">
+            <div id="filePicker">上传附件</div>
+        </div>
+        <div class="col-sm-5">
+            <div id="fileList" class="uploader-list"></div>
+        </div>
+    </div>
+</c:if>
+<c:if test="${not empty biz.id }">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">附件:</label>
+        <div class="col-sm-4">
+            <button class="btn btn-primary" type="button" onclick="doBtnDownloadFile();">下载附件</button>
+        </div>
+    </div>
+</c:if>
+<script type="text/javascript">
+    // function doBtnDownloadFile() {
+    //     var att = document.getElementById("attachment").value;
+    //     if(!att) {
+    //         qhAlert('该文件附件还未上传附件！');
+    //         return;
+    //     }
+    //
+    //     location.href = "func/upload/download?id=" + att;
+    // };
+    function doBtnDownloadFile() {
+        var att = document.getElementById("attachment").value;
+
+        if(!att) {
+            qhAlert('该文件附件还未上传附件！');
+            return;
+        }
+
+        var list=att.split(",");
+        for (const url of list) {
+            donw("func/upload/download?id="+url);
+        }
+    };
+
+    function donw(url) {
+        var iframe = document.createElement("iframe");
+        iframe.src = url;
+        iframe.style.display = "none";
+        document.body.appendChild(iframe);
+    };
+</script>
 <%--<div class="form-group">--%>
 <%--    <label class="col-sm-3 control-label">紧急程度：</label>--%>
 <%--    <div class="col-sm-5">--%>

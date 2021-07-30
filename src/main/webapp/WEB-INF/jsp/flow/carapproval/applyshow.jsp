@@ -21,13 +21,14 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>用车审批流程</h5>
+                    <h5>申请记录详情</h5>
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="commonForm" action="flow/biz/carapproval/save" method="post">
                         <input type="hidden" name="workflowId" id="workflowId" value="${workflowId }">
                         <input type="hidden" name="optType" id="optType">
                         <input type="hidden" name="id" id="id" value="${base.id }">
+                        <input type="hidden" name="attachment" id="attachment" value="${biz.attachment }">
                         <%@include file="/WEB-INF/jsp/flow/carapproval/formshow.jsp" %>
                     </form>
                 </div>
@@ -80,6 +81,37 @@
         //     format : 'YYYY-MM-DD hh:mm'
         // });
     });
+
+    // function doBtnDownloadFile() {
+    //     var att = document.getElementById("attachment").value;
+    //     if(!att) {
+    //         qhAlert('该文件附件还未上传附件！');
+    //         return;
+    //     }
+    //
+    //     location.href = "func/upload/download?id=" + att;
+    // };
+
+    function doBtnDownloadFile() {
+        var att = document.getElementById("attachment").value;
+
+        if(!att) {
+            qhAlert('该文件附件还未上传附件！');
+            return;
+        }
+
+        var list=att.split(",");
+        for (const url of list) {
+            donw("func/upload/download?id="+url);
+        }
+    };
+    
+    function donw(url) {
+        var iframe = document.createElement("iframe");
+        iframe.src = url;
+        iframe.style.display = "none";
+        document.body.appendChild(iframe);
+    };
 
 </script>
 </html>

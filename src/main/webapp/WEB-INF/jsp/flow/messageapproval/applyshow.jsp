@@ -56,14 +56,35 @@
 
     });
 
+    // function doBtnDownloadFile() {
+    //     var att = document.getElementById("attachment").value;
+    //     if(!att) {
+    //         qhAlert('该文件附件还未上传附件！');
+    //         return;
+    //     }
+    //
+    //     location.href = "func/upload/download?id=" + att;
+    // };
+
     function doBtnDownloadFile() {
         var att = document.getElementById("attachment").value;
+
         if(!att) {
             qhAlert('该文件附件还未上传附件！');
             return;
         }
 
-        location.href = "func/upload/download?id=" + att;
+        var list=att.split(",");
+        for (const url of list) {
+            donw("func/upload/download?id="+url);
+        }
+    };
+
+    function donw(url) {
+        var iframe = document.createElement("iframe");
+        iframe.src = url;
+        iframe.style.display = "none";
+        document.body.appendChild(iframe);
     };
 
 </script>

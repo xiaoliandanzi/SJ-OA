@@ -82,6 +82,25 @@
         <textarea id="commit" name="commit" class="form-control">${biz.commit }</textarea>
     </div>
 </div>
+<c:if test="${empty biz.id }">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">附件:</label>
+        <div class="col-sm-5">
+            <div id="filePicker">上传附件</div>
+        </div>
+        <div class="col-sm-4">
+            <div id="fileList" class="uploader-list"></div>
+        </div>
+    </div>
+</c:if>
+<c:if test="${not empty biz.id }">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">附件:</label>
+        <div class="col-sm-5">
+            <button class="btn btn-primary" type="button" onclick="doBtnDownloadFile();">下载附件</button>
+        </div>
+    </div>
+</c:if>
 <%--<div class="form-group">--%>
 <%--    <label class="col-sm-3 control-label">紧急程度：</label>--%>
 <%--    <div class="col-sm-5">--%>

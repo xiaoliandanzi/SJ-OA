@@ -82,4 +82,10 @@ public class FlowOfficalSealApprovalEntity extends BaseEntity {
      * */
     @TableField("SEALTYPE")
     private String sealtype;
+
+    /**
+     * 附件
+     */
+    @TableField("ATTACHMENT")
+    private String attachment;
 }

@@ -178,6 +178,8 @@ public class MessageManageController extends BaseController {
 
         if(StringUtils.isNotEmpty(flowMessageApprovalEntity.getId())) {
             flowMessageApprovalEntity = oaMessageService.getById(flowMessageApprovalEntity.getId());
+            String attachment=flowMessageApprovalEntity.getAttachment().replaceAll("\"","").replaceAll("\\[","").replaceAll("\\]","");
+            flowMessageApprovalEntity.setAttachment(attachment);
             String type = getMessageTypeName(flowMessageApprovalEntity.getMessageType());
             view.addObject("type", type);
             view.addObject("biz", flowMessageApprovalEntity);

@@ -174,6 +174,9 @@ public class FlowCarApprovalController extends BaseController {
             view.addObject("base", base);
 
             FlowCarApprovalEntity biz = flowCarApprovalService.getById(base.getBusinessId());
+            if(StringUtils.isNotEmpty(biz.getAttachment())){
+                biz.setAttachment(biz.getAttachment().replaceAll("\"","").replaceAll("\\[","").replaceAll("\\]",""));
+            }
             view.addObject("biz", biz);
             return view;
         }
@@ -184,6 +187,9 @@ public class FlowCarApprovalController extends BaseController {
         SysUserModel user = sysUserService.getInfoByUserId(userId).get(0);
         FlowCarApprovalEntity biz = new FlowCarApprovalEntity();
         biz.setUseDepatment(user.getDeptName());
+        if(StringUtils.isNotEmpty(biz.getAttachment())){
+            biz.setAttachment(biz.getAttachment().replaceAll("\"","").replaceAll("\\[","").replaceAll("\\]",""));
+        }
 
         view.addObject("biz", biz);
 
@@ -399,11 +405,23 @@ public class FlowCarApprovalController extends BaseController {
                 j.setMsg("行驶公里数不可为空或为0");
             }
 
+//            if(null == flowCarApprovalEntity.getAttachment()) {
+//                j.setSuccess(false);
+//                j.setMsg("附件不能为空!");
+//                return j;
+//            }
+
             WorkflowMngEntity workflow = workflowMngService.getById(workflowBaseEntity.getWorkflowId());
             if(null == workflow) {
                 j.setSuccess(false);
                 j.setMsg("参数错误，系统中没有该流程");
                 return j;
+            }
+
+            if(StringUtils.isNotEmpty(flowCarApprovalEntity.getAttachment())){
+                //替换除逗号外所有符号
+                String attachment=flowCarApprovalEntity.getAttachment().replaceAll("\"","").replaceAll("\\[","").replaceAll("\\]","");
+                flowCarApprovalEntity.setAttachment(attachment);
             }
 
             if(StringUtils.equals(optType, "1")) {

@@ -172,6 +172,9 @@ public class FlowPaperApprovalController extends BaseController {
             view.addObject("base", base);
 
             FlowPaperApprovalEntity biz = flowPaperApprovalService.getById(base.getBusinessId());
+            if(StringUtils.isNotEmpty(biz.getAttachment())){
+                biz.setAttachment(biz.getAttachment().replaceAll("\"","").replaceAll("\\[","").replaceAll("\\]",""));
+            }
             view.addObject("biz", biz);
         } else {
             FlowPaperApprovalEntity biz = new FlowPaperApprovalEntity();
@@ -198,6 +201,9 @@ public class FlowPaperApprovalController extends BaseController {
 
             biz.setDraftMan(user.getRealName());
             biz.setDept(user.getDeptName());
+            if(StringUtils.isNotEmpty(biz.getAttachment())){
+                biz.setAttachment(biz.getAttachment().replaceAll("\"","").replaceAll("\\[","").replaceAll("\\]",""));
+            }
             view.addObject("biz", biz);
         }
 

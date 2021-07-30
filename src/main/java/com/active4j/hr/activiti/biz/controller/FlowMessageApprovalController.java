@@ -161,6 +161,9 @@ public class FlowMessageApprovalController extends BaseController {
             view.addObject("base", base);
 
             FlowMessageApprovalEntity biz = flowMessageApprovalService.getById(base.getBusinessId());
+            if(StringUtils.isNotEmpty(biz.getAttachment())){
+                biz.setAttachment(biz.getAttachment().replaceAll("\"","").replaceAll("\\[","").replaceAll("\\]",""));
+            }
             view.addObject("biz", biz);
         } else {
 
@@ -185,6 +188,9 @@ public class FlowMessageApprovalController extends BaseController {
             FlowMessageApprovalEntity biz = new FlowMessageApprovalEntity();
             biz.setPublicMan(user.getRealName());
             biz.setDept(user.getDeptName());
+            if(StringUtils.isNotEmpty(biz.getAttachment())){
+                biz.setAttachment(biz.getAttachment().replaceAll("\"","").replaceAll("\\[","").replaceAll("\\]",""));
+            }
             view.addObject("biz", biz);
         }
 
@@ -352,6 +358,9 @@ public class FlowMessageApprovalController extends BaseController {
                 return j;
             }
 
+            String attachment=flowMessageApprovalEntity.getAttachment().replaceAll("\"","").replaceAll("\\[","").replaceAll("\\]","");
+            flowMessageApprovalEntity.setAttachment(attachment);
+
             if (6 == flowMessageApprovalEntity.getMessageType()){
                 //类型为双井图库  处理图片加水印
                 String imgPath = getImgSrc(flowMessageApprovalEntity.getContent());
@@ -370,7 +379,6 @@ public class FlowMessageApprovalController extends BaseController {
                 addWaterMark(imgPath,"/upload/"+newImgPath,flowMessageApprovalEntity.getTitle(),prefix);
                 flowMessageApprovalEntity.setContent(flowMessageApprovalEntity.getContent().replaceFirst(imgPathName,newImgPath));
             }
-
 
             if(StringUtils.equals(optType, "1")) {
                 flowMessageApprovalEntity.setApplyStatus(0);
@@ -443,7 +451,6 @@ public class FlowMessageApprovalController extends BaseController {
         return j;
     }
 
-
     public String getImgSrc(String htmlStr) {
 
         if( htmlStr == null ){
@@ -510,7 +517,8 @@ public class FlowMessageApprovalController extends BaseController {
             MyBeanUtils.copyBeanNotNull2Bean(workflowBaseEntity, base);
 
             FlowMessageApprovalEntity biz = flowMessageApprovalService.getById(base.getBusinessId());
-            biz.setAttachment(flowMessageApprovalEntity.getAttachment());
+            biz.setAttachment(flowMessageApprovalEntity.getAttachment().replaceAll("\"","").replaceAll("\\[","").replaceAll("\\]",""));
+            //biz.setAttachment(flowMessageApprovalEntity.getAttachment());
             biz.setContent(flowMessageApprovalEntity.getContent());
             biz.setTitle(flowMessageApprovalEntity.getTitle());
             //已申请

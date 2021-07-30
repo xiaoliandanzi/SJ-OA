@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <t:base type="default,laydate,icheck,summernote,clock"></t:base>
+    <t:base type="default,laydate,icheck,prettyfile,webuploader"></t:base>
     <script type="text/javascript">
         $(function() {
             laydate({elem:"#useTime",event:"focus",istime: false, format: 'YYYY-MM-DD'});
@@ -24,13 +24,14 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>用车审批流程</h5>
+                    <h5>用车申请</h5>
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="commonForm" action="flow/biz/carapproval/save" method="post">
                         <input type="hidden" name="workflowId" id="workflowId" value="${workflowId }">
                         <input type="hidden" name="optType" id="optType">
                         <input type="hidden" name="id" id="id" value="${base.id }">
+                        <input type="hidden" name="attachment" id="attachment" value="${biz.attachment }">
                         <%@include file="/WEB-INF/jsp/flow/carapproval/form.jsp" %>
                         <div class="form-group" style="margin-top: 30px;">
                             <div class="col-sm-4 col-sm-offset-3">
@@ -77,6 +78,72 @@
     function doBtnSaveApplyAction() {
         $("#optType").val("1");
         $("#commonForm").submit();
+    }
+
+    $(function() {
+        //初始化Web Uploader
+        var uploader2 = WebUploader.create({
+
+            // 选完文件后，是否自动上传。
+            auto : true,
+
+            // swf文件路径
+            swf : 'static/webuploader/Uploader.swf',
+
+            // 文件接收服务端。
+            server : 'func/upload/uploadFiles?db=1',
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick : {
+                id : '#filePicker'
+            },
+
+            fileSizeLimit: 5 * 1024 * 1024
+
+        });
+
+
+        // 文件上传过程中创建进度条实时显示。
+        uploader2.on('uploadProgress', function(file, percentage) {
+        });
+
+        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+        uploader2.on('uploadSuccess', function(file, data) {
+            debugger;
+            // var filePath = data.attributes.filePath;
+            // $("#fileList").html(file.name);
+            // $("#attachment").val(filePath);
+
+            var filePath = data.attributes.filePath;
+            var count = $(".file-name").length;
+            $("#fileList").append("<div class='file-name' id='file-name"+(count+1)+"'>"+file.name+"<a href='javascript:removeFile("+(count+1)+")'>删除</a></div>")
+            // $("#fileList").html(file.name);
+            var attachment = $("#attachment").val();
+            if(attachment != ''){
+                attachment = JSON.parse(attachment)
+            }else{
+                attachment = [];
+            }
+            attachment.push(filePath)
+
+            $("#attachment").val(JSON.stringify(attachment));
+        });
+
+        // 文件上传失败，显示上传出错。
+        uploader2.on('uploadError', function(file) {
+
+        });
+
+        // 完成上传完了，成功或者失败，先删除进度条。
+        uploader2.on('uploadComplete', function(file) {
+            qhTipSuccess('上传完成....');
+        });
+
+    });
+
+    function removeFile(index) {
+        $("#file-name"+index).remove();
     }
 </script>
 </html>
