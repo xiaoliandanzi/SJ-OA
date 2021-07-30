@@ -11,6 +11,7 @@ import com.active4j.hr.activiti.service.WorkflowBaseService;
 import com.active4j.hr.activiti.service.WorkflowFormService;
 import com.active4j.hr.activiti.service.WorkflowMngService;
 import com.active4j.hr.activiti.service.WorkflowService;
+import com.active4j.hr.activiti.util.WorkflowTaskUtil;
 import com.active4j.hr.base.controller.BaseController;
 import com.active4j.hr.common.constant.GlobalConstant;
 import com.active4j.hr.core.beanutil.MyBeanUtils;
@@ -362,6 +363,10 @@ public class FlowTmpCardApprovalController extends BaseController{
                     getItemEntity.setJsonData(flowTmpCardApprovalEntity.getJsonData());
                     getItemEntity.setGoodstaus("已领取");
                     getItemService.save(getItemEntity);
+
+                    //添加到系统信息
+                    WorkflowTaskUtil.sendApprovalMessage(workflowBaseEntity.getCreateName(), task.getAssignee(),
+                            workflowBaseEntity.getApplyDate(), workflowBaseEntity.getWorkFlowName());
                 }
             } else {
                 workflowBaseEntity.setStatus("2");
