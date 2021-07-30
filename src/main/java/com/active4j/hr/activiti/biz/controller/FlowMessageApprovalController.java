@@ -367,17 +367,17 @@ public class FlowMessageApprovalController extends BaseController {
                 File imgPathFile = new File(imgPath);
                 String imgPathName = imgPathFile.getName();
                 String prefix=imgPathName.substring(imgPathName.lastIndexOf(".")+1);
-                SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式
-                String newImgPath = df.format(new Date())+"."+prefix;// new Date()为获取当前系统时间，也可使用当前时间戳
+//                SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式
+//                String newImgPath = df.format(new Date())+"."+prefix;// new Date()为获取当前系统时间，也可使用当前时间戳
                 System.out.println("--------------------------------------------------------------");
                 System.out.println("--------------------------------------------------------------");
                 System.out.println("--------------------------------------------------------------");
-                System.out.println(newImgPath);
+//                System.out.println(newImgPath);
                 System.out.println("--------------------------------------------------------------");
                 System.out.println("--------------------------------------------------------------");
                 System.out.println("--------------------------------------------------------------");
-                addWaterMark(imgPath,"/upload/"+newImgPath,flowMessageApprovalEntity.getTitle(),prefix);
-                flowMessageApprovalEntity.setContent(flowMessageApprovalEntity.getContent().replaceFirst(imgPathName,newImgPath));
+                addWaterMark(imgPath,imgPath,flowMessageApprovalEntity.getTitle(),prefix);
+//                flowMessageApprovalEntity.setContent(flowMessageApprovalEntity.getContent().replaceFirst(imgPathName,newImgPath));
             }
 
             if(StringUtils.equals(optType, "1")) {
