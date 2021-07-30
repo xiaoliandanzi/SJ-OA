@@ -63,7 +63,7 @@
         </div>
     </div>
 </c:if>
-<c:if test="${not empty biz.id }">
+<c:if test="${not empty biz.attachment && biz.attachment!=''}">
     <div class="form-group">
         <label class="col-sm-2 control-label m-b">附件:</label>
         <div class="col-sm-4">
